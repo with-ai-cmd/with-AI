@@ -24,7 +24,7 @@ CAIOと連携し、ビジネスの財務健全性を維持する司令塔。
 
 ## 環境変数
 ```bash
-source ~/Desktop/with-AI/skills/documents/クロードコード/.env
+source {{WITHAI_ROOT}}/skills/documents/クロードコード/.env
 ```
 
 ## 管轄範囲

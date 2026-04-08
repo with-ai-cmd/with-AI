@@ -9,7 +9,7 @@ description: 朝の全自動ルーティン。「おはよう」「おは」「o
 
 ## 環境変数の読み込み
 以下のファイルから環境変数を読み込んでください:
-- `~/Desktop/with-AI/skills/documents/クロードコード/.env`
+- `{{WITHAI_ROOT}}/skills/documents/クロードコード/.env`
 
 ---
 
@@ -123,7 +123,7 @@ curl -s -X POST "https://api.notion.com/v1/pages" \
 
 #### 4. AIニュース収集
 morning-newsスキルを実行する。
-- エージェント定義: ~/Desktop/with-AI/skills/operations/morning-news/.claude/agents/ 以下を参照
+- エージェント定義: {{WITHAI_ROOT}}/skills/operations/morning-news/.claude/agents/ 以下を参照
 - 実行手順: orchestrator.md の指示に従い、rss-collector → person-tracker → analyser → notion-writer → publisher を順に実行
 - 完了後、トップ5件のヘッドラインを取得
 
@@ -172,15 +172,15 @@ Search Consoleデータ取得（昨日分）:
 - SEO的にやるべきこと（順位変動への対応等）
 - コンテンツの提案（キーワードギャップがあれば）
 
-参考: ~/Desktop/with-AI/skills/marketing/marketing-engine/config/settings.json のGA4/SC設定値を使用
-認証: ~/Desktop/with-AI/skills/credentials/ga4-service-account.json
+参考: {{WITHAI_ROOT}}/skills/marketing/marketing-engine/config/settings.json のGA4/SC設定値を使用
+認証: {{WITHAI_ROOT}}/skills/credentials/ga4-service-account.json
 
 ---
 
 ### Phase 3: 整理
 
 #### 7. デスクトップ整理
-~/Desktop/with-AI/skills/operations/desktop-cleaner/SKILL.md の定義に従い:
+{{WITHAI_ROOT}}/skills/operations/desktop-cleaner/SKILL.md の定義に従い:
 - ~/Desktop/ 上の散らかったファイルをスキャン
 - 保護対象（with-AI/）は触らない
 - 画像 → with-AI/assets/images/（screenshots/YYYY-MM/ 等に自動分類）

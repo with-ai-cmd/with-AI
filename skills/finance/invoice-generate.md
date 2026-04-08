@@ -10,11 +10,11 @@ NotionクライアントDBから契約情報を取得し、請求書PDFを生成
 
 ## 環境変数の読み込み
 以下のファイルから環境変数を読み込んでください:
-- `~/Desktop/with-AI/skills/documents/クロードコード/.env`
+- `{{WITHAI_ROOT}}/skills/documents/クロードコード/.env`
 
 ## 設定ファイルの読み込み
 以下のファイルから会社情報・振込先を読み込む:
-- `~/Desktop/with-AI/company/invoices/config.json`
+- `{{WITHAI_ROOT}}/company/invoices/config.json`
 
 ---
 
@@ -90,7 +90,7 @@ total = prorated_amount + tax
 
 既存の請求書ファイルから最新の連番を確認:
 ```bash
-ls ~/Desktop/with-AI/clients/*/invoices/ 2>/dev/null | grep "$(date +%Y-%m)" | wc -l
+ls {{WITHAI_ROOT}}/clients/*/invoices/ 2>/dev/null | grep "$(date +%Y-%m)" | wc -l
 ```
 
 ### 5. 請求内容の確認
@@ -123,7 +123,7 @@ ls ~/Desktop/with-AI/clients/*/invoices/ 2>/dev/null | grep "$(date +%Y-%m)" | w
 
 Pythonスクリプトで請求書PDFを生成する:
 ```bash
-python3 ~/Desktop/with-AI/company/invoices/scripts/generate_invoice.py \
+python3 {{WITHAI_ROOT}}/company/invoices/scripts/generate_invoice.py \
   --company "株式会社サンプル" \
   --contact "山田太郎" \
   --item "AIKOMONプラン（2026年4月分）" \
@@ -132,21 +132,21 @@ python3 ~/Desktop/with-AI/company/invoices/scripts/generate_invoice.py \
   --invoice-number "INV-202604-001" \
   --invoice-date "2026-04-30" \
   --due-date "2026-05-31" \
-  --output "~/Desktop/with-AI/clients/サンプル/invoices/2026-04_請求書.pdf"
+  --output "{{WITHAI_ROOT}}/clients/サンプル/invoices/2026-04_請求書.pdf"
 ```
 
 ### 7. クライアントディレクトリの自動作成
 
 クライアントのディレクトリが存在しない場合は自動作成:
 ```bash
-mkdir -p ~/Desktop/with-AI/clients/{会社名}/{contracts,invoices,notes}
+mkdir -p {{WITHAI_ROOT}}/clients/{会社名}/{contracts,invoices,notes}
 ```
 
 ### 8. 完了メッセージ
 
 ```
 請求書を生成しました:
-  ~/Desktop/with-AI/clients/サンプル/invoices/2026-04_請求書.pdf
+  {{WITHAI_ROOT}}/clients/サンプル/invoices/2026-04_請求書.pdf
 
 次のアクション:
   - Gmail下書きを作成しますか？ → /invoice-batch で一斉送信も可能

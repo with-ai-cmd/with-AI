@@ -17,10 +17,10 @@
     }
   },
   "paths": {
-    "skills_dir": "~/Desktop/with-AI/skills/",
-    "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
-    "reports_dir": "~/Desktop/with-AI/skills/meta/skill-manager/reports/",
-    "registry": "~/Desktop/with-AI/skills/meta/skill-manager/config/registry.json"
+    "skills_dir": "{{WITHAI_ROOT}}/skills/",
+    "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
+    "reports_dir": "{{WITHAI_ROOT}}/skills/meta/skill-manager/reports/",
+    "registry": "{{WITHAI_ROOT}}/skills/meta/skill-manager/config/registry.json"
   },
   "thresholds": {
     "api_key_rotation_warning_days": 90,

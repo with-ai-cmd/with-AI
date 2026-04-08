@@ -6,13 +6,13 @@
 
 ## 環境変数の読み込み
 ```bash
-source ~/Desktop/with-AI/skills/documents/クロードコード/.env
+source {{WITHAI_ROOT}}/skills/documents/クロードコード/.env
 ```
 
 ## 設定
-- スキルベースディレクトリ: `~/Desktop/with-AI/skills/`
-- レジストリ: `~/Desktop/with-AI/skills/meta/skill-manager/config/registry.json`
-- CLAUDE.md: `~/Desktop/with-AI/CLAUDE.md`
+- スキルベースディレクトリ: `{{WITHAI_ROOT}}/skills/`
+- レジストリ: `{{WITHAI_ROOT}}/skills/meta/skill-manager/config/registry.json`
+- CLAUDE.md: `{{WITHAI_ROOT}}/CLAUDE.md`
 - グローバルCLAUDE.md: `~/.claude/CLAUDE.md`
 
 ## 理想のディレクトリ構造

@@ -2,33 +2,33 @@
 
 ## 秘書AI（Executive Assistant）
 CEOの全指示を受け取り、意図を解釈して最適な役職・スキルにルーティングする。
-- 定義: `~/Desktop/with-AI/secretary/SECRETARY.md`
+- 定義: `{{WITHAI_ROOT}}/secretary/SECRETARY.md`
 - エントリポイント: `skills/meta/secretary.md`
 
 ## CAIO（最高AI責任者）
 with-AI エコシステム全体の司令塔。戦略・品質・リソース・ロードマップを統括する。
-- 定義: `~/Desktop/with-AI/caio/CAIO.md`
+- 定義: `{{WITHAI_ROOT}}/caio/CAIO.md`
 - エントリポイント: `skills/meta/caio.md`
-- 状態: `~/Desktop/with-AI/caio/state/`（maturity.json, roadmap.json）
+- 状態: `{{WITHAI_ROOT}}/caio/state/`（maturity.json, roadmap.json）
 
 ## CFO（最高財務責任者AI）
 財務オペレーション全体を統括。請求・経費・売上・契約金銭の管理を行う。
-- 定義: `~/Desktop/with-AI/cfo/CFO.md`
+- 定義: `{{WITHAI_ROOT}}/cfo/CFO.md`
 - エントリポイント: `skills/meta/cfo.md`
 
 ## CCO（最高顧客責任者AI）
 顧客ライフサイクル全体を統括。リード獲得→成約→サクセス→チャーン防止。
-- 定義: `~/Desktop/with-AI/cco/CCO.md`
+- 定義: `{{WITHAI_ROOT}}/cco/CCO.md`
 - エントリポイント: `skills/meta/cco.md`
-- サブエージェント: `~/Desktop/with-AI/cco/agents/`（7体）
-- 状態: `~/Desktop/with-AI/cco/state/`（health-scores.json, pipeline.json）
+- サブエージェント: `{{WITHAI_ROOT}}/cco/agents/`（7体）
+- 状態: `{{WITHAI_ROOT}}/cco/state/`（health-scores.json, pipeline.json）
 
 ## 環境変数
 全スキル共通の環境変数ファイル:
-- `~/Desktop/with-AI/skills/documents/クロードコード/.env`
+- `{{WITHAI_ROOT}}/skills/documents/クロードコード/.env`
 
 ## スキルの場所
-全スキルは `~/Desktop/with-AI/skills/` 配下にカテゴリ別で格納されている。
+全スキルは `{{WITHAI_ROOT}}/skills/` 配下にカテゴリ別で格納されている。
 - `skills/anthropic/` — Anthropic公式スキル（全ロール共通で利用可能）。各スキルは `SKILL.md` がエントリポイント。
   - ドキュメント系タスク（PDF/Excel/Word/PowerPoint）は社内スキルより高機能な公式版を優先利用すること。
   - 既存の `documents/pptx.md` はwith-AIブランド仕様のため、ブランド適用が必要な場合はそちらを使う。

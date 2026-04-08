@@ -4,8 +4,8 @@
   "last_updated": "2026-04-03T00:00:00+09:00",
   "notion_db": "32dd725a-9f17-816a-9e29-d69342a57e43",
   "notion_url": "https://www.notion.so/32dd725a9f17816a9e29d69342a57e43",
-  "base_dir": "~/Desktop/with-AI/skills",
-  "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+  "base_dir": "{{WITHAI_ROOT}}/skills",
+  "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
 
   "skills": {
     "ohayou": {
@@ -415,7 +415,7 @@
     },
     "marketing-engine": {
       "skill_file": "marketing/marketing-engine.md",
-      "skill_dir": "~/Desktop/with-AI/skills/marketing/marketing-engine/",
+      "skill_dir": "{{WITHAI_ROOT}}/skills/marketing/marketing-engine/",
       "category": "marketing",
       "sub_agents": ["analytics", "seo-optimizer", "content-writer", "case-study", "competitor-intel", "site-deployer", "report-publisher"],
       "dependencies": {
@@ -445,7 +445,7 @@
     },
     "gen-ai": {
       "skill_file": "content/gen-ai.md",
-      "skill_dir": "~/Desktop/with-AI/skills/content/gen-ai-master/",
+      "skill_dir": "{{WITHAI_ROOT}}/skills/content/gen-ai-master/",
       "category": "content",
       "sub_agents": [],
       "dependencies": {
@@ -460,7 +460,7 @@
     },
     "slide-creator": {
       "skill_file": "content/slide-creator.md",
-      "skill_dir": "~/Desktop/with-AI/skills/content/slide-creator/",
+      "skill_dir": "{{WITHAI_ROOT}}/skills/content/slide-creator/",
       "category": "content",
       "sub_agents": ["nanobanana-slide", "white-board-slide", "html-slide", "ai-seminar"],
       "dependencies": {
@@ -475,7 +475,7 @@
     },
     "skill-creator": {
       "skill_file": "meta/skill-creator.md",
-      "skill_dir": "~/Desktop/with-AI/skills/meta/skill-creator/",
+      "skill_dir": "{{WITHAI_ROOT}}/skills/meta/skill-creator/",
       "category": "meta",
       "sub_agents": ["grader", "comparator", "analyzer"],
       "dependencies": {
@@ -490,7 +490,7 @@
     },
     "skill-manager": {
       "skill_file": "meta/skill-manager.md",
-      "skill_dir": "~/Desktop/with-AI/skills/meta/skill-manager/",
+      "skill_dir": "{{WITHAI_ROOT}}/skills/meta/skill-manager/",
       "category": "meta",
       "sub_agents": ["auditor", "optimizer", "registrar", "doctor", "reporter", "keykeeper", "architect"],
       "dependencies": {
@@ -548,7 +548,7 @@
     "NOTION_API_TOKEN": {
       "service": "Notion",
       "env_var": "NOTION_API_TOKEN",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": ["contact-add", "contact-show", "contact-list", "contact-convert", "client-follow", "contract-manage", "receipt-add", "receipt-list", "receipt-summary", "sales-summary", "invoice-generate", "invoice-batch", "meeting-add", "meeting-memo", "確認", "notion", "proposal-generate", "contract-generate", "intro-generate", "estimate-generate", "marketing-engine", "morning-news", "weekly-review", "learning-note"],
       "type": "bearer_token",
       "status": "unknown",
@@ -559,7 +559,7 @@
     "NOTION_CONTACT_DB": {
       "service": "Notion Database",
       "env_var": "NOTION_CONTACT_DB",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": ["contact-add", "contact-show", "contact-list", "contact-convert", "meeting-add", "proposal-generate", "intro-generate"],
       "type": "database_id",
       "status": "unknown",
@@ -568,7 +568,7 @@
     "NOTION_CLIENT_DB": {
       "service": "Notion Database",
       "env_var": "NOTION_CLIENT_DB",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": ["contact-show", "contact-convert", "client-follow", "meeting-add", "proposal-generate", "contract-generate", "intro-generate", "marketing-engine"],
       "type": "database_id",
       "status": "unknown",
@@ -577,7 +577,7 @@
     "NOTION_MEETING_DB": {
       "service": "Notion Database",
       "env_var": "NOTION_MEETING_DB",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": ["meeting-add", "proposal-generate"],
       "type": "database_id",
       "status": "unknown",
@@ -586,7 +586,7 @@
     "NOTION_DEAL_DB": {
       "service": "Notion Database",
       "env_var": "NOTION_DEAL_DB",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": ["contact-show"],
       "type": "database_id",
       "status": "unknown",
@@ -595,7 +595,7 @@
     "NOTION_TASK_DB": {
       "service": "Notion Database",
       "env_var": "NOTION_TASK_DB",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": ["確認", "meeting-add", "ohayou"],
       "type": "database_id",
       "status": "unknown",
@@ -604,7 +604,7 @@
     "NOTION_RECEIPT_DB": {
       "service": "Notion Database",
       "env_var": "NOTION_RECEIPT_DB",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": ["receipt-add", "receipt-list", "receipt-summary"],
       "type": "database_id",
       "status": "unknown",
@@ -613,7 +613,7 @@
     "NANOBANANA_API_KEY": {
       "service": "nanobanana",
       "env_var": "NANOBANANA_API_KEY",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": ["slide-creator", "gen-ai"],
       "type": "api_key",
       "status": "unknown",
@@ -622,7 +622,7 @@
     "OPENAI_API_KEY": {
       "service": "OpenAI / ChatGPT",
       "env_var": "OPENAI_API_KEY",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": [],
       "type": "api_key",
       "status": "unknown",
@@ -640,7 +640,7 @@
     "GEMINI_API_KEY": {
       "service": "Google Gemini",
       "env_var": "GEMINI_API_KEY",
-      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "env_file": "{{WITHAI_ROOT}}/skills/documents/クロードコード/.env",
       "used_by": [],
       "type": "api_key",
       "status": "unknown",
