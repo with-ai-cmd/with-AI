@@ -1,0 +1,80 @@
+{
+  "title": "Gen AI Master",
+  "description": "生成AI（Generative AI）を体系的に学ぶためのe-learningカリキュラム",
+  "chapters": [
+    {
+      "id": "1",
+      "title": "AIの基礎知識",
+      "sections": [
+        {
+          "id": "1-1",
+          "title": "AIの定義",
+          "lessons": [
+            {
+              "id": "1-1-1",
+              "title": "AIの定義とは",
+              "description": "AIという言葉の起源、定義の変遷、AIの6つの機能、エージェントの概念"
+            },
+            {
+              "id": "1-1-2",
+              "title": "AIの仕組みと種類",
+              "description": "弱いAI・強いAI・超知能の3分類、AIの得意・不得意、現在のAIの限界"
+            },
+            {
+              "id": "1-1-3",
+              "title": "AIの得意と不得意",
+              "description": "AIが得意なこと・苦手なこと、基盤モデルの考え方、AIとの付き合い方"
+            }
+          ]
+        },
+        {
+          "id": "1-2",
+          "title": "AIの歴史",
+          "lessons": [
+            {
+              "id": "1-2-1",
+              "title": "AIの誕生と初期",
+              "description": "ダートマス会議、第1次AIブーム、探索と推論の時代"
+            },
+            {
+              "id": "1-2-2",
+              "title": "冬の時代と復活",
+              "description": "第1次・第2次AIの冬、エキスパートシステム、機械学習の台頭"
+            },
+            {
+              "id": "1-2-3",
+              "title": "深層学習革命から現在",
+              "description": "AlexNet、AlphaGo、Transformer、ChatGPTの登場、現在のAI動向"
+            }
+          ]
+        },
+        {
+          "id": "1-3",
+          "title": "AIとMLとDLの関係",
+          "lessons": [
+            {
+              "id": "1-3-1",
+              "title": "AI・ML・DLの包含関係",
+              "description": "AI⊃機械学習⊃深層学習の入れ子構造、それぞれの定義と範囲"
+            },
+            {
+              "id": "1-3-2",
+              "title": "機械学習と深層学習の違い",
+              "description": "特徴量エンジニアリング vs 自動学習、それぞれの強みと使い分け"
+            },
+            {
+              "id": "1-3-3",
+              "title": "現代AIの構造",
+              "description": "Transformer、LLM、RLHF、ChatGPTの仕組み、基盤モデルの概念"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "（未定義：第2章以降は今後追加）",
+      "sections": []
+    }
+  ]
+}

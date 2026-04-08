@@ -1,0 +1,15 @@
+{
+  "description": "RSS・人物追跡の両方が失敗した場合に使用するフォールバックデータ",
+  "collected_at": null,
+  "total": 0,
+  "items": [],
+  "note": "全ソース取得失敗時、このファイルが読み込まれます。手動でニュースを追加する場合は items 配列に追加してください。",
+  "item_template": {
+    "title": "記事タイトル",
+    "url": "https://example.com/article",
+    "source": "手動追加",
+    "published_at": "2024-01-01T00:00:00Z",
+    "summary": "記事の要約（200字以内）",
+    "raw_score": 0
+  }
+}

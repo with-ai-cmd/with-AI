@@ -1,0 +1,15 @@
+{
+  "last_updated": "2026-04-03",
+  "summary": {
+    "leads": 0,
+    "negotiating": 0,
+    "proposed": 0,
+    "closed_won": 2,
+    "closed_lost": 0,
+    "pipeline_value": 0
+  },
+  "recent_wins": [
+    {"company": "KATSUGU株式会社", "plan": "AI相談プラン", "date": "2026-03-24", "value": 49800},
+    {"company": "株式会社タイム", "plan": "お試しプラン", "date": "2026-04", "value": 500000}
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "site": {
+    "domain": "https://with-ai.jp",
+    "ga4_property_id": "529337346",
+    "ga4_measurement_id": "G-JJ4T5HCY4Y",
+    "search_console_url": "https://with-ai.jp/",
+    "local_hp_path": "/Users/kaitomain/Desktop/with-AI HP/"
+  },
+  "server": {
+    "host": "sv16719.xserver.jp",
+    "user": "withai",
+    "ssh_key": "~/Downloads/withai.key",
+    "port": 10022,
+    "document_root": "~/with-ai.jp/public_html/"
+  },
+  "credentials": {
+    "service_account": "~/.claude/credentials/ga4-service-account.json"
+  },
+  "notifications": {
+    "email": "katsumata.k@with-ai.jp",
+    "notion_db": "マーケティングレポート"
+  },
+  "content": {
+    "blog_dir": "blog/",
+    "case_dir": "case/",
+    "author": "勝又 海斗",
+    "company": "with-AI株式会社"
+  },
+  "seo": {
+    "target_keywords": [
+      "AI導入", "AIコンサルティング", "DX推進", "AI人材育成",
+      "営業支援AI", "AI研修", "業務効率化 AI", "AI導入 費用",
+      "AI導入 中小企業", "AI導入 失敗", "DX 中小企業"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "company": {
+    "name": "with-AI株式会社",
+    "representative": "代表取締役 勝又海斗",
+    "postal_code": "",
+    "address": "東京都渋谷区千駄ヶ谷5-16-10-1105",
+    "phone": "090-1296-4814",
+    "email": "info@with-ai.jp",
+    "registration_number": ""
+  },
+  "bank": {
+    "bank_name": "GMOあおぞらネット銀行（0310）",
+    "branch_name": "法人営業部（101）",
+    "account_type": "普通",
+    "account_number": "2489145",
+    "account_holder": "ウィズエーアイ（カ"
+  },
+  "invoice_settings": {
+    "tax_rate": 0.10,
+    "payment_terms": "月末締め翌月末払い",
+    "payment_due_days": 30,
+    "currency": "JPY",
+    "invoice_number_prefix": "INV",
+    "invoice_number_format": "INV-{YYYY}{MM}-{SEQ:03d}"
+  },
+  "plans": {
+    "AI相談プラン": {
+      "monthly_fee": 49800,
+      "description": "月1回オンライン打ち合わせ・AI活用相談"
+    },
+    "AIKOMONプラン": {
+      "monthly_fee": 250000,
+      "description": "実働型AI責任者プラン・月2-3回打ち合わせ"
+    },
+    "プレミアムプラン": {
+      "monthly_fee": 500000,
+      "description": "複数部署横断AI活用・経営層レポート"
+    },
+    "AI研修": {
+      "monthly_fee": 0,
+      "description": "スポット研修（都度見積）"
+    },
+    "システム開発": {
+      "monthly_fee": 0,
+      "description": "開発案件（都度見積）"
+    }
+  }
+}

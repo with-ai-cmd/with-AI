@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-04-03",
+  "current_quarter": "2026-Q2",
+
+  "priorities": {
+    "high": [
+      {
+        "id": "P-001",
+        "action": "Draft スキルのテスト・Active 昇格",
+        "targets": ["meeting-memo", "client-follow", "contract-manage", "invoice-batch", "sales-summary", "estimate-generate", "sns-draft", "learning-note", "oyasumi"],
+        "deadline": "2026-04-30",
+        "status": "not_started"
+      },
+      {
+        "id": "P-002",
+        "action": "未設定APIキーの解決",
+        "targets": ["NOTION_RECEIPT_DB", "ANTHROPIC_API_KEY", "GEMINI_API_KEY"],
+        "deadline": "2026-04-10",
+        "status": "not_started"
+      },
+      {
+        "id": "P-003",
+        "action": "ディレクトリ構造の最適化",
+        "targets": ["_config 統合", ".venv 削除", "クロードコード リネーム"],
+        "deadline": "2026-04-15",
+        "status": "not_started"
+      }
+    ],
+    "medium": [
+      {
+        "id": "P-004",
+        "action": "Stable スキルのドキュメント整備",
+        "targets": ["contact-add", "contact-show", "contact-list"],
+        "deadline": "2026-05-15",
+        "status": "not_started"
+      },
+      {
+        "id": "P-005",
+        "action": "レジストリ未追跡のenv変数を追加",
+        "targets": ["NOTION_SKILL_DB", "NOTION_MARKETING_REPORT_DB", "NOTION_LEARNING_INBOX_DB", "NOTION_LEARNING_NOTE_DB", "TELEGRAM_BOT_TOKEN"],
+        "deadline": "2026-04-30",
+        "status": "not_started"
+      }
+    ],
+    "low": [
+      {
+        "id": "P-006",
+        "action": "desktop-cleaner / learning-bot のレジストリ登録判断",
+        "targets": ["desktop-cleaner", "learning-bot"],
+        "deadline": "2026-05-31",
+        "status": "not_started"
+      }
+    ]
+  },
+
+  "milestones": [
+    {
+      "name": "全スキルレジストリ登録完了",
+      "date": "2026-04-03",
+      "status": "completed"
+    },
+    {
+      "name": "CAIO 設立",
+      "date": "2026-04-03",
+      "status": "completed"
+    },
+    {
+      "name": "初回ウィークリーチェック実施",
+      "date": "2026-04-03",
+      "status": "in_progress"
+    },
+    {
+      "name": "全 Draft スキル → Active 昇格",
+      "date": "2026-04-30",
+      "status": "not_started"
+    },
+    {
+      "name": "ディレクトリ構造 v2 移行完了",
+      "date": "2026-04-15",
+      "status": "not_started"
+    }
+  ]
+}

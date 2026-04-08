@@ -1,0 +1,30 @@
+{
+  "schedule": {
+    "daily": {
+      "agents": ["keykeeper", "auditor", "reporter"],
+      "auditor_level": 1,
+      "description": "軽量ヘルスチェック + APIキー確認"
+    },
+    "weekly": {
+      "agents": ["keykeeper", "registrar", "auditor", "optimizer", "reporter"],
+      "auditor_level": 2,
+      "description": "完全監査 + スキャン + 最適化"
+    },
+    "monthly": {
+      "agents": ["keykeeper", "registrar", "auditor", "optimizer", "doctor", "reporter"],
+      "auditor_level": 2,
+      "description": "全面レビュー + 予防修復 + レポート"
+    }
+  },
+  "paths": {
+    "skills_dir": "~/Desktop/with-AI/skills/",
+    "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+    "reports_dir": "~/Desktop/with-AI/skills/meta/skill-manager/reports/",
+    "registry": "~/Desktop/with-AI/skills/meta/skill-manager/config/registry.json"
+  },
+  "thresholds": {
+    "api_key_rotation_warning_days": 90,
+    "api_key_expiry_warning_days": 30,
+    "max_notion_requests_per_second": 3
+  }
+}

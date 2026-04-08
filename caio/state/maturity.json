@@ -1,0 +1,52 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-04-03",
+  "maturity_levels": {
+    "draft": "作成直後、未テスト",
+    "active": "テスト済み、日常利用中",
+    "stable": "安定稼働、エッジケース対応済み",
+    "legacy": "非推奨、後継スキルあり or 利用停止検討"
+  },
+  "skills": {
+    "ohayou":           { "level": "active",  "since": "2026-03-15", "notes": "毎朝利用" },
+    "morning-news":     { "level": "active",  "since": "2026-03-20", "notes": "ohayou から自動起動" },
+    "確認":             { "level": "active",  "since": "2026-03-15", "notes": "毎朝利用" },
+    "meeting-add":      { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "meeting-memo":     { "level": "draft",   "since": "2026-04-01", "notes": "新規追加" },
+    "notion":           { "level": "active",  "since": "2026-03-15", "notes": "汎用DB操作" },
+    "weekly-review":    { "level": "active",  "since": "2026-03-20", "notes": "" },
+    "learning-note":    { "level": "draft",   "since": "2026-03-28", "notes": "" },
+    "oyasumi":          { "level": "draft",   "since": "2026-04-01", "notes": "" },
+    "polepole":         { "level": "active",  "since": "2026-03-24", "notes": "クライアント案件" },
+    "contact-add":      { "level": "stable",  "since": "2026-03-10", "notes": "名刺OCR含む" },
+    "contact-show":     { "level": "stable",  "since": "2026-03-10", "notes": "" },
+    "contact-list":     { "level": "stable",  "since": "2026-03-10", "notes": "" },
+    "contact-convert":  { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "client-follow":    { "level": "draft",   "since": "2026-04-01", "notes": "" },
+    "contract-manage":  { "level": "draft",   "since": "2026-04-01", "notes": "" },
+    "invoice-generate": { "level": "active",  "since": "2026-03-20", "notes": "" },
+    "invoice-batch":    { "level": "draft",   "since": "2026-03-25", "notes": "" },
+    "receipt-add":      { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "receipt-list":     { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "receipt-summary":  { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "sales-summary":    { "level": "draft",   "since": "2026-04-01", "notes": "" },
+    "proposal-generate":  { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "contract-generate":  { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "intro-generate":     { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "estimate-generate":  { "level": "draft",   "since": "2026-04-01", "notes": "" },
+    "pptx":               { "level": "active",  "since": "2026-03-15", "notes": "" },
+    "marketing-engine":   { "level": "active",  "since": "2026-03-20", "notes": "7サブエージェント" },
+    "sns-draft":          { "level": "draft",   "since": "2026-04-01", "notes": "" },
+    "gen-ai":             { "level": "active",  "since": "2026-03-20", "notes": "教材自動生成" },
+    "slide-creator":      { "level": "active",  "since": "2026-03-20", "notes": "4サブエージェント" },
+    "skill-creator":      { "level": "active",  "since": "2026-03-24", "notes": "" },
+    "skill-manager":      { "level": "active",  "since": "2026-03-24", "notes": "7サブエージェント" }
+  },
+  "summary": {
+    "draft": 10,
+    "active": 21,
+    "stable": 3,
+    "legacy": 0,
+    "total": 34
+  }
+}

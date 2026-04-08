@@ -1,0 +1,3 @@
+CFOエージェントに質問します。ユーザーの質問内容: $ARGUMENTS
+
+GASプロジェクト(scriptId: 1p7s0WaT6P8EXEYLoIm0Xka-U6FZo1vmJONWOXRiRVIO5XzzR_wZMwVah)のGASエディタを開いて、`askCFO` 関数を実行するよう案内してください。質問内容をユーザーに確認し、GASエディタ上で関数の引数として渡す方法を説明してください。

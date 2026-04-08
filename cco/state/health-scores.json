@@ -1,0 +1,17 @@
+{
+  "last_updated": "2026-04-03",
+  "clients": {
+    "KATSUGU株式会社": {
+      "score": null,
+      "trend": null,
+      "risk": "new",
+      "note": "契約開始2026-03-24 初回ヘルスチェック未実施"
+    },
+    "株式会社タイム": {
+      "score": null,
+      "trend": null,
+      "risk": "pending_start",
+      "note": "契約準備中 入金待ち"
+    }
+  }
+}

@@ -1,0 +1,697 @@
+{
+  "version": "2.0",
+  "last_audit": null,
+  "last_updated": "2026-04-03T00:00:00+09:00",
+  "notion_db": "32dd725a-9f17-816a-9e29-d69342a57e43",
+  "notion_url": "https://www.notion.so/32dd725a9f17816a9e29d69342a57e43",
+  "base_dir": "~/Desktop/with-AI/skills",
+  "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+
+  "skills": {
+    "ohayou": {
+      "skill_file": "operations/ohayou.md",
+      "skill_dir": null,
+      "category": "operations",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_TASK_DB"],
+        "apis": ["notion", "google-calendar", "gmail"],
+        "skills": ["確認", "morning-news"],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "morning-news": {
+      "skill_file": "operations/morning-news.md",
+      "skill_dir": "/Users/kaitomain/morning-news/",
+      "category": "operations",
+      "sub_agents": ["rss-collector", "person-tracker", "analyser", "notion-writer", "publisher"],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion", "rss"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "確認": {
+      "skill_file": "operations/確認.md",
+      "skill_dir": null,
+      "category": "operations",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_TASK_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "meeting-add": {
+      "skill_file": "operations/meeting-add.md",
+      "skill_dir": null,
+      "category": "operations",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_MEETING_DB", "NOTION_CONTACT_DB", "NOTION_CLIENT_DB", "NOTION_TASK_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "meeting-memo": {
+      "skill_file": "operations/meeting-memo.md",
+      "skill_dir": null,
+      "category": "operations",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "notion": {
+      "skill_file": "operations/notion.md",
+      "skill_dir": null,
+      "category": "operations",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CONTACT_DB", "NOTION_CLIENT_DB", "NOTION_MEETING_DB", "NOTION_DEAL_DB", "NOTION_TASK_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "weekly-review": {
+      "skill_file": "operations/weekly-review.md",
+      "skill_dir": null,
+      "category": "operations",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion", "google-calendar"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "learning-note": {
+      "skill_file": "operations/learning-note.md",
+      "skill_dir": null,
+      "category": "operations",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "oyasumi": {
+      "skill_file": "operations/oyasumi.md",
+      "skill_dir": null,
+      "category": "operations",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": [],
+        "apis": [],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "polepole": {
+      "skill_file": "operations/polepole.md",
+      "skill_dir": "/Users/kaitomain/Projects/polepole-enrollment-system/",
+      "category": "client-project",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": [],
+        "apis": ["google-apps-script"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "contact-add": {
+      "skill_file": "crm/contact-add.md",
+      "skill_dir": null,
+      "category": "crm",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CONTACT_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "contact-show": {
+      "skill_file": "crm/contact-show.md",
+      "skill_dir": null,
+      "category": "crm",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CONTACT_DB", "NOTION_CLIENT_DB", "NOTION_DEAL_DB", "NOTION_MEETING_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "contact-list": {
+      "skill_file": "crm/contact-list.md",
+      "skill_dir": null,
+      "category": "crm",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CONTACT_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "contact-convert": {
+      "skill_file": "crm/contact-convert.md",
+      "skill_dir": null,
+      "category": "crm",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CONTACT_DB", "NOTION_CLIENT_DB"],
+        "apis": ["notion"],
+        "skills": ["contract-generate"],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "client-follow": {
+      "skill_file": "crm/client-follow.md",
+      "skill_dir": null,
+      "category": "crm",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CLIENT_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "contract-manage": {
+      "skill_file": "crm/contract-manage.md",
+      "skill_dir": null,
+      "category": "crm",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "invoice-generate": {
+      "skill_file": "finance/invoice-generate.md",
+      "skill_dir": null,
+      "category": "finance",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "invoice-batch": {
+      "skill_file": "finance/invoice-batch.md",
+      "skill_dir": null,
+      "category": "finance",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion"],
+        "skills": ["invoice-generate"],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "receipt-add": {
+      "skill_file": "finance/receipt-add.md",
+      "skill_dir": null,
+      "category": "finance",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_RECEIPT_DB"],
+        "apis": ["notion", "gmail"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "receipt-list": {
+      "skill_file": "finance/receipt-list.md",
+      "skill_dir": null,
+      "category": "finance",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_RECEIPT_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "receipt-summary": {
+      "skill_file": "finance/receipt-summary.md",
+      "skill_dir": null,
+      "category": "finance",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_RECEIPT_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "sales-summary": {
+      "skill_file": "finance/sales-summary.md",
+      "skill_dir": null,
+      "category": "finance",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "proposal-generate": {
+      "skill_file": "documents/proposal-generate.md",
+      "skill_dir": null,
+      "category": "documents",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CLIENT_DB", "NOTION_CONTACT_DB", "NOTION_MEETING_DB"],
+        "apis": ["notion"],
+        "skills": ["pptx", "meeting-add"],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "contract-generate": {
+      "skill_file": "documents/contract-generate.md",
+      "skill_dir": null,
+      "category": "documents",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CLIENT_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "intro-generate": {
+      "skill_file": "documents/intro-generate.md",
+      "skill_dir": null,
+      "category": "documents",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CONTACT_DB", "NOTION_CLIENT_DB"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "estimate-generate": {
+      "skill_file": "documents/estimate-generate.md",
+      "skill_dir": null,
+      "category": "documents",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "pptx": {
+      "skill_file": "documents/pptx.md",
+      "skill_dir": null,
+      "category": "documents",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": [],
+        "apis": [],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "marketing-engine": {
+      "skill_file": "marketing/marketing-engine.md",
+      "skill_dir": "~/Desktop/with-AI/skills/marketing/marketing-engine/",
+      "category": "marketing",
+      "sub_agents": ["analytics", "seo-optimizer", "content-writer", "case-study", "competitor-intel", "site-deployer", "report-publisher"],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN", "NOTION_CLIENT_DB"],
+        "apis": ["notion", "google-analytics", "search-console", "gmail"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "sns-draft": {
+      "skill_file": "marketing/sns-draft.md",
+      "skill_dir": null,
+      "category": "marketing",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": [],
+        "apis": [],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-03",
+      "last_updated": "2026-04-03"
+    },
+    "gen-ai": {
+      "skill_file": "content/gen-ai.md",
+      "skill_dir": "~/Desktop/with-AI/skills/content/gen-ai-master/",
+      "category": "content",
+      "sub_agents": [],
+      "dependencies": {
+        "env_vars": ["NANOBANANA_API_KEY"],
+        "apis": ["google-sheets", "google-drive", "nanobanana"],
+        "skills": ["slide-creator"],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "slide-creator": {
+      "skill_file": "content/slide-creator.md",
+      "skill_dir": "~/Desktop/with-AI/skills/content/slide-creator/",
+      "category": "content",
+      "sub_agents": ["nanobanana-slide", "white-board-slide", "html-slide", "ai-seminar"],
+      "dependencies": {
+        "env_vars": ["NANOBANANA_API_KEY"],
+        "apis": ["nanobanana"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "skill-creator": {
+      "skill_file": "meta/skill-creator.md",
+      "skill_dir": "~/Desktop/with-AI/skills/meta/skill-creator/",
+      "category": "meta",
+      "sub_agents": ["grader", "comparator", "analyzer"],
+      "dependencies": {
+        "env_vars": [],
+        "apis": [],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    },
+    "skill-manager": {
+      "skill_file": "meta/skill-manager.md",
+      "skill_dir": "~/Desktop/with-AI/skills/meta/skill-manager/",
+      "category": "meta",
+      "sub_agents": ["auditor", "optimizer", "registrar", "doctor", "reporter", "keykeeper", "architect"],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion"],
+        "skills": [],
+        "files": []
+      },
+      "health": { "status": "healthy", "last_check": "2026-04-03", "issues": [] },
+      "registered_at": "2026-03-24",
+      "last_updated": "2026-04-03"
+    }
+  },
+
+  "categories": {
+    "operations": ["ohayou", "morning-news", "確認", "meeting-add", "meeting-memo", "notion", "weekly-review", "learning-note", "oyasumi"],
+    "crm": ["contact-add", "contact-show", "contact-list", "contact-convert", "client-follow", "contract-manage"],
+    "finance": ["invoice-generate", "invoice-batch", "receipt-add", "receipt-list", "receipt-summary", "sales-summary"],
+    "documents": ["proposal-generate", "contract-generate", "intro-generate", "estimate-generate", "pptx"],
+    "marketing": ["marketing-engine", "sns-draft"],
+    "content": ["gen-ai", "slide-creator"],
+    "client-project": ["polepole"],
+    "meta": ["skill-creator", "skill-manager"]
+  },
+
+  "parallel_groups": {
+    "notion_api": {
+      "skills": ["contact-add", "contact-show", "contact-list", "contact-convert", "client-follow", "contract-manage", "receipt-add", "receipt-list", "receipt-summary", "sales-summary", "invoice-generate", "invoice-batch", "meeting-add", "meeting-memo", "確認", "notion", "proposal-generate", "contract-generate", "intro-generate", "estimate-generate", "weekly-review", "learning-note"],
+      "constraint": "Notion API rate limit: 3 req/sec",
+      "execution": "sequential_within_group"
+    },
+    "google_api": {
+      "skills": ["marketing-engine", "gen-ai"],
+      "constraint": "Google API quota",
+      "execution": "sequential_within_group"
+    },
+    "file_io": {
+      "skills": ["gen-ai", "slide-creator", "pptx", "contract-generate"],
+      "constraint": "File I/O concurrency",
+      "execution": "parallel_ok"
+    },
+    "gmail_api": {
+      "skills": ["receipt-add", "morning-news", "marketing-engine"],
+      "constraint": "Gmail API quota",
+      "execution": "sequential_within_group"
+    },
+    "independent": {
+      "skills": ["polepole", "skill-creator", "skill-manager", "ohayou", "oyasumi", "sns-draft"],
+      "constraint": "none",
+      "execution": "parallel_ok"
+    }
+  },
+
+  "api_keys": {
+    "NOTION_API_TOKEN": {
+      "service": "Notion",
+      "env_var": "NOTION_API_TOKEN",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": ["contact-add", "contact-show", "contact-list", "contact-convert", "client-follow", "contract-manage", "receipt-add", "receipt-list", "receipt-summary", "sales-summary", "invoice-generate", "invoice-batch", "meeting-add", "meeting-memo", "確認", "notion", "proposal-generate", "contract-generate", "intro-generate", "estimate-generate", "marketing-engine", "morning-news", "weekly-review", "learning-note"],
+      "type": "bearer_token",
+      "status": "unknown",
+      "last_verified": null,
+      "expires": null,
+      "last_rotated": null
+    },
+    "NOTION_CONTACT_DB": {
+      "service": "Notion Database",
+      "env_var": "NOTION_CONTACT_DB",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": ["contact-add", "contact-show", "contact-list", "contact-convert", "meeting-add", "proposal-generate", "intro-generate"],
+      "type": "database_id",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "NOTION_CLIENT_DB": {
+      "service": "Notion Database",
+      "env_var": "NOTION_CLIENT_DB",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": ["contact-show", "contact-convert", "client-follow", "meeting-add", "proposal-generate", "contract-generate", "intro-generate", "marketing-engine"],
+      "type": "database_id",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "NOTION_MEETING_DB": {
+      "service": "Notion Database",
+      "env_var": "NOTION_MEETING_DB",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": ["meeting-add", "proposal-generate"],
+      "type": "database_id",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "NOTION_DEAL_DB": {
+      "service": "Notion Database",
+      "env_var": "NOTION_DEAL_DB",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": ["contact-show"],
+      "type": "database_id",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "NOTION_TASK_DB": {
+      "service": "Notion Database",
+      "env_var": "NOTION_TASK_DB",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": ["確認", "meeting-add", "ohayou"],
+      "type": "database_id",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "NOTION_RECEIPT_DB": {
+      "service": "Notion Database",
+      "env_var": "NOTION_RECEIPT_DB",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": ["receipt-add", "receipt-list", "receipt-summary"],
+      "type": "database_id",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "NANOBANANA_API_KEY": {
+      "service": "nanobanana",
+      "env_var": "NANOBANANA_API_KEY",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": ["slide-creator", "gen-ai"],
+      "type": "api_key",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "OPENAI_API_KEY": {
+      "service": "OpenAI / ChatGPT",
+      "env_var": "OPENAI_API_KEY",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": [],
+      "type": "api_key",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "ANTHROPIC_API_KEY": {
+      "service": "Anthropic / Claude API",
+      "env_var": "ANTHROPIC_API_KEY",
+      "env_file": "~/test/.env",
+      "used_by": [],
+      "type": "api_key",
+      "status": "unknown",
+      "last_verified": null
+    },
+    "GEMINI_API_KEY": {
+      "service": "Google Gemini",
+      "env_var": "GEMINI_API_KEY",
+      "env_file": "~/Desktop/with-AI/skills/documents/クロードコード/.env",
+      "used_by": [],
+      "type": "api_key",
+      "status": "unknown",
+      "last_verified": null
+    }
+  },
+
+  "capability_map": {
+    "auditor": {
+      "name": "監査エージェント",
+      "capabilities": ["ファイル存在チェック", "環境変数検証", "frontmatter構文チェック", "APIスモークテスト", "スキル間依存関係の整合性検証"],
+      "manages": "全34スキル",
+      "triggers": ["daily", "weekly", "monthly"]
+    },
+    "optimizer": {
+      "name": "最適化エージェント",
+      "capabilities": ["依存関係グラフ構築", "並列実行グループ判定", "APIレート制限管理", "重複機能検出", "実行順序の最適化提案"],
+      "manages": "スキル間の関係性",
+      "triggers": ["weekly", "monthly"]
+    },
+    "registrar": {
+      "name": "登録エージェント",
+      "capabilities": ["未登録スキル検出", "メタデータ自動解析", "カテゴリ自動分類", "依存関係の自動推定", "skill-creatorとの連携"],
+      "manages": "registry.json",
+      "triggers": ["on_skill_create", "weekly"]
+    },
+    "doctor": {
+      "name": "修復エージェント",
+      "capabilities": ["ファイルパス自動修正", "環境変数補完", "スキル定義構造修正", "修復履歴ログ管理", "予防的修復提案"],
+      "manages": "問題のあるスキル",
+      "triggers": ["on_issue_detected", "monthly"]
+    },
+    "reporter": {
+      "name": "レポートエージェント",
+      "capabilities": ["デイリーサマリー生成", "週次ヘルスレポート", "月次全体レビュー", "改善提案の自動生成", "トレンド分析"],
+      "manages": "reports/",
+      "triggers": ["daily", "weekly", "monthly"]
+    },
+    "keykeeper": {
+      "name": "鍵番エージェント",
+      "capabilities": ["APIキー有効性テスト", "期限切れ事前警告", "影響スキル一覧表示", "ハードコード検出", "キーローテーション管理"],
+      "manages": "全APIキー・認証情報",
+      "triggers": ["daily", "weekly", "monthly"]
+    },
+    "architect": {
+      "name": "構造最適化エージェント",
+      "capabilities": ["ディレクトリ構造分析", "理想構造との差分検出", "ファイル移動・リネーム", "参照一括更新", "不要ファイル削除", "構造検証"],
+      "manages": "スキルディレクトリ全体の構造",
+      "triggers": ["monthly", "on_demand"]
+    }
+  },
+
+  "repair_log": []
+}

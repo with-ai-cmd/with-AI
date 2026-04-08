@@ -1,0 +1,2 @@
+CFO月次レポートを今すぐ実行してください。
+GASプロジェクト(scriptId: 1p7s0WaT6P8EXEYLoIm0Xka-U6FZo1vmJONWOXRiRVIO5XzzR_wZMwVah)の `runMonthlyCFO` 関数をclasp経由で実行するか、GASエディタを開いて実行を促してください。

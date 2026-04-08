@@ -1,0 +1,830 @@
+<!--
+  ============================================================
+  with-AI ブログ記事用 ビジュアルコンポーネント集
+  ============================================================
+  content-writer エージェントが記事生成時に参照するテンプレート。
+  各コンポーネントのCSS + HTML例をまとめている。
+
+  使い方:
+  1. 記事で使うコンポーネントのCSSを、記事HTMLの <style> に追記
+  2. HTML構造を記事本文内の適切な位置にコピー＆カスタマイズ
+  3. Mermaid使用時は </body> 前に CDN script を1回だけ追加
+
+  カラーパレット:
+  --blue-dark:  #0A3B8E
+  --blue-light: #48A8E1
+  --gradient:   linear-gradient(135deg, #0A3B8E 0%, #48A8E1 100%)
+  ============================================================
+-->
+
+<!-- ===== CSS 定義（記事の <style> に追記する） ===== -->
+<style>
+/* ─────────────────────────────
+   1. Mermaid フローチャート
+   ───────────────────────────── */
+.visual-mermaid {
+    margin: 2.5rem 0;
+    display: flex;
+    justify-content: center;
+}
+.visual-mermaid .mermaid {
+    max-width: 100%;
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+}
+
+/* ─────────────────────────────
+   2. ステップタイムライン
+   ───────────────────────────── */
+.visual-timeline {
+    margin: 2.5rem 0;
+    padding: 0;
+    position: relative;
+}
+.visual-timeline::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #0A3B8E, #48A8E1);
+    opacity: 0.15;
+}
+.timeline-item {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+.timeline-number {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    background: var(--gradient);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-shadow: 0 4px 12px rgba(10, 59, 142, 0.15);
+}
+.timeline-content {
+    flex: 1;
+    background: #FAFBFD;
+    border: 1px solid rgba(0,0,0,0.04);
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    transition: all 0.3s ease;
+}
+.timeline-content:hover {
+    border-color: rgba(72,168,225,0.2);
+    box-shadow: 0 4px 20px rgba(10, 59, 142, 0.05);
+}
+.timeline-content .timeline-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(10, 59, 142, 0.05);
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+}
+.timeline-content .timeline-icon svg {
+    width: 18px;
+    height: 18px;
+    color: var(--blue-dark);
+}
+.timeline-content h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 0.5rem;
+}
+.timeline-content p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 0;
+}
+
+/* ─────────────────────────────
+   3. 比較カードグリッド
+   ───────────────────────────── */
+.visual-compare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+}
+.compare-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 8px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+}
+.compare-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+.compare-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(10, 59, 142, 0.06);
+    border-color: rgba(72,168,225,0.2);
+}
+.compare-card:hover::before {
+    transform: scaleX(1);
+}
+.compare-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1.25rem;
+    background: linear-gradient(135deg, rgba(10,59,142,0.05) 0%, rgba(72,168,225,0.08) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.compare-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--blue-dark);
+}
+.compare-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 0.5rem;
+}
+.compare-desc {
+    font-size: 0.8rem;
+    color: #777;
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+.compare-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    text-align: left;
+}
+.compare-features li {
+    font-size: 0.8rem;
+    color: #555;
+    font-weight: 300;
+    padding: 0.3rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+}
+.compare-features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--gradient);
+    border-radius: 50%;
+}
+.compare-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid rgba(10, 59, 142, 0.1);
+    border-radius: 2px;
+    color: var(--blue-dark);
+}
+
+/* ─────────────────────────────
+   4. 数値ハイライトブロック
+   ───────────────────────────── */
+.visual-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(10,59,142,0.02) 0%, rgba(72,168,225,0.04) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(10, 59, 142, 0.04);
+}
+.stat-item {
+    text-align: center;
+    padding: 1rem 0;
+}
+.stat-number {
+    font-family: var(--tech-font);
+    font-size: 2.5rem;
+    font-weight: 500;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+}
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #666;
+    letter-spacing: 0.05em;
+}
+
+/* ─────────────────────────────
+   5. Before / After カード
+   ───────────────────────────── */
+.visual-before-after {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: stretch;
+    margin: 2.5rem 0;
+}
+@media (max-width: 768px) {
+    .visual-before-after {
+        grid-template-columns: 1fr;
+    }
+    .ba-arrow { transform: rotate(90deg); }
+}
+.ba-card {
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+}
+.ba-before {
+    background: #FFF5F5;
+    border: 1px solid rgba(220, 53, 69, 0.1);
+}
+.ba-after {
+    background: #F0FFF4;
+    border: 1px solid rgba(40, 167, 69, 0.1);
+}
+.ba-label {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+.ba-before .ba-label { color: #DC3545; }
+.ba-after .ba-label { color: #28A745; }
+.ba-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 0.75rem;
+}
+.ba-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.ba-card ul li {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #555;
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.7;
+}
+.ba-before ul li::before {
+    content: '✕';
+    position: absolute;
+    left: 0;
+    color: #DC3545;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.ba-after ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #28A745;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+.ba-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--blue-dark);
+    opacity: 0.3;
+    font-weight: 300;
+}
+
+/* ─────────────────────────────
+   6. アイコン付きポイントカード
+   ───────────────────────────── */
+.visual-point-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+}
+.point-card {
+    background: #FAFBFD;
+    border: 1px solid rgba(0,0,0,0.04);
+    border-radius: 8px;
+    padding: 2rem 1.5rem;
+    transition: all 0.3s ease;
+}
+.point-card:hover {
+    border-color: rgba(72,168,225,0.2);
+    box-shadow: 0 4px 20px rgba(10, 59, 142, 0.05);
+}
+.point-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, rgba(10,59,142,0.06) 0%, rgba(72,168,225,0.1) 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.point-icon svg {
+    width: 22px;
+    height: 22px;
+    color: var(--blue-dark);
+}
+.point-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 0.5rem;
+}
+.point-card p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+/* ─────────────────────────────
+   7. アーキテクチャ図（SVG）
+   ───────────────────────────── */
+.visual-architecture {
+    margin: 2.5rem 0;
+    background: #FAFBFD;
+    border: 1px solid rgba(0,0,0,0.04);
+    border-radius: 8px;
+    padding: 2rem;
+    overflow-x: auto;
+}
+.visual-architecture svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.visual-architecture svg text {
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+}
+.visual-architecture svg .arch-box {
+    fill: #fff;
+    stroke: rgba(10, 59, 142, 0.15);
+    stroke-width: 1.5;
+    rx: 8;
+}
+.visual-architecture svg .arch-box-primary {
+    fill: #0A3B8E;
+    stroke: none;
+    rx: 8;
+}
+.visual-architecture svg .arch-arrow {
+    stroke: #48A8E1;
+    stroke-width: 2;
+    fill: none;
+    marker-end: url(#arrowhead);
+}
+.visual-architecture svg .arch-text {
+    font-size: 12px;
+    fill: #333;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+.visual-architecture svg .arch-text-white {
+    font-size: 12px;
+    fill: #fff;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─────────────────────────────
+   8. アコーディオンFAQ
+   ───────────────────────────── */
+.visual-faq {
+    margin: 2.5rem 0;
+}
+.faq-item {
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.faq-item:hover {
+    border-color: rgba(72,168,225,0.2);
+}
+.faq-item summary {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1A1A1A;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+}
+.faq-item summary:hover {
+    background: rgba(10, 59, 142, 0.02);
+}
+.faq-item summary::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--blue-dark);
+    transition: transform 0.3s;
+}
+.faq-item[open] summary::after {
+    content: '−';
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-answer {
+    padding: 0 1.5rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #555;
+    line-height: 1.8;
+}
+
+/* ─────────────────────────────
+   9. 引用・出典ボックス
+   ───────────────────────────── */
+.visual-citation {
+    margin: 2.5rem 0;
+    background: linear-gradient(135deg, rgba(10,59,142,0.02) 0%, rgba(72,168,225,0.03) 100%);
+    border-left: 4px solid;
+    border-image: var(--gradient) 1;
+    border-radius: 0 8px 8px 0;
+    padding: 1.5rem 2rem;
+    position: relative;
+}
+.citation-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.75rem;
+    opacity: 0.3;
+}
+.citation-icon svg {
+    width: 100%;
+    height: 100%;
+    color: var(--blue-dark);
+}
+.visual-citation blockquote {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #333;
+    line-height: 1.8;
+    margin: 0 0 0.75rem;
+    font-style: italic;
+}
+.visual-citation cite {
+    font-size: 0.8rem;
+    color: #888;
+    font-style: normal;
+    font-weight: 300;
+}
+
+/* ─────────────────────────────
+   10. プログレスバー / レベル表示
+   ───────────────────────────── */
+.visual-progress {
+    margin: 2.5rem 0;
+}
+.progress-item {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.progress-label {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #555;
+    min-width: 140px;
+    text-align: right;
+}
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(0,0,0,0.04);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: var(--gradient);
+    border-radius: 4px;
+    transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.progress-value {
+    font-family: var(--tech-font);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--blue-dark);
+    min-width: 40px;
+}
+</style>
+
+
+<!-- ===== 以下、各コンポーネントの HTML 使用例 ===== -->
+
+
+<!-- ───── 1. Mermaid フローチャート ───── -->
+<div class="visual-mermaid">
+    <div class="mermaid">
+    graph TD
+        A["🎯 課題の特定"] --> B["🔍 AIツール選定"]
+        B --> C["⚡ 小さく試す"]
+        C --> D{"成果あり？"}
+        D -->|Yes| E["📈 本格導入"]
+        D -->|No| F["🔄 別の手段を検討"]
+        F --> B
+        style A fill:#0A3B8E,color:#fff,stroke:none
+        style E fill:#0A3B8E,color:#fff,stroke:none
+    </div>
+</div>
+<!-- Mermaid CDN（</body> 直前に1回だけ追加） -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true, theme:'neutral', fontFamily:'Inter, Noto Sans JP, sans-serif'});</script>
+
+
+<!-- ───── 2. ステップタイムライン ───── -->
+<div class="visual-timeline">
+    <div class="timeline-item">
+        <div class="timeline-number">1</div>
+        <div class="timeline-content">
+            <div class="timeline-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <h4>課題を特定する</h4>
+            <p>まず自社の業務フローの中で、最も時間がかかっている作業を洗い出します。</p>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-number">2</div>
+        <div class="timeline-content">
+            <div class="timeline-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+            </div>
+            <h4>AIツールを選定する</h4>
+            <p>課題に合ったAIツールを選びます。万能なツールはありません。用途を絞ることが成功の鍵です。</p>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-number">3</div>
+        <div class="timeline-content">
+            <div class="timeline-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h4>小さく試して検証する</h4>
+            <p>全社展開の前に、1つの業務・1人のチームで2週間試しましょう。小さな成功体験が全体を動かします。</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ───── 3. 比較カードグリッド ───── -->
+<div class="visual-compare-grid">
+    <div class="compare-card">
+        <div class="compare-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        </div>
+        <h4>Claude Code</h4>
+        <p class="compare-desc">ファイル操作＋自律実行型AIエージェント</p>
+        <ul class="compare-features">
+            <li>ローカル環境で動作</li>
+            <li>CI自動修正（NEW）</li>
+            <li>MCP外部サービス連携</li>
+        </ul>
+        <div class="compare-tag">Agent</div>
+    </div>
+    <div class="compare-card">
+        <div class="compare-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path></svg>
+        </div>
+        <h4>Cline Kanban</h4>
+        <p class="compare-desc">複数エージェント並列管理OSS</p>
+        <ul class="compare-features">
+            <li>カンバン形式でタスク管理</li>
+            <li>独立worktreeで衝突回避</li>
+            <li>無料オープンソース</li>
+        </ul>
+        <div class="compare-tag">Orchestrator</div>
+    </div>
+    <div class="compare-card">
+        <div class="compare-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+        </div>
+        <h4>Voxtral TTS</h4>
+        <p class="compare-desc">9言語対応オープンソース音声合成</p>
+        <ul class="compare-features">
+            <li>ElevenLabsを上回る品質</li>
+            <li>セルフホスト可能</li>
+            <li>超低遅延</li>
+        </ul>
+        <div class="compare-tag">Voice AI</div>
+    </div>
+</div>
+
+
+<!-- ───── 4. 数値ハイライトブロック ───── -->
+<div class="visual-stats">
+    <div class="stat-item">
+        <div class="stat-number">85%</div>
+        <div class="stat-label">修正対応の時間削減</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">3x</div>
+        <div class="stat-label">並列実行で生産性向上</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">9</div>
+        <div class="stat-label">Voxtral対応言語数</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">2x</div>
+        <div class="stat-label">Gemini Flashコンテキスト拡大</div>
+    </div>
+</div>
+
+
+<!-- ───── 5. Before / After カード ───── -->
+<div class="visual-before-after">
+    <div class="ba-card ba-before">
+        <div class="ba-label">Before</div>
+        <h4>従来のAI活用</h4>
+        <ul>
+            <li>人が常時監視・手動指示</li>
+            <li>一度に1つのタスクしか実行不可</li>
+            <li>音声AIは英語のみ・高遅延</li>
+            <li>各ツールが独立して連携なし</li>
+        </ul>
+    </div>
+    <div class="ba-arrow">→</div>
+    <div class="ba-card ba-after">
+        <div class="ba-label">After</div>
+        <h4>2026年3月以降</h4>
+        <ul>
+            <li>不在中も自動修正・自律動作</li>
+            <li>複数エージェントを並列実行</li>
+            <li>9言語対応・超低遅延の音声AI</li>
+            <li>Siri経由で全AIが統合利用可能</li>
+        </ul>
+    </div>
+</div>
+
+
+<!-- ───── 6. アイコン付きポイントカード ───── -->
+<div class="visual-point-grid">
+    <div class="point-card">
+        <div class="point-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </div>
+        <h4>自律的に動くAI</h4>
+        <p>CI自動修正やバックグラウンド実行で、人の手を離れて作業を完遂。</p>
+    </div>
+    <div class="point-card">
+        <div class="point-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
+        </div>
+        <h4>並列実行</h4>
+        <p>Cline Kanbanで複数タスクを同時処理。開発速度を3倍に。</p>
+    </div>
+    <div class="point-card">
+        <div class="point-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <h4>プラットフォーム開放</h4>
+        <p>Apple SiriがClaude・Geminiに開放。AIの選択肢が戦略に。</p>
+    </div>
+</div>
+
+
+<!-- ───── 7. アーキテクチャ図（インラインSVG） ───── -->
+<div class="visual-architecture">
+    <svg viewBox="0 0 780 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                <path d="M 0 0 L 8 3 L 0 6 z" fill="#48A8E1"/>
+            </marker>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#0A3B8E;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#48A8E1;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+        <!-- Boxes -->
+        <rect x="10" y="60" width="140" height="80" class="arch-box-primary" rx="8"/>
+        <text x="80" y="95" class="arch-text-white">ユーザー</text>
+        <text x="80" y="115" class="arch-text-white" style="font-size:10px;opacity:0.7">指示を出す</text>
+
+        <rect x="220" y="60" width="140" height="80" class="arch-box" rx="8"/>
+        <text x="290" y="95" class="arch-text">Claude Code</text>
+        <text x="290" y="115" class="arch-text" style="font-size:10px;fill:#888">自律実行</text>
+
+        <rect x="430" y="20" width="140" height="60" class="arch-box" rx="8"/>
+        <text x="500" y="55" class="arch-text">CI/CD</text>
+
+        <rect x="430" y="120" width="140" height="60" class="arch-box" rx="8"/>
+        <text x="500" y="155" class="arch-text">外部API</text>
+
+        <rect x="640" y="60" width="130" height="80" class="arch-box-primary" rx="8"/>
+        <text x="705" y="95" class="arch-text-white">成果物</text>
+        <text x="705" y="115" class="arch-text-white" style="font-size:10px;opacity:0.7">自動生成</text>
+
+        <!-- Arrows -->
+        <path d="M 150 100 L 210 100" class="arch-arrow"/>
+        <path d="M 360 85 L 420 50" class="arch-arrow"/>
+        <path d="M 360 115 L 420 150" class="arch-arrow"/>
+        <path d="M 570 50 L 640 85" class="arch-arrow"/>
+        <path d="M 570 150 L 640 115" class="arch-arrow"/>
+    </svg>
+</div>
+
+
+<!-- ───── 8. アコーディオンFAQ ───── -->
+<div class="visual-faq">
+    <details class="faq-item">
+        <summary>Q. Claude Codeは非エンジニアでも使えますか？</summary>
+        <div class="faq-answer">
+            <p>はい。Coworkというデスクトップアプリを使えば、チャット形式で操作できます。ターミナル操作は不要です。</p>
+        </div>
+    </details>
+    <details class="faq-item">
+        <summary>Q. 導入にどれくらいの期間がかかりますか？</summary>
+        <div class="faq-answer">
+            <p>ツール自体のセットアップは数分〜1時間程度です。業務フローへの定着には2〜4週間の伴走支援をお勧めしています。</p>
+        </div>
+    </details>
+    <details class="faq-item">
+        <summary>Q. セキュリティは大丈夫ですか？</summary>
+        <div class="faq-answer">
+            <p>Claude Codeはローカル環境で動作するため、データが外部に送信される範囲を制御できます。API通信の内容も暗号化されています。企業導入時のセキュリティ設計もご相談いただけます。</p>
+        </div>
+    </details>
+</div>
+
+
+<!-- ───── 9. 引用・出典ボックス ───── -->
+<div class="visual-citation">
+    <div class="citation-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
+    </div>
+    <blockquote>AIが自然な会話をより上手にこなすようになるにつれ、これらのやり取りが社会に与える影響を理解する必要があります。</blockquote>
+    <cite>— Google DeepMind, 2026年3月26日</cite>
+</div>
+
+
+<!-- ───── 10. プログレスバー / レベル表示 ───── -->
+<div class="visual-progress">
+    <div class="progress-item">
+        <span class="progress-label">導入の容易さ</span>
+        <div class="progress-bar"><div class="progress-fill" style="width: 90%"></div></div>
+        <span class="progress-value">90%</span>
+    </div>
+    <div class="progress-item">
+        <span class="progress-label">カスタマイズ性</span>
+        <div class="progress-bar"><div class="progress-fill" style="width: 75%"></div></div>
+        <span class="progress-value">75%</span>
+    </div>
+    <div class="progress-item">
+        <span class="progress-label">コスト効率</span>
+        <div class="progress-bar"><div class="progress-fill" style="width: 85%"></div></div>
+        <span class="progress-value">85%</span>
+    </div>
+</div>
