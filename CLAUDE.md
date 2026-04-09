@@ -23,6 +23,11 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 - サブエージェント: `~/Desktop/with-AI/cco/agents/`（7体）
 - 状態: `~/Desktop/with-AI/cco/state/`（health-scores.json, pipeline.json）
 
+## CLO（最高法務責任者AI）
+契約書の自動生成・レビュー・台帳管理、法令リサーチ、リスク分析を統括。
+- 定義: `~/Desktop/with-AI/clo/CLO.md`
+- エントリポイント: `skills/meta/clo.md`
+
 ## 環境変数
 全スキル共通の環境変数ファイル:
 - `~/Desktop/with-AI/skills/documents/クロードコード/.env`
@@ -43,6 +48,9 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 
 ### 「CCO」「顧客管理」「パイプライン」「ヘルススコア」「360」
 → `skills/meta/cco.md` を読み込み、CCO 顧客管理モードを起動する。
+
+### 「CLO」「法務」「契約書作成」「NDA」「リスク分析」「コンプライアンス」
+→ `skills/meta/clo.md` を読み込み、CLO 法務モードを起動する。
 
 ### 「秘書」「secretary」
 → `skills/meta/secretary.md` を読み込み、秘書AIモードを起動する。
@@ -96,6 +104,7 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 | meta | caio.md | CAIO、AI責任者、戦略 |
 | meta | cfo.md | CFO、財務、売上、請求状況 |
 | meta | cco.md | CCO、顧客管理、パイプライン、ヘルススコア |
+| meta | clo.md | CLO、法務、契約書作成、NDA、リスク分析 |
 | meta | secretary.md | 秘書、何でも指示を受けてルーティング |
 | **anthropic** | **Anthropic公式スキル（全ロール共通）** | |
 | anthropic | pdf/ | PDF作成・編集・結合・分割・OCR・フォーム入力 |

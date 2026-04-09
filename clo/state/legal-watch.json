@@ -1,0 +1,41 @@
+{
+  "last_checked": "2026-04-09",
+  "watch_topics": [
+    {
+      "topic": "AI規制（国内）",
+      "description": "AI事業者ガイドライン、AI安全性に関する法整備動向",
+      "impact": "AI SHINEサービスの適法性・契約条項への影響",
+      "last_update": null,
+      "status": "monitoring"
+    },
+    {
+      "topic": "AI生成物の著作権",
+      "description": "AI生成コンテンツの著作権帰属、学習データの権利問題",
+      "impact": "成果物帰属条項（第8条等）の法的根拠",
+      "last_update": null,
+      "status": "monitoring"
+    },
+    {
+      "topic": "フリーランス保護法",
+      "description": "特定受託事業者に係る取引の適正化等に関する法律（2024年11月施行）",
+      "impact": "営業代行契約の適正化、下請法との関係",
+      "last_update": null,
+      "status": "monitoring"
+    },
+    {
+      "topic": "電子契約・電子署名",
+      "description": "電子署名法、タイムスタンプ要件、電子帳簿保存法",
+      "impact": "契約締結フローの電子化対応",
+      "last_update": null,
+      "status": "monitoring"
+    },
+    {
+      "topic": "個人情報保護法",
+      "description": "改正動向、越境移転規制、クッキー規制",
+      "impact": "クライアントデータ取扱い条項への影響",
+      "last_update": null,
+      "status": "monitoring"
+    }
+  ],
+  "alerts": []
+}

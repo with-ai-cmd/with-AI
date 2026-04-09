@@ -1,0 +1,37 @@
+{
+  "last_updated": "2026-04-09",
+  "contracts": {
+    "KATSUGU株式会社": {
+      "type": "AIKOMON",
+      "status": "active",
+      "signed_date": "2026-03-24",
+      "plan": "AI相談",
+      "monthly_amount": 49800,
+      "auto_renew": true,
+      "renewal_notice_days": 30,
+      "next_renewal": null,
+      "template_version": "1.0",
+      "risk_score": null,
+      "file_path": "clients/KATSUGU/contracts/AIKOMON_業務委託契約書_2026-03-24.pdf"
+    },
+    "株式会社タイム": {
+      "type": "AIKOMON",
+      "status": "active",
+      "signed_date": "2026-03-01",
+      "plan": "お試しプラン",
+      "monthly_amount": 0,
+      "lump_sum": 500000,
+      "auto_renew": false,
+      "template_version": "1.0",
+      "risk_score": null,
+      "file_path": "clients/タイム/contracts/AIKOMON_業務委託契約書_お試しプラン.pdf"
+    }
+  },
+  "ndas": {},
+  "summary": {
+    "total_active": 2,
+    "renewals_60d": 0,
+    "expired": 0,
+    "high_risk": 0
+  }
+}

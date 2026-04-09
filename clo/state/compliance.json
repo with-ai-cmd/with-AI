@@ -1,0 +1,109 @@
+{
+  "last_audit": "2026-04-09",
+  "templates": {
+    "AIKOMON業務委託契約書": {
+      "version": "1.0",
+      "last_updated": "2026-03-15",
+      "checks": {
+        "confidentiality_clause": true,
+        "confidentiality_years": 5,
+        "anti_organized_crime": true,
+        "liability_cap": true,
+        "jurisdiction_tokyo": true,
+        "governing_law_japan": true,
+        "pii_handling": true,
+        "invoice_compliant": true,
+        "termination_clause": true,
+        "force_majeure": true
+      },
+      "score": 100
+    },
+    "AI_SHINE業務委託契約書": {
+      "version": "1.0",
+      "last_updated": "2026-04-01",
+      "checks": {
+        "confidentiality_clause": true,
+        "confidentiality_years": 5,
+        "anti_organized_crime": true,
+        "liability_cap": true,
+        "jurisdiction_tokyo": true,
+        "governing_law_japan": true,
+        "pii_handling": true,
+        "invoice_compliant": true,
+        "termination_clause": true,
+        "force_majeure": true
+      },
+      "score": 100
+    },
+    "AI_SHINE営業代行業務委託契約書": {
+      "version": "1.0",
+      "last_updated": "2026-04-08",
+      "checks": {
+        "confidentiality_clause": true,
+        "confidentiality_years": 5,
+        "anti_organized_crime": true,
+        "liability_cap": true,
+        "jurisdiction_tokyo": true,
+        "governing_law_japan": true,
+        "pii_handling": true,
+        "invoice_compliant": true,
+        "termination_clause": true,
+        "force_majeure": true
+      },
+      "score": 100
+    },
+    "営業代行業務委託契約書": {
+      "version": "1.0",
+      "last_updated": "2026-03-01",
+      "checks": {
+        "confidentiality_clause": true,
+        "confidentiality_years": 5,
+        "anti_organized_crime": true,
+        "liability_cap": true,
+        "jurisdiction_tokyo": true,
+        "governing_law_japan": true,
+        "pii_handling": true,
+        "invoice_compliant": true,
+        "termination_clause": true,
+        "force_majeure": true
+      },
+      "score": 100
+    },
+    "システム開発契約書": {
+      "version": "1.0",
+      "last_updated": "2026-03-01",
+      "checks": {
+        "confidentiality_clause": true,
+        "confidentiality_years": 5,
+        "anti_organized_crime": true,
+        "liability_cap": true,
+        "jurisdiction_tokyo": true,
+        "governing_law_japan": true,
+        "pii_handling": true,
+        "invoice_compliant": true,
+        "termination_clause": true,
+        "force_majeure": true
+      },
+      "score": 100
+    },
+    "秘密保持契約書_NDA": {
+      "version": "1.0",
+      "last_updated": "2026-03-01",
+      "checks": {
+        "confidentiality_clause": true,
+        "confidentiality_years": 5,
+        "anti_organized_crime": false,
+        "liability_cap": false,
+        "jurisdiction_tokyo": true,
+        "governing_law_japan": true,
+        "pii_handling": false,
+        "invoice_compliant": "N/A",
+        "termination_clause": false,
+        "force_majeure": false
+      },
+      "score": 60,
+      "notes": "NDA is intentionally minimal - missing items are expected for this contract type"
+    }
+  },
+  "overall_score": 93
+}

@@ -1,0 +1,3 @@
+- [ユーザー情報](user_katsumata.md) — with-AI株式会社 代表取締役 勝又海斗。任せるスタイル。
+- [CTO AIロール](project_cto_role.md) — 秘書AI配下のCTO。技術プロジェクト統括。
+- [請求自動化PJ](project_billing_automation.md) — CTO管轄。Notion+GMO銀行API+Gmail。GMO審査待ち。
