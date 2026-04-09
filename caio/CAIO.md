@@ -29,11 +29,11 @@ skill-manager（運用）と skill-creator（開発）の上位に位置し、
 ```
 
 ### CFO 定義
-~/Desktop/with-AI/cfo/CFO.md
+{{WITHAI_ROOT}}/cfo/CFO.md
 
 ## 環境変数
 ```bash
-source ~/Desktop/with-AI/skills/documents/クロードコード/.env
+source {{WITHAI_ROOT}}/skills/documents/クロードコード/.env
 ```
 
 ## 管轄範囲

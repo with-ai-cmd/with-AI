@@ -9,10 +9,10 @@ NotionクライアントDBから「契約中」の全クライアントを取得
 請求書PDFを一括生成 → Gmail下書きを一斉作成する。
 
 ## 環境変数の読み込み
-- `~/Desktop/with-AI/skills/documents/クロードコード/.env`
+- `{{WITHAI_ROOT}}/skills/documents/クロードコード/.env`
 
 ## 設定ファイルの読み込み
-- `~/Desktop/with-AI/company/invoices/config.json`
+- `{{WITHAI_ROOT}}/company/invoices/config.json`
 
 ---
 
@@ -83,10 +83,10 @@ No. | 会社名              | プラン        | 金額(税抜)  | 税込合計
 
 ```bash
 # クライアントごとにディレクトリ確認・作成
-mkdir -p ~/Desktop/with-AI/clients/{会社名}/{contracts,invoices,notes}
+mkdir -p {{WITHAI_ROOT}}/clients/{会社名}/{contracts,invoices,notes}
 
 # PDF生成
-python3 ~/Desktop/with-AI/company/invoices/scripts/generate_invoice.py \
+python3 {{WITHAI_ROOT}}/company/invoices/scripts/generate_invoice.py \
   --company "{会社名}" \
   --contact "{担当者名}" \
   --item "{プラン名}（{対象月}分）" \
@@ -95,7 +95,7 @@ python3 ~/Desktop/with-AI/company/invoices/scripts/generate_invoice.py \
   --invoice-number "{請求書番号}" \
   --invoice-date "{請求日}" \
   --due-date "{支払期限}" \
-  --output "~/Desktop/with-AI/clients/{会社名}/invoices/{YYYY-MM}_請求書.pdf"
+  --output "{{WITHAI_ROOT}}/clients/{会社名}/invoices/{YYYY-MM}_請求書.pdf"
 ```
 
 ### 6. Gmail下書き一斉作成
@@ -147,9 +147,9 @@ Web: https://with-ai.jp/
 ━━━ 請求書一斉発行 完了 ━━━
 
 PDF生成: 3件
-  ~/Desktop/with-AI/clients/AAA/invoices/2026-04_請求書.pdf
-  ~/Desktop/with-AI/clients/BBB/invoices/2026-04_請求書.pdf
-  ~/Desktop/with-AI/clients/CCC/invoices/2026-04_請求書.pdf
+  {{WITHAI_ROOT}}/clients/AAA/invoices/2026-04_請求書.pdf
+  {{WITHAI_ROOT}}/clients/BBB/invoices/2026-04_請求書.pdf
+  {{WITHAI_ROOT}}/clients/CCC/invoices/2026-04_請求書.pdf
 
 Gmail下書き: 3件
   → aaa@example.com（株式会社AAA）

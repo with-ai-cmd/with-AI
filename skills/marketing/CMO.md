@@ -146,10 +146,10 @@ Threads（週3回）:
 ```
 
 ## 環境変数
-`~/Desktop/with-AI/skills/documents/クロードコード/.env` から読み込む。
+`{{WITHAI_ROOT}}/skills/documents/クロードコード/.env` から読み込む。
 
 ## 使用するサブエージェント
-全て `~/Desktop/with-AI/skills/marketing/marketing-engine/agents/` 配下:
+全て `{{WITHAI_ROOT}}/skills/marketing/marketing-engine/agents/` 配下:
 - analytics/ — GA4 + Search Console
 - seo-optimizer/ — キーワード戦略
 - content-writer/ — 記事生成
@@ -159,9 +159,9 @@ Threads（週3回）:
 - report-publisher/ — レポート
 
 SNS関連:
-- `~/Desktop/with-AI/skills/marketing/sns-draft.md` — 投稿案生成
-- `~/Desktop/with-AI/skills/marketing/x-autopilot/` — X自動運用（準備中）
-- `~/Desktop/with-AI/skills/marketing/threads-autopilot/` — Threads自動運用（準備中）
+- `{{WITHAI_ROOT}}/skills/marketing/sns-draft.md` — 投稿案生成
+- `{{WITHAI_ROOT}}/skills/marketing/x-autopilot/` — X自動運用（準備中）
+- `{{WITHAI_ROOT}}/skills/marketing/threads-autopilot/` — Threads自動運用（準備中）
 
 ## 設定ファイル
-`~/Desktop/with-AI/skills/marketing/marketing-engine/config/settings.json`
+`{{WITHAI_ROOT}}/skills/marketing/marketing-engine/config/settings.json`

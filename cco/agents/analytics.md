@@ -11,7 +11,7 @@ CFOへの売上データ提供も担当する。
 
 ## 環境変数の読み込み
 以下のファイルから環境変数を読み込んでください:
-- `~/Desktop/with-AI/skills/documents/クロードコード/.env`
+- `{{WITHAI_ROOT}}/skills/documents/クロードコード/.env`
 
 ## データソース
 
@@ -27,8 +27,8 @@ CFOへの売上データ提供も担当する。
 
 | ファイル | 用途 |
 |---|---|
-| `~/Desktop/with-AI/cco/state/health-scores.json` | ヘルススコア |
-| `~/Desktop/with-AI/cco/state/pipeline.json` | パイプライン |
+| `{{WITHAI_ROOT}}/cco/state/health-scores.json` | ヘルススコア |
+| `{{WITHAI_ROOT}}/cco/state/pipeline.json` | パイプライン |
 
 ---
 
@@ -396,7 +396,7 @@ CFOが必要とする財務データをフォーマットして提供:
 
 定期レポートは以下のパスに保存:
 ```
-~/Desktop/with-AI/cco/reports/{YYYY}/{MM}/
+{{WITHAI_ROOT}}/cco/reports/{YYYY}/{MM}/
   - weekly_{YYYY-MM-DD}.md
   - monthly_{YYYY-MM}.md
   - quarterly_{YYYY}-Q{N}.md

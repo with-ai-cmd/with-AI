@@ -6,12 +6,12 @@
 
 ## 環境変数の読み込み
 ```bash
-source ~/Desktop/with-AI/skills/documents/クロードコード/.env
+source {{WITHAI_ROOT}}/skills/documents/クロードコード/.env
 ```
 
 ## 設定ファイル
-- レジストリ: ~/Desktop/with-AI/skills/meta/skill-manager/config/registry.json
-- 設定: ~/Desktop/with-AI/skills/meta/skill-manager/config/settings.json
+- レジストリ: {{WITHAI_ROOT}}/skills/meta/skill-manager/config/registry.json
+- 設定: {{WITHAI_ROOT}}/skills/meta/skill-manager/config/settings.json
 
 ## サブエージェント一覧
 

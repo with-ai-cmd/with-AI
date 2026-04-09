@@ -9,7 +9,7 @@ description: 夜の全自動ルーティン。「おやすみ」「oyasumi」「
 
 ## 環境変数の読み込み
 以下のファイルから環境変数を読み込んでください:
-- `~/Desktop/with-AI/skills/documents/クロードコード/.env`
+- `{{WITHAI_ROOT}}/skills/documents/クロードコード/.env`
 
 ---
 

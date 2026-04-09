@@ -21,7 +21,7 @@ Telegram Bot + Notion + Claude API による学習ナレッジ管理システム
 
 ## セットアップ
 ```bash
-cd ~/Desktop/with-AI/skills/operations/learning-bot
+cd {{WITHAI_ROOT}}/skills/operations/learning-bot
 pip install -r requirements.txt
 ```
 

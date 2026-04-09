@@ -15,25 +15,51 @@ echo "リポジトリ: $SCRIPT_DIR"
 echo ""
 
 # ------------------------------------------------------------
-# 1. Claude Code グローバル設定（CLAUDE.md）
+# 1. パスのプレースホルダーを実際のパスに置換
 # ------------------------------------------------------------
-echo "[1/6] グローバル CLAUDE.md を配置..."
+echo "[1/7] パスを環境に合わせて書き換え..."
 
-# with-AIのパスを現在の環境に合わせて書き換え
-WITHAI_PATH="$SCRIPT_DIR"
-sed "s|~/Desktop/with-AI|$WITHAI_PATH|g" "$SCRIPT_DIR/claude-code/CLAUDE.global.md" > /tmp/claude_global_tmp.md
+# {{WITHAI_ROOT}} → 実際のリポジトリパスに置換
+find "$SCRIPT_DIR" -type f \( -name "*.md" -o -name "*.json" \) ! -path "$SCRIPT_DIR/.git/*" -exec \
+    sed -i '' "s|{{WITHAI_ROOT}}|$SCRIPT_DIR|g" {} \;
+
+echo "  完了（全ファイルのパスを $SCRIPT_DIR に設定）"
+
+# ------------------------------------------------------------
+# 2. git clean フィルター設定（commit時に自動でプレースホルダーに戻す）
+# ------------------------------------------------------------
+echo "[2/7] git フィルター設定..."
+
+git -C "$SCRIPT_DIR" config filter.withai-path.clean "sed 's|$SCRIPT_DIR|{{WITHAI_ROOT}}|g'"
+git -C "$SCRIPT_DIR" config filter.withai-path.smudge "sed 's|{{WITHAI_ROOT}}|$SCRIPT_DIR|g'"
+
+GITATTRIBUTES="$SCRIPT_DIR/.gitattributes"
+if ! grep -q "filter=withai-path" "$GITATTRIBUTES" 2>/dev/null; then
+    cat >> "$GITATTRIBUTES" <<'EOF'
+*.md filter=withai-path
+*.json filter=withai-path
+EOF
+    echo "  .gitattributes にフィルター追加"
+fi
+
+echo "  完了"
+
+# ------------------------------------------------------------
+# 3. Claude Code グローバル設定（CLAUDE.md）
+# ------------------------------------------------------------
+echo "[3/7] グローバル CLAUDE.md を配置..."
 
 if [ -f "$CLAUDE_DIR/CLAUDE.md" ]; then
     echo "  既存の CLAUDE.md をバックアップ → CLAUDE.md.bak"
     cp "$CLAUDE_DIR/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md.bak"
 fi
-cp /tmp/claude_global_tmp.md "$CLAUDE_DIR/CLAUDE.md"
+cp "$SCRIPT_DIR/claude-code/CLAUDE.global.md" "$CLAUDE_DIR/CLAUDE.md"
 echo "  完了"
 
 # ------------------------------------------------------------
-# 2. スラッシュコマンド（~/.claude/commands/）
+# 4. スラッシュコマンド（~/.claude/commands/）
 # ------------------------------------------------------------
-echo "[2/6] スラッシュコマンドを配置..."
+echo "[4/7] スラッシュコマンドを配置..."
 mkdir -p "$CLAUDE_DIR/commands"
 
 for cmd in "$SCRIPT_DIR/claude-code/commands/"*.md; do
@@ -44,9 +70,9 @@ done
 echo "  完了"
 
 # ------------------------------------------------------------
-# 3. Anthropic 公式プラグインをインストール
+# 5. Anthropic 公式プラグインをインストール
 # ------------------------------------------------------------
-echo "[3/6] Anthropic 公式スキルプラグインをインストール..."
+echo "[5/7] Anthropic 公式スキルプラグインをインストール..."
 
 if command -v claude &> /dev/null; then
     # マーケットプレース追加（既にあればスキップ）
@@ -67,11 +93,11 @@ else
 fi
 
 # ------------------------------------------------------------
-# 4. Python 依存関係
+# 6. Python / Node.js 依存関係
 # ------------------------------------------------------------
-echo "[4/6] Python 依存関係をセットアップ..."
+echo "[6/7] 依存関係をセットアップ..."
 
-# invoices
+# Python: invoices
 if [ -f "$SCRIPT_DIR/company/invoices/requirements.txt" ]; then
     echo "  company/invoices..."
     cd "$SCRIPT_DIR/company/invoices"
@@ -79,7 +105,7 @@ if [ -f "$SCRIPT_DIR/company/invoices/requirements.txt" ]; then
     source .venv/bin/activate 2>/dev/null && pip install -q -r requirements.txt 2>/dev/null && deactivate || echo "  (スキップ)"
 fi
 
-# learning-bot
+# Python: learning-bot
 if [ -f "$SCRIPT_DIR/skills/operations/learning-bot/requirements.txt" ]; then
     echo "  skills/operations/learning-bot..."
     cd "$SCRIPT_DIR/skills/operations/learning-bot"
@@ -87,14 +113,7 @@ if [ -f "$SCRIPT_DIR/skills/operations/learning-bot/requirements.txt" ]; then
     source .venv/bin/activate 2>/dev/null && pip install -q -r requirements.txt 2>/dev/null && deactivate || echo "  (スキップ)"
 fi
 
-cd "$SCRIPT_DIR"
-echo "  完了"
-
-# ------------------------------------------------------------
-# 5. Node.js 依存関係
-# ------------------------------------------------------------
-echo "[5/6] Node.js 依存関係をセットアップ..."
-
+# Node.js: line-notion-server
 if [ -f "$SCRIPT_DIR/skills/operations/line-notion-server/package.json" ]; then
     echo "  skills/operations/line-notion-server..."
     cd "$SCRIPT_DIR/skills/operations/line-notion-server"
@@ -105,9 +124,9 @@ cd "$SCRIPT_DIR"
 echo "  完了"
 
 # ------------------------------------------------------------
-# 6. 環境変数・クレデンシャルの確認
+# 7. 環境変数・クレデンシャルの確認
 # ------------------------------------------------------------
-echo "[6/6] 環境変数・クレデンシャルを確認..."
+echo "[7/7] 環境変数・クレデンシャルを確認..."
 
 MISSING=0
 
@@ -130,8 +149,7 @@ if [ $MISSING -eq 0 ]; then
     echo "  全て設定済み"
 else
     echo ""
-    echo "  上記のファイルを旧PCからコピーしてください。"
-    echo "  これらはセキュリティのためgitに含まれていません。"
+    echo "  上記のファイルは各マシンで手動設定が必要です（APIキーのためGit管理外）。"
 fi
 
 # ------------------------------------------------------------
@@ -139,6 +157,8 @@ fi
 # ------------------------------------------------------------
 echo ""
 echo "━━━ セットアップ完了 ━━━"
+echo ""
+echo "パス: $SCRIPT_DIR"
 echo ""
 echo "MCP接続（手動設定が必要）:"
 echo "  - Notion: Claude Code の設定で MCP サーバーを追加"
