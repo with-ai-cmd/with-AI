@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3-3. 出力形式を決める — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WHITE-BOARD SLIDE — Design System
+   ============================================================ */
+:root {
+  --board: #F7F6F3;
+  --board-edge: #E8E6E1;
+  --surface: #FFFFFF;
+  --tray: #D4CDC2;
+  --tray-dark: #B8B0A3;
+  --ink-black: #1A1A1A;
+  --ink-blue: #1565C0;
+  --ink-blue-light: #42A5F5;
+  --ink-red: #C62828;
+  --ink-red-light: #EF5350;
+  --ink-green: #2E7D32;
+  --ink-green-light: #66BB6A;
+  --ink-orange: #E65100;
+  --sticky-y: #FFF8DC;
+  --sticky-y-edge: #F0E6B8;
+  --sticky-b: #E8F0FE;
+  --sticky-b-edge: #C4D8F2;
+  --sticky-g: #E6F4EA;
+  --sticky-g-edge: #B7DFC3;
+  --sticky-p: #FCE4EC;
+  --sticky-p-edge: #F0B8C8;
+  --nav-bg: rgba(255,255,255,0.92);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
+  --fs-hero: clamp(2.2rem, 5vw, 3.2rem);
+  --fs-title: clamp(1.4rem, 3vw, 1.9rem);
+  --fs-sub: clamp(1rem, 2vw, 1.2rem);
+  --fs-body: clamp(0.88rem, 1.5vw, 1rem);
+  --fs-sm: clamp(0.78rem, 1.2vw, 0.88rem);
+  --fs-xs: clamp(0.68rem, 1vw, 0.78rem);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--board);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
+  color: var(--ink-black);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.board-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 8px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+    linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    var(--board);
+  background-size: 100%, 40px 40px, 40px 40px, 100%;
+}
+.board-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.marker-tray {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80%);
+  height: 6px;
+  background: linear-gradient(to bottom, var(--tray), var(--tray-dark));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+.progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.05);
+  z-index: 2;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink-blue);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide {
+  position: absolute;
+  width: min(940px, 92vw);
+  height: min(540px, 78vh);
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
+  padding: 30px 40px;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+}
+.slide.active {
+  display: flex;
+  animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-blue);
+  background: var(--sticky-b);
+  padding: 3px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--sticky-b-edge);
+  width: fit-content;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.pg {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tray-dark);
+}
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 900;
+  line-height: 1.35;
+  color: var(--ink-black);
+  margin-bottom: 2px;
+  position: relative;
+  display: inline-block;
+}
+.marker-line {
+  display: block;
+  height: 5px;
+  width: 0;
+  border-radius: 3px;
+  margin-bottom: 14px;
+  transform: rotate(-0.3deg);
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+.marker-line.red { background: var(--ink-red); }
+.marker-line.blue { background: var(--ink-blue); }
+.marker-line.green { background: var(--ink-green); }
+.slide.active .marker-line {
+  animation: drawLine 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { width: 80px; } }
+.content { flex:1; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.row { display:flex; gap:20px; flex:1; }
+.col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.col.w60 { flex:1.5; }
+.col.w40 { flex:0.8; }
+.body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
+.sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
+.sm { font-size:var(--fs-sm); color:#666; line-height:1.6; }
+.xs { font-size:var(--fs-xs); color:#999; }
+.kw { color:var(--ink-red); font-weight:700; }
+.kw-blue { color:var(--ink-blue); font-weight:700; }
+.accent { font-family:'Caveat',cursive; font-weight:700; }
+.bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
+.bl li::before {
+  content:''; position:absolute; left:2px; top:8px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--ink-blue);
+  opacity: 0.7;
+}
+.bl.green li::before { background:var(--ink-green); }
+.bl.red li::before { background:var(--ink-red); }
+.bl.check li::before {
+  content:'✓'; background:none; opacity:1;
+  color:var(--ink-green); font-size:1rem; font-weight:900;
+  top:3px; left:0; width:auto; height:auto;
+}
+.bl.num { counter-reset:n; }
+.bl.num li { padding-left:30px; counter-increment:n; }
+.bl.num li::before {
+  content:counter(n); background:var(--ink-blue); color:#fff;
+  font-size:0.65rem; font-weight:700; text-align:center;
+  width:18px; height:18px; line-height:18px; top:5px; left:0;
+  border-radius: 50%; opacity:1;
+}
+.sticky {
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 1px;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+.sticky::after {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+  pointer-events:none;
+  border-radius: inherit;
+}
+.sticky::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+.sticky.t1 { transform:rotate(-1.5deg); }
+.sticky.t2 { transform:rotate(1deg); }
+.sticky.t3 { transform:rotate(-0.8deg); }
+.sticky.t4 { transform:rotate(1.3deg); }
+.slide.active .sticky {
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slide.active .sticky:nth-child(1) { animation-delay: 0.15s; }
+.slide.active .sticky:nth-child(2) { animation-delay: 0.25s; }
+.slide.active .sticky:nth-child(3) { animation-delay: 0.35s; }
+.slide.active .sticky:nth-child(4) { animation-delay: 0.45s; }
+@keyframes stickyPop {
+  from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
+}
+.sticky-label {
+  font-size:0.65rem; font-weight:700; color:var(--ink-blue);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
+}
+.prompt {
+  position:relative;
+  padding: 28px 16px 14px;
+  border-radius: 1px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: var(--shadow-sticky);
+}
+.prompt.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.prompt.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.prompt.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.prompt.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+.prompt::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+}
+.prompt-tag {
+  position:absolute; top:6px; left:10px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.58rem; font-weight:700;
+  color:var(--ink-blue); letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.copy-btn {
+  position:absolute; top:5px; right:8px;
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(4px);
+  border:1px solid rgba(0,0,0,0.08); border-radius:4px;
+  padding:2px 10px; font-size:0.6rem;
+  font-family:'Zen Maru Gothic',sans-serif;
+  cursor:pointer; color:#888; transition:all 0.2s;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.95); color:var(--ink-black); }
+.copy-btn.ok { color:var(--ink-green); border-color:var(--ink-green-light); }
+.vs { display:flex; gap:16px; flex:1; }
+.vs-side { flex:1; display:flex; flex-direction:column; gap:8px; padding:14px; border-radius:8px; }
+.vs-side.bad {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(198,40,40,0.015) 10px, rgba(198,40,40,0.015) 20px);
+  border:1.5px dashed rgba(198,40,40,0.2);
+}
+.vs-side.good {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(46,125,50,0.015) 10px, rgba(46,125,50,0.015) 20px);
+  border:1.5px solid rgba(46,125,50,0.2);
+}
+.vs-label { font-size:var(--fs-sub); font-weight:900; }
+.vs-side.bad .vs-label { color:var(--ink-red); }
+.vs-side.good .vs-label { color:var(--ink-green); }
+.vs-mid {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat',cursive; font-size:1.6rem;
+  color:var(--tray-dark); font-weight:700;
+}
+.wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+.wb-tbl th {
+  text-align:left; padding:8px 12px;
+  font-weight:700; color:var(--ink-blue);
+  border-bottom:2.5px solid var(--ink-blue);
+  font-size:var(--fs-sm);
+}
+.wb-tbl td {
+  padding:7px 12px;
+  border-bottom:1px solid var(--board-edge);
+}
+.wb-tbl tr:last-child td { border-bottom:none; }
+.wb-tbl tr:hover td { background:rgba(21,101,192,0.02); }
+.cards { display:grid; gap:10px; flex:1; }
+.cards.c2 { grid-template-columns:repeat(2,1fr); }
+.cards.c3 { grid-template-columns:repeat(3,1fr); }
+.card {
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:8px; padding:12px 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card-title { font-weight:700; color:var(--ink-blue); font-size:var(--fs-body); margin-bottom:3px; }
+.card-body { font-size:var(--fs-sm); color:#555; line-height:1.55; }
+.flow { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.flow-step {
+  padding:10px 18px; border-radius:10px; text-align:center;
+  font-size:var(--fs-sm); font-weight:700;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.flow-step:hover { transform:scale(1.05); }
+.flow-step.fb { background:var(--sticky-b); border:1px solid var(--sticky-b-edge); }
+.flow-step.fg { background:var(--sticky-g); border:1px solid var(--sticky-g-edge); }
+.flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
+.flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
+.flow-arr {
+  font-family:'Caveat',cursive; font-size:1.4rem;
+  color:var(--ink-blue); font-weight:700; padding:0 6px;
+}
+.conclusion {
+  margin-top:auto;
+  padding:9px 16px;
+  font-size:var(--fs-sm); font-weight:700;
+  color:var(--ink-blue);
+  border-left:3px solid var(--ink-blue);
+  background: linear-gradient(90deg, rgba(21,101,192,0.04), transparent);
+  border-radius:0 6px 6px 0;
+}
+.conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
+.illust { display:flex; align-items:center; justify-content:center; }
+.illust svg { max-width:100%; max-height:100%; }
+.slide.cover {
+  align-items:center; justify-content:center; text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.02) 0%, transparent 70%),
+    var(--surface);
+}
+.cover .chip { position:absolute; top:18px; left:24px; }
+.cover-title {
+  font-size: var(--fs-hero);
+  font-weight: 900;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+.cover-title .hl { color:var(--ink-blue); }
+.cover-sub {
+  font-size:var(--fs-sub); color:var(--tray-dark);
+  margin-top:8px; z-index:2; position:relative;
+}
+.cover-doodles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.cover-doodles svg { width:100%; height:100%; }
+.nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:10px 16px;
+  background:var(--nav-bg); backdrop-filter:blur(10px);
+  border-top:1px solid var(--board-edge);
+}
+.nav-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:100px; padding:7px 20px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.82rem; font-weight:700;
+  color:var(--ink-black); cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { background:var(--ink-blue); color:#fff; border-color:var(--ink-blue); transform:scale(1.05); }
+.nav-btn:active { transform:scale(0.97); }
+.nav-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
+.nav-btn:disabled:hover { background:var(--surface); color:var(--ink-black); border-color:var(--board-edge); }
+.nav-dots { display:flex; gap:5px; align-items:center; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--board-edge); border:none;
+  cursor:pointer; transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot.on { background:var(--ink-blue); width:20px; border-radius:3px; }
+.dot:hover { background:var(--ink-blue-light); }
+.nav-count {
+  font-family:'Caveat',cursive; font-weight:700;
+  font-size:1.05rem; color:var(--tray-dark);
+  min-width:55px; text-align:center;
+}
+.home-link{position:absolute;top:12px;right:16px;font-size:.7rem;color:var(--tray-dark);text-decoration:none;z-index:10;background:var(--surface);padding:3px 10px;border-radius:100px;border:1px solid var(--board-edge);transition:all .2s}
+.home-link:hover{color:var(--ink-blue);border-color:var(--ink-blue)}
+@media(max-width:768px){
+  .slide{padding:20px 24px}
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+  .vs,.row{flex-direction:column}
+  .nav{gap:8px;padding:8px 10px}
+  .nav-btn{padding:6px 14px;font-size:.78rem}
+}
+@media(max-width:480px){
+  .slide{padding:14px 16px;border-radius:0}
+  .cards.c2,.cards.c3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Board Frame -->
+<div class="board-frame">
+  <a href="index.html" class="home-link">目次に戻る</a>
+  <div class="marker-tray"></div>
+  <div class="progress-track"><div class="progress-fill" id="pf" style="width:5.6%"></div></div>
+
+<!-- ===== 1: COVER ===== -->
+<div class="slide cover active" data-s="1">
+  <div class="chip">3章 プロンプト</div>
+  <div class="cover-doodles">
+    <svg viewBox="0 0 940 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity=".12"><rect x="60" y="55" width="75" height="50" rx="12" stroke="#1565C0" stroke-width="2.5"/><rect x="68" y="65" width="55" height="4" rx="2" fill="#1565C0"/><rect x="68" y="73" width="40" height="4" rx="2" fill="#1565C0"/><rect x="68" y="81" width="50" height="4" rx="2" fill="#1565C0"/></g>
+      <g opacity=".09" transform="translate(790,40)"><rect width="60" height="50" rx="6" stroke="#C62828" stroke-width="2.5"/><text x="10" y="22" font-size="9" fill="#C62828" font-family="monospace">{...}</text><text x="10" y="38" font-size="9" fill="#C62828" font-family="monospace">JSON</text></g>
+      <g opacity=".08" transform="translate(50,400)"><rect width="100" height="60" rx="6" stroke="#2E7D32" stroke-width="2.5"/><line x1="10" y1="20" x2="90" y2="20" stroke="#2E7D32" stroke-width="1.5"/><line x1="10" y1="35" x2="90" y2="35" stroke="#2E7D32" stroke-width="1.5"/><line x1="50" y1="8" x2="50" y2="52" stroke="#2E7D32" stroke-width="1.5"/></g>
+      <g opacity=".08" transform="translate(820,400)"><circle cx="20" cy="20" r="18" stroke="#1565C0" stroke-width="2.5"/><text x="12" y="25" font-size="12" fill="#1565C0" font-family="sans-serif">Aa</text></g>
+    </svg>
+  </div>
+  <div class="cover-title">3-3. <span class="hl">出力形式</span>を決める</div>
+  <div class="cover-sub">第3章 プロンプト ― 3. プロンプト設計フレームワーク</div>
+  <div class="pg">1/18</div>
+</div>
+
+<!-- ===== 2: GOAL ===== -->
+<div class="slide" data-s="2">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">このレッスンのゴール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <ul class="bl">
+      <li><strong>出力形式を指定する理由</strong>と効果が説明できる</li>
+      <li><strong>文章系7種類</strong>の出力形式を用途で使い分けられる</li>
+      <li><strong>データ系6種類</strong>の構造フォーマットを選択できる</li>
+      <li><strong>長さ・分量の指定</strong>テクニックを使いこなせる</li>
+      <li><strong>テンプレート</strong>を使って安定した出力を得られる</li>
+    </ul>
+    <div class="conclusion">出力形式の指定は「AIの回答を仕事に使える成果物に変える」技術。</div>
+  </div>
+  <div class="pg">2/18</div>
+</div>
+
+<!-- ===== 3: WHY FORMAT MATTERS ===== -->
+<div class="slide" data-s="3">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">なぜ出力形式を指定するのか</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">フォーマットを決めないと、AIは<span class="kw">「最もありそうな形式」</span>を自分で選んでしまいます。</div>
+    <table class="wb-tbl">
+      <thead><tr><th>欲しいもの</th><th>起きる問題</th></tr></thead>
+      <tbody>
+        <tr><td>報告書</td><td>箇条書きの羅列が出てくる</td></tr>
+        <tr><td>表形式の比較</td><td>長い段落の説明文が出てくる</td></tr>
+        <tr><td>メールの文面</td><td>エッセイ調の文章が出てくる</td></tr>
+        <tr><td>JSONデータ</td><td>説明付きの自然言語が出てくる</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">出力形式の指定 = AIに<span class="kw">「完成品のイメージ」</span>を伝えること。設計図なしに家を建てないのと同じ。</div>
+  </div>
+  <div class="pg">3/18</div>
+</div>
+
+<!-- ===== 4: 8+1 FORMULA POSITION ===== -->
+<div class="slide" data-s="4">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">8+1の公式：⑥と⑦の位置</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">今回学ぶのは8+1の公式のうち<span class="kw">⑥出力形式（文章）</span>と<span class="kw">⑦出力形式（形）</span>です。</div>
+    <div class="row">
+      <div class="col">
+        <div class="sticky b t1">
+          <div class="sticky-label">⑥ 出力形式（文章）</div>
+          箇条書き・メール形式など<br><strong>「どんな文体で書くか」</strong>を指定<br>例：和食にするかイタリアンにするか
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky g t2">
+          <div class="sticky-label">⑦ 出力形式（形）</div>
+          表・Markdown・JSONなど<br><strong>「どんなレイアウトで見せるか」</strong>を指定<br>例：お皿の盛り付け方
+        </div>
+      </div>
+    </div>
+    <div class="conclusion green">⑥は「料理のジャンル」、⑦は「盛り付け方」。両方揃えると完璧な一皿に。</div>
+  </div>
+  <div class="pg">4/18</div>
+</div>
+
+<!-- ===== 5: TEXT FORMATS (7 types) ===== -->
+<div class="slide" data-s="5">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">文章系フォーマット 7種類</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th>出力形式</th><th>適した用途</th><th>プロンプト例</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw">箇条書き</span></td><td>要点整理</td><td>「箇条書きで5つ挙げて」</td></tr>
+        <tr><td><span class="kw">番号付きリスト</span></td><td>手順説明</td><td>「ステップバイステップで」</td></tr>
+        <tr><td><span class="kw">段落文</span></td><td>報告書・ブログ</td><td>「3段落の説明文で」</td></tr>
+        <tr><td><span class="kw">メール形式</span></td><td>ビジネスメール</td><td>「件名・宛名・本文・署名を含む形式で」</td></tr>
+        <tr><td><span class="kw">FAQ形式</span></td><td>よくある質問集</td><td>「Q&A形式で10個作成して」</td></tr>
+        <tr><td><span class="kw">対話形式</span></td><td>教材・シナリオ</td><td>「先生と生徒の対話形式で」</td></tr>
+        <tr><td><span class="kw">議事録形式</span></td><td>会議の記録</td><td>「日時・参加者・決定事項を含む形式で」</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pg">5/18</div>
+</div>
+
+<!-- ===== 6: SAME TOPIC, 3 FORMATS ===== -->
+<div class="slide" data-s="6">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">同じテーマ、違う形式</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">テーマ：「クラウドのメリット」を<span class="kw">3つの形式</span>で出力指定する例</div>
+    <div class="row">
+      <div class="col">
+        <div class="prompt y" style="transform:rotate(-.4deg)"><span class="prompt-tag">箇条書き形式</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+クラウドのメリットを
+箇条書きで3つ挙げてください。</div>
+      </div>
+      <div class="col">
+        <div class="prompt b" style="transform:rotate(.3deg)"><span class="prompt-tag">メール形式</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+クラウド導入を上司に提案する
+メールを作成してください。
+件名・宛名・本文・署名を含めて。</div>
+      </div>
+      <div class="col">
+        <div class="prompt g" style="transform:rotate(-.2deg)"><span class="prompt-tag">FAQ形式</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+クラウド導入を検討する企業からの
+よくある質問をQ&A形式で
+5つ作成してください。</div>
+      </div>
+    </div>
+    <div class="conclusion">同じテーマでも形式を変えるだけで<span class="kw">まったく違う成果物</span>が得られる。</div>
+  </div>
+  <div class="pg">6/18</div>
+</div>
+
+<!-- ===== 7: DATA FORMATS (6 types) ===== -->
+<div class="slide" data-s="7">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">データ系フォーマット 6種類</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="cards c3">
+      <div class="card"><div class="card-title">表形式</div><div class="card-body">情報の比較・整理に最適<br><span class="sm">製品比較、料金プラン</span></div></div>
+      <div class="card"><div class="card-title">Markdown</div><div class="card-body">見出し・太字・リストで構造化<br><span class="sm">ドキュメント、ブログ</span></div></div>
+      <div class="card"><div class="card-title">JSON</div><div class="card-body">プログラムで処理しやすい<br><span class="sm">API連携、データ処理</span></div></div>
+      <div class="card"><div class="card-title">CSV</div><div class="card-body">スプレッドシートに直接貼れる<br><span class="sm">データ集計、リスト管理</span></div></div>
+      <div class="card"><div class="card-title">HTML</div><div class="card-body">Webページとして表示可能<br><span class="sm">Webコンテンツ、メルマガ</span></div></div>
+      <div class="card"><div class="card-title">Mermaid記法</div><div class="card-body">図やフローチャートを描ける<br><span class="sm">プロセス図、組織図</span></div></div>
+    </div>
+    <div class="conclusion">用途に応じて<span class="kw">文章系</span>と<span class="kw">データ系</span>を組み合わせるのがコツ。</div>
+  </div>
+  <div class="pg">7/18</div>
+</div>
+
+<!-- ===== 8: TABLE FORMAT EXAMPLE ===== -->
+<div class="slide" data-s="8">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">表形式の活用テクニック</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="body">表形式は最も使用頻度が高いフォーマット。<span class="kw">ヘッダー（列名）を先に書いておく</span>のがポイント。</div>
+        <div class="prompt b" style="transform:rotate(.3deg)"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+主要なクラウドサービスを
+以下の表形式で比較してください。
+
+| サービス名 | 提供企業 | 特徴 | 月額費用 | 適した用途 |
+|---|---|---|---|---|</div>
+      </div>
+      <div class="col w40">
+        <div class="sticky y t2">
+          <div class="sticky-label">Point</div>
+          列名を先に書く = AIに<strong>「この列構成で出力して」</strong>と伝える最も確実な方法
+        </div>
+        <div class="sticky g t3">
+          <div class="sticky-label">Tip</div>
+          区切り線 <code>|---|</code> も書いておくと、AIが正しいMarkdownテーブルを出力しやすい
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">8/18</div>
+</div>
+
+<!-- ===== 9: JSON FORMAT EXAMPLE ===== -->
+<div class="slide" data-s="9">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">JSON形式の活用テクニック</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="body">プログラムと連携する場合に使用。<span class="kw">テンプレート（空のフォーマット）</span>を見せると正確に従う。</div>
+        <div class="prompt g" style="transform:rotate(-.3deg)"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下の商品情報をJSON形式で
+出力してください。
+
+{
+  "商品名": "",
+  "価格": 0,
+  "カテゴリ": "",
+  "在庫": true
+}</div>
+      </div>
+      <div class="col w40">
+        <div class="sticky p t1">
+          <div class="sticky-label">注意</div>
+          複雑なJSONではカンマ抜けや括弧不一致が起きることも。<strong>出力後にバリデーション</strong>を行おう
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">9/18</div>
+</div>
+
+<!-- ===== 10: LENGTH CONTROL ===== -->
+<div class="slide" data-s="10">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">出力の長さ・分量を指定する</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">長さを指定しないとAIは<span class="kw">必要以上に長い回答</span>を返しがち。具体的に指定しよう。</div>
+    <table class="wb-tbl">
+      <thead><tr><th>指定方法</th><th>プロンプト例</th><th>効果</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw">文字数</span></td><td>「200文字以内で」</td><td>厳密な長さ制御</td></tr>
+        <tr><td><span class="kw">行数</span></td><td>「3行で要約して」</td><td>簡潔さの確保</td></tr>
+        <tr><td><span class="kw">項目数</span></td><td>「5つのポイントに絞って」</td><td>情報量コントロール</td></tr>
+        <tr><td><span class="kw">段落数</span></td><td>「3段落で説明して」</td><td>読みやすい構成</td></tr>
+        <tr><td><span class="kw">時間の目安</span></td><td>「3分で読める分量で」</td><td>読者視点の指定</td></tr>
+      </tbody>
+    </table>
+    <div class="sticky y t2" style="margin-top:auto">
+      <div class="sticky-label">注意</div>
+      AIは文字数カウントが苦手。「200文字以内」→250文字になることも。<strong>「200文字程度」</strong>と幅を持たせるのが現実的。
+    </div>
+  </div>
+  <div class="pg">10/18</div>
+</div>
+
+<!-- ===== 11: TEMPLATE - MEETING MINUTES ===== -->
+<div class="slide" data-s="11">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">テンプレート活用：議事録</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">出力形式を最も正確に伝える方法は、<span class="kw">テンプレート（ひな形）を直接見せる</span>こと。</div>
+    <div class="prompt b" style="transform:rotate(.2deg)"><span class="prompt-tag">議事録テンプレート</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下のテンプレートに沿って議事録を作成してください。
+---
+【議事録】
+■ 日時：
+■ 場所：
+■ 参加者：
+■ 議題：
+
+【議論の内容】
+1.（議題1の要約）
+  - 決定事項：
+  - 保留事項：
+
+【アクションアイテム】
+| 担当者 | タスク | 期限 |
+|---|---|---|
+
+【次回予定】
+- 日時：
+- 議題（予定）：</div>
+  </div>
+  <div class="pg">11/18</div>
+</div>
+
+<!-- ===== 12: TEMPLATE - PRODUCT & WEEKLY ===== -->
+<div class="slide" data-s="12">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">テンプレート活用：商品紹介 & 週報</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="prompt y" style="transform:rotate(-.3deg)"><span class="prompt-tag">商品紹介テンプレート</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下のフォーマットで商品紹介文を
+作成してください。
+---
+商品名：
+価格：
+一言紹介（30文字以内）：
+
+【こんな方におすすめ】
+-（3つ）
+
+【特徴】
+1.（3つ）
+
+【注意点】
+-</div>
+      </div>
+      <div class="col">
+        <div class="prompt g" style="transform:rotate(.4deg)"><span class="prompt-tag">週報テンプレート</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下のメモから今週の週報を
+作成してください。
+
+## 今週の実績
+-
+## 来週の予定
+-
+## 課題・相談事項
+-
+## 数値報告
+| 指標 | 今週 | 先週 | 前週比 |
+|---|---|---|---|</div>
+      </div>
+    </div>
+    <div class="conclusion green">テンプレートを使うと<span class="kw">毎回同じフォーマットで安定した出力</span>が得られる。業務の繰り返しに最適。</div>
+  </div>
+  <div class="pg">12/18</div>
+</div>
+
+<!-- ===== 13: BEFORE / AFTER ===== -->
+<div class="slide" data-s="13">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">形式指定あり vs なし</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">形式指定なし</div>
+        <div class="prompt p" style="transform:rotate(-.4deg)"><span class="prompt-tag">Prompt</span>
+クラウドサービスについて
+教えてください</div>
+        <div class="sm">AIが自由に選んだ形式で長い説明文が返ってくる。そのまま仕事には使えない。</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">形式指定あり</div>
+        <div class="prompt g" style="transform:rotate(.4deg)"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+主要クラウドサービス3つを
+以下の表で比較してください。
+| サービス名 | 特徴 | 月額 |</div>
+        <div class="sm">表形式でコンパクトに返る。コピペして即資料に使える。</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">13/18</div>
+</div>
+
+<!-- ===== 14: FORMAT SELECTION FLOW ===== -->
+<div class="slide" data-s="14">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">フォーマット選びのフロー</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="flow" style="margin:8px 0">
+      <div class="flow-step fb">用途を確認</div><div class="flow-arr">→</div>
+      <div class="flow-step fy">文章系 or データ系</div><div class="flow-arr">→</div>
+      <div class="flow-step fg">具体形式を指定</div><div class="flow-arr">→</div>
+      <div class="flow-step fp">長さ・分量を追加</div>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <div class="col">
+        <div class="sticky y t1">
+          <div class="sticky-label">文章系を選ぶ場面</div>
+          人に読ませるもの：メール、報告書、FAQ、対話、議事録
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky b t2">
+          <div class="sticky-label">データ系を選ぶ場面</div>
+          加工・処理するもの：表、JSON、CSV、Markdown、HTML、Mermaid
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">迷ったら<span class="kw">「この出力をどう使うか」</span>を考えれば形式は自然に決まる。</div>
+  </div>
+  <div class="pg">14/18</div>
+</div>
+
+<!-- ===== 15: COMMON MISTAKES ===== -->
+<div class="slide" data-s="15">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">よくある誤解</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky p t1">
+          <div class="sticky-label">誤解 1</div>
+          「出力形式の指定は面倒だから省略してよい」<br>→ <strong>最初の10秒で指定すれば、あとの10分の手直しが不要に</strong>
+        </div>
+        <div class="sticky y t3">
+          <div class="sticky-label">誤解 2</div>
+          「AIは文字数を正確に守ってくれる」<br>→ <strong>トークン単位で生成するため文字数カウントは苦手。目安として伝えよう</strong>
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky b t2">
+          <div class="sticky-label">誤解 3</div>
+          「JSON形式を指定すれば必ず正しいJSONが出る」<br>→ <strong>複雑な構造ではエラーも。バリデーションを行おう</strong>
+        </div>
+        <div class="sticky g t4">
+          <div class="sticky-label">誤解 4</div>
+          「表形式は万能」<br>→ <strong>比較には最適だが因果関係の説明には段落文の方が適している</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">15/18</div>
+</div>
+
+<!-- ===== 16: STRUCTURED OUTPUTS ===== -->
+<div class="slide" data-s="16">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">最新動向：Structured Outputs</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">2025年以降、<span class="kw">出力形式を保証するAPI</span>が主要サービスで標準化されています。</div>
+    <table class="wb-tbl">
+      <thead><tr><th>サービス</th><th>機能名</th><th>特徴</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ChatGPT API</strong></td><td>Structured Outputs</td><td>JSONスキーマに完全一致する出力を保証</td></tr>
+        <tr><td><strong>Claude API</strong></td><td>Tool Use</td><td>構造化された入出力を実現</td></tr>
+        <tr><td><strong>Gemini API</strong></td><td>JSON出力モード</td><td>JSON形式での出力を保証</td></tr>
+      </tbody>
+    </table>
+    <div class="sticky g t2" style="margin-top:auto">
+      <div class="sticky-label">トレンド</div>
+      テキスト＋画像＋コードの<strong>マルチモーダル出力</strong>が拡大中。ChatGPTのCanvas、ClaudeのArtifactsなど。
+    </div>
+  </div>
+  <div class="pg">16/18</div>
+</div>
+
+<!-- ===== 17: SUMMARY ===== -->
+<div class="slide" data-s="17">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">まとめ</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky y t1">
+          <div class="sticky-label">⑥ 文章系 7種類</div>
+          箇条書き / 番号付き / 段落文 / メール / FAQ / 対話 / 議事録
+        </div>
+        <div class="sticky b t3">
+          <div class="sticky-label">⑦ データ系 6種類</div>
+          表 / Markdown / JSON / CSV / HTML / Mermaid
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky g t2">
+          <div class="sticky-label">長さ制御</div>
+          文字数・行数・項目数・段落数・時間の目安で指定
+        </div>
+        <div class="sticky p t4">
+          <div class="sticky-label">テンプレート</div>
+          ひな形を見せるのが最も確実。繰り返し業務に最適
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">出力形式の指定で、AIの回答を<span class="kw">「使える成果物」</span>に変えよう。次は⑧スタイルと+1追加指示を学びます。</div>
+  </div>
+  <div class="pg">17/18</div>
+</div>
+
+<!-- ===== 18: GLOSSARY ===== -->
+<div class="slide" data-s="18">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th>用語</th><th>意味</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw">出力形式（文章）</span></td><td>箇条書き・メールなど文章の「文体・体裁」を指定する要素</td></tr>
+        <tr><td><span class="kw">出力形式（形）</span></td><td>表・JSON・Markdownなど出力の「見た目・構造」を指定する要素</td></tr>
+        <tr><td><span class="kw">テンプレート</span></td><td>出力のひな形。AIに見せることで安定した形式の出力を得る手法</td></tr>
+        <tr><td><span class="kw">Structured Outputs</span></td><td>APIレベルでJSONスキーマに一致する出力を保証する機能</td></tr>
+        <tr><td><span class="kw">JSON Mode</span></td><td>AIの出力をJSON形式に制限するモード</td></tr>
+        <tr><td><span class="kw">Mermaid記法</span></td><td>テキストからフローチャートや図を描くための記法</td></tr>
+        <tr><td><span class="kw">バリデーション</span></td><td>出力データが正しい形式かを検証すること</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pg">18/18</div>
+</div>
+
+</div><!-- /board-frame -->
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="pb" onclick="go(cur-1)" disabled>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1.5L3.5 6L8 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="nd"></div>
+  <span class="nav-count" id="nc">1 / 18</span>
+  <button class="nav-btn" id="nb" onclick="go(cur+1)">
+    次へ<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 1.5L8.5 6L4 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+const S=document.querySelectorAll('.slide'),T=S.length;
+let cur=0;
+const nd=document.getElementById('nd');
+for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
+
+function go(i){
+  if(i<0||i>=T||i===cur)return;
+  S[cur].classList.remove('active');S[cur].style.display='none';
+  cur=i;
+  S[cur].classList.add('active');
+  upd();
+}
+function upd(){
+  document.getElementById('nc').textContent=`${cur+1} / ${T}`;
+  document.getElementById('pf').style.width=`${((cur+1)/T)*100}%`;
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===T-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+
+function cp(b){
+  const c=b.closest('.prompt').cloneNode(true);
+  c.querySelector('.copy-btn')?.remove();
+  c.querySelector('.prompt-tag')?.remove();
+  navigator.clipboard.writeText(c.textContent.trim()).then(()=>{
+    b.textContent='Copied!';b.classList.add('ok');
+    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1500);
+  });
+}
+upd();
+</script>
+</body>
+</html>

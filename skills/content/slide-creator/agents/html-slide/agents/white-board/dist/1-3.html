@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-3. 良いプロンプトと悪いプロンプト — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WHITE-BOARD SLIDE — Design System
+   Concept: "A brilliant teacher's whiteboard session"
+   Real marker strokes, tactile sticky notes, chalk-dust warmth
+   ============================================================ */
+:root {
+  /* Board & Surface */
+  --board: #F7F6F3;
+  --board-edge: #E8E6E1;
+  --surface: #FFFFFF;
+  --tray: #D4CDC2;
+  --tray-dark: #B8B0A3;
+
+  /* Marker Palette — saturated, confident */
+  --ink-black: #1A1A1A;
+  --ink-blue: #1565C0;
+  --ink-blue-light: #42A5F5;
+  --ink-red: #C62828;
+  --ink-red-light: #EF5350;
+  --ink-green: #2E7D32;
+  --ink-green-light: #66BB6A;
+  --ink-orange: #E65100;
+
+  /* Sticky Note colors — muted, paper-like */
+  --sticky-y: #FFF8DC;
+  --sticky-y-edge: #F0E6B8;
+  --sticky-b: #E8F0FE;
+  --sticky-b-edge: #C4D8F2;
+  --sticky-g: #E6F4EA;
+  --sticky-g-edge: #B7DFC3;
+  --sticky-p: #FCE4EC;
+  --sticky-p-edge: #F0B8C8;
+
+  /* UI */
+  --nav-bg: rgba(255,255,255,0.92);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
+
+  /* Type scale */
+  --fs-hero: clamp(2.2rem, 5vw, 3.2rem);
+  --fs-title: clamp(1.4rem, 3vw, 1.9rem);
+  --fs-sub: clamp(1rem, 2vw, 1.2rem);
+  --fs-body: clamp(0.88rem, 1.5vw, 1rem);
+  --fs-sm: clamp(0.78rem, 1.2vw, 0.88rem);
+  --fs-xs: clamp(0.68rem, 1vw, 0.78rem);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--board);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
+  color: var(--ink-black);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   WHITEBOARD FRAME
+   ============================================================ */
+.board-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 8px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+    linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    var(--board);
+  background-size: 100%, 40px 40px, 40px 40px, 100%;
+}
+.board-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.marker-tray {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80%);
+  height: 6px;
+  background: linear-gradient(to bottom, var(--tray), var(--tray-dark));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+.progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.05);
+  z-index: 2;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink-blue);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   SLIDE
+   ============================================================ */
+.slide {
+  position: absolute;
+  width: min(940px, 92vw);
+  height: min(540px, 78vh);
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
+  padding: 30px 40px;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+}
+.slide.active {
+  display: flex;
+  animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---- Header chip ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-blue);
+  background: var(--sticky-b);
+  padding: 3px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--sticky-b-edge);
+  width: fit-content;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Page number ---- */
+.pg {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tray-dark);
+}
+
+/* ---- Slide title ---- */
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 900;
+  line-height: 1.35;
+  color: var(--ink-black);
+  margin-bottom: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Marker underline stroke */
+.marker-line {
+  display: block;
+  height: 5px;
+  width: 0;
+  border-radius: 3px;
+  margin-bottom: 14px;
+  transform: rotate(-0.3deg);
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+.marker-line.red { background: var(--ink-red); }
+.marker-line.blue { background: var(--ink-blue); }
+.marker-line.green { background: var(--ink-green); }
+.slide.active .marker-line {
+  animation: drawLine 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { width: 80px; } }
+
+/* ---- Content area ---- */
+.content { flex:1; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.row { display:flex; gap:20px; flex:1; }
+.col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.col.w60 { flex:1.5; }
+.col.w40 { flex:0.8; }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
+.sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
+.sm { font-size:var(--fs-sm); color:#666; line-height:1.6; }
+.xs { font-size:var(--fs-xs); color:#999; }
+.kw { color:var(--ink-red); font-weight:700; }
+.kw-blue { color:var(--ink-blue); font-weight:700; }
+.accent { font-family:'Caveat',cursive; font-weight:700; }
+
+/* ============================================================
+   BULLET LIST
+   ============================================================ */
+.bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
+.bl li::before {
+  content:''; position:absolute; left:2px; top:8px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--ink-blue);
+  opacity: 0.7;
+}
+.bl.green li::before { background:var(--ink-green); }
+.bl.red li::before { background:var(--ink-red); }
+.bl.check li::before {
+  content:'✓'; background:none; opacity:1;
+  color:var(--ink-green); font-size:1rem; font-weight:900;
+  top:3px; left:0; width:auto; height:auto;
+}
+.bl.num { counter-reset:n; }
+.bl.num li { padding-left:30px; counter-increment:n; }
+.bl.num li::before {
+  content:counter(n); background:var(--ink-blue); color:#fff;
+  font-size:0.65rem; font-weight:700; text-align:center;
+  width:18px; height:18px; line-height:18px; top:5px; left:0;
+  border-radius: 50%; opacity:1;
+}
+
+/* ============================================================
+   STICKY NOTE
+   ============================================================ */
+.sticky {
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 1px;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+.sticky::after {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+  pointer-events:none;
+  border-radius: inherit;
+}
+.sticky::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+.sticky.t1 { transform:rotate(-1.5deg); }
+.sticky.t2 { transform:rotate(1deg); }
+.sticky.t3 { transform:rotate(-0.8deg); }
+.sticky.t4 { transform:rotate(1.3deg); }
+.slide.active .sticky {
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slide.active .sticky:nth-child(1) { animation-delay: 0.15s; }
+.slide.active .sticky:nth-child(2) { animation-delay: 0.25s; }
+.slide.active .sticky:nth-child(3) { animation-delay: 0.35s; }
+.slide.active .sticky:nth-child(4) { animation-delay: 0.45s; }
+@keyframes stickyPop {
+  from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
+}
+.sticky-label {
+  font-size:0.65rem; font-weight:700; color:var(--ink-blue);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
+}
+
+/* ============================================================
+   PROMPT BLOCK
+   ============================================================ */
+.prompt {
+  position:relative;
+  padding: 28px 16px 14px;
+  border-radius: 1px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: var(--shadow-sticky);
+}
+.prompt.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.prompt.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.prompt.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.prompt.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+.prompt::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+}
+.prompt-tag {
+  position:absolute; top:6px; left:10px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.58rem; font-weight:700;
+  color:var(--ink-blue); letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.copy-btn {
+  position:absolute; top:5px; right:8px;
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(4px);
+  border:1px solid rgba(0,0,0,0.08); border-radius:4px;
+  padding:2px 10px; font-size:0.6rem;
+  font-family:'Zen Maru Gothic',sans-serif;
+  cursor:pointer; color:#888; transition:all 0.2s;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.95); color:var(--ink-black); }
+.copy-btn.ok { color:var(--ink-green); border-color:var(--ink-green-light); }
+
+/* ============================================================
+   COMPARISON LAYOUT
+   ============================================================ */
+.vs { display:flex; gap:16px; flex:1; }
+.vs-side { flex:1; display:flex; flex-direction:column; gap:8px; padding:14px; border-radius:8px; }
+.vs-side.bad {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(198,40,40,0.015) 10px, rgba(198,40,40,0.015) 20px);
+  border:1.5px dashed rgba(198,40,40,0.2);
+}
+.vs-side.good {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(46,125,50,0.015) 10px, rgba(46,125,50,0.015) 20px);
+  border:1.5px solid rgba(46,125,50,0.2);
+}
+.vs-label { font-size:var(--fs-sub); font-weight:900; }
+.vs-side.bad .vs-label { color:var(--ink-red); }
+.vs-side.good .vs-label { color:var(--ink-green); }
+.vs-mid {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat',cursive; font-size:1.6rem;
+  color:var(--tray-dark); font-weight:700;
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+.wb-tbl th {
+  text-align:left; padding:8px 12px;
+  font-weight:700; color:var(--ink-blue);
+  border-bottom:2.5px solid var(--ink-blue);
+  font-size:var(--fs-sm);
+}
+.wb-tbl td {
+  padding:7px 12px;
+  border-bottom:1px solid var(--board-edge);
+}
+.wb-tbl tr:last-child td { border-bottom:none; }
+.wb-tbl tr:hover td { background:rgba(21,101,192,0.02); }
+
+/* ============================================================
+   CARD GRID
+   ============================================================ */
+.cards { display:grid; gap:10px; flex:1; }
+.cards.c2 { grid-template-columns:repeat(2,1fr); }
+.cards.c3 { grid-template-columns:repeat(3,1fr); }
+.card {
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:8px; padding:12px 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card-title { font-weight:700; color:var(--ink-blue); font-size:var(--fs-body); margin-bottom:3px; }
+.card-body { font-size:var(--fs-sm); color:#555; line-height:1.55; }
+
+/* ============================================================
+   FLOW STEPS
+   ============================================================ */
+.flow { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.flow-step {
+  padding:10px 18px; border-radius:10px; text-align:center;
+  font-size:var(--fs-sm); font-weight:700;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.flow-step:hover { transform:scale(1.05); }
+.flow-step.fb { background:var(--sticky-b); border:1px solid var(--sticky-b-edge); }
+.flow-step.fg { background:var(--sticky-g); border:1px solid var(--sticky-g-edge); }
+.flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
+.flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
+.flow-arr {
+  font-family:'Caveat',cursive; font-size:1.4rem;
+  color:var(--ink-blue); font-weight:700; padding:0 6px;
+}
+
+/* ============================================================
+   CONCLUSION BAR
+   ============================================================ */
+.conclusion {
+  margin-top:auto;
+  padding:9px 16px;
+  font-size:var(--fs-sm); font-weight:700;
+  color:var(--ink-blue);
+  border-left:3px solid var(--ink-blue);
+  background: linear-gradient(90deg, rgba(21,101,192,0.04), transparent);
+  border-radius:0 6px 6px 0;
+}
+.conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
+
+/* ============================================================
+   ILLUSTRATION
+   ============================================================ */
+.illust { display:flex; align-items:center; justify-content:center; }
+.illust svg { max-width:100%; max-height:100%; }
+
+/* ============================================================
+   COVER SLIDE
+   ============================================================ */
+.slide.cover {
+  align-items:center; justify-content:center; text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.02) 0%, transparent 70%),
+    var(--surface);
+}
+.cover .chip { position:absolute; top:18px; left:24px; }
+.cover-title {
+  font-size: var(--fs-hero);
+  font-weight: 900;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+.cover-title .hl { color:var(--ink-blue); }
+.cover-sub {
+  font-size:var(--fs-sub); color:var(--tray-dark);
+  margin-top:8px; z-index:2; position:relative;
+}
+.cover-doodles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.cover-doodles svg { width:100%; height:100%; }
+
+/* ============================================================
+   HOME LINK
+   ============================================================ */
+.home-link {
+  position:absolute; top:14px; right:18px;
+  font-size:var(--fs-xs); color:var(--ink-blue);
+  text-decoration:none; font-weight:700;
+  background:var(--sticky-b); padding:3px 12px;
+  border-radius:100px; border:1.5px solid var(--sticky-b-edge);
+  z-index:10; transition:all 0.2s;
+}
+.home-link:hover { background:var(--ink-blue); color:#fff; }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:10px 16px;
+  background:var(--nav-bg); backdrop-filter:blur(10px);
+  border-top:1px solid var(--board-edge);
+}
+.nav-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:100px; padding:7px 20px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.82rem; font-weight:700;
+  color:var(--ink-black); cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { background:var(--ink-blue); color:#fff; border-color:var(--ink-blue); transform:scale(1.05); }
+.nav-btn:active { transform:scale(0.97); }
+.nav-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
+.nav-btn:disabled:hover { background:var(--surface); color:var(--ink-black); border-color:var(--board-edge); }
+
+.nav-dots { display:flex; gap:5px; align-items:center; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--board-edge); border:none;
+  cursor:pointer; transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot.on { background:var(--ink-blue); width:20px; border-radius:3px; }
+.dot:hover { background:var(--ink-blue-light); }
+
+.nav-count {
+  font-family:'Caveat',cursive; font-weight:700;
+  font-size:1.05rem; color:var(--tray-dark);
+  min-width:55px; text-align:center;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:768px){
+  .slide{padding:20px 24px}
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+  .vs,.row{flex-direction:column}
+  .nav{gap:8px;padding:8px 10px}
+  .nav-btn{padding:6px 14px;font-size:.78rem}
+}
+@media(max-width:480px){
+  .slide{padding:14px 16px;border-radius:0}
+  .cards.c2,.cards.c3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Board Frame -->
+<div class="board-frame">
+  <a href="index.html" class="home-link">目次に戻る</a>
+  <div class="marker-tray"></div>
+  <div class="progress-track"><div class="progress-fill" id="pf" style="width:5%"></div></div>
+
+<!-- ===== 1: COVER ===== -->
+<div class="slide cover active" data-s="1">
+  <div class="chip">3章 プロンプト</div>
+  <div class="cover-doodles">
+    <svg viewBox="0 0 940 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity=".12"><rect x="60" y="55" width="75" height="50" rx="12" stroke="#1565C0" stroke-width="2.5"/><circle cx="78" cy="80" r="4" fill="#1565C0"/><circle cx="98" cy="80" r="4" fill="#1565C0"/><circle cx="118" cy="80" r="4" fill="#1565C0"/></g>
+      <g opacity=".09" transform="translate(790,40)"><path d="M10 40 L35 5 L60 40 Z" stroke="#C62828" stroke-width="2.5" fill="none"/><line x1="35" y1="15" x2="35" y2="35" stroke="#C62828" stroke-width="2"/><circle cx="35" cy="38" r="2" fill="#C62828"/></g>
+      <g opacity=".08" transform="translate(50,400)"><circle cx="30" cy="25" r="20" stroke="#2E7D32" stroke-width="2.5"/><path d="M22 25 L28 31 L40 19" stroke="#2E7D32" stroke-width="2.5" fill="none"/></g>
+      <g opacity=".08" transform="translate(810,390)"><circle cx="30" cy="25" r="20" stroke="#C62828" stroke-width="2.5"/><line x1="20" y1="15" x2="40" y2="35" stroke="#C62828" stroke-width="2.5"/><line x1="40" y1="15" x2="20" y2="35" stroke="#C62828" stroke-width="2.5"/></g>
+      <g opacity=".07"><path d="M190 130 Q200 118 215 125" stroke="#1A1A1A" stroke-width="1.8" fill="none"/><polygon points="213,121 218,127 211,128" fill="#1A1A1A"/></g>
+      <text x="170" y="160" font-size="18" fill="#C62828" opacity=".08">★</text>
+      <text x="760" y="170" font-size="14" fill="#2E7D32" opacity=".08">★</text>
+    </svg>
+  </div>
+  <div class="cover-title">1-3. <span class="hl">良いプロンプト</span>と<br>悪いプロンプト</div>
+  <div class="cover-sub">第3章 プロンプト ― 1. プロンプトの基礎</div>
+  <div class="pg">1/20</div>
+</div>
+
+<!-- ===== 2: GOAL ===== -->
+<div class="slide" data-s="2">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">このチャプターのゴール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <ul class="bl">
+      <li><strong>良いプロンプトの7つのチェックポイント</strong>を説明できる</li>
+      <li><strong>悪いプロンプトの7つの失敗パターン</strong>を見分けられる</li>
+      <li><strong>Before/After</strong>で改善ポイントを言語化できる</li>
+      <li><strong>5つの改善ステップ</strong>を自分のプロンプトに適用できる</li>
+      <li><strong>RTFフレームワーク</strong>を使ってプロンプトを構成できる</li>
+    </ul>
+    <div class="conclusion">「曖昧な丸投げ」を「具体的な設計図」に変えるスキルを身につけよう。</div>
+  </div>
+  <div class="pg">2/20</div>
+</div>
+
+<!-- ===== 3: WHY DIFFERENT RESULTS ===== -->
+<div class="slide" data-s="3">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">なぜ同じ意図でも結果が変わるのか</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="body">生成AIは「次に来る言葉」を<span class="kw">確率的に予測</span>して文章を生成します。</div>
+        <div class="body">プロンプトが曖昧だと参照範囲が広がり、<span class="kw">「無難だけど的外れ」</span>な回答になりやすい。</div>
+        <div class="sticky y t1" style="margin-top:8px">
+          <div class="sticky-label">たとえ話</div>
+          「何か作って」→ 無難にカレー<br>
+          「イタリアンで前菜にカプレーゼ、メインにペスカトーレ」→ ぴったりの料理
+        </div>
+      </div>
+      <div class="col w40 illust">
+        <svg viewBox="0 0 180 180" fill="none">
+          <circle cx="90" cy="50" r="35" stroke="#1565C0" stroke-width="2" opacity="0.3"/>
+          <circle cx="90" cy="50" r="20" stroke="#1565C0" stroke-width="2" opacity="0.5"/>
+          <circle cx="90" cy="50" r="8" fill="#1565C0" opacity="0.8"/>
+          <text x="50" y="110" font-size="9" fill="#1565C0" font-family="sans-serif" font-weight="700">曖昧 = 広い候補</text>
+          <text x="50" y="125" font-size="9" fill="#C62828" font-family="sans-serif" font-weight="700">具体的 = 絞り込み</text>
+          <path d="M140 40 L155 50 L140 60" stroke="#C62828" stroke-width="2" fill="none"/>
+          <text x="135" y="80" font-size="8" fill="#C62828" font-family="sans-serif">的中!</text>
+        </svg>
+      </div>
+    </div>
+    <div class="conclusion">プロンプトを具体的にする = AIの選択肢を「良い方向に」絞り込むこと</div>
+  </div>
+  <div class="pg">3/20</div>
+</div>
+
+<!-- ===== 4: 7 CHECKPOINTS ===== -->
+<div class="slide" data-s="4">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">良いプロンプトの7つのチェックポイント</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th>チェックポイント</th><th>説明</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw">具体的</span></td><td>何を・どの程度・どの形式か明確</td><td>「3つの箇条書きで、各50字以内で」</td></tr>
+        <tr><td><span class="kw">背景情報あり</span></td><td>目的・対象読者・使う場面が明示</td><td>「社内プレゼン用に」</td></tr>
+        <tr><td><span class="kw">出力形式を指定</span></td><td>箇条書き、表、段落数を指示</td><td>「表形式でまとめてください」</td></tr>
+        <tr><td><span class="kw">役割が設定</span></td><td>AIに専門家の立場を付与</td><td>「あなたはプロの編集者です」</td></tr>
+        <tr><td><span class="kw">制約条件あり</span></td><td>ルールや禁止事項を明示</td><td>「専門用語は使わず、200字以内で」</td></tr>
+        <tr><td><span class="kw">段階的に指示</span></td><td>複雑なタスクが手順に分解</td><td>「まず〜し、次に〜してください」</td></tr>
+        <tr><td><span class="kw">例示がある</span></td><td>期待する出力の見本を添付</td><td>「例：入力→出力」</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pg">4/20</div>
+</div>
+
+<!-- ===== 5: 7 FAILURE PATTERNS (part 1) ===== -->
+<div class="slide" data-s="5">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">悪いプロンプトの7つの失敗パターン (1)</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky p t1">
+          <div class="sticky-label">パターン1：曖昧すぎる</div>
+          「いい感じにして」「うまくまとめて」<br>→ 「いい」「うまい」の基準がAIにはわからない
+        </div>
+        <div class="sticky p t2">
+          <div class="sticky-label">パターン2：情報不足</div>
+          「メールを書いて」<br>→ 誰に、何の目的で、どんなトーンかが不明
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky p t3">
+          <div class="sticky-label">パターン3：一度に多すぎる要求</div>
+          「市場調査も競合分析も企画書もプレゼンも」<br>→ どれも中途半端になる
+        </div>
+        <div class="sticky p t4">
+          <div class="sticky-label">パターン4：矛盾する指示</div>
+          「短く、でも詳細に説明して」<br>→ 相反する要求はAIを混乱させる
+        </div>
+      </div>
+    </div>
+    <div class="conclusion" style="color:var(--ink-red);border-color:var(--ink-red);background:linear-gradient(90deg,rgba(198,40,40,0.04),transparent)">共通点：AIに「判断材料」を渡していない</div>
+  </div>
+  <div class="pg">5/20</div>
+</div>
+
+<!-- ===== 6: 7 FAILURE PATTERNS (part 2) ===== -->
+<div class="slide" data-s="6">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">悪いプロンプトの7つの失敗パターン (2)</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky p t2">
+          <div class="sticky-label">パターン5：前提の省略</div>
+          社内用語や固有名詞を説明なしに使用<br>→ AIはその会社の事情を知らない
+        </div>
+        <div class="sticky p t3">
+          <div class="sticky-label">パターン6：否定形だけの指示</div>
+          「専門用語は使わないで」「長くしないで」<br>→ <span class="kw">「ではどうしてほしいか」が不明</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky p t1">
+          <div class="sticky-label">パターン7：出力形式の未指定</div>
+          「分析して」<br>→ 長文？表？箇条書き？使いにくい形で返る
+        </div>
+        <div class="sticky g t4">
+          <div class="sticky-label">改善のコツ</div>
+          否定形 → <strong>肯定形</strong>に書き換える<br>
+          「長くしないで」→ 「300字以内で」<br>
+          「専門用語NG」→ 「中学生にわかる言葉で」
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">6/20</div>
+</div>
+
+<!-- ===== 7: BEFORE/AFTER 1 ===== -->
+<div class="slide" data-s="7">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Before/After ① ビジネスメール</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">Before</div>
+        <div class="prompt p" style="transform:rotate(-.4deg)"><span class="prompt-tag">Prompt</span>
+メールを書いて。納期遅延のお詫び。</div>
+        <div class="sm">宛先・状況・トーンが不明</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">After</div>
+        <div class="prompt g" style="transform:rotate(.4deg)"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+主要取引先の購買部長宛に、
+部品Aの納期が4/10→4/25に
+15日間遅延のお詫びメール。
+原因：半導体の供給遅延。
+代替案：暫定品の先行納入（4/15）。
+丁寧かつ誠実なトーン、400字程度。</div>
+      </div>
+    </div>
+    <div class="conclusion">宛先・具体的な状況・原因・代替案・トーン・文字数が追加された</div>
+  </div>
+  <div class="pg">7/20</div>
+</div>
+
+<!-- ===== 8: BEFORE/AFTER 2 ===== -->
+<div class="slide" data-s="8">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Before/After ② 要約タスク</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">Before</div>
+        <div class="prompt p" style="transform:rotate(-.3deg)"><span class="prompt-tag">Prompt</span>
+この文章を要約して。</div>
+        <div class="sm">目的・形式・長さが不明</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">After</div>
+        <div class="prompt g" style="transform:rotate(.3deg)"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下の記事を、経営会議の報告用に
+要約してください。
+要点を3つの箇条書き（各50字以内）で抽出し、
+最後に「だから何が言えるか」を
+1文で添えてください。</div>
+      </div>
+    </div>
+    <div class="conclusion">目的（経営会議用）・形式（箇条書き3つ）・長さ（各50字）・追加要件（So What）が加わった</div>
+  </div>
+  <div class="pg">8/20</div>
+</div>
+
+<!-- ===== 9: BEFORE/AFTER 3 ===== -->
+<div class="slide" data-s="9">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Before/After ③ アイデア出し</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">Before</div>
+        <div class="prompt p" style="transform:rotate(-.4deg)"><span class="prompt-tag">Prompt</span>
+新規事業のアイデアを出して。</div>
+        <div class="sm">会社の情報・数・形式がゼロ</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">After</div>
+        <div class="prompt g" style="transform:rotate(.4deg);font-size:0.73rem"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+従業員50名のWeb制作会社が、
+既存の強み（UI/UXデザイン）を活かして
+参入できる新規事業アイデアを5つ提案。
+各アイデアに概要・想定ターゲット・
+初期投資の大小・収益化までの期間を
+表形式で整理してください。</div>
+      </div>
+    </div>
+    <div class="conclusion">会社の規模・強み・アイデアの数・出力項目・出力形式（表）が指定された</div>
+  </div>
+  <div class="pg">9/20</div>
+</div>
+
+<!-- ===== 10: BEFORE/AFTER 4 ===== -->
+<div class="slide" data-s="10">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Before/After ④ コード生成</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">Before</div>
+        <div class="prompt p" style="transform:rotate(-.3deg)"><span class="prompt-tag">Prompt</span>
+Pythonでスクレイピングするコード書いて。</div>
+        <div class="sm">バージョン・ライブラリ・要件が不明</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">After</div>
+        <div class="prompt g" style="transform:rotate(.3deg);font-size:0.72rem"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+Python 3.11で、requestsとBeautifulSoupを
+使ったWebスクレイピングスクリプト。
+対象URLから商品名・価格・在庫状況を取得し、
+CSVで保存。リクエスト間に1秒のsleep、
+HTTPエラー時のリトライ処理（最大3回）を含めて。</div>
+      </div>
+    </div>
+    <div class="conclusion">Pythonバージョン・使用ライブラリ・取得項目・保存形式・エラー処理の要件が明示された</div>
+  </div>
+  <div class="pg">10/20</div>
+</div>
+
+<!-- ===== 11: BEFORE/AFTER 5 ===== -->
+<div class="slide" data-s="11">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Before/After ⑤ データ分析</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">Before</div>
+        <div class="prompt p" style="transform:rotate(-.4deg)"><span class="prompt-tag">Prompt</span>
+売上データを分析して。</div>
+        <div class="sm">何を見る？どう出す？が不明</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">After</div>
+        <div class="prompt g" style="transform:rotate(.4deg);font-size:0.72rem"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+2025年1〜12月の月別・カテゴリ別売上データ。
+(1) 前月比10%以上減少した月とカテゴリの特定
+(2) 季節性パターンの指摘
+(3) 2026年Q1の売上予測（単純移動平均）
+結果を表形式で出力してください。</div>
+      </div>
+    </div>
+    <div class="conclusion">分析の観点が3つ明示され、手法（移動平均）と出力形式（表）が指定された</div>
+  </div>
+  <div class="pg">11/20</div>
+</div>
+
+<!-- ===== 12: BEFORE/AFTER 6 ===== -->
+<div class="slide" data-s="12">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Before/After ⑥ レビュー依頼</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">Before</div>
+        <div class="prompt p" style="transform:rotate(-.3deg)"><span class="prompt-tag">Prompt</span>
+この文章をレビューして。</div>
+        <div class="sm">観点・役割・出力形式が不明</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">After</div>
+        <div class="prompt g" style="transform:rotate(.3deg);font-size:0.72rem"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+プレスリリース草稿を広報の専門家の視点で
+レビュー。チェック観点：
+(1)見出しの訴求力 (2)リード文の5W1H
+(3)専門用語の平易さ (4)数値の記載精度
+各観点ごとに「評価(◯/△/×)」
+「改善コメント」「修正案」を表形式で。</div>
+      </div>
+    </div>
+    <div class="conclusion">役割・チェック観点4つ・出力形式（表）が具体的に指定された</div>
+  </div>
+  <div class="pg">12/20</div>
+</div>
+
+<!-- ===== 13: IMPROVEMENT PATTERN TABLE ===== -->
+<div class="slide" data-s="13">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Before/Afterに共通する改善パターン</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th style="width:10%">実例</th><th style="width:28%">何が足りなかった？</th><th>何を追加した？</th></tr></thead>
+      <tbody>
+        <tr><td>① メール</td><td>宛先・状況が不明</td><td>宛先・原因・代替案・トーン・文字数</td></tr>
+        <tr><td>② 要約</td><td>目的・形式が不明</td><td>目的（経営会議）・箇条書き・So What</td></tr>
+        <tr><td>③ アイデア</td><td>会社情報・形式がゼロ</td><td>規模・強み・数・表形式</td></tr>
+        <tr><td>④ コード</td><td>要件が不明</td><td>バージョン・ライブラリ・エラー処理</td></tr>
+        <tr><td>⑤ 分析</td><td>分析の観点がない</td><td>3つの分析観点・手法・表形式</td></tr>
+        <tr><td>⑥ レビュー</td><td>チェック観点がない</td><td>役割・4観点・評価表</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">全てに共通：<span class="kw">「背景」「具体性」「出力形式」</span>を追加しただけで劇的に改善</div>
+  </div>
+  <div class="pg">13/20</div>
+</div>
+
+<!-- ===== 14: 5 IMPROVEMENT STEPS ===== -->
+<div class="slide" data-s="14">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプト改善の5ステップ</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="flow" style="margin:6px 0">
+      <div class="flow-step fb">1. 背景を足す</div><div class="flow-arr">→</div>
+      <div class="flow-step fg">2. 役割を設定</div><div class="flow-arr">→</div>
+      <div class="flow-step fy">3. 意図を明確に</div><div class="flow-arr">→</div>
+      <div class="flow-step fp">4. 具体性を上げる</div><div class="flow-arr">→</div>
+      <div class="flow-step fb">5. 出力を見て磨く</div>
+    </div>
+    <table class="wb-tbl" style="margin-top:8px">
+      <thead><tr><th>ステップ</th><th>やること</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td>1. 背景</td><td>状況を書く</td><td>「社内プレゼン用に」「取引先向けに」</td></tr>
+        <tr><td>2. 役割</td><td>専門家の視点を与える</td><td>「マーケティングの専門家として」</td></tr>
+        <tr><td>3. 意図</td><td>最終用途を伝える</td><td>「経営会議で報告するために」</td></tr>
+        <tr><td>4. 具体性</td><td>数値・条件・制約を明記</td><td>「3つ」「300字以内」「表形式で」</td></tr>
+        <tr><td>5. 磨く</td><td>出力を見て追加指示</td><td>「もう少し具体例を増やして」</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion"><span class="kw">最重要はステップ5</span>：一発で完璧は不要。出力→改善のサイクルを回すのが実践的。</div>
+  </div>
+  <div class="pg">14/20</div>
+</div>
+
+<!-- ===== 15: RTF FRAMEWORK ===== -->
+<div class="slide" data-s="15">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">RTFフレームワーク</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">プロンプトをすばやく構成するための<span class="kw">3ステップフレームワーク</span></div>
+    <div class="row" style="margin-top:6px">
+      <div class="col">
+        <div class="sticky b t1">
+          <div class="sticky-label">R = Role（役割）</div>
+          AIに役割を与える<br>「あなたは〇〇の専門家です」
+        </div>
+        <div class="sticky g t2">
+          <div class="sticky-label">T = Task（タスク）</div>
+          何をしてほしいか具体的に書く<br>「〜を分析してください」
+        </div>
+        <div class="sticky y t3">
+          <div class="sticky-label">F = Format（形式）</div>
+          出力の形式を指定する<br>「表形式で」「箇条書きで」
+        </div>
+      </div>
+      <div class="col">
+        <div class="prompt b" style="transform:rotate(.3deg)"><span class="prompt-tag">RTF 実例</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+あなたはシニアデータアナリストです（R）。
+以下の売上データから、上位3カテゴリの
+特徴を分析してください（T）。
+結果は表形式で、各カテゴリに
+推奨アクションも添えてください（F）。</div>
+        <div class="sticky y t4" style="margin-top:auto">
+          <div class="sticky-label">Point</div>
+          この3つを意識するだけで、プロンプトの質は<strong>大幅に向上</strong>する
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">15/20</div>
+</div>
+
+<!-- ===== 16: PROMPT IMPROVEMENT TOOLS ===== -->
+<div class="slide" data-s="16">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">最新動向：プロンプト改善を支援するツール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">2025〜2026年現在、プロンプトの品質を評価・改善するツールが登場。</div>
+    <div class="cards c2" style="margin-top:6px">
+      <div class="card"><div class="card-title">Anthropic Console</div><div class="card-body">Claude APIのプロンプト生成・評価を支援する公式ツール</div></div>
+      <div class="card"><div class="card-title">OpenAI Playground</div><div class="card-body">GPT系のプロンプトを対話的にテスト・改善できる</div></div>
+      <div class="card"><div class="card-title">Google AI Studio</div><div class="card-body">Geminiモデルでプロンプト実験ができる環境</div></div>
+      <div class="card"><div class="card-title">Promptfoo</div><div class="card-body">OSSのプロンプト評価FW。複数モデル横断で品質テスト可能</div></div>
+    </div>
+    <div class="sticky b t1" style="margin-top:auto"><div class="sticky-label">Tip</div>「良いプロンプトを作って」とAI自身に依頼する<strong>メタプロンプティング</strong>も有効な手法</div>
+  </div>
+  <div class="pg">16/20</div>
+</div>
+
+<!-- ===== 17: MISCONCEPTIONS ===== -->
+<div class="slide" data-s="17">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">よくある誤解</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky p t1"><div class="sticky-label">誤解 1</div>「<strong>正解のプロンプトが1つある</strong>」→ 有効な書き方は複数。大切なのは「具体的で明確」であること</div>
+        <div class="sticky p t2"><div class="sticky-label">誤解 2</div>「<strong>良いプロンプト＝長いプロンプト</strong>」→ 長さではなく「必要な情報が過不足なく含まれているか」がポイント</div>
+        <div class="sticky p t3"><div class="sticky-label">誤解 3</div>「<strong>コピペして終わり</strong>」→ AIの出力は「優秀な下書き」。最終チェックは必ず人間が行う</div>
+      </div>
+      <div class="col">
+        <div class="sticky p t4"><div class="sticky-label">誤解 4</div>「<strong>否定形の指示だけで十分</strong>」→ 「〜しないで」+「〜してください」の肯定形をセットで書こう</div>
+        <div class="sticky p t1"><div class="sticky-label">誤解 5</div>「<strong>テンプレートを覚えれば万能</strong>」→ テンプレートは出発点。タスクごとのカスタマイズが必要</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">17/20</div>
+</div>
+
+<!-- ===== 18: SUMMARY ===== -->
+<div class="slide" data-s="18">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">まとめ</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <ul class="bl check">
+      <li>良いプロンプトは「<strong>具体的・明確・過不足ない</strong>」</li>
+      <li>悪いプロンプトは「<strong>曖昧・情報不足・丸投げ</strong>」</li>
+      <li>良いプロンプトの<strong>7つのチェックポイント</strong>で自己採点できる</li>
+      <li>悪いプロンプトの<strong>7つの失敗パターン</strong>を知ると回避できる</li>
+      <li>Before/Afterで<strong>背景・役割・具体性・出力形式</strong>を加えるだけで劇的改善</li>
+      <li><strong>5つの改善ステップ</strong>で段階的にプロンプトを磨く</li>
+      <li><strong>RTFフレームワーク</strong>（Role / Task / Format）で素早く構成</li>
+      <li>完璧なプロンプトは不要。<strong>「出力を見て→改善する」サイクル</strong>が最も大切</li>
+    </ul>
+    <div class="conclusion green" style="margin-top:auto">次へ → 1-4. プロンプト作成のコツ</div>
+  </div>
+  <div class="pg">18/20</div>
+</div>
+
+<!-- ===== 19: GLOSSARY (1) ===== -->
+<div class="slide" data-s="19">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集 (1)</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">確率的予測</div><div class="card-body">AIが学習データをもとに「次に来る言葉」を確率で選ぶ仕組み</div></div>
+      <div class="card"><div class="card-title">ハルシネーション</div><div class="card-body">AIが事実と異なる情報を自信たっぷりに生成してしまう現象</div></div>
+      <div class="card"><div class="card-title">RTFフレームワーク</div><div class="card-body">Role（役割）・Task（タスク）・Format（形式）でプロンプトを構成する手法</div></div>
+      <div class="card"><div class="card-title">メタプロンプティング</div><div class="card-body">AI自身に「良いプロンプトを作って」と依頼してプロンプトの雛形を得る手法</div></div>
+    </div>
+  </div>
+  <div class="pg">19/20</div>
+</div>
+
+<!-- ===== 20: GLOSSARY (2) ===== -->
+<div class="slide" data-s="20">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集 (2)</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">チェックポイント</div><div class="card-body">良いプロンプトかどうかを判定するための確認項目（具体性・背景・形式など）</div></div>
+      <div class="card"><div class="card-title">失敗パターン</div><div class="card-body">悪いプロンプトに共通する構造的な問題（曖昧・情報不足・矛盾など）</div></div>
+      <div class="card"><div class="card-title">Before/After</div><div class="card-body">改善前と改善後のプロンプトを比較して、改善ポイントを学ぶ手法</div></div>
+      <div class="card"><div class="card-title">Promptfoo</div><div class="card-body">OSSのプロンプト評価フレームワーク。複数モデル横断で品質テストが可能</div></div>
+    </div>
+  </div>
+  <div class="pg">20/20</div>
+</div>
+
+</div><!-- /board-frame -->
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="pb" onclick="go(cur-1)" disabled>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1.5L3.5 6L8 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="nd"></div>
+  <span class="nav-count" id="nc">1 / 20</span>
+  <button class="nav-btn" id="nb" onclick="go(cur+1)">
+    次へ<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 1.5L8.5 6L4 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+const S=document.querySelectorAll('.slide'),T=S.length;
+let cur=0;
+const nd=document.getElementById('nd');
+for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
+
+function go(i){
+  if(i<0||i>=T||i===cur)return;
+  S[cur].classList.remove('active');S[cur].style.display='none';
+  cur=i;
+  S[cur].classList.add('active');
+  upd();
+}
+function upd(){
+  document.getElementById('nc').textContent=`${cur+1} / ${T}`;
+  document.getElementById('pf').style.width=`${((cur+1)/T)*100}%`;
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===T-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+
+function cp(b){
+  const c=b.closest('.prompt').cloneNode(true);
+  c.querySelector('.copy-btn')?.remove();
+  c.querySelector('.prompt-tag')?.remove();
+  navigator.clipboard.writeText(c.textContent.trim()).then(()=>{
+    b.textContent='Copied!';b.classList.add('ok');
+    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1500);
+  });
+}
+upd();
+</script>
+</body>
+</html>

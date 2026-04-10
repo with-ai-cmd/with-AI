@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3-1. 前提条件を決める、ペルソナの設定 — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WHITE-BOARD SLIDE — Design System
+   ============================================================ */
+:root {
+  --board: #F7F6F3;
+  --board-edge: #E8E6E1;
+  --surface: #FFFFFF;
+  --tray: #D4CDC2;
+  --tray-dark: #B8B0A3;
+  --ink-black: #1A1A1A;
+  --ink-blue: #1565C0;
+  --ink-blue-light: #42A5F5;
+  --ink-red: #C62828;
+  --ink-red-light: #EF5350;
+  --ink-green: #2E7D32;
+  --ink-green-light: #66BB6A;
+  --ink-orange: #E65100;
+  --sticky-y: #FFF8DC;
+  --sticky-y-edge: #F0E6B8;
+  --sticky-b: #E8F0FE;
+  --sticky-b-edge: #C4D8F2;
+  --sticky-g: #E6F4EA;
+  --sticky-g-edge: #B7DFC3;
+  --sticky-p: #FCE4EC;
+  --sticky-p-edge: #F0B8C8;
+  --nav-bg: rgba(255,255,255,0.92);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
+  --fs-hero: clamp(2.2rem, 5vw, 3.2rem);
+  --fs-title: clamp(1.4rem, 3vw, 1.9rem);
+  --fs-sub: clamp(1rem, 2vw, 1.2rem);
+  --fs-body: clamp(0.88rem, 1.5vw, 1rem);
+  --fs-sm: clamp(0.78rem, 1.2vw, 0.88rem);
+  --fs-xs: clamp(0.68rem, 1vw, 0.78rem);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--board);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
+  color: var(--ink-black);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.board-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 8px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+    linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    var(--board);
+  background-size: 100%, 40px 40px, 40px 40px, 100%;
+}
+.board-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.marker-tray {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80%);
+  height: 6px;
+  background: linear-gradient(to bottom, var(--tray), var(--tray-dark));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+.progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.05);
+  z-index: 2;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink-blue);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide {
+  position: absolute;
+  width: min(940px, 92vw);
+  height: min(540px, 78vh);
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
+  padding: 30px 40px;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+}
+.slide.active {
+  display: flex;
+  animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-blue);
+  background: var(--sticky-b);
+  padding: 3px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--sticky-b-edge);
+  width: fit-content;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.pg {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tray-dark);
+}
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 900;
+  line-height: 1.35;
+  color: var(--ink-black);
+  margin-bottom: 2px;
+  position: relative;
+  display: inline-block;
+}
+.marker-line {
+  display: block;
+  height: 5px;
+  width: 0;
+  border-radius: 3px;
+  margin-bottom: 14px;
+  transform: rotate(-0.3deg);
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+.marker-line.red { background: var(--ink-red); }
+.marker-line.blue { background: var(--ink-blue); }
+.marker-line.green { background: var(--ink-green); }
+.slide.active .marker-line {
+  animation: drawLine 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { width: 80px; } }
+.content { flex:1; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.row { display:flex; gap:20px; flex:1; }
+.col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.col.w60 { flex:1.5; }
+.col.w40 { flex:0.8; }
+.body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
+.sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
+.sm { font-size:var(--fs-sm); color:#666; line-height:1.6; }
+.xs { font-size:var(--fs-xs); color:#999; }
+.kw { color:var(--ink-red); font-weight:700; }
+.kw-blue { color:var(--ink-blue); font-weight:700; }
+.accent { font-family:'Caveat',cursive; font-weight:700; }
+.bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
+.bl li::before {
+  content:''; position:absolute; left:2px; top:8px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--ink-blue);
+  opacity: 0.7;
+}
+.bl.green li::before { background:var(--ink-green); }
+.bl.red li::before { background:var(--ink-red); }
+.bl.check li::before {
+  content:'✓'; background:none; opacity:1;
+  color:var(--ink-green); font-size:1rem; font-weight:900;
+  top:3px; left:0; width:auto; height:auto;
+}
+.bl.num { counter-reset:n; }
+.bl.num li { padding-left:30px; counter-increment:n; }
+.bl.num li::before {
+  content:counter(n); background:var(--ink-blue); color:#fff;
+  font-size:0.65rem; font-weight:700; text-align:center;
+  width:18px; height:18px; line-height:18px; top:5px; left:0;
+  border-radius: 50%; opacity:1;
+}
+.sticky {
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 1px;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+.sticky::after {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+  pointer-events:none;
+  border-radius: inherit;
+}
+.sticky::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+.sticky.t1 { transform:rotate(-1.5deg); }
+.sticky.t2 { transform:rotate(1deg); }
+.sticky.t3 { transform:rotate(-0.8deg); }
+.sticky.t4 { transform:rotate(1.3deg); }
+.slide.active .sticky {
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slide.active .sticky:nth-child(1) { animation-delay: 0.15s; }
+.slide.active .sticky:nth-child(2) { animation-delay: 0.25s; }
+.slide.active .sticky:nth-child(3) { animation-delay: 0.35s; }
+.slide.active .sticky:nth-child(4) { animation-delay: 0.45s; }
+@keyframes stickyPop {
+  from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
+}
+.sticky-label {
+  font-size:0.65rem; font-weight:700; color:var(--ink-blue);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
+}
+.prompt {
+  position:relative;
+  padding: 28px 16px 14px;
+  border-radius: 1px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: var(--shadow-sticky);
+}
+.prompt.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.prompt.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.prompt.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.prompt.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+.prompt::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+}
+.prompt-tag {
+  position:absolute; top:6px; left:10px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.58rem; font-weight:700;
+  color:var(--ink-blue); letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.copy-btn {
+  position:absolute; top:5px; right:8px;
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(4px);
+  border:1px solid rgba(0,0,0,0.08); border-radius:4px;
+  padding:2px 10px; font-size:0.6rem;
+  font-family:'Zen Maru Gothic',sans-serif;
+  cursor:pointer; color:#888; transition:all 0.2s;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.95); color:var(--ink-black); }
+.copy-btn.ok { color:var(--ink-green); border-color:var(--ink-green-light); }
+.vs { display:flex; gap:16px; flex:1; }
+.vs-side { flex:1; display:flex; flex-direction:column; gap:8px; padding:14px; border-radius:8px; }
+.vs-side.bad {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(198,40,40,0.015) 10px, rgba(198,40,40,0.015) 20px);
+  border:1.5px dashed rgba(198,40,40,0.2);
+}
+.vs-side.good {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(46,125,50,0.015) 10px, rgba(46,125,50,0.015) 20px);
+  border:1.5px solid rgba(46,125,50,0.2);
+}
+.vs-label { font-size:var(--fs-sub); font-weight:900; }
+.vs-side.bad .vs-label { color:var(--ink-red); }
+.vs-side.good .vs-label { color:var(--ink-green); }
+.vs-mid {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat',cursive; font-size:1.6rem;
+  color:var(--tray-dark); font-weight:700;
+}
+.wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+.wb-tbl th {
+  text-align:left; padding:8px 12px;
+  font-weight:700; color:var(--ink-blue);
+  border-bottom:2.5px solid var(--ink-blue);
+  font-size:var(--fs-sm);
+}
+.wb-tbl td {
+  padding:7px 12px;
+  border-bottom:1px solid var(--board-edge);
+}
+.wb-tbl tr:last-child td { border-bottom:none; }
+.wb-tbl tr:hover td { background:rgba(21,101,192,0.02); }
+.cards { display:grid; gap:10px; flex:1; }
+.cards.c2 { grid-template-columns:repeat(2,1fr); }
+.cards.c3 { grid-template-columns:repeat(3,1fr); }
+.card {
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:8px; padding:12px 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card-title { font-weight:700; color:var(--ink-blue); font-size:var(--fs-body); margin-bottom:3px; }
+.card-body { font-size:var(--fs-sm); color:#555; line-height:1.55; }
+.flow { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.flow-step {
+  padding:10px 18px; border-radius:10px; text-align:center;
+  font-size:var(--fs-sm); font-weight:700;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.flow-step:hover { transform:scale(1.05); }
+.flow-step.fb { background:var(--sticky-b); border:1px solid var(--sticky-b-edge); }
+.flow-step.fg { background:var(--sticky-g); border:1px solid var(--sticky-g-edge); }
+.flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
+.flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
+.flow-arr {
+  font-family:'Caveat',cursive; font-size:1.4rem;
+  color:var(--ink-blue); font-weight:700; padding:0 6px;
+}
+.conclusion {
+  margin-top:auto;
+  padding:9px 16px;
+  font-size:var(--fs-sm); font-weight:700;
+  color:var(--ink-blue);
+  border-left:3px solid var(--ink-blue);
+  background: linear-gradient(90deg, rgba(21,101,192,0.04), transparent);
+  border-radius:0 6px 6px 0;
+}
+.conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
+.illust { display:flex; align-items:center; justify-content:center; }
+.illust svg { max-width:100%; max-height:100%; }
+.slide.cover {
+  align-items:center; justify-content:center; text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.02) 0%, transparent 70%),
+    var(--surface);
+}
+.cover .chip { position:absolute; top:18px; left:24px; }
+.cover-title {
+  font-size: var(--fs-hero);
+  font-weight: 900;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+.cover-title .hl { color:var(--ink-blue); }
+.cover-sub {
+  font-size:var(--fs-sub); color:var(--tray-dark);
+  margin-top:8px; z-index:2; position:relative;
+}
+.cover-doodles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.cover-doodles svg { width:100%; height:100%; }
+.nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:10px 16px;
+  background:var(--nav-bg); backdrop-filter:blur(10px);
+  border-top:1px solid var(--board-edge);
+}
+.nav-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:100px; padding:7px 20px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.82rem; font-weight:700;
+  color:var(--ink-black); cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { background:var(--ink-blue); color:#fff; border-color:var(--ink-blue); transform:scale(1.05); }
+.nav-btn:active { transform:scale(0.97); }
+.nav-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
+.nav-btn:disabled:hover { background:var(--surface); color:var(--ink-black); border-color:var(--board-edge); }
+.nav-dots { display:flex; gap:5px; align-items:center; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--board-edge); border:none;
+  cursor:pointer; transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot.on { background:var(--ink-blue); width:20px; border-radius:3px; }
+.dot:hover { background:var(--ink-blue-light); }
+.nav-count {
+  font-family:'Caveat',cursive; font-weight:700;
+  font-size:1.05rem; color:var(--tray-dark);
+  min-width:55px; text-align:center;
+}
+.home-link {
+  position:absolute; top:18px; right:24px;
+  font-size:var(--fs-xs); color:var(--ink-blue);
+  text-decoration:none; font-weight:700;
+  z-index:10; opacity:0.7;
+  transition: opacity 0.2s;
+}
+.home-link:hover { opacity:1; text-decoration:underline; }
+@media(max-width:768px){
+  .slide{padding:20px 24px}
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+  .vs,.row{flex-direction:column}
+  .nav{gap:8px;padding:8px 10px}
+  .nav-btn{padding:6px 14px;font-size:.78rem}
+}
+@media(max-width:480px){
+  .slide{padding:14px 16px;border-radius:0}
+  .cards.c2,.cards.c3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Board Frame -->
+<div class="board-frame">
+  <a href="index.html" class="home-link">目次に戻る</a>
+  <div class="marker-tray"></div>
+  <div class="progress-track"><div class="progress-fill" id="pf" style="width:5.6%"></div></div>
+
+<!-- ===== 1: COVER ===== -->
+<div class="slide cover active" data-s="1">
+  <div class="chip">3章 プロンプト</div>
+  <div class="cover-doodles">
+    <svg viewBox="0 0 940 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity=".12"><rect x="60" y="55" width="75" height="50" rx="12" stroke="#1565C0" stroke-width="2.5"/><circle cx="78" cy="80" r="4" fill="#1565C0"/><circle cx="98" cy="80" r="4" fill="#1565C0"/><circle cx="118" cy="80" r="4" fill="#1565C0"/><path d="M72 105l-12 16" stroke="#1565C0" stroke-width="2.5" stroke-linecap="round"/></g>
+      <g opacity=".09" transform="translate(790,40)"><ellipse cx="35" cy="32" rx="25" ry="30" stroke="#C62828" stroke-width="2.5"/><line x1="25" y1="62" x2="45" y2="62" stroke="#C62828" stroke-width="2.5"/><line x1="28" y1="68" x2="42" y2="68" stroke="#C62828" stroke-width="2.5"/></g>
+      <g opacity=".08" transform="translate(50,400)"><rect width="100" height="60" rx="6" stroke="#2E7D32" stroke-width="2.5"/><rect x="8" y="8" width="14" height="10" rx="2" stroke="#2E7D32" stroke-width="1.5"/><rect x="26" y="8" width="14" height="10" rx="2" stroke="#2E7D32" stroke-width="1.5"/></g>
+      <g opacity=".08" transform="translate(810,390)"><rect x="8" y="0" width="44" height="36" rx="7" stroke="#1565C0" stroke-width="2.5"/><circle cx="22" cy="14" r="4" stroke="#1565C0" stroke-width="2"/><circle cx="40" cy="14" r="4" stroke="#1565C0" stroke-width="2"/><path d="M22 26 Q31 32 40 26" stroke="#1565C0" stroke-width="2" fill="none"/></g>
+    </svg>
+  </div>
+  <div class="cover-title">3-1. <span class="hl">前提条件</span>を決める、<br><span class="hl">ペルソナ</span>の設定</div>
+  <div class="cover-sub">第3章 プロンプト ― 3. プロンプト設計フレームワーク</div>
+  <div class="pg">1/18</div>
+</div>
+
+<!-- ===== 2: GOAL ===== -->
+<div class="slide" data-s="2">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">このチャプターのゴール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <ul class="bl">
+      <li><strong>8+1の公式</strong>の全体像を理解し、各要素の役割がわかる</li>
+      <li><strong>前提条件</strong>の4要素（目的・背景・対象・制約）を使いこなせる</li>
+      <li><strong>ペルソナ設定</strong>の3レベルを状況に応じて選べる</li>
+      <li><strong>マルチペルソナ</strong>で多角的な評価を引き出せる</li>
+      <li>前提条件＋ペルソナの<strong>実務テンプレート</strong>を自分で作れる</li>
+    </ul>
+    <div class="conclusion">プロンプトの「土台」を固めれば、AIの回答精度は劇的に上がる。</div>
+  </div>
+  <div class="pg">2/18</div>
+</div>
+
+<!-- ===== 3: 8+1 OVERVIEW ===== -->
+<div class="slide" data-s="3">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">8+1の公式とは？</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="body">料理にレシピがあるように、プロンプトにも<span class="kw">「うまくいく型」</span>があります。</div>
+        <div class="body">七里信一氏考案の<span class="kw">8+1の公式</span>は、プロンプトを8つの要素に分解し、組み合わせるフレームワークです。</div>
+        <div class="sticky y t1" style="margin-top:8px">
+          <div class="sticky-label">Point</div>
+          8つすべてを毎回使う必要はない。状況に応じて<strong>必要な要素を組み合わせる</strong>のがコツ。
+        </div>
+      </div>
+      <div class="col w40 illust">
+        <svg viewBox="0 0 160 180" fill="none">
+          <rect x="10" y="10" width="140" height="160" rx="12" stroke="#1565C0" stroke-width="2" stroke-dasharray="6 3"/>
+          <text x="80" y="45" text-anchor="middle" font-size="13" fill="#1565C0" font-weight="700" font-family="sans-serif">8+1の公式</text>
+          <rect x="25" y="60" width="50" height="22" rx="4" fill="#E8F0FE" stroke="#C4D8F2" stroke-width="1.5"/><text x="50" y="75" text-anchor="middle" font-size="8" fill="#1565C0" font-family="sans-serif" font-weight="700">前提条件</text>
+          <rect x="85" y="60" width="50" height="22" rx="4" fill="#FCE4EC" stroke="#F0B8C8" stroke-width="1.5"/><text x="110" y="75" text-anchor="middle" font-size="8" fill="#C62828" font-family="sans-serif" font-weight="700">ペルソナ</text>
+          <rect x="25" y="92" width="50" height="22" rx="4" fill="#E6F4EA" stroke="#B7DFC3" stroke-width="1.5"/><text x="50" y="107" text-anchor="middle" font-size="8" fill="#2E7D32" font-family="sans-serif" font-weight="700">参考情報</text>
+          <rect x="85" y="92" width="50" height="22" rx="4" fill="#FFF8DC" stroke="#F0E6B8" stroke-width="1.5"/><text x="110" y="107" text-anchor="middle" font-size="8" fill="#E65100" font-family="sans-serif" font-weight="700">実行指示</text>
+          <text x="80" y="140" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">+ 形容詞・出力形式・スタイル…</text>
+          <text x="80" y="160" text-anchor="middle" font-size="10" fill="#1565C0" font-family="sans-serif" font-weight="700">今回は ①② を学ぶ</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="pg">3/18</div>
+</div>
+
+<!-- ===== 4: 8+1 TABLE ===== -->
+<div class="slide" data-s="4">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">8+1の公式：全要素一覧</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th style="width:8%">No.</th><th style="width:25%">要素</th><th>ひとこと説明</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw">①</span></td><td><strong>前提条件</strong></td><td>目的・背景・制約を示す</td></tr>
+        <tr><td><span class="kw">②</span></td><td><strong>対象プロファイル</strong></td><td>誰に向けた出力かを定義する</td></tr>
+        <tr><td>③</td><td>参考情報</td><td>AIに「材料」を渡す</td></tr>
+        <tr><td>④</td><td>実行指示</td><td>名詞と動詞で具体的に命令する</td></tr>
+        <tr><td>⑤</td><td>形容詞</td><td>品質の方向性を指定する</td></tr>
+        <tr><td>⑥</td><td>出力形式（文章）</td><td>箇条書き・メール形式など文体を指定</td></tr>
+        <tr><td>⑦</td><td>出力形式（形）</td><td>表・Markdown・JSONなど見た目を設計</td></tr>
+        <tr><td>⑧</td><td>スタイル</td><td>文体・口調を設定する</td></tr>
+        <tr><td>+1</td><td>追加指示</td><td>文字数制限や禁止事項で微調整</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">今回のレッスンでは <span class="kw">①前提条件</span> と <span class="kw">②ペルソナ設定</span> を深掘り</div>
+  </div>
+  <div class="pg">4/18</div>
+</div>
+
+<!-- ===== 5: WHAT ARE PREREQUISITES ===== -->
+<div class="slide" data-s="5">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">前提条件とは何か</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">前提条件とは、AIに指示を出す前に伝える<span class="kw">「背景情報」</span>のこと。建物の<span class="kw">土台（基礎）</span>にあたります。</div>
+    <div class="body" style="margin-top:4px">前提条件がないと、AIは「最も一般的な回答」を返します。レストランで「何かおいしいものください」と注文するようなもの。</div>
+    <div class="row" style="margin-top:8px">
+      <div class="col">
+        <div class="sticky b t2"><div class="sticky-label">目的</div>何を達成したいか<br><span class="sm">例：「新規顧客獲得の提案書を作りたい」</span></div>
+        <div class="sticky g t3"><div class="sticky-label">背景</div>どんな状況か<br><span class="sm">例：「従業員50名のIT企業、DX推進検討中」</span></div>
+      </div>
+      <div class="col">
+        <div class="sticky p t1"><div class="sticky-label">対象</div>誰に向けたものか<br><span class="sm">例：「ITに詳しくない経営層向け」</span></div>
+        <div class="sticky y t4"><div class="sticky-label">制約</div>守るべきルール<br><span class="sm">例：「500文字以内、専門用語は使わない」</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">5/18</div>
+</div>
+
+<!-- ===== 6: BEFORE / AFTER ===== -->
+<div class="slide" data-s="6">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">前提条件ありなしで比較</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">Before（前提なし）</div>
+        <div class="prompt p" style="transform:rotate(-.4deg)"><span class="prompt-tag">Prompt</span>
+納期遅延のお詫びメールを書いてください</div>
+        <div class="sm">汎用的で形式的。どの状況にも最適ではない。</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">After（前提あり）</div>
+        <div class="prompt g" style="transform:rotate(.4deg);font-size:0.72rem"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下の状況でお詫びメールを作成してください。
+【前提条件】
+- 製造業の営業担当者です
+- 半導体部品の納品が2週間遅延
+- 原因は海外サプライヤーの工場トラブル
+- 10年来の重要顧客です
+- 代替案：全数量の60%を先に納品可能</div>
+      </div>
+    </div>
+    <div class="conclusion">情報が多いほど文脈が絞り込まれ、<span class="kw">的を射た回答</span>になる</div>
+  </div>
+  <div class="pg">6/18</div>
+</div>
+
+<!-- ===== 7: WHY IT WORKS ===== -->
+<div class="slide" data-s="7">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">なぜ前提条件で精度が上がるのか</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="flow" style="margin:10px 0">
+      <div class="flow-step fb">前提条件を入力</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step fg">文脈が絞り込まれる</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step fy">最適な回答を生成</div>
+    </div>
+    <div class="body" style="margin-top:10px">LLM（大規模言語モデル）は、与えられた情報を<span class="kw">文脈（コンテキスト）</span>として受け取り、それに最も合う出力を生成します。</div>
+    <div class="sticky y t2" style="margin-top:auto">
+      <div class="sticky-label">Key Insight</div>
+      <strong>目的を明確にするだけで、出力の的外れ度は大幅に下がる。</strong><br>まず「なぜこのプロンプトを書くのか」を考えよう。
+    </div>
+  </div>
+  <div class="pg">7/18</div>
+</div>
+
+<!-- ===== 8: WHAT IS PERSONA ===== -->
+<div class="slide" data-s="8">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">ペルソナ設定とは何か</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">ペルソナ設定とは、AIに<span class="kw">特定の役割・立場・専門性</span>を与えること。劇の台本で俳優に「あなたは刑事役です」と伝えるのに似ています。</div>
+    <table class="wb-tbl" style="margin-top:8px">
+      <thead><tr><th>効果</th><th>説明</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>専門性が引き出される</strong></td><td>特定分野の知識が優先</td><td>「マーケターとして」→ 用語・事例が増える</td></tr>
+        <tr><td><strong>視点が固定される</strong></td><td>一貫した立場で回答</td><td>「CFOとして」→ 財務的観点が中心に</td></tr>
+        <tr><td><strong>文体が変わる</strong></td><td>役割に応じた口調</td><td>「優しい先生として」→ 平易で丁寧に</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">ペルソナは「<span class="kw">誰として答えるか</span>」を決める技術</div>
+  </div>
+  <div class="pg">8/18</div>
+</div>
+
+<!-- ===== 9: PERSONA LEVEL 1 ===== -->
+<div class="slide" data-s="9">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">ペルソナの3レベル</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky b t2">
+          <div class="sticky-label">Level 1: シンプル</div>
+          役割名を1行で伝える<br>
+          <code style="font-family:'Source Code Pro',monospace;font-size:0.78rem;color:var(--ink-blue)">あなたは経験豊富なWebデザイナーです。</code>
+        </div>
+        <div class="sticky g t3">
+          <div class="sticky-label">Level 2: 詳細（実務向け）</div>
+          経験年数や得意分野を追加<br>
+          <code style="font-family:'Source Code Pro',monospace;font-size:0.78rem;color:var(--ink-green)">中小企業のDX支援を10年以上行ってきた<br>ITコンサルタントです。</code>
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky p t1">
+          <div class="sticky-label">Level 3: 行動指針付き（最も効果的）</div>
+          「どう振る舞うか」まで指定<br>
+          <span class="sm">- 専門用語は平易に言い換え<br>- 具体的な数字やツール名を挙げる<br>- リスクとメリットを両方提示</span>
+        </div>
+        <div class="sticky y t4">
+          <div class="sticky-label">効果の比較</div>
+          Level 1 → Level 3 で<strong>回答の安定性が大幅UP</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">9/18</div>
+</div>
+
+<!-- ===== 10: LEVEL 3 EXAMPLE ===== -->
+<div class="slide" data-s="10">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Level 3：行動指針付きペルソナ</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="prompt b" style="transform:rotate(.3deg)">
+      <span class="prompt-tag">Prompt Example</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+あなたは、中小企業の経営者を支援するITコンサルタントです。
+以下の方針で回答してください：
+- 専門用語は必ず平易な言葉で言い換える
+- 具体的な数字やツール名を挙げる
+- リスクとメリットを必ず両方提示する</div>
+    <div class="row" style="margin-top:10px">
+      <div class="col">
+        <div class="sticky g t2">
+          <div class="sticky-label">なぜ効果的？</div>
+          「どう振る舞ってほしいか」まで書くことで、<strong>最も安定した出力</strong>が得られる
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky y t1">
+          <div class="sticky-label">Tip</div>
+          ペルソナは「誰として答えるか」を決めるだけ。<strong>「何を」「どのように」</strong>という指示も必ず一緒に書こう。
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">10/18</div>
+</div>
+
+<!-- ===== 11: MULTI-PERSONA ===== -->
+<div class="slide" data-s="11">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">応用：マルチペルソナ技法</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">一度に<span class="kw">複数の視点</span>から評価してもらう方法です。</div>
+    <div class="prompt b" style="transform:rotate(.3deg);margin-top:8px">
+      <span class="prompt-tag">Multi-Persona Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下の3つの立場から、この企画を評価してください：
+1. CFO（財務責任者）の視点
+2. 現場のエンジニアの視点
+3. エンドユーザーの視点</div>
+    <div class="cards c3" style="margin-top:10px">
+      <div class="card"><div class="card-title">CFOの視点</div><div class="card-body">投資対効果、コスト削減、リスク</div></div>
+      <div class="card"><div class="card-title">エンジニアの視点</div><div class="card-body">技術的実現性、開発工数、運用負荷</div></div>
+      <div class="card"><div class="card-title">ユーザーの視点</div><div class="card-body">使いやすさ、学習コスト、日常的な価値</div></div>
+    </div>
+  </div>
+  <div class="pg">11/18</div>
+</div>
+
+<!-- ===== 12: PRACTICAL 1 — CUSTOMER SUPPORT ===== -->
+<div class="slide" data-s="12">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">実務例①：カスタマーサポート</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="prompt g" style="transform:rotate(.3deg)">
+      <span class="prompt-tag">Practical Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+【ペルソナ】
+あなたはSaaS製品のカスタマーサポート担当です。
+
+【前提条件】
+- お客様は非エンジニアの中小企業の管理部門の方です
+- 技術用語は使わず、操作手順をステップで説明してください
+- 解決しない場合は「サポート窓口（03-XXXX-XXXX）へ
+  お電話ください」と案内してください</div>
+    <div class="sticky y t2" style="margin-top:auto">
+      <div class="sticky-label">Point</div>
+      前提条件＋ペルソナの組み合わせで、<strong>一貫した対応品質</strong>をテンプレート化できる
+    </div>
+  </div>
+  <div class="pg">12/18</div>
+</div>
+
+<!-- ===== 13: PRACTICAL 2 — TRAINING ===== -->
+<div class="slide" data-s="13">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">実務例②：社内研修の企画書</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="prompt b" style="transform:rotate(-.3deg)">
+      <span class="prompt-tag">Practical Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+【ペルソナ】
+あなたは大手小売企業の人事部のシニアマネージャーです。
+
+【前提条件】
+- 目的：カスタマーハラスメント対応研修の企画書作成
+- 背景：昨年度、クレーム対応による退職が15%増加
+- 対象：全国200店舗のスタッフ約3,000名
+- 予算：年間800万円
+- 制約：各店舗の営業に影響を与えない形式で実施</div>
+    <div class="sticky g t1" style="margin-top:auto">
+      <div class="sticky-label">Point</div>
+      目的・背景・対象・予算・制約の<strong>5つを明記</strong>するだけで実用レベルの企画書が得られる
+    </div>
+  </div>
+  <div class="pg">13/18</div>
+</div>
+
+<!-- ===== 14: PRACTICAL 3 — DATA ANALYSIS ===== -->
+<div class="slide" data-s="14">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">実務例③：データ分析レポート</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="prompt y" style="transform:rotate(.3deg)">
+      <span class="prompt-tag">Practical Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+【ペルソナ】
+あなたは経営企画部のデータアナリストです。
+
+【前提条件】
+- 読者：経営層（代表取締役、各事業部長）
+- エグゼクティブサマリーを冒頭に置く
+- 前年同期比を必ず含める
+- 課題と推奨アクションは3点以内に絞る</div>
+    <div class="row" style="margin-top:10px">
+      <div class="col">
+        <div class="sticky b t2"><div class="sticky-label">読者に合わせる</div>経営層向け → 要約＋数字重視</div>
+      </div>
+      <div class="col">
+        <div class="sticky p t3"><div class="sticky-label">アクションを絞る</div>3点以内 → 意思決定しやすい</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">14/18</div>
+</div>
+
+<!-- ===== 15: SYSTEM PROMPT TREND ===== -->
+<div class="slide" data-s="15">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">最新動向：システムプロンプトの一般化</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">2025〜2026年、前提条件とペルソナを<span class="kw">常に適用する仕組み</span>が標準機能に。</div>
+    <table class="wb-tbl" style="margin-top:8px">
+      <thead><tr><th>サービス</th><th>機能名</th><th>特徴</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ChatGPT</strong></td><td>カスタム指示</td><td>全会話に自動適用される前提条件を登録</td></tr>
+        <tr><td><strong>Claude</strong></td><td>プロジェクト指示</td><td>プロジェクト単位で前提条件を管理</td></tr>
+        <tr><td><strong>Gemini</strong></td><td>Gem（ジェム）</td><td>カスタムペルソナを作成・保存</td></tr>
+      </tbody>
+    </table>
+    <div class="sticky g t1" style="margin-top:auto">
+      <div class="sticky-label">Trend</div>
+      企業内で「前提条件＋ペルソナ」テンプレートを<strong>プロンプトライブラリ</strong>として共有する動きが主流
+    </div>
+  </div>
+  <div class="pg">15/18</div>
+</div>
+
+<!-- ===== 16: MISCONCEPTIONS ===== -->
+<div class="slide" data-s="16">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">よくある誤解</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="col" style="gap:8px">
+      <div class="sticky p t2"><div class="sticky-label">誤解 1</div>「<strong>ペルソナ設定でAIが本物の専門家になる</strong>」→ 出力の傾向を調整するだけ。<span class="kw">ファクトチェックは常に必要</span></div>
+      <div class="sticky p t3"><div class="sticky-label">誤解 2</div>「<strong>前提条件は多ければ多いほどよい</strong>」→ 矛盾する条件や過剰な制約はAIを混乱させる。<span class="kw">重要な条件に絞る</span></div>
+      <div class="sticky p t4"><div class="sticky-label">誤解 3</div>「<strong>ペルソナだけ設定すれば良い回答が出る</strong>」→ 「何を」「どの深さで」「どんな形で」の<span class="kw">具体的な指示も必要</span></div>
+      <div class="sticky p t1"><div class="sticky-label">誤解 4</div>「<strong>前提条件は最初に1回書けばずっと有効</strong>」→ 会話が長くなると影響力が弱まる。<span class="kw">重要な条件は再提示</span>を</div>
+    </div>
+  </div>
+  <div class="pg">16/18</div>
+</div>
+
+<!-- ===== 17: SUMMARY ===== -->
+<div class="slide" data-s="17">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">まとめ</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <ul class="bl check">
+      <li><strong>8+1の公式</strong>はプロンプトを8要素に分解するフレームワーク</li>
+      <li><strong>前提条件</strong>は「目的・背景・対象・制約」の4要素で構成</li>
+      <li>前提条件を書くだけで<strong>AIの回答精度が劇的に向上</strong>する</li>
+      <li><strong>ペルソナ設定</strong>でAIの専門性・視点・文体をコントロール</li>
+      <li>ペルソナは<strong>3レベル</strong>：シンプル → 詳細 → 行動指針付き</li>
+      <li><strong>マルチペルソナ</strong>で多角的な評価を引き出せる</li>
+      <li>前提条件＋ペルソナの<strong>テンプレート化</strong>で実務効率UP</li>
+      <li>まずは「<strong>目的」「対象」「背景</strong>」の3つを書くことから始めよう</li>
+    </ul>
+    <div class="conclusion green" style="margin-top:auto">次へ → 3-2. 参考情報を与える、単語を改善する</div>
+  </div>
+  <div class="pg">17/18</div>
+</div>
+
+<!-- ===== 18: GLOSSARY ===== -->
+<div class="slide" data-s="18">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">8+1の公式</div><div class="card-body">プロンプトを8つの要素＋1の追加指示に分解するフレームワーク</div></div>
+      <div class="card"><div class="card-title">前提条件</div><div class="card-body">目的・背景・対象・制約を伝えるプロンプトの土台部分</div></div>
+      <div class="card"><div class="card-title">ペルソナ設定</div><div class="card-body">AIに特定の役割・立場・専門性を与えて出力を調整する技術</div></div>
+      <div class="card"><div class="card-title">マルチペルソナ</div><div class="card-body">一度に複数の役割から評価・回答してもらう応用テクニック</div></div>
+      <div class="card"><div class="card-title">コンテキスト (Context)</div><div class="card-body">AIが回答を生成する際に参照する文脈・背景情報</div></div>
+      <div class="card"><div class="card-title">システムプロンプト</div><div class="card-body">全会話に自動適用される前提条件。カスタムインストラクションとも呼ばれる</div></div>
+      <div class="card"><div class="card-title">プロンプトライブラリ</div><div class="card-body">チームで共有する前提条件＋ペルソナのテンプレート集</div></div>
+      <div class="card"><div class="card-title">XMLタグ</div><div class="card-body">&lt;role&gt;…&lt;/role&gt;のように構造的に前提条件を記述する手法</div></div>
+    </div>
+  </div>
+  <div class="pg">18/18</div>
+</div>
+
+</div><!-- /board-frame -->
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="pb" onclick="go(cur-1)" disabled>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1.5L3.5 6L8 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="nd"></div>
+  <span class="nav-count" id="nc">1 / 18</span>
+  <button class="nav-btn" id="nb" onclick="go(cur+1)">
+    次へ<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 1.5L8.5 6L4 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+const S=document.querySelectorAll('.slide'),T=S.length;
+let cur=0;
+const nd=document.getElementById('nd');
+for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
+
+function go(i){
+  if(i<0||i>=T||i===cur)return;
+  S[cur].classList.remove('active');S[cur].style.display='none';
+  cur=i;
+  S[cur].classList.add('active');
+  upd();
+}
+function upd(){
+  document.getElementById('nc').textContent=`${cur+1} / ${T}`;
+  document.getElementById('pf').style.width=`${((cur+1)/T)*100}%`;
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===T-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+
+function cp(b){
+  const c=b.closest('.prompt').cloneNode(true);
+  c.querySelector('.copy-btn')?.remove();
+  c.querySelector('.prompt-tag')?.remove();
+  navigator.clipboard.writeText(c.textContent.trim()).then(()=>{
+    b.textContent='Copied!';b.classList.add('ok');
+    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1500);
+  });
+}
+upd();
+</script>
+</body>
+</html>

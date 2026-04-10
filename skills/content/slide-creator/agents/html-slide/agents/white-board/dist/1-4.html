@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-4. プロンプト作成のコツ — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WHITE-BOARD SLIDE — Design System
+   ============================================================ */
+:root {
+  --board: #F7F6F3;
+  --board-edge: #E8E6E1;
+  --surface: #FFFFFF;
+  --tray: #D4CDC2;
+  --tray-dark: #B8B0A3;
+  --ink-black: #1A1A1A;
+  --ink-blue: #1565C0;
+  --ink-blue-light: #42A5F5;
+  --ink-red: #C62828;
+  --ink-red-light: #EF5350;
+  --ink-green: #2E7D32;
+  --ink-green-light: #66BB6A;
+  --ink-orange: #E65100;
+  --sticky-y: #FFF8DC;
+  --sticky-y-edge: #F0E6B8;
+  --sticky-b: #E8F0FE;
+  --sticky-b-edge: #C4D8F2;
+  --sticky-g: #E6F4EA;
+  --sticky-g-edge: #B7DFC3;
+  --sticky-p: #FCE4EC;
+  --sticky-p-edge: #F0B8C8;
+  --nav-bg: rgba(255,255,255,0.92);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
+  --fs-hero: clamp(2.2rem, 5vw, 3.2rem);
+  --fs-title: clamp(1.4rem, 3vw, 1.9rem);
+  --fs-sub: clamp(1rem, 2vw, 1.2rem);
+  --fs-body: clamp(0.88rem, 1.5vw, 1rem);
+  --fs-sm: clamp(0.78rem, 1.2vw, 0.88rem);
+  --fs-xs: clamp(0.68rem, 1vw, 0.78rem);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--board);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
+  color: var(--ink-black);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.board-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 8px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+    linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    var(--board);
+  background-size: 100%, 40px 40px, 40px 40px, 100%;
+}
+.board-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.marker-tray {
+  position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: min(700px, 80%); height: 6px;
+  background: linear-gradient(to bottom, var(--tray), var(--tray-dark));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+.progress-track {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: rgba(0,0,0,0.05); z-index: 2;
+}
+.progress-fill {
+  height: 100%; background: var(--ink-blue);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide {
+  position: absolute;
+  width: min(940px, 92vw);
+  height: min(540px, 78vh);
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
+  padding: 30px 40px;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+}
+.slide.active {
+  display: flex;
+  animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: var(--fs-xs); font-weight: 700; color: var(--ink-blue);
+  background: var(--sticky-b); padding: 3px 12px;
+  border-radius: 100px; border: 1.5px solid var(--sticky-b-edge);
+  width: fit-content; margin-bottom: 8px; letter-spacing: 0.02em;
+}
+.pg {
+  position: absolute; bottom: 12px; right: 18px;
+  font-family: 'Caveat', cursive; font-size: 1.05rem;
+  font-weight: 700; color: var(--tray-dark);
+}
+.slide-title {
+  font-size: var(--fs-title); font-weight: 900; line-height: 1.35;
+  color: var(--ink-black); margin-bottom: 2px;
+  position: relative; display: inline-block;
+}
+
+.marker-line {
+  display: block; height: 5px; width: 0; border-radius: 3px;
+  margin-bottom: 14px; transform: rotate(-0.3deg);
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+.marker-line.red { background: var(--ink-red); }
+.marker-line.blue { background: var(--ink-blue); }
+.marker-line.green { background: var(--ink-green); }
+.slide.active .marker-line {
+  animation: drawLine 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { width: 80px; } }
+
+.content { flex:1; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.row { display:flex; gap:20px; flex:1; }
+.col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.col.w60 { flex:1.5; }
+.col.w40 { flex:0.8; }
+
+.body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
+.sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
+.sm { font-size:var(--fs-sm); color:#666; line-height:1.6; }
+.xs { font-size:var(--fs-xs); color:#999; }
+.kw { color:var(--ink-red); font-weight:700; }
+.kw-blue { color:var(--ink-blue); font-weight:700; }
+.accent { font-family:'Caveat',cursive; font-weight:700; }
+
+.bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
+.bl li::before {
+  content:''; position:absolute; left:2px; top:8px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--ink-blue); opacity: 0.7;
+}
+.bl.green li::before { background:var(--ink-green); }
+.bl.red li::before { background:var(--ink-red); }
+.bl.check li::before {
+  content:'✓'; background:none; opacity:1;
+  color:var(--ink-green); font-size:1rem; font-weight:900;
+  top:3px; left:0; width:auto; height:auto;
+}
+.bl.num { counter-reset:n; }
+.bl.num li { padding-left:30px; counter-increment:n; }
+.bl.num li::before {
+  content:counter(n); background:var(--ink-blue); color:#fff;
+  font-size:0.65rem; font-weight:700; text-align:center;
+  width:18px; height:18px; line-height:18px; top:5px; left:0;
+  border-radius: 50%; opacity:1;
+}
+
+.sticky {
+  position: relative; padding: 14px 16px; border-radius: 1px;
+  font-size: var(--fs-sm); line-height: 1.65;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+.sticky::after {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+  pointer-events:none; border-radius: inherit;
+}
+.sticky::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+.sticky.t1 { transform:rotate(-1.5deg); }
+.sticky.t2 { transform:rotate(1deg); }
+.sticky.t3 { transform:rotate(-0.8deg); }
+.sticky.t4 { transform:rotate(1.3deg); }
+.slide.active .sticky {
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slide.active .sticky:nth-child(1) { animation-delay: 0.15s; }
+.slide.active .sticky:nth-child(2) { animation-delay: 0.25s; }
+.slide.active .sticky:nth-child(3) { animation-delay: 0.35s; }
+.slide.active .sticky:nth-child(4) { animation-delay: 0.45s; }
+@keyframes stickyPop {
+  from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
+}
+.sticky-label {
+  font-size:0.65rem; font-weight:700; color:var(--ink-blue);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
+}
+
+.prompt {
+  position:relative; padding: 28px 16px 14px; border-radius: 1px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.8rem; line-height: 1.65;
+  white-space: pre-wrap; word-break: break-word;
+  box-shadow: var(--shadow-sticky);
+}
+.prompt.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.prompt.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.prompt.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.prompt.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+.prompt::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35); border-radius: 1px;
+}
+.prompt-tag {
+  position:absolute; top:6px; left:10px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.58rem; font-weight:700;
+  color:var(--ink-blue); letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.copy-btn {
+  position:absolute; top:5px; right:8px;
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(4px);
+  border:1px solid rgba(0,0,0,0.08); border-radius:4px;
+  padding:2px 10px; font-size:0.6rem;
+  font-family:'Zen Maru Gothic',sans-serif;
+  cursor:pointer; color:#888; transition:all 0.2s;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.95); color:var(--ink-black); }
+.copy-btn.ok { color:var(--ink-green); border-color:var(--ink-green-light); }
+
+.vs { display:flex; gap:16px; flex:1; }
+.vs-side { flex:1; display:flex; flex-direction:column; gap:8px; padding:14px; border-radius:8px; }
+.vs-side.bad {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(198,40,40,0.015) 10px, rgba(198,40,40,0.015) 20px);
+  border:1.5px dashed rgba(198,40,40,0.2);
+}
+.vs-side.good {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(46,125,50,0.015) 10px, rgba(46,125,50,0.015) 20px);
+  border:1.5px solid rgba(46,125,50,0.2);
+}
+.vs-label { font-size:var(--fs-sub); font-weight:900; }
+.vs-side.bad .vs-label { color:var(--ink-red); }
+.vs-side.good .vs-label { color:var(--ink-green); }
+.vs-mid {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat',cursive; font-size:1.6rem;
+  color:var(--tray-dark); font-weight:700;
+}
+
+.wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+.wb-tbl th {
+  text-align:left; padding:8px 12px;
+  font-weight:700; color:var(--ink-blue);
+  border-bottom:2.5px solid var(--ink-blue);
+  font-size:var(--fs-sm);
+}
+.wb-tbl td { padding:7px 12px; border-bottom:1px solid var(--board-edge); }
+.wb-tbl tr:last-child td { border-bottom:none; }
+.wb-tbl tr:hover td { background:rgba(21,101,192,0.02); }
+
+.cards { display:grid; gap:10px; flex:1; }
+.cards.c2 { grid-template-columns:repeat(2,1fr); }
+.cards.c3 { grid-template-columns:repeat(3,1fr); }
+.card {
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:8px; padding:12px 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card-title { font-weight:700; color:var(--ink-blue); font-size:var(--fs-body); margin-bottom:3px; }
+.card-body { font-size:var(--fs-sm); color:#555; line-height:1.55; }
+
+.flow { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.flow-step {
+  padding:10px 18px; border-radius:10px; text-align:center;
+  font-size:var(--fs-sm); font-weight:700;
+  box-shadow: var(--shadow-sm); transition: transform 0.2s;
+}
+.flow-step:hover { transform:scale(1.05); }
+.flow-step.fb { background:var(--sticky-b); border:1px solid var(--sticky-b-edge); }
+.flow-step.fg { background:var(--sticky-g); border:1px solid var(--sticky-g-edge); }
+.flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
+.flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
+.flow-arr {
+  font-family:'Caveat',cursive; font-size:1.4rem;
+  color:var(--ink-blue); font-weight:700; padding:0 6px;
+}
+
+.conclusion {
+  margin-top:auto; padding:9px 16px;
+  font-size:var(--fs-sm); font-weight:700;
+  color:var(--ink-blue);
+  border-left:3px solid var(--ink-blue);
+  background: linear-gradient(90deg, rgba(21,101,192,0.04), transparent);
+  border-radius:0 6px 6px 0;
+}
+.conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
+
+.illust { display:flex; align-items:center; justify-content:center; }
+.illust svg { max-width:100%; max-height:100%; }
+
+.slide.cover {
+  align-items:center; justify-content:center; text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.02) 0%, transparent 70%),
+    var(--surface);
+}
+.cover .chip { position:absolute; top:18px; left:24px; }
+.cover-title {
+  font-size: var(--fs-hero); font-weight: 900; line-height: 1.3;
+  position: relative; z-index: 2;
+}
+.cover-title .hl { color:var(--ink-blue); }
+.cover-sub {
+  font-size:var(--fs-sub); color:var(--tray-dark);
+  margin-top:8px; z-index:2; position:relative;
+}
+.cover-doodles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.cover-doodles svg { width:100%; height:100%; }
+
+.home-link {
+  position:absolute; top:14px; right:18px;
+  font-size:var(--fs-xs); color:var(--ink-blue);
+  text-decoration:none; font-weight:700;
+  background:var(--sticky-b); padding:3px 12px;
+  border-radius:100px; border:1.5px solid var(--sticky-b-edge);
+  z-index:10; transition:all 0.2s;
+}
+.home-link:hover { background:var(--ink-blue); color:#fff; }
+
+.nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:10px 16px;
+  background:var(--nav-bg); backdrop-filter:blur(10px);
+  border-top:1px solid var(--board-edge);
+}
+.nav-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:100px; padding:7px 20px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.82rem; font-weight:700;
+  color:var(--ink-black); cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { background:var(--ink-blue); color:#fff; border-color:var(--ink-blue); transform:scale(1.05); }
+.nav-btn:active { transform:scale(0.97); }
+.nav-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
+.nav-btn:disabled:hover { background:var(--surface); color:var(--ink-black); border-color:var(--board-edge); }
+
+.nav-dots { display:flex; gap:5px; align-items:center; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--board-edge); border:none;
+  cursor:pointer; transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot.on { background:var(--ink-blue); width:20px; border-radius:3px; }
+.dot:hover { background:var(--ink-blue-light); }
+.nav-count {
+  font-family:'Caveat',cursive; font-weight:700;
+  font-size:1.05rem; color:var(--tray-dark);
+  min-width:55px; text-align:center;
+}
+
+@media(max-width:768px){
+  .slide{padding:20px 24px}
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+  .vs,.row{flex-direction:column}
+  .nav{gap:8px;padding:8px 10px}
+  .nav-btn{padding:6px 14px;font-size:.78rem}
+}
+@media(max-width:480px){
+  .slide{padding:14px 16px;border-radius:0}
+  .cards.c2,.cards.c3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="board-frame">
+  <a href="index.html" class="home-link">目次に戻る</a>
+  <div class="marker-tray"></div>
+  <div class="progress-track"><div class="progress-fill" id="pf" style="width:5%"></div></div>
+
+<!-- ===== 1: COVER ===== -->
+<div class="slide cover active" data-s="1">
+  <div class="chip">3章 プロンプト</div>
+  <div class="cover-doodles">
+    <svg viewBox="0 0 940 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity=".12"><rect x="55" y="50" width="80" height="55" rx="10" stroke="#1565C0" stroke-width="2.5"/><text x="65" y="72" font-size="10" fill="#1565C0" font-family="monospace"># Role</text><text x="65" y="88" font-size="10" fill="#1565C0" font-family="monospace">## Task</text></g>
+      <g opacity=".09" transform="translate(780,35)"><text x="0" y="20" font-size="14" fill="#2E7D32" font-family="monospace">&lt;xml&gt;</text><text x="0" y="40" font-size="14" fill="#2E7D32" font-family="monospace">&lt;/xml&gt;</text></g>
+      <g opacity=".08" transform="translate(50,400)"><circle cx="30" cy="25" r="22" stroke="#C62828" stroke-width="2.5"/><path d="M20 20 L25 30 L40 15" stroke="#C62828" stroke-width="2.5" fill="none"/></g>
+      <g opacity=".08" transform="translate(810,400)"><path d="M10 10 Q30 0 50 10 T90 10" stroke="#1565C0" stroke-width="2" fill="none"/><path d="M10 25 Q30 15 50 25 T90 25" stroke="#1565C0" stroke-width="2" fill="none"/></g>
+      <text x="170" y="160" font-size="18" fill="#1565C0" opacity=".08">★</text>
+      <text x="760" y="170" font-size="14" fill="#C62828" opacity=".08">★</text>
+    </svg>
+  </div>
+  <div class="cover-title">1-4. <span class="hl">プロンプト作成</span>のコツ</div>
+  <div class="cover-sub">第3章 プロンプト ― 1. プロンプトの基礎</div>
+  <div class="pg">1/20</div>
+</div>
+
+<!-- ===== 2: GOAL ===== -->
+<div class="slide" data-s="2">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">このチャプターのゴール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <ul class="bl">
+      <li><strong>記号と書式</strong>で指示を構造化できるようになる</li>
+      <li><strong>区切り記号</strong>（```, ---, XMLタグ）の使い分けがわかる</li>
+      <li><strong>モデルごとに相性の良い書式</strong>を理解する</li>
+      <li><strong>HITL（Human-in-The-Loop）</strong>の概念を説明できる</li>
+      <li><strong>HITLの5ステップ</strong>を実践に適用できる</li>
+    </ul>
+    <div class="conclusion">「設計図を正確に書く道具」と「人間がAIと協働する方法」の2つを学ぶ。</div>
+  </div>
+  <div class="pg">2/20</div>
+</div>
+
+<!-- ===== 3: TWO TOOLS ===== -->
+<div class="slide" data-s="3">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプトは「設計図」である</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">設計図に曖昧さがあれば、完成品も曖昧になる。このレッスンでは<span class="kw">2つの道具</span>を学びます。</div>
+    <div class="row" style="margin-top:8px">
+      <div class="col">
+        <div class="sticky b t1">
+          <div class="sticky-label">道具 1</div>
+          <strong>記号と書式で指示を構造化する方法</strong><br>
+          見出し（#）や箇条書き（-）で「ここが指示」「ここがデータ」と区切る
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky g t2">
+          <div class="sticky-label">道具 2</div>
+          <strong>HITL（Human-in-The-Loop）</strong><br>
+          AIに丸投げせず、人間がチェック・修正・再入力を繰り返して品質を高める
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">この2つをマスターすると、プロンプトの精度は格段に上がる</div>
+  </div>
+  <div class="pg">3/20</div>
+</div>
+
+<!-- ===== 4: WHY SYMBOLS ===== -->
+<div class="slide" data-s="4">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">なぜ記号を使うのか？</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">プロンプトを普通の文章で書くと、AIは<span class="kw">「どこが指示で、どこがデータか」を判断しにくい</span>。</div>
+    <div class="vs" style="margin-top:6px">
+      <div class="vs-side bad">
+        <div class="vs-label">構造化なし</div>
+        <div class="sm">見出しも箇条書きもない長文の報告書を読むのは大変</div>
+        <div class="prompt p" style="transform:rotate(-.3deg);font-size:0.72rem"><span class="prompt-tag">例</span>
+あなたは技術ライターです。以下の
+技術文書を初心者向けに書き直して
+ください。専門用語には説明を...
+（指示が一塊で読みにくい）</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">構造化あり</div>
+        <div class="sm">見出し・箇条書き・表が整理されていればすぐ理解できる</div>
+        <div class="prompt g" style="transform:rotate(.3deg);font-size:0.72rem"><span class="prompt-tag">例</span>
+# 役割
+技術ライター
+## 制約条件
+- 専門用語に説明をつける
+- 1段落は3文以内
+（構造が一目でわかる）</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">4/20</div>
+</div>
+
+<!-- ===== 5: SYMBOL TABLE ===== -->
+<div class="slide" data-s="5">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">主な記号と使い方</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th>記号</th><th>用途</th><th>使い方の例</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw"># ## ###</span></td><td>見出し・セクション分け</td><td><code># 役割</code> <code>## タスク</code></td></tr>
+        <tr><td><span class="kw">- *</span></td><td>箇条書き（順序不問）</td><td><code>- 条件1</code> <code>- 条件2</code></td></tr>
+        <tr><td><span class="kw">1. 2. 3.</span></td><td>番号リスト（順序あり）</td><td><code>1. まず要約する</code></td></tr>
+        <tr><td><span class="kw">**太字**</span></td><td>重要語句の強調</td><td><code>**必ず**日本語で回答</code></td></tr>
+        <tr><td><span class="kw">```</span></td><td>コードブロック・データ区切り</td><td>入力テキストを囲む</td></tr>
+        <tr><td><span class="kw">---</span></td><td>セクション区切り線</td><td>指示とデータの境界を明示</td></tr>
+        <tr><td><span class="kw">「」【】</span></td><td>日本語での強調・区切り</td><td><code>【出力形式】</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pg">5/20</div>
+</div>
+
+<!-- ===== 6: STRUCTURED PROMPT EXAMPLE ===== -->
+<div class="slide" data-s="6">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">構造化プロンプトの実例</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sub" style="color:var(--ink-red);font-size:var(--fs-sm)">Before：構造化なし</div>
+        <div class="prompt p" style="transform:rotate(-.3deg);font-size:0.72rem"><span class="prompt-tag">Prompt</span>
+あなたは技術ライターです。以下の技術
+文書を初心者向けに書き直してください。
+専門用語には説明をつけて、1段落は3文
+以内にして、比喩を使ってください。
+対象テキストはこちらです。「ニューラル
+ネットワークは、複数の層で構成された...」</div>
+      </div>
+      <div class="col">
+        <div class="sub" style="color:var(--ink-green);font-size:var(--fs-sm)">After：構造化あり</div>
+        <div class="prompt g" style="transform:rotate(.3deg);font-size:0.72rem"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+# 役割
+プロの技術ライター
+
+## タスク
+以下の技術文書を初心者向けに書き直し
+
+## 制約条件
+- 専門用語に必ず説明を付ける
+- 1段落は3文以内
+- **比喩を積極的に使う**
+
+## 入力テキスト
+---
+ニューラルネットワークは...
+---</div>
+      </div>
+    </div>
+    <div class="conclusion">見出し（#）で分離、箇条書き（-）で条件列挙、区切り線（---）でデータ境界を明示</div>
+  </div>
+  <div class="pg">6/20</div>
+</div>
+
+<!-- ===== 7: DELIMITER METHODS ===== -->
+<div class="slide" data-s="7">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">区切り記号で「指示」と「データ」を分ける</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body"><span class="kw">指示文とデータの境界が曖昧</span>だとAIが混乱する。3つの方法で分離しよう。</div>
+    <div class="cards c3" style="margin-top:6px">
+      <div class="card">
+        <div class="card-title">方法1：``` で囲む</div>
+        <div class="card-body" style="font-family:'Source Code Pro',monospace;font-size:0.72rem">以下を要約して。<br><br>```<br>今日は天気が良い...<br>```</div>
+      </div>
+      <div class="card">
+        <div class="card-title">方法2：--- で挟む</div>
+        <div class="card-body" style="font-family:'Source Code Pro',monospace;font-size:0.72rem">3行で要約して。<br><br>---<br>今日は天気が良い...<br>---</div>
+      </div>
+      <div class="card">
+        <div class="card-title">方法3：XMLタグ</div>
+        <div class="card-body" style="font-family:'Source Code Pro',monospace;font-size:0.72rem">&lt;instructions&gt;<br>翻訳して<br>&lt;/instructions&gt;<br>&lt;document&gt;<br>ML is a subset...<br>&lt;/document&gt;</div>
+      </div>
+    </div>
+    <div class="conclusion">区切り記号 = 「ここまでが指示、ここからがデータ」をAIに明確に伝えるツール</div>
+  </div>
+  <div class="pg">7/20</div>
+</div>
+
+<!-- ===== 8: XML TAGS ===== -->
+<div class="slide" data-s="8">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">XMLタグの活用（特にClaudeで効果的）</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">Anthropic（Claudeの開発元）は、公式に<span class="kw">XMLタグの使用を推奨</span>しています。</div>
+    <div class="row" style="margin-top:6px">
+      <div class="col w60">
+        <div class="prompt b" style="transform:rotate(.3deg);font-size:0.74rem"><span class="prompt-tag">XMLタグ例</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+&lt;instructions&gt;
+以下の文書を日本語に翻訳してください。
+専門用語は英語のまま残してください。
+&lt;/instructions&gt;
+
+&lt;document&gt;
+Machine learning is a subset of
+artificial intelligence that enables
+systems to learn from data.
+&lt;/document&gt;
+
+&lt;output_format&gt;
+見出しは##で始めてください。
+段落ごとに改行を入れてください。
+&lt;/output_format&gt;</div>
+      </div>
+      <div class="col w40">
+        <div class="sticky y t1">
+          <div class="sticky-label">よく使うタグ名</div>
+          <code>&lt;instructions&gt;</code><br>
+          <code>&lt;context&gt;</code><br>
+          <code>&lt;input&gt;</code><br>
+          <code>&lt;example&gt;</code><br>
+          <code>&lt;output_format&gt;</code>
+        </div>
+        <div class="sticky g t2">
+          <div class="sticky-label">Point</div>
+          タグ名は内容に合った名前をつける。<strong>自由に命名OK</strong>。
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">8/20</div>
+</div>
+
+<!-- ===== 9: MODEL-SPECIFIC FORMATS ===== -->
+<div class="slide" data-s="9">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">モデルごとに相性の良い書式</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">構造化の方法は<span class="kw">モデルによって相性が異なる</span>。</div>
+    <table class="wb-tbl" style="margin-top:8px">
+      <thead><tr><th>モデル</th><th>相性の良い書式</th><th>補足</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Claude</strong>（Anthropic）</td><td><span class="kw">XMLタグ</span></td><td>公式に推奨。Markdownも理解する</td></tr>
+        <tr><td><strong>ChatGPT</strong>（OpenAI）</td><td><span class="kw">Markdown</span></td><td>見出し・箇条書きとの相性良い。JSON形式も得意</td></tr>
+        <tr><td><strong>Gemini</strong>（Google）</td><td><span class="kw">Markdown</span></td><td>見出し・リストを正確に認識する</td></tr>
+      </tbody>
+    </table>
+    <div class="sticky b t1" style="margin-top:auto">
+      <div class="sticky-label">共通ルール</div>
+      どのモデルでも<strong>見出し（#）と箇条書き（-）</strong>の基本構造化が効果的。まずはこの2つから。
+    </div>
+  </div>
+  <div class="pg">9/20</div>
+</div>
+
+<!-- ===== 10: HITL INTRODUCTION ===== -->
+<div class="slide" data-s="10">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">HITL（Human-in-The-Loop）とは</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="body"><span class="kw">HITL</span>とは、AIの作業プロセスに<span class="kw">人間の判断やフィードバックを組み込む仕組み</span>のこと。</div>
+        <div class="body">「ループ」= 繰り返しの輪。AIが出力 → 人間がチェック → 改善点を伝える → AIが再出力。</div>
+        <div class="sticky y t1" style="margin-top:8px">
+          <div class="sticky-label">日常の例え</div>
+          上司が部下に仕事を依頼 → 下書き確認 → 修正指示 → 修正版 → 最終OK<br>
+          <strong>AIも同じ。一発で完璧は出ない。</strong>
+        </div>
+      </div>
+      <div class="col w40 illust">
+        <svg viewBox="0 0 180 180" fill="none">
+          <circle cx="90" cy="90" r="60" stroke="#1565C0" stroke-width="2" stroke-dasharray="8 4" opacity="0.3"/>
+          <circle cx="90" cy="30" r="14" stroke="#1565C0" stroke-width="2.5"/><text x="78" y="34" font-size="8" fill="#1565C0" font-family="sans-serif" font-weight="700">人間</text>
+          <circle cx="90" cy="150" r="14" stroke="#2E7D32" stroke-width="2.5"/><text x="83" y="154" font-size="8" fill="#2E7D32" font-family="sans-serif" font-weight="700">AI</text>
+          <path d="M106 38 Q140 70 106 142" stroke="#1565C0" stroke-width="2" fill="none"/><polygon points="108,138 106,148 100,140" fill="#1565C0"/>
+          <path d="M74 142 Q40 110 74 38" stroke="#2E7D32" stroke-width="2" fill="none"/><polygon points="72,42 74,32 80,40" fill="#2E7D32"/>
+          <text x="135" y="90" font-size="7" fill="#1565C0" font-family="sans-serif">指示</text>
+          <text x="20" y="90" font-size="7" fill="#2E7D32" font-family="sans-serif">改善</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="pg">10/20</div>
+</div>
+
+<!-- ===== 11: 3 HITL PATTERNS ===== -->
+<div class="slide" data-s="11">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">HITLの3つのパターン</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="cards c3">
+      <div class="card">
+        <div class="card-title">1. AIサポート型</div>
+        <div class="card-body"><strong>人間が主役</strong>、AIは情報整理<br><br>法務・医療・経理など<span class="kw">判断の正確さが必要</span>な場面<br><br>例：AIがリスク箇所を抽出 → 弁護士が判断</div>
+      </div>
+      <div class="card">
+        <div class="card-title">2. AI主導・人間介入型</div>
+        <div class="card-body"><strong>AIが定型業務</strong>、例外だけ人間<br><br>カスタマーサポートのチャットボットが典型<br><br>例：AIが自動回答 → 複雑案件は人間に引き継ぐ</div>
+      </div>
+      <div class="card">
+        <div class="card-title">3. フィードバックループ型</div>
+        <div class="card-body"><strong>プロンプト作成で最も重要</strong><br><br>AIの出力に人間が評価・修正 → AIが改善<br><br>例：文章生成 → 「ここをもっと詳しく」→ 修正版</div>
+      </div>
+    </div>
+    <div class="conclusion"><span class="kw">パターン3</span>がプロンプト作成で最も関係が深い</div>
+  </div>
+  <div class="pg">11/20</div>
+</div>
+
+<!-- ===== 12: 5-STEP HITL PRACTICE ===== -->
+<div class="slide" data-s="12">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">HITL実践の5ステップ</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="flow" style="margin:4px 0">
+      <div class="flow-step fb">1. プロンプト作成</div><div class="flow-arr">→</div>
+      <div class="flow-step fg">2. 出力を確認</div><div class="flow-arr">→</div>
+      <div class="flow-step fy">3. フィードバック</div><div class="flow-arr">→</div>
+      <div class="flow-step fp">4. AI改善版</div><div class="flow-arr">→</div>
+      <div class="flow-step fb">5. 最終確認</div>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <div class="col">
+        <div class="sticky b t1"><div class="sticky-label">Step 2 チェック観点</div>
+          - 事実は正しいか？（ファクトチェック）<br>
+          - 意図どおりの内容か？<br>
+          - 過不足はないか？<br>
+          - トーンや形式は適切か？
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky g t2"><div class="sticky-label">Step 3 フィードバック例</div>
+          「第2段落にもっと具体例を入れて」<br>
+          「専門用語を中学生向けに変えて」<br>
+          「結論を先に持ってきて」
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">「AIの出力は下書き、最終判断は人間」が鉄則</div>
+  </div>
+  <div class="pg">12/20</div>
+</div>
+
+<!-- ===== 13: HITL PRACTICAL EXAMPLE ===== -->
+<div class="slide" data-s="13">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">HITL実践例：ブログ記事作成</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th>ステップ</th><th>人間がやること</th><th>AIがやること</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw">1回目</span></td><td>テーマと構成を指示</td><td>記事の下書きを生成</td></tr>
+        <tr><td>チェック</td><td>事実関係を確認、不足を特定</td><td>--</td></tr>
+        <tr><td><span class="kw">2回目</span></td><td>「事例を2つ追加して」と指示</td><td>事例入りの改善版を生成</td></tr>
+        <tr><td>チェック</td><td>文体とトーンを確認</td><td>--</td></tr>
+        <tr><td><span class="kw">3回目</span></td><td>「もう少しカジュアルに」と指示</td><td>トーン調整した最終版を生成</td></tr>
+        <tr><td>最終確認</td><td>全体を通読してOK</td><td>--</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">「人間→AI→人間→AI...」のやりとりが<span class="kw">HITLの本質</span></div>
+  </div>
+  <div class="pg">13/20</div>
+</div>
+
+<!-- ===== 14: WHY HITL MATTERS ===== -->
+<div class="slide" data-s="14">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">HITLが重要な5つの理由</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky b t1"><div class="sticky-label">理由1</div><strong>ハルシネーション対策</strong><br>AIは事実と異なる情報を自信たっぷりに生成する。人間のファクトチェックが必須</div>
+        <div class="sticky g t2"><div class="sticky-label">理由2</div><strong>品質保証</strong><br>AIの出力は「確率的に最もありそうな文章」。業務品質かは人間が判断</div>
+        <div class="sticky y t3"><div class="sticky-label">理由3</div><strong>倫理的配慮</strong><br>AIはバイアスを反映する可能性。不適切な表現のチェックは人間の目で</div>
+      </div>
+      <div class="col">
+        <div class="sticky p t4"><div class="sticky-label">理由4</div><strong>文脈の理解</strong><br>社内事情・取引先との関係・業界の暗黙のルールはAIには分からない</div>
+        <div class="sticky b t1"><div class="sticky-label">理由5</div><strong>説明責任</strong><br>AIの出力に基づく意思決定の責任は人間にある。最終関与で責任所在を明確に</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">14/20</div>
+</div>
+
+<!-- ===== 15: CONTEXT ENGINEERING ===== -->
+<div class="slide" data-s="15">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">最新動向：コンテキストエンジニアリング</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">「何を指示するか」だけでなく「<span class="kw">どんな情報をAIに渡すか</span>」を設計する考え方。</div>
+    <div class="cards c3" style="margin-top:6px">
+      <div class="card">
+        <div class="card-title">構造化出力の自動強制</div>
+        <div class="card-body">OpenAI「Structured Outputs」など、JSONスキーマを指定すると<strong>必ずその形式で回答</strong>する仕組み</div>
+      </div>
+      <div class="card">
+        <div class="card-title">RAG + プロンプト</div>
+        <div class="card-body">検索拡張生成（RAG）と組み合わせ、<strong>最新の情報を渡しながら</strong>プロンプトを実行する手法が主流に</div>
+      </div>
+      <div class="card">
+        <div class="card-title">エージェントAI + HITL</div>
+        <div class="card-body">AIが自律的に行動する場面が増えるほど、<strong>「いつ介入するか」の設計</strong>が不可欠に</div>
+      </div>
+    </div>
+    <div class="conclusion">AIの進化とともに、<span class="kw">人間の関与の「設計」</span>がますます重要になる</div>
+  </div>
+  <div class="pg">15/20</div>
+</div>
+
+<!-- ===== 16: STRUCTURED PROMPT FULL EXAMPLE ===== -->
+<div class="slide" data-s="16">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">構造化プロンプトの完成例</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="prompt b" style="transform:rotate(.3deg);font-size:0.72rem"><span class="prompt-tag">Complete Example</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+# 役割
+あなたはシニアマーケターです。
+
+## タスク
+以下の商品データを分析し、
+20代女性向けのキャッチコピーを
+5案提案してください。
+
+## 制約条件
+- 各案15文字以内
+- カジュアルなトーン
+- **絵文字を1つ含める**
+
+## 出力形式
+1. キャッチコピー
+2. 狙い（1行で）
+
+---
+【商品データ】
+名前：オーガニックハーブティー
+価格：1,200円
+特徴：ノンカフェイン、リラックス効果
+---</div>
+      </div>
+      <div class="col w40">
+        <div class="sticky y t1"><div class="sticky-label">使った記号</div>
+          <strong>#</strong> ... 見出し<br>
+          <strong>-</strong> ... 箇条書き<br>
+          <strong>**</strong> ... 強調<br>
+          <strong>---</strong> ... 区切り線<br>
+          <strong>【】</strong> ... ラベル
+        </div>
+        <div class="sticky g t2"><div class="sticky-label">ポイント</div>
+          役割 → タスク → 制約 → 形式 → データの<strong>黄金パターン</strong>。どんなタスクでも使える。
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">16/20</div>
+</div>
+
+<!-- ===== 17: MISCONCEPTIONS ===== -->
+<div class="slide" data-s="17">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">よくある誤解</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky p t1"><div class="sticky-label">誤解 1</div>「<strong>構造化プロンプトは上級者向け</strong>」→ 見出し（#）と箇条書き（-）の2つだけでも十分に効果あり</div>
+        <div class="sticky p t2"><div class="sticky-label">誤解 2</div>「<strong>記号を使えば必ず良い結果に</strong>」→ 記号は「伝わりやすくする道具」。内容が曖昧なら変わらない</div>
+        <div class="sticky p t3"><div class="sticky-label">誤解 3</div>「<strong>AIが賢くなればHITLは不要</strong>」→ 事実確認・倫理判断・文脈理解・最終責任は常に人間の役割</div>
+      </div>
+      <div class="col">
+        <div class="sticky p t4"><div class="sticky-label">誤解 4</div>「<strong>フィードバックは何度でも繰り返すべき</strong>」→ 2〜3回で十分。「完璧」を追い求めすぎない</div>
+        <div class="sticky p t1"><div class="sticky-label">誤解 5</div>「<strong>1回で完璧なプロンプトを書けなければ失敗</strong>」→ HITLの本質は「繰り返し改善」。最初は「第一版」でOK</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">17/20</div>
+</div>
+
+<!-- ===== 18: SUMMARY ===== -->
+<div class="slide" data-s="18">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">まとめ</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <ul class="bl check">
+      <li>プロンプト作成のコツは<strong>「構造化」</strong>と<strong>「HITL」</strong>の2つに集約</li>
+      <li><strong>見出し（#）・箇条書き（-）・区切り（---）・XMLタグ</strong>で指示を「見える化」</li>
+      <li><strong>区切り記号</strong>で「指示」と「データ」を明確に分離する</li>
+      <li>モデルごとの相性を知る：Claude=<strong>XMLタグ</strong>、ChatGPT/Gemini=<strong>Markdown</strong></li>
+      <li><strong>HITL</strong>＝AIの出力を人間がチェック・修正・フィードバックするプロセス</li>
+      <li>HITLの<strong>5ステップ</strong>で品質・正確性・倫理性を担保</li>
+      <li><strong>コンテキストエンジニアリング</strong>の考え方で、AIに渡す情報を設計する</li>
+      <li>AIは優秀なパートナー。<strong>最終判断は常に人間</strong>の役割</li>
+    </ul>
+    <div class="conclusion green" style="margin-top:auto">次へ → 3-2. プロンプト手法（Zero-Shot、Few-Shot など）</div>
+  </div>
+  <div class="pg">18/20</div>
+</div>
+
+<!-- ===== 19: GLOSSARY (1) ===== -->
+<div class="slide" data-s="19">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集 (1)</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">構造化プロンプト</div><div class="card-body">記号や書式を使い、指示・条件・データを視覚的に整理したプロンプト</div></div>
+      <div class="card"><div class="card-title">XMLタグ</div><div class="card-body">&lt;tag&gt;...&lt;/tag&gt; 形式でプロンプトの各セクションを明示的に区切る手法。Claudeで特に効果的</div></div>
+      <div class="card"><div class="card-title">Markdown</div><div class="card-body"># 見出し、- 箇条書き、**太字** など、軽量マークアップ言語。ChatGPT/Geminiと相性良い</div></div>
+      <div class="card"><div class="card-title">HITL</div><div class="card-body">Human-in-The-Loop。AIの作業プロセスに人間の判断・フィードバックを組み込む仕組み</div></div>
+    </div>
+  </div>
+  <div class="pg">19/20</div>
+</div>
+
+<!-- ===== 20: GLOSSARY (2) ===== -->
+<div class="slide" data-s="20">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集 (2)</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">ハルシネーション</div><div class="card-body">AIが事実と異なる情報を自信を持って生成してしまう現象。HITLで対策が必要</div></div>
+      <div class="card"><div class="card-title">コンテキストエンジニアリング</div><div class="card-body">「何を指示するか」だけでなく「どんな情報をAIに渡すか」を設計する考え方</div></div>
+      <div class="card"><div class="card-title">RAG</div><div class="card-body">Retrieval-Augmented Generation（検索拡張生成）。外部データを検索してAIに渡す手法</div></div>
+      <div class="card"><div class="card-title">エージェントAI</div><div class="card-body">複数のタスクを自律的に計画・実行するAI。HITLの重要性がさらに高まる領域</div></div>
+    </div>
+  </div>
+  <div class="pg">20/20</div>
+</div>
+
+</div><!-- /board-frame -->
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="pb" onclick="go(cur-1)" disabled>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1.5L3.5 6L8 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="nd"></div>
+  <span class="nav-count" id="nc">1 / 20</span>
+  <button class="nav-btn" id="nb" onclick="go(cur+1)">
+    次へ<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 1.5L8.5 6L4 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+const S=document.querySelectorAll('.slide'),T=S.length;
+let cur=0;
+const nd=document.getElementById('nd');
+for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
+
+function go(i){
+  if(i<0||i>=T||i===cur)return;
+  S[cur].classList.remove('active');S[cur].style.display='none';
+  cur=i;
+  S[cur].classList.add('active');
+  upd();
+}
+function upd(){
+  document.getElementById('nc').textContent=`${cur+1} / ${T}`;
+  document.getElementById('pf').style.width=`${((cur+1)/T)*100}%`;
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===T-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+
+function cp(b){
+  const c=b.closest('.prompt').cloneNode(true);
+  c.querySelector('.copy-btn')?.remove();
+  c.querySelector('.prompt-tag')?.remove();
+  navigator.clipboard.writeText(c.textContent.trim()).then(()=>{
+    b.textContent='Copied!';b.classList.add('ok');
+    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1500);
+  });
+}
+upd();
+</script>
+</body>
+</html>

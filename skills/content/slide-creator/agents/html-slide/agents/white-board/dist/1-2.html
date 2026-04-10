@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-2. プロンプトエンジニアリングとは — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WHITE-BOARD SLIDE — Design System
+   Concept: "A brilliant teacher's whiteboard session"
+   Real marker strokes, tactile sticky notes, chalk-dust warmth
+   ============================================================ */
+:root {
+  /* Board & Surface */
+  --board: #F7F6F3;
+  --board-edge: #E8E6E1;
+  --surface: #FFFFFF;
+  --tray: #D4CDC2;
+  --tray-dark: #B8B0A3;
+
+  /* Marker Palette — saturated, confident */
+  --ink-black: #1A1A1A;
+  --ink-blue: #1565C0;
+  --ink-blue-light: #42A5F5;
+  --ink-red: #C62828;
+  --ink-red-light: #EF5350;
+  --ink-green: #2E7D32;
+  --ink-green-light: #66BB6A;
+  --ink-orange: #E65100;
+
+  /* Sticky Note colors — muted, paper-like */
+  --sticky-y: #FFF8DC;
+  --sticky-y-edge: #F0E6B8;
+  --sticky-b: #E8F0FE;
+  --sticky-b-edge: #C4D8F2;
+  --sticky-g: #E6F4EA;
+  --sticky-g-edge: #B7DFC3;
+  --sticky-p: #FCE4EC;
+  --sticky-p-edge: #F0B8C8;
+
+  /* UI */
+  --nav-bg: rgba(255,255,255,0.92);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
+
+  /* Type scale */
+  --fs-hero: clamp(2.2rem, 5vw, 3.2rem);
+  --fs-title: clamp(1.4rem, 3vw, 1.9rem);
+  --fs-sub: clamp(1rem, 2vw, 1.2rem);
+  --fs-body: clamp(0.88rem, 1.5vw, 1rem);
+  --fs-sm: clamp(0.78rem, 1.2vw, 0.88rem);
+  --fs-xs: clamp(0.68rem, 1vw, 0.78rem);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--board);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
+  color: var(--ink-black);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   WHITEBOARD FRAME — The physical board illusion
+   ============================================================ */
+.board-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 8px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+    linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    var(--board);
+  background-size: 100%, 40px 40px, 40px 40px, 100%;
+}
+
+.board-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.marker-tray {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80%);
+  height: 6px;
+  background: linear-gradient(to bottom, var(--tray), var(--tray-dark));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+
+.progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.05);
+  z-index: 2;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink-blue);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   SLIDE
+   ============================================================ */
+.slide {
+  position: absolute;
+  width: min(940px, 92vw);
+  height: min(540px, 78vh);
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
+  padding: 30px 40px;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+}
+
+.slide.active {
+  display: flex;
+  animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---- Header chip ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-blue);
+  background: var(--sticky-b);
+  padding: 3px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--sticky-b-edge);
+  width: fit-content;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Page number ---- */
+.pg {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tray-dark);
+}
+
+/* ---- Slide title ---- */
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 900;
+  line-height: 1.35;
+  color: var(--ink-black);
+  margin-bottom: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Marker underline stroke */
+.marker-line {
+  display: block;
+  height: 5px;
+  width: 0;
+  border-radius: 3px;
+  margin-bottom: 14px;
+  transform: rotate(-0.3deg);
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+.marker-line.red { background: var(--ink-red); }
+.marker-line.blue { background: var(--ink-blue); }
+.marker-line.green { background: var(--ink-green); }
+.slide.active .marker-line {
+  animation: drawLine 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { width: 80px; } }
+
+/* ---- Content area ---- */
+.content { flex:1; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.row { display:flex; gap:20px; flex:1; }
+.col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.col.w60 { flex:1.5; }
+.col.w40 { flex:0.8; }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
+.sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
+.sm { font-size:var(--fs-sm); color:#666; line-height:1.6; }
+.xs { font-size:var(--fs-xs); color:#999; }
+.kw { color:var(--ink-red); font-weight:700; }
+.kw-blue { color:var(--ink-blue); font-weight:700; }
+.accent { font-family:'Caveat',cursive; font-weight:700; }
+
+/* ============================================================
+   BULLET LIST
+   ============================================================ */
+.bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
+.bl li::before {
+  content:''; position:absolute; left:2px; top:8px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--ink-blue);
+  opacity: 0.7;
+}
+.bl.green li::before { background:var(--ink-green); }
+.bl.red li::before { background:var(--ink-red); }
+.bl.check li::before {
+  content:''; background:none; opacity:1;
+  color:var(--ink-green); font-size:1rem; font-weight:900;
+  top:3px; left:0; width:auto; height:auto;
+}
+.bl.num { counter-reset:n; }
+.bl.num li { padding-left:30px; counter-increment:n; }
+.bl.num li::before {
+  content:counter(n); background:var(--ink-blue); color:#fff;
+  font-size:0.65rem; font-weight:700; text-align:center;
+  width:18px; height:18px; line-height:18px; top:5px; left:0;
+  border-radius: 50%; opacity:1;
+}
+
+/* ============================================================
+   STICKY NOTE
+   ============================================================ */
+.sticky {
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 1px;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+
+.sticky::after {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+  pointer-events:none;
+  border-radius: inherit;
+}
+
+.sticky::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
+.sticky.t1 { transform:rotate(-1.5deg); }
+.sticky.t2 { transform:rotate(1deg); }
+.sticky.t3 { transform:rotate(-0.8deg); }
+.sticky.t4 { transform:rotate(1.3deg); }
+
+.slide.active .sticky {
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slide.active .sticky:nth-child(1) { animation-delay: 0.15s; }
+.slide.active .sticky:nth-child(2) { animation-delay: 0.25s; }
+.slide.active .sticky:nth-child(3) { animation-delay: 0.35s; }
+.slide.active .sticky:nth-child(4) { animation-delay: 0.45s; }
+@keyframes stickyPop {
+  from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
+}
+
+.sticky-label {
+  font-size:0.65rem; font-weight:700; color:var(--ink-blue);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
+}
+
+/* ============================================================
+   PROMPT BLOCK
+   ============================================================ */
+.prompt {
+  position:relative;
+  padding: 28px 16px 14px;
+  border-radius: 1px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: var(--shadow-sticky);
+}
+.prompt.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.prompt.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.prompt.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.prompt.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
+.prompt::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+}
+
+.prompt-tag {
+  position:absolute; top:6px; left:10px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.58rem; font-weight:700;
+  color:var(--ink-blue); letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+
+.copy-btn {
+  position:absolute; top:5px; right:8px;
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(4px);
+  border:1px solid rgba(0,0,0,0.08); border-radius:4px;
+  padding:2px 10px; font-size:0.6rem;
+  font-family:'Zen Maru Gothic',sans-serif;
+  cursor:pointer; color:#888; transition:all 0.2s;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.95); color:var(--ink-black); }
+.copy-btn.ok { color:var(--ink-green); border-color:var(--ink-green-light); }
+
+/* ============================================================
+   COMPARISON LAYOUT
+   ============================================================ */
+.vs { display:flex; gap:16px; flex:1; }
+.vs-side { flex:1; display:flex; flex-direction:column; gap:8px; padding:14px; border-radius:8px; }
+.vs-side.bad {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(198,40,40,0.015) 10px, rgba(198,40,40,0.015) 20px);
+  border:1.5px dashed rgba(198,40,40,0.2);
+}
+.vs-side.good {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(46,125,50,0.015) 10px, rgba(46,125,50,0.015) 20px);
+  border:1.5px solid rgba(46,125,50,0.2);
+}
+.vs-label { font-size:var(--fs-sub); font-weight:900; }
+.vs-side.bad .vs-label { color:var(--ink-red); }
+.vs-side.good .vs-label { color:var(--ink-green); }
+.vs-mid {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat',cursive; font-size:1.6rem;
+  color:var(--tray-dark); font-weight:700;
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+.wb-tbl th {
+  text-align:left; padding:8px 12px;
+  font-weight:700; color:var(--ink-blue);
+  border-bottom:2.5px solid var(--ink-blue);
+  font-size:var(--fs-sm);
+}
+.wb-tbl td {
+  padding:7px 12px;
+  border-bottom:1px solid var(--board-edge);
+}
+.wb-tbl tr:last-child td { border-bottom:none; }
+.wb-tbl tr:hover td { background:rgba(21,101,192,0.02); }
+
+/* ============================================================
+   CARD GRID
+   ============================================================ */
+.cards { display:grid; gap:10px; flex:1; }
+.cards.c2 { grid-template-columns:repeat(2,1fr); }
+.cards.c3 { grid-template-columns:repeat(3,1fr); }
+.card {
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:8px; padding:12px 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card-title { font-weight:700; color:var(--ink-blue); font-size:var(--fs-body); margin-bottom:3px; }
+.card-body { font-size:var(--fs-sm); color:#555; line-height:1.55; }
+
+/* ============================================================
+   FLOW STEPS
+   ============================================================ */
+.flow { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.flow-step {
+  padding:10px 18px; border-radius:10px; text-align:center;
+  font-size:var(--fs-sm); font-weight:700;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.flow-step:hover { transform:scale(1.05); }
+.flow-step.fb { background:var(--sticky-b); border:1px solid var(--sticky-b-edge); }
+.flow-step.fg { background:var(--sticky-g); border:1px solid var(--sticky-g-edge); }
+.flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
+.flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
+.flow-arr {
+  font-family:'Caveat',cursive; font-size:1.4rem;
+  color:var(--ink-blue); font-weight:700; padding:0 6px;
+}
+
+/* ============================================================
+   CONCLUSION BAR
+   ============================================================ */
+.conclusion {
+  margin-top:auto;
+  padding:9px 16px;
+  font-size:var(--fs-sm); font-weight:700;
+  color:var(--ink-blue);
+  border-left:3px solid var(--ink-blue);
+  background: linear-gradient(90deg, rgba(21,101,192,0.04), transparent);
+  border-radius:0 6px 6px 0;
+}
+.conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
+
+/* ============================================================
+   ILLUSTRATION (SVG)
+   ============================================================ */
+.illust { display:flex; align-items:center; justify-content:center; }
+.illust svg { max-width:100%; max-height:100%; }
+
+/* ============================================================
+   COVER SLIDE
+   ============================================================ */
+.slide.cover {
+  align-items:center; justify-content:center; text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.02) 0%, transparent 70%),
+    var(--surface);
+}
+.cover .chip { position:absolute; top:18px; left:24px; }
+.cover-title {
+  font-size: var(--fs-hero);
+  font-weight: 900;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+.cover-title .hl { color:var(--ink-blue); }
+.cover-sub {
+  font-size:var(--fs-sub); color:var(--tray-dark);
+  margin-top:8px; z-index:2; position:relative;
+}
+.cover-doodles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.cover-doodles svg { width:100%; height:100%; }
+
+/* ============================================================
+   HOME LINK
+   ============================================================ */
+.home-link {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--tray-dark);
+  text-decoration: none;
+  z-index: 10;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1.5px solid var(--board-edge);
+  transition: all 0.2s;
+}
+.home-link:hover {
+  color: var(--ink-blue);
+  border-color: var(--ink-blue);
+  background: var(--sticky-b);
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:10px 16px;
+  background:var(--nav-bg); backdrop-filter:blur(10px);
+  border-top:1px solid var(--board-edge);
+}
+.nav-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:100px; padding:7px 20px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.82rem; font-weight:700;
+  color:var(--ink-black); cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { background:var(--ink-blue); color:#fff; border-color:var(--ink-blue); transform:scale(1.05); }
+.nav-btn:active { transform:scale(0.97); }
+.nav-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
+.nav-btn:disabled:hover { background:var(--surface); color:var(--ink-black); border-color:var(--board-edge); }
+
+.nav-dots { display:flex; gap:5px; align-items:center; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--board-edge); border:none;
+  cursor:pointer; transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot.on { background:var(--ink-blue); width:20px; border-radius:3px; }
+.dot:hover { background:var(--ink-blue-light); }
+
+.nav-count {
+  font-family:'Caveat',cursive; font-weight:700;
+  font-size:1.05rem; color:var(--tray-dark);
+  min-width:55px; text-align:center;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:768px){
+  .slide{padding:20px 24px}
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+  .vs,.row{flex-direction:column}
+  .nav{gap:8px;padding:8px 10px}
+  .nav-btn{padding:6px 14px;font-size:.78rem}
+}
+@media(max-width:480px){
+  .slide{padding:14px 16px;border-radius:0}
+  .cards.c2,.cards.c3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Board Frame -->
+<div class="board-frame">
+  <div class="marker-tray"></div>
+  <div class="progress-track"><div class="progress-fill" id="pf" style="width:5.6%"></div></div>
+  <a href="index.html" class="home-link">目次に戻る</a>
+
+<!-- ===== 1: COVER ===== -->
+<div class="slide cover active" data-s="1">
+  <div class="chip">3章 プロンプト</div>
+  <div class="cover-doodles">
+    <svg viewBox="0 0 940 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity=".12"><rect x="55" y="50" width="80" height="55" rx="12" stroke="#1565C0" stroke-width="2.5"/><path d="M67 70h50M67 80h40M67 90h45" stroke="#1565C0" stroke-width="1.5" stroke-linecap="round"/><path d="M65 110l-10 18" stroke="#1565C0" stroke-width="2.5" stroke-linecap="round"/></g>
+      <g opacity=".09" transform="translate(790,35)"><circle cx="30" cy="30" r="25" stroke="#C62828" stroke-width="2.5"/><path d="M20 25h20M20 35h15" stroke="#C62828" stroke-width="2" stroke-linecap="round"/><path d="M30 60v12M18 55l-8 10M42 55l8 10" stroke="#C62828" stroke-width="2" stroke-linecap="round"/></g>
+      <g opacity=".08" transform="translate(45,390)"><rect width="110" height="65" rx="6" stroke="#2E7D32" stroke-width="2.5"/><path d="M15 18l15 12 10-8 20 16 15-10 20 18" stroke="#2E7D32" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 48h80" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/></g>
+      <g opacity=".08" transform="translate(815,400)"><rect width="50" height="40" rx="8" stroke="#1565C0" stroke-width="2.5"/><path d="M12 15h26M12 23h18M12 31h22" stroke="#1565C0" stroke-width="1.5" stroke-linecap="round"/></g>
+      <g opacity=".07"><path d="M185 125 Q195 113 210 120" stroke="#1A1A1A" stroke-width="1.8" fill="none"/><polygon points="208,116 213,122 206,123" fill="#1A1A1A"/><path d="M725 415 Q735 403 750 410" stroke="#1A1A1A" stroke-width="1.8" fill="none"/><polygon points="748,406 753,412 746,413" fill="#1A1A1A"/></g>
+      <text x="170" y="155" font-size="18" fill="#C62828" opacity=".08">&#9733;</text>
+      <text x="765" y="165" font-size="14" fill="#2E7D32" opacity=".08">&#9733;</text>
+      <text x="125" y="365" font-size="16" fill="#1565C0" opacity=".08">&#9733;</text>
+    </svg>
+  </div>
+  <div class="cover-title">1-2. <span class="hl">プロンプトエンジニアリング</span>とは</div>
+  <div class="cover-sub">第3章 プロンプト ― 1. プロンプトの基礎</div>
+  <div class="pg">1/18</div>
+</div>
+
+<!-- ===== 2: GOAL ===== -->
+<div class="slide" data-s="2">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">このレッスンのゴール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <ul class="bl">
+      <li><strong>プロンプトエンジニアリング</strong>の定義を説明できるようになる</li>
+      <li>なぜ「<strong>エンジニアリング</strong>」と呼ばれるのか、その理由を理解する</li>
+      <li><strong>同じ意図でも書き方で結果が変わる</strong>ことをBefore/Afterで体感する</li>
+      <li><strong>7つの基本原則</strong>を把握し、実践に活かせるようになる</li>
+      <li>プログラミングとの<strong>違いと共通点</strong>を比較できるようになる</li>
+      <li><strong>最新動向</strong>（APO・エージェント等）のキーワードを知る</li>
+    </ul>
+    <div class="conclusion">プロンプトエンジニアリング = 「AIの出力を設計する技術」。全職種の基礎スキルへ。</div>
+  </div>
+  <div class="pg">2/18</div>
+</div>
+
+<!-- ===== 3: DEFINITION ===== -->
+<div class="slide" data-s="3">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプトエンジニアリングとは？</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="body">プロンプトエンジニアリングとは、<span class="kw">生成AIから望みどおりの回答を引き出すために、プロンプト（指示文）を設計・改善する技術</span>のことです。</div>
+        <div class="sticky y t1" style="margin-top:8px">
+          <div class="sticky-label">たとえ話</div>
+          「カルボナーラをください」= 普通のプロンプト<br>
+          シェフの得意料理を調べ、味の好みやアレルギー情報も添えて最適な注文を<strong>設計する</strong> = プロンプトエンジニアリング
+        </div>
+        <div class="sticky b t2" style="margin-top:4px">
+          <div class="sticky-label">Point</div>
+          「AIへの質問のコツ」ではなく、<strong>「AIの出力を設計する技術」</strong>
+        </div>
+      </div>
+      <div class="col w40 illust">
+        <svg viewBox="0 0 180 200" fill="none">
+          <circle cx="50" cy="35" r="16" stroke="#1A1A1A" stroke-width="2.5"/><line x1="50" y1="51" x2="50" y2="100" stroke="#1A1A1A" stroke-width="2.5"/><line x1="50" y1="68" x2="30" y2="88" stroke="#1A1A1A" stroke-width="2.5"/><line x1="50" y1="68" x2="78" y2="62" stroke="#1A1A1A" stroke-width="2.5"/>
+          <rect x="82" y="22" width="90" height="50" rx="10" stroke="#1565C0" stroke-width="2"/><path d="M82 46 L72 50 L82 54" stroke="#1565C0" stroke-width="2" fill="none"/><text x="90" y="42" font-size="8" fill="#1565C0" font-family="sans-serif" font-weight="700">設計されたプロンプト</text><text x="90" y="56" font-size="7" fill="#999" font-family="sans-serif">（明確・具体・構造化）</text>
+          <line x1="127" y1="80" x2="127" y2="110" stroke="#C62828" stroke-width="2.5"/><polygon points="120,107 127,120 134,107" fill="#C62828"/>
+          <rect x="102" y="125" width="50" height="36" rx="8" stroke="#2E7D32" stroke-width="2.5"/><circle cx="117" cy="138" r="4" stroke="#2E7D32" stroke-width="2"/><circle cx="137" cy="138" r="4" stroke="#2E7D32" stroke-width="2"/><path d="M115 150 Q127 156 139 150" stroke="#2E7D32" stroke-width="2" fill="none"/><text x="108" y="178" font-size="9" fill="#2E7D32" font-family="sans-serif" font-weight="700">高品質な出力</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="pg">3/18</div>
+</div>
+
+<!-- ===== 4: WHY ENGINEERING ===== -->
+<div class="slide" data-s="4">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">なぜ「エンジニアリング」と呼ぶのか</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">「エンジニアリング」と呼ばれるのは、<span class="kw">試行錯誤を繰り返して改善するプロセスが工学的</span>だからです。</div>
+    <div class="flow" style="margin:16px 0">
+      <div class="flow-step fb">1. 設計する<br><span style="font-weight:400;font-size:0.75rem">仮説を立てる</span></div>
+      <div class="flow-arr">&#8594;</div>
+      <div class="flow-step fg">2. 試す<br><span style="font-weight:400;font-size:0.75rem">AIに入力して確認</span></div>
+      <div class="flow-arr">&#8594;</div>
+      <div class="flow-step fy">3. 改善する<br><span style="font-weight:400;font-size:0.75rem">不十分な点を修正</span></div>
+      <div class="flow-arr">&#8594;</div>
+      <div class="flow-step fp">4. 再び試す<br><span style="font-weight:400;font-size:0.75rem">サイクルを繰り返す</span></div>
+    </div>
+    <div class="sticky g t3" style="margin-top:auto">
+      <div class="sticky-label">Key Insight</div>
+      一発で正解を出すのではなく、<strong>繰り返し磨き上げていく</strong>作業。ソフトウェア開発やものづくりと同じ考え方。
+    </div>
+  </div>
+  <div class="pg">4/18</div>
+</div>
+
+<!-- ===== 5: BEFORE/AFTER 1 ===== -->
+<div class="slide" data-s="5">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">書き方で結果が変わる ― 要約タスク</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">同じことを聞いても、<span class="kw">書き方次第で回答の質がまったく変わる</span>。</div>
+    <div class="vs" style="margin-top:8px">
+      <div class="vs-side bad">
+        <div class="vs-label">Before</div>
+        <div class="prompt p" style="transform:rotate(-.4deg)"><span class="prompt-tag">Prompt</span>
+この文章を要約して</div>
+        <div class="sm">長さも粒度も不定。毎回バラバラな出力に。</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">After</div>
+        <div class="prompt g" style="transform:rotate(.4deg)"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+この文章を、専門知識のない
+一般読者向けに、
+3つの箇条書きで、
+各50字以内で要約してください</div>
+        <div class="sm">対象読者・形式・長さが明確。安定した出力。</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">5/18</div>
+</div>
+
+<!-- ===== 6: BEFORE/AFTER 2 ===== -->
+<div class="slide" data-s="6">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">書き方で結果が変わる ― アイデア出し・メール</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th style="width:35%">Before（曖昧）</th><th>After（設計済み）</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>新商品のアイデアを考えて</td>
+          <td>20代女性向け、予算3,000円以下、サステナブル素材の文房具を<span class="kw">5つ</span>。各アイデアに商品名・特徴・想定価格を含める</td>
+        </tr>
+        <tr>
+          <td>お詫びメールを書いて</td>
+          <td>主要取引先の購買部長宛、部品Aの納期<span class="kw">15日遅延</span>のお詫び。原因は半導体供給遅延。代替案として暫定品の先行納入を提案。<span class="kw">400字程度</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="conclusion" style="margin-top:auto">「<strong>何を</strong>」「<strong>誰に</strong>」「<strong>どのように</strong>」を明確にするだけで、回答の質が劇的に向上する</div>
+  </div>
+  <div class="pg">6/18</div>
+</div>
+
+<!-- ===== 7: 7 PRINCIPLES OVERVIEW ===== -->
+<div class="slide" data-s="7">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">7つの基本原則</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <ul class="bl num" style="counter-reset:n">
+          <li><span class="kw">明確さ</span>（Clarity）― 曖昧な表現を避ける</li>
+          <li><span class="kw">具体性</span>（Specificity）― 形式・長さ・読者を指定</li>
+          <li><span class="kw">背景情報</span>（Context）― 目的や状況を伝える</li>
+          <li><span class="kw">役割の指定</span>（Role）― 専門家としての立場を与える</li>
+        </ul>
+      </div>
+      <div class="col">
+        <ul class="bl num" style="counter-reset:n 4">
+          <li><span class="kw">段階的な指示</span>（Step-by-Step）― 手順に分解</li>
+          <li><span class="kw">出力形式</span>（Output Format）― 望む形を明示</li>
+          <li><span class="kw">制約条件</span>（Constraints）― やるべきでないことも伝える</li>
+        </ul>
+        <div class="sticky y t1" style="margin-top:auto"><div class="sticky-label">Tip</div>7つ全部使う必要はない。タスクに応じて必要な原則を組み合わせる。</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">7/18</div>
+</div>
+
+<!-- ===== 8: PRINCIPLES DETAIL 1 ===== -->
+<div class="slide" data-s="8">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">原則①〜③ 明確さ・具体性・背景情報</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky b t1">
+          <div class="sticky-label">1. 明確さ (Clarity)</div>
+          <strong style="color:var(--ink-red)">NG:</strong> 「いい感じにして」<br>
+          <strong style="color:var(--ink-green)">OK:</strong> 「文末を『です・ます調』に統一し、1文を60字以内に」
+        </div>
+        <div class="sticky g t2">
+          <div class="sticky-label">2. 具体性 (Specificity)</div>
+          <strong style="color:var(--ink-red)">NG:</strong> 「説明して」<br>
+          <strong style="color:var(--ink-green)">OK:</strong> 「中学生でも理解できるように、比喩を使って200字以内で」
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky p t3">
+          <div class="sticky-label">3. 背景情報 (Context)</div>
+          <strong style="color:var(--ink-red)">NG:</strong> 「マーケティング戦略を考えて」<br>
+          <strong style="color:var(--ink-green)">OK:</strong> 「従業員50名のBtoB SaaS企業で、年間予算500万円の範囲で、新規リード獲得を目的とした戦略を提案」
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">8/18</div>
+</div>
+
+<!-- ===== 9: PRINCIPLES DETAIL 2 ===== -->
+<div class="slide" data-s="9">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">原則④〜⑦ 役割・段階的指示・出力形式・制約</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card">
+        <div class="card-title">④ 役割の指定</div>
+        <div class="card-body">「あなたは10年の経験を持つUXデザイナーです。以下のワイヤーフレームにフィードバックを」</div>
+      </div>
+      <div class="card">
+        <div class="card-title">⑤ 段階的な指示</div>
+        <div class="card-body">「まず問題点を3つ挙げ、次に改善案を提示し、最後に優先順位をつけて」</div>
+      </div>
+      <div class="card">
+        <div class="card-title">⑥ 出力形式の指定</div>
+        <div class="card-body">「3製品を『価格』『機能』『サポート』の軸で<span class="kw">比較表</span>にまとめて」</div>
+      </div>
+      <div class="card">
+        <div class="card-title">⑦ 制約条件の明示</div>
+        <div class="card-body">「専門用語は使わず、推測や仮定は含めないでください」</div>
+      </div>
+    </div>
+    <div class="conclusion" style="margin-top:auto">7原則の組み合わせで、あらゆるタスクに対応できる</div>
+  </div>
+  <div class="pg">9/18</div>
+</div>
+
+<!-- ===== 10: PROMPT EXAMPLE ===== -->
+<div class="slide" data-s="10">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">7原則を組み合わせた実例</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="prompt b" style="transform:rotate(.3deg)">
+      <span class="prompt-tag">7原則を活用した完成例</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+あなたは10年の経験を持つマーケターです。  ← ④役割
+従業員30名のD2Cブランドが、               ← ③背景情報
+SNS広告の月次レポートを作成します。        ← ①明確さ
+過去3ヶ月の広告データを分析し、            ← ②具体性
+以下の形式でまとめてください：              ← ⑥出力形式
+1. 主要KPIの推移（表形式）                 ← ⑤段階的
+2. 改善すべき3つのポイント
+3. 来月のアクションプラン
+※ 専門用語には注釈をつけてください        ← ⑦制約条件</div>
+    <div class="conclusion" style="margin-top:auto">原則を意識的に組み合わせるだけで、実用的で安定した出力が得られる</div>
+  </div>
+  <div class="pg">10/18</div>
+</div>
+
+<!-- ===== 11: WHERE USED ===== -->
+<div class="slide" data-s="11">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプトエンジニアリングの活用分野</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th>分野</th><th>活用例</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw">ビジネス全般</span></td><td>レポート自動生成、メール下書き、議事録要約、市場調査</td></tr>
+        <tr><td><span class="kw">ソフトウェア開発</span></td><td>コード生成、バグ分析、テストケース作成、コードレビュー</td></tr>
+        <tr><td><span class="kw">教育</span></td><td>教材作成、個別最適化された問題生成、学習者へのフィードバック</td></tr>
+        <tr><td><span class="kw">クリエイティブ</span></td><td>コピーライティング、画像生成プロンプト、シナリオ作成</td></tr>
+        <tr><td><span class="kw">カスタマーサポート</span></td><td>FAQチャットボットの応答設計、問い合わせ対応の自動化</td></tr>
+        <tr><td><span class="kw">研究・学術</span></td><td>文献レビューの整理、論文構成の提案、データ解釈の支援</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion" style="margin-top:auto">専門職だけでなく、営業・経理・人事など<strong>あらゆる部門</strong>でプロンプトスキルが必要に</div>
+  </div>
+  <div class="pg">11/18</div>
+</div>
+
+<!-- ===== 12: VS PROGRAMMING ===== -->
+<div class="slide" data-s="12">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プログラミングとの違いと共通点</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th>比較ポイント</th><th>プロンプトエンジニアリング</th><th>プログラミング</th></tr></thead>
+      <tbody>
+        <tr><td>使う言語</td><td>自然言語（日本語・英語）</td><td>Python・Java等</td></tr>
+        <tr><td>同じ入力への出力</td><td><span class="kw">毎回少し異なる場合あり</span></td><td>常に同じ結果</td></tr>
+        <tr><td>デバッグ</td><td>出力を見て試行錯誤</td><td>エラーメッセージで特定</td></tr>
+        <tr><td>正解</td><td>表現のバリエーションが無数</td><td>構文規則で正しい書き方が決まる</td></tr>
+      </tbody>
+    </table>
+    <div class="row" style="margin-top:auto">
+      <div class="sticky g t1" style="flex:1"><div class="sticky-label">共通点</div>問題を分解し、手順を設計し、繰り返し改善するプロセスは同じ</div>
+      <div class="sticky p t2" style="flex:1"><div class="sticky-label">最大の違い</div>「<strong>決定性</strong>」― LLMは確率的に文章を生成するため、毎回微妙に異なる</div>
+    </div>
+  </div>
+  <div class="pg">12/18</div>
+</div>
+
+<!-- ===== 13: HISTORY ===== -->
+<div class="slide" data-s="13">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプトエンジニアリングの歴史</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th style="width:18%">時期</th><th>できごと</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw-blue">2020年</span></td><td>GPT-3登場。「プロンプトの書き方で出力が大きく変わる」ことが研究者の間で注目</td></tr>
+        <tr><td><span class="kw">2022年末</span></td><td>ChatGPT（GPT-3.5）一般公開。非技術者にもプロンプトの重要性が広く認知</td></tr>
+        <tr><td><span class="kw-blue">2023年</span></td><td>GPT-4、Claude 2登場。Chain-of-Thought等の高度手法が知られるように。「プロンプトエンジニア」が求人に登場</td></tr>
+        <tr><td><span class="kw-blue">2024年</span></td><td>マルチモーダルプロンプティングが普及。企業でのシステムプロンプト設計が重要に</td></tr>
+        <tr><td><span class="kw">2025〜26年</span></td><td>AIエージェント普及。プロンプト設計が「一回の質問」から「行動指針全体」へ拡大</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion" style="margin-top:auto">2022年末のChatGPT公開が、プロンプトエンジニアリングを一般に広めた<strong>最大の転機</strong></div>
+  </div>
+  <div class="pg">13/18</div>
+</div>
+
+<!-- ===== 14: LATEST TRENDS ===== -->
+<div class="slide" data-s="14">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">最新動向：全職種の基礎スキルへ</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="cards c3" style="margin-top:4px">
+      <div class="card">
+        <div class="card-title">職種の変化</div>
+        <div class="card-body">「プロンプトエンジニア」は専門職から<span class="kw">全職種のAIリテラシー</span>の一部へ変化</div>
+      </div>
+      <div class="card">
+        <div class="card-title">自動プロンプト最適化 (APO)</div>
+        <div class="card-body">AIがプロンプト自体を改善する「メタプロンプティング」やDSPy等が実用化</div>
+      </div>
+      <div class="card">
+        <div class="card-title">エージェントAI</div>
+        <div class="card-body">ツール使用・マルチステップ実行のAIエージェント普及で、プロンプト設計の対象が<span class="kw">行動指針全体</span>へ</div>
+      </div>
+    </div>
+    <div class="sticky b t2" style="margin-top:auto">
+      <div class="sticky-label">Trend</div>
+      人手による設計と自動最適化を<strong>組み合わせる</strong>のが主流に。プロンプトの「設計力」は今後も重要であり続ける。
+    </div>
+  </div>
+  <div class="pg">14/18</div>
+</div>
+
+<!-- ===== 15: FULL CYCLE EXAMPLE ===== -->
+<div class="slide" data-s="15">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">実践：設計→試す→改善 サイクル体験</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sub" style="color:var(--ink-red);font-size:var(--fs-sm)">第1版（初回）</div>
+        <div class="prompt p" style="transform:rotate(-.3deg);font-size:.76rem"><span class="prompt-tag">v1</span>
+AIについて記事を書いて</div>
+        <div class="sm">出力: 3000字の漠然とした記事...</div>
+      </div>
+      <div class="col">
+        <div class="sub" style="color:var(--ink-green);font-size:var(--fs-sm)">第3版（改善後）</div>
+        <div class="prompt g" style="transform:rotate(.3deg);font-size:.76rem"><span class="prompt-tag">v3</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+IT部門のない中小企業の経営者向けに、
+生成AIの業務活用メリットを
+800字の記事にしてください。
+見出し3つ、各セクションに具体例1つ。
+専門用語には括弧で注釈を入れて。</div>
+        <div class="sm">出力: ターゲットに最適化された実用記事!</div>
+      </div>
+    </div>
+    <div class="conclusion" style="margin-top:auto">最初のプロンプトは「初版」にすぎない。出力を見て、改善を重ねていくのが正しいアプローチ。</div>
+  </div>
+  <div class="pg">15/18</div>
+</div>
+
+<!-- ===== 16: MISCONCEPTIONS ===== -->
+<div class="slide" data-s="16">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">よくある誤解</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="col" style="gap:6px">
+      <div class="sticky p t2"><div class="sticky-label">誤解 1</div>「<strong>魔法のプロンプトが存在する</strong>」 &#8594; 万能なプロンプトは存在しない。タスク・モデル・状況に応じて調整が必要</div>
+      <div class="sticky p t3"><div class="sticky-label">誤解 2</div>「<strong>長いプロンプト = 良いプロンプト</strong>」 &#8594; 不必要な長さはノイズ。必要十分な情報量を簡潔にまとめることが重要</div>
+      <div class="sticky p t1"><div class="sticky-label">誤解 3</div>「<strong>一度で完璧な結果が得られる</strong>」 &#8594; イテレーション（繰り返し改善）が前提。最初のプロンプトは「初版」</div>
+      <div class="sticky p t4"><div class="sticky-label">誤解 4</div>「<strong>プロンプトエンジニアリングはすぐ不要になる</strong>」 &#8594; AIが賢くなっても「意図を正確に伝える能力」の価値は残る</div>
+      <div class="sticky p t2"><div class="sticky-label">誤解 5</div>「<strong>プログラミングができないとできない</strong>」 &#8594; 自然言語で行う。必要なのは「論理的思考力」と「言語化能力」</div>
+    </div>
+  </div>
+  <div class="pg">16/18</div>
+</div>
+
+<!-- ===== 17: SUMMARY ===== -->
+<div class="slide" data-s="17">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">まとめ</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <ul class="bl check">
+      <li><strong>プロンプトエンジニアリング</strong>は、AIから望む回答を引き出すためにプロンプトを設計・改善する技術</li>
+      <li>「<strong>設計&#8594;試す&#8594;改善</strong>」のサイクルを回す工学的アプローチ</li>
+      <li>7つの基本原則：<strong>明確さ・具体性・背景情報・役割指定・段階的指示・出力形式・制約条件</strong></li>
+      <li>同じ意図でも<strong>書き方次第で回答の質が劇的に変わる</strong></li>
+      <li>プログラミング知識は不要。<strong>論理的思考と言語化能力</strong>があれば誰でも実践可能</li>
+      <li>2025〜2026年は<strong>全職種の基礎スキル</strong>として定着</li>
+    </ul>
+    <div class="conclusion green" style="margin-top:auto">次へ &#8594; 1-3. 良いプロンプトと悪いプロンプトの違いを豊富な比較例で学ぶ</div>
+  </div>
+  <div class="pg">17/18</div>
+</div>
+
+<!-- ===== 18: GLOSSARY ===== -->
+<div class="slide" data-s="18">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">プロンプトエンジニアリング</div><div class="card-body">AIから望む出力を引き出すためにプロンプトを設計・改善する技術</div></div>
+      <div class="card"><div class="card-title">イテレーション</div><div class="card-body">「設計&#8594;試す&#8594;改善」を繰り返す反復プロセス</div></div>
+      <div class="card"><div class="card-title">Chain-of-Thought (CoT)</div><div class="card-body">AIに段階的に思考させることで精度を上げる手法</div></div>
+      <div class="card"><div class="card-title">決定性</div><div class="card-body">同じ入力に対して常に同じ出力が得られる性質。LLMは確率的なため非決定的</div></div>
+      <div class="card"><div class="card-title">自動プロンプト最適化 (APO)</div><div class="card-body">AI自身がプロンプトを自動改善する技術。DSPy等のフレームワーク</div></div>
+      <div class="card"><div class="card-title">メタプロンプティング</div><div class="card-body">AIに「良いプロンプトを作って」と依頼してプロンプト自体を生成する手法</div></div>
+      <div class="card"><div class="card-title">マルチモーダルプロンプティング</div><div class="card-body">テキストだけでなく画像・音声など複数の入力形式を組み合わせたプロンプト</div></div>
+      <div class="card"><div class="card-title">AIエージェント</div><div class="card-body">ツール使用やマルチステップ実行を自律的に行うAIシステム</div></div>
+    </div>
+  </div>
+  <div class="pg">18/18</div>
+</div>
+
+</div><!-- /board-frame -->
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="pb" onclick="go(cur-1)" disabled>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1.5L3.5 6L8 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="nd"></div>
+  <span class="nav-count" id="nc">1 / 18</span>
+  <button class="nav-btn" id="nb" onclick="go(cur+1)">
+    次へ<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 1.5L8.5 6L4 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+const S=document.querySelectorAll('.slide'),T=S.length;
+let cur=0;
+// Build dots
+const nd=document.getElementById('nd');
+for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
+
+function go(i){
+  if(i<0||i>=T||i===cur)return;
+  S[cur].classList.remove('active');S[cur].style.display='none';
+  cur=i;
+  S[cur].classList.add('active');
+  upd();
+}
+function upd(){
+  document.getElementById('nc').textContent=`${cur+1} / ${T}`;
+  document.getElementById('pf').style.width=`${((cur+1)/T)*100}%`;
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===T-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+});
+// Touch
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+
+// Copy
+function cp(b){
+  const c=b.closest('.prompt').cloneNode(true);
+  c.querySelector('.copy-btn')?.remove();
+  c.querySelector('.prompt-tag')?.remove();
+  navigator.clipboard.writeText(c.textContent.trim()).then(()=>{
+    b.textContent='Copied!';b.classList.add('ok');
+    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1500);
+  });
+}
+upd();
+</script>
+</body>
+</html>
