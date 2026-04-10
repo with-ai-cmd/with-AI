@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6-1-1. Geminiのバージョン／機能比較 — Gemini-UI Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   CSS Variables — Gemini-UI Design System
+   ======================================== */
+:root {
+  --gem-bg: #1E1F20;
+  --gem-surface: #131314;
+  --gem-surface-2: #282A2C;
+  --gem-text: #E3E3E3;
+  --gem-subtext: #9AA0A6;
+  --gem-blue: #8AB4F8;
+  --gem-purple: #C58AF9;
+  --gem-pink: #F28B82;
+  --gem-green: #81C995;
+  --gem-user-bubble: #004A77;
+  --gem-border: #3C4043;
+  --gem-input-bg: #282A2C;
+  --gem-input-border: #3C4043;
+  --gem-nav-bg: #131314;
+  --gem-sidebar-bg: #131314;
+  --gem-chip-bg: #282A2C;
+  --gem-chip-border: #3C4043;
+
+  --slide-width: 960px;
+  --slide-height: 540px;
+  --sidebar-width: 200px;
+}
+
+/* ========================================
+   Reset & Base
+   ======================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0D0D0D;
+  font-family: 'Google Sans', 'Noto Sans JP', system-ui, sans-serif;
+  color: var(--gem-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================
+   Slide Container
+   ======================================== */
+.slide-wrapper {
+  position: relative;
+  width: 100vw; height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #4285F4, #A142F4, #F44293);
+  transition: width 0.4s ease;
+  z-index: 100;
+}
+
+.slide {
+  position: absolute;
+  width: var(--slide-width); height: var(--slide-height);
+  max-width: 95vw; max-height: 90vh;
+  background: var(--gem-bg);
+  border-radius: 16px;
+  display: none; flex-direction: row;
+  opacity: 0; transform: translateX(30px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.5);
+}
+
+.slide.active { display: flex; opacity: 1; transform: translateX(0); }
+.slide.exit-left { display: flex; opacity: 0; transform: translateX(-30px); }
+
+/* ========================================
+   Sidebar
+   ======================================== */
+.gem-sidebar {
+  width: var(--sidebar-width);
+  background: var(--gem-sidebar-bg);
+  border-right: 1px solid var(--gem-border);
+  display: flex; flex-direction: column;
+  padding: 14px 10px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.sidebar-logo {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.sidebar-logo .gemini-star {
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, #4285F4, #A142F4, #F44293);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  font-size: 1.2rem; font-weight: 700;
+}
+
+.sidebar-new {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  border-radius: 20px;
+  font-size: 0.82rem; font-weight: 500;
+  color: var(--gem-text);
+  border: 1px solid var(--gem-border);
+  margin-bottom: 18px;
+}
+
+.sidebar-new svg { width: 16px; height: 16px; stroke: var(--gem-text); fill: none; stroke-width: 2; }
+
+.sidebar-label {
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--gem-subtext);
+  padding: 4px 10px;
+  margin-bottom: 4px;
+}
+
+.sidebar-item {
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  color: var(--gem-subtext);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.sidebar-item.active {
+  background: var(--gem-surface-2);
+  color: var(--gem-text);
+}
+
+/* ========================================
+   Main Area
+   ======================================== */
+.gem-main {
+  flex: 1; display: flex; flex-direction: column;
+  min-width: 0; position: relative;
+}
+
+.gem-topbar {
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.85rem; font-weight: 500;
+  flex-shrink: 0;
+}
+
+.gem-topbar .model-selector {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--gem-surface-2);
+  padding: 5px 14px; border-radius: 20px;
+  font-size: 0.78rem;
+  color: var(--gem-text);
+  cursor: default;
+}
+
+.gem-topbar .model-selector svg {
+  width: 12px; height: 12px;
+  stroke: var(--gem-subtext); fill: none; stroke-width: 2;
+}
+
+/* Chat Area */
+.chat-area {
+  flex: 1; overflow-y: auto;
+  padding: 14px 28px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.chat-area::-webkit-scrollbar { width: 4px; }
+.chat-area::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+
+/* Messages */
+.msg { display: flex; gap: 14px; max-width: 100%; animation: msgFadeIn 0.35s ease both; }
+.msg.user { flex-direction: row-reverse; }
+
+@keyframes msgFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.msg-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  flex-shrink: 0; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700;
+  margin-top: 2px;
+}
+
+.msg.user .msg-avatar {
+  background: #5E35B1; color: #FFF;
+}
+
+.msg.ai .msg-avatar {
+  background: linear-gradient(135deg, #4285F4, #A142F4);
+  color: #FFF; font-size: 0.9rem;
+}
+
+.msg-body {
+  max-width: 85%; line-height: 1.7; font-size: 0.88rem;
+}
+
+.msg.user .msg-body {
+  background: var(--gem-user-bubble);
+  padding: 10px 18px;
+  border-radius: 20px 20px 4px 20px;
+}
+
+.msg.ai .msg-body { padding: 4px 0; }
+
+.msg-body strong { font-weight: 600; color: #FFF; }
+.msg-body .keyword { color: var(--gem-blue); font-weight: 600; }
+.msg-body .keyword-purple { color: var(--gem-purple); font-weight: 600; }
+.msg-body .keyword-pink { color: var(--gem-pink); font-weight: 600; }
+.msg-body .keyword-green { color: var(--gem-green); font-weight: 600; }
+
+.msg-body ul, .msg-body ol {
+  margin: 6px 0 6px 18px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+
+.msg-body li { font-size: 0.86rem; line-height: 1.6; }
+
+/* ========================================
+   Response Card (Gemini style)
+   ======================================== */
+.response-card {
+  background: var(--gem-surface-2);
+  border: 1px solid var(--gem-border);
+  border-radius: 12px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.response-card-header {
+  padding: 8px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.72rem; color: var(--gem-subtext);
+  border-bottom: 1px solid var(--gem-border);
+}
+
+.response-card-header .copy-btn {
+  background: none; border: none;
+  color: var(--gem-subtext); font-size: 0.7rem;
+  cursor: pointer; display: flex; align-items: center; gap: 4px;
+  font-family: 'Google Sans', 'Noto Sans JP', sans-serif;
+  transition: color 0.2s;
+}
+
+.response-card-header .copy-btn:hover { color: var(--gem-text); }
+.response-card-header .copy-btn.copied { color: var(--gem-green); }
+
+.response-card-body {
+  padding: 12px 14px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.8rem; line-height: 1.65;
+  white-space: pre-wrap; word-break: break-word;
+}
+
+/* ========================================
+   Suggestion Chips
+   ======================================== */
+.gem-chips {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  justify-content: center; margin-top: 10px;
+}
+
+.gem-chip {
+  background: transparent;
+  border: 1px solid var(--gem-chip-border);
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 0.78rem;
+  color: var(--gem-subtext);
+  cursor: default;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.gem-chip:hover {
+  border-color: var(--gem-blue);
+  color: var(--gem-blue);
+}
+
+/* ========================================
+   Input Bar
+   ======================================== */
+.gem-input-bar {
+  padding: 8px 20px 14px;
+  flex-shrink: 0;
+}
+
+.gem-input-box {
+  background: var(--gem-input-bg);
+  border: 1px solid var(--gem-input-border);
+  border-radius: 24px;
+  padding: 12px 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.gem-input-text {
+  flex: 1; font-size: 0.82rem;
+  color: var(--gem-subtext);
+  font-family: 'Google Sans', 'Noto Sans JP', sans-serif;
+}
+
+.gem-send-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #4285F4, #A142F4);
+  border: none; display: flex;
+  align-items: center; justify-content: center;
+  cursor: default; flex-shrink: 0;
+}
+
+.gem-send-btn svg { width: 16px; height: 16px; stroke: #FFF; fill: none; stroke-width: 2.5; }
+
+.gem-input-hint {
+  text-align: center; font-size: 0.62rem;
+  color: #555; margin-top: 4px;
+}
+
+/* ========================================
+   Welcome Screen
+   ======================================== */
+.welcome-center {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px; padding: 20px;
+}
+
+.welcome-logo {
+  font-size: 2.4rem; font-weight: 700;
+  background: linear-gradient(135deg, #4285F4, #A142F4, #F44293);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+.welcome-title {
+  font-size: 1.5rem; font-weight: 600;
+  color: var(--gem-text); text-align: center;
+}
+
+.welcome-sub {
+  font-size: 0.85rem; color: var(--gem-subtext); text-align: center;
+}
+
+/* ========================================
+   Comparison Table
+   ======================================== */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 0.78rem;
+}
+
+.compare-table th {
+  background: var(--gem-surface-2);
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--gem-blue);
+  border-bottom: 1px solid var(--gem-border);
+}
+
+.compare-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(60,64,67,0.4);
+  color: var(--gem-text);
+  vertical-align: top;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+
+.compare-table .check { color: var(--gem-green); }
+.compare-table .cross { color: var(--gem-pink); }
+
+/* ========================================
+   Glossary
+   ======================================== */
+.glossary-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 8px; margin: 6px 0;
+}
+
+.glossary-card {
+  background: var(--gem-surface-2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--gem-border);
+}
+
+.glossary-card .g-term {
+  font-weight: 600; color: var(--gem-blue);
+  font-size: 0.82rem; margin-bottom: 3px;
+}
+
+.glossary-card .g-def {
+  font-size: 0.74rem; color: var(--gem-subtext); line-height: 1.5;
+}
+
+/* ========================================
+   UI Highlight (red border annotation)
+   ======================================== */
+.ui-highlight {
+  position: relative; z-index: 10;
+}
+
+.ui-highlight::after {
+  content: ''; position: absolute; inset: -4px;
+  border: 2.5px solid #EF4444;
+  border-radius: inherit;
+  pointer-events: none; z-index: 11;
+  animation: highlightPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(239,68,68,0.3);
+}
+
+.ui-highlight[data-label]::before {
+  content: attr(data-label);
+  position: absolute; top: -24px; left: 50%;
+  transform: translateX(-50%);
+  background: #EF4444; color: #FFF;
+  font-size: 0.62rem; font-weight: 600;
+  padding: 2px 10px; border-radius: 4px;
+  white-space: nowrap; z-index: 12;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { border-color: #EF4444; box-shadow: 0 0 8px rgba(239,68,68,0.25); }
+  50% { border-color: #F87171; box-shadow: 0 0 16px rgba(239,68,68,0.4); }
+}
+
+/* ========================================
+   Page Number
+   ======================================== */
+.page-number {
+  position: absolute; bottom: 6px; right: 14px;
+  font-size: 0.62rem; color: #555; z-index: 2;
+}
+
+/* ========================================
+   Navigation
+   ======================================== */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; padding: 10px 20px;
+  background: var(--gem-nav-bg);
+  border-top: 1px solid var(--gem-border);
+  z-index: 50;
+}
+
+.nav-btn {
+  background: var(--gem-surface-2);
+  border: 1px solid var(--gem-border);
+  border-radius: 20px;
+  padding: 7px 20px;
+  font-family: 'Google Sans', 'Noto Sans JP', sans-serif;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--gem-text); cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.nav-btn:hover { border-color: var(--gem-blue); color: var(--gem-blue); }
+.nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+.nav-btn:disabled:hover { border-color: var(--gem-border); color: var(--gem-text); }
+
+.nav-dots { display: flex; gap: 5px; align-items: center; }
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #444; border: none; cursor: pointer; transition: all 0.2s;
+}
+.nav-dot.active {
+  background: linear-gradient(135deg, #4285F4, #A142F4);
+  width: 18px; border-radius: 4px;
+}
+.nav-dot:hover { background: var(--gem-blue); opacity: 0.5; }
+
+.slide-counter { font-size: 0.8rem; color: #555; font-weight: 500; min-width: 45px; text-align: center; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gem-sidebar { display: none; }
+  .slide { border-radius: 0; max-width: 100vw; }
+}
+
+/* Animations */
+.slide.active .chat-area .msg { animation: msgFadeIn 0.35s ease both; }
+.slide.active .chat-area .msg:nth-child(2) { animation-delay: 0.08s; }
+.slide.active .chat-area .msg:nth-child(3) { animation-delay: 0.16s; }
+.slide.active .chat-area .msg:nth-child(4) { animation-delay: 0.24s; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width: 10%"></div>
+
+<div class="slide-wrapper" id="slideWrapper">
+
+  <!-- ==================== Slide 1: Welcome ==================== -->
+  <div class="slide active" data-slide="1">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+      <div class="sidebar-item">6-1-2 カスタマイズ「Gem」</div>
+      <div class="sidebar-item">6-1-3 Gemでできること</div>
+      <div class="sidebar-item">6-1-4 カスタムGem</div>
+      <div class="sidebar-item">6-1-5 Deep Research</div>
+    </div>
+    <div class="gem-main">
+      <div class="welcome-center">
+        <div class="welcome-logo">✦ Gemini</div>
+        <div class="welcome-title">6-1-1. Geminiのバージョン／機能比較</div>
+        <div class="welcome-sub">第6章 Google系AI ― Google Gemini詳細</div>
+        <div class="gem-chips">
+          <div class="gem-chip">Geminiって何？</div>
+          <div class="gem-chip">バージョンの違いは？</div>
+          <div class="gem-chip">ChatGPTと何が違う？</div>
+          <div class="gem-chip">無料で使える？</div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Geminiについて質問してみよう...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="gem-input-hint">Gemini can make mistakes, so double-check it.</div>
+      </div>
+      <div class="page-number">1/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 2: Goal ==================== -->
+  <div class="slide" data-slide="2">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+      <div class="sidebar-item">6-1-2 カスタマイズ「Gem」</div>
+      <div class="sidebar-item">6-1-3 Gemでできること</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">このチャプターで何を学ぶの？</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            <strong>このチャプターのゴール</strong>は以下の4つです：
+            <ul>
+              <li><span class="keyword">Google Gemini</span>とは何かが理解できる</li>
+              <li><span class="keyword-purple">モデルのバージョン</span>（2.5 Pro / 2.5 Flash 等）の違いがわかる</li>
+              <li>Geminiの<span class="keyword-green">主要機能</span>を把握できる</li>
+              <li>ChatGPTとの<span class="keyword-pink">違い</span>が説明できるようになる</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">2/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 3: What is Gemini ==================== -->
+  <div class="slide" data-slide="3">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+      <div class="sidebar-item">6-1-2 カスタマイズ「Gem」</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">Google Geminiって何？</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            <strong>Gemini</strong>（ジェミニ）は、<span class="keyword">Google（Alphabet）</span>が開発した対話型生成AIサービスです。
+            <br><br>
+            もともと「<span class="keyword-purple">Bard</span>」という名前で2023年にリリースされましたが、2024年2月に<strong>Gemini</strong>にリブランドされました。
+            <br><br>
+            最大の特徴は<strong>Googleのエコシステムとの統合</strong>です。Gmail、Googleドキュメント、Googleマップ、YouTube など、日常的に使うGoogleサービスとシームレスに連携できます。
+            <br><br>
+            Googleの「<span class="keyword-green">検索</span>」の強みを活かし、最新のWeb情報をリアルタイムに取得して回答する能力に優れています。
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">3/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 4: Model Versions ==================== -->
+  <div class="slide" data-slide="4">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector ui-highlight" data-label="ここでモデルを切り替え" style="border-radius:20px">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">モデルのバージョンの違いを教えて</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            2026年現在の主要モデルを比較します：
+            <div class="response-card">
+              <div class="response-card-header">
+                <span>Gemini モデル比較</span>
+                <button class="copy-btn" onclick="copyCode(this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Copy
+                </button>
+              </div>
+              <div class="response-card-body">2.5 Pro   → 最高性能。複雑な推論・コード・長文分析
+2.5 Flash → 高速・低コスト。日常的な用途に最適
+2.0 Flash → 旧世代の高速モデル（軽量タスク向け）</div>
+            </div>
+            <span class="keyword">2.5 Pro</span> は「じっくり考える」タイプ、<span class="keyword-purple">2.5 Flash</span> は「素早く答える」タイプです。
+            <br><br>
+            車で例えると、Proは高性能SUV、Flashはキビキビ走る軽自動車のようなものです。
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">4/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 5: Features ==================== -->
+  <div class="slide" data-slide="5">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">Geminiにしかできないことは？</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            Geminiの<strong>独自の強み</strong>は主に5つあります：
+            <ol>
+              <li><span class="keyword">Googleサービス連携</span> — Gmail・ドキュメント・スプレッドシート・マップ等と直接連携</li>
+              <li><span class="keyword-purple">Deep Research</span> — 自律的にWebを調査し、詳細なレポートを自動生成</li>
+              <li><span class="keyword-green">Gem（カスタムAI）</span> — 特定タスクに特化した自分専用のAIを簡単作成</li>
+              <li><span class="keyword-pink">Gemini Live</span> — リアルタイム音声対話。まるで電話のように会話</li>
+              <li><span class="keyword">100万トークン</span> — 超長文のコンテキスト処理（書籍まるごと読み込み可能）</li>
+            </ol>
+            特に<strong>Google Workspace との統合</strong>は、ビジネスユーザーにとって最大の差別化ポイントです。
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">5/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 6: vs ChatGPT ==================== -->
+  <div class="slide" data-slide="6">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">ChatGPTと何が違うの？比較して</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            主要な違いをまとめました：
+            <table class="compare-table">
+              <tr><th>項目</th><th>Gemini</th><th>ChatGPT</th></tr>
+              <tr><td>開発元</td><td>Google</td><td>OpenAI</td></tr>
+              <tr><td>検索連携</td><td><span class="check">◎ Google検索統合</span></td><td>○ Bing検索</td></tr>
+              <tr><td>エコシステム</td><td><span class="check">◎ Google Workspace</span></td><td>○ プラグイン/GPTs</td></tr>
+              <tr><td>コンテキスト長</td><td><span class="check">◎ 100万トークン</span></td><td>○ 12.8万トークン</td></tr>
+              <tr><td>カスタムAI</td><td>Gem</td><td>GPTs</td></tr>
+              <tr><td>音声対話</td><td>Gemini Live</td><td>Advanced Voice</td></tr>
+              <tr><td>無料版の充実度</td><td><span class="check">◎ 機能多い</span></td><td>○ 制限多い</td></tr>
+            </table>
+            どちらが「上」ではなく、<strong>用途と環境で選ぶ</strong>のが正解です。Googleサービスをよく使うなら<span class="keyword">Gemini</span>が便利です。
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">6/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 7: Plans ==================== -->
+  <div class="slide" data-slide="7">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">料金プランを教えて。無料でも使える？</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            はい、<strong>無料でも十分に使えます</strong>！
+            <div class="response-card">
+              <div class="response-card-header">
+                <span>Gemini 料金プラン</span>
+                <button class="copy-btn" onclick="copyCode(this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Copy
+                </button>
+              </div>
+              <div class="response-card-body">無料版         → 2.0 Flash / 一部 2.5 Flash
+                         会話・要約・検索・画像生成が利用可能
+
+Google One AI  → 月額 ¥2,900
+Premium          2.5 Pro / Deep Research / Gem
+                 100万トークン / Workspace連携</div>
+            </div>
+            無料版でも<span class="keyword">Gemini Live</span>（音声対話）や<span class="keyword-green">画像生成</span>が使えるのは大きなメリットです。ChatGPTの無料版より機能が充実しています。
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">7/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 8: UI Highlight Demo ==================== -->
+  <div class="slide" data-slide="8">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new ui-highlight" data-label="新しい会話を開始" style="border-radius:20px"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">画面の使い方を教えて</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            Geminiの画面は3つのエリアで構成されています：
+            <ol>
+              <li><strong>左サイドバー</strong> — 「新しいチャット」ボタン（赤枠 ↑）とチャット履歴</li>
+              <li><strong>上部のモデル選択</strong> — 使用するモデルを切り替え</li>
+              <li><strong>下部の入力欄</strong> — プロンプトを入力して送信（赤枠 ↓）</li>
+            </ol>
+            <span class="keyword">gemini.google.com</span> にアクセスするか、スマホアプリで利用開始できます。Googleアカウントでログインするだけです。
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box ui-highlight" data-label="ここにプロンプトを入力" style="border-radius:24px">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">8/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 9: Summary ==================== -->
+  <div class="slide" data-slide="9">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">今日のまとめをお願い！</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            <strong>まとめ</strong> ✅
+            <ul>
+              <li>✅ <span class="keyword">Gemini</span>はGoogleが開発した対話型生成AI（旧Bard）</li>
+              <li>✅ モデルは<span class="keyword">2.5 Pro</span>（高性能）と<span class="keyword-purple">2.5 Flash</span>（高速）の2系統</li>
+              <li>✅ 最大の強みは<span class="keyword-green">Googleサービスとの統合</span>（Gmail, Docs, Maps等）</li>
+              <li>✅ <strong>100万トークン</strong>の超長文処理、Deep Research、Gem、Gemini Live が独自機能</li>
+              <li>✅ <strong>無料版でも充実</strong>（音声対話・画像生成対応）。有料版は月¥2,900</li>
+              <li>✅ ChatGPTとは「どちらが上」ではなく<strong>用途で使い分ける</strong></li>
+            </ul>
+            <br>
+            次は <strong>→ 6-1-2. カスタマイズ機能「Gem」とは</strong> で、自分専用AIの作り方を学びましょう！
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">9/10</div>
+    </div>
+  </div>
+
+  <!-- ==================== Slide 10: Glossary ==================== -->
+  <div class="slide" data-slide="10">
+    <div class="gem-sidebar">
+      <div class="sidebar-logo"><span class="gemini-star">✦</span> Gemini</div>
+      <div class="sidebar-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke="currentColor" fill="none" stroke-width="2"/></svg>新しいチャット</div>
+      <div class="sidebar-label">6章 Google系AI</div>
+      <div class="sidebar-item active">6-1-1 バージョン／機能比較</div>
+    </div>
+    <div class="gem-main">
+      <div class="gem-topbar">
+        <div class="model-selector">Gemini 2.5 Pro <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="chat-area">
+        <div class="msg user">
+          <div class="msg-avatar">U</div>
+          <div class="msg-body">用語をまとめて</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">✦</div>
+          <div class="msg-body">
+            <strong>用語集</strong>をまとめました：
+            <div class="glossary-grid">
+              <div class="glossary-card">
+                <div class="g-term">Gemini (ジェミニ)</div>
+                <div class="g-def">Googleが開発した対話型生成AIサービス。旧称Bard。Googleサービスと統合。</div>
+              </div>
+              <div class="glossary-card">
+                <div class="g-term">Gemini 2.5 Pro</div>
+                <div class="g-def">最高性能モデル。複雑な推論・長文分析・コード生成に優れる。有料版で利用。</div>
+              </div>
+              <div class="glossary-card">
+                <div class="g-term">Gemini 2.5 Flash</div>
+                <div class="g-def">高速・低コストモデル。日常的な質疑応答に最適。無料版でも一部利用可能。</div>
+              </div>
+              <div class="glossary-card">
+                <div class="g-term">Gem (ジェム)</div>
+                <div class="g-def">特定タスクに特化したカスタムAIを作成できる機能。ChatGPTの「GPTs」に相当。</div>
+              </div>
+              <div class="glossary-card">
+                <div class="g-term">Deep Research</div>
+                <div class="g-def">Geminiが自律的にWeb調査を行い、詳細なレポートを生成する高度な機能。</div>
+              </div>
+              <div class="glossary-card">
+                <div class="g-term">Gemini Live</div>
+                <div class="g-def">リアルタイム音声対話機能。電話のように自然な会話でAIとやり取りできる。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="gem-input-bar">
+        <div class="gem-input-box">
+          <span class="gem-input-text">Gemini にメッセージを入力...</span>
+          <div class="gem-send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="page-number">10/10</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<nav class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="navDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 10</span>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">
+    次へ<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</nav>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let currentSlide = 0;
+
+const dotsContainer = document.getElementById('navDots');
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement('button');
+  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function goToSlide(index) {
+  if (index < 0 || index >= totalSlides || index === currentSlide) return;
+  const oldSlide = currentSlide;
+  slides[oldSlide].classList.remove('active');
+  slides[oldSlide].classList.add('exit-left');
+  currentSlide = index;
+  setTimeout(() => { slides[oldSlide].classList.remove('active','exit-left'); slides[oldSlide].style.display='none'; }, 50);
+  slides[currentSlide].classList.add('active');
+  updateUI();
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+function updateUI() {
+  document.getElementById('slideCounter').textContent = `${currentSlide+1} / ${totalSlides}`;
+  document.getElementById('progressBar').style.width = `${((currentSlide+1)/totalSlides)*100}%`;
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+  document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('active', i===currentSlide));
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key===' ') { e.preventDefault(); nextSlide(); }
+  if (e.key==='ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff)>50) { diff>0 ? nextSlide() : prevSlide(); }
+});
+
+function copyCode(btn) {
+  const block = btn.closest('.response-card');
+  const text = block.querySelector('.response-card-body').textContent.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+updateUI();
+</script>
+</body>
+</html>
