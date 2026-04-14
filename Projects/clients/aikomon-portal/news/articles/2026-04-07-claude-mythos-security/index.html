@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anthropic がセキュリティ特化モデル「Claude Mythos」を発表 — AI NEWS</title>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <style>
+    .article-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text3); margin-bottom: 20px; flex-wrap: wrap; }
+    .article-section { margin-bottom: 28px; }
+    .article-section h2 {
+      font-size: 15px; font-weight: 700; margin-bottom: 10px;
+      padding-bottom: 6px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .article-section h2::before {
+      content: ''; width: 3px; height: 16px; border-radius: 3px;
+      background: var(--claude); display: block; flex-shrink: 0;
+    }
+    .article-section p { font-size: 13px; color: var(--text2); line-height: 1.8; margin-bottom: 8px; }
+    .article-section ul { font-size: 13px; color: var(--text2); line-height: 1.8; padding-left: 20px; margin-bottom: 8px; }
+    .article-section li { margin-bottom: 4px; }
+    .what-box {
+      margin: 12px 0; padding: 12px 16px;
+      background: var(--claude-bg); border-radius: 6px;
+      font-size: 13px; color: var(--text); line-height: 1.7;
+    }
+    .what-label {
+      font-size: 10px; font-weight: 700; color: var(--claude);
+      letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+    .article-source {
+      margin-top: 32px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--text3);
+    }
+    .article-source a { color: var(--claude); }
+    .tag-action { background: #FEF2F2; color: var(--red); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../../" class="logo">with-AI <span>PORTAL</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="../../../training/" class="nl">教材</a>
+      <a href="../../" class="nl active">NEWS</a>
+      <a href="../../../guide/" class="nl">ガイド</a>
+      <a href="../../../webinar/" class="nl">セミナー</a>
+    </div>
+    <button class="hamburger" id="ham">☰</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <a href="../../" class="back-link">← NEWS一覧に戻る</a>
+
+  <div class="page-header">
+    <h1>Anthropic がセキュリティ特化モデル「Claude Mythos」を発表</h1>
+    <div class="article-meta">
+      <span class="announce-tag tag-new">NEW</span>
+      <span>2026.04.07</span>
+      <span>·</span>
+      <span>Anthropic</span>
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>何が変わった？</h2>
+    <p>Anthropicが「Claude Mythos Preview」という新モデルを発表した。これまでのClaude（Opus 4.6やSonnet 4.6）は汎用AIだったが、Mythosは<strong>コンピュータセキュリティに特化したモデル</strong>。</p>
+    <p>どれくらいすごいかというと、Firefoxの脆弱性発見テストで従来モデル（Opus 4.6）が数百回中2回しか成功しなかったのに対し、Mythosは<strong>181回成功</strong>。桁違いの性能差がある。</p>
+    <p>同時に「Project Glasswing」というプロジェクトも始動。Mythosを使って世界の重要ソフトウェアの脆弱性を先回りで見つけ、攻撃者より先に修正しようという取り組み。</p>
+  </div>
+
+  <div class="article-section">
+    <h2>何ができるようになった？</h2>
+    <p>AIがコードの脆弱性を自動で発見し、修正方法まで提案できるようになった。人間のセキュリティエンジニアが何週間もかかる監査を、大幅に短縮できる可能性がある。</p>
+    <div class="what-box">
+      <div class="what-label">Mythosが実際にやったこと</div>
+      <ul>
+        <li><strong>27年間見つからなかった脆弱性を発見</strong> — OpenBSDのTCP制御コードに潜んでいた整数オーバーフロー</li>
+        <li><strong>ブラウザのゼロデイ攻撃を構築</strong> — 4つの脆弱性を組み合わせた複雑なエクスプロイトを単独で作成</li>
+        <li><strong>バイナリからソースコードを復元</strong> — コンパイル済みのプログラムからコードを再構築し、脆弱性を特定</li>
+        <li><strong>暗号ライブラリの実装ミスを検出</strong> — TLSやAES-GCMなど、暗号処理の弱点を識別</li>
+      </ul>
+    </div>
+    <p>例えば、自社のWebアプリケーションのコードをMythosに渡すと、SQLインジェクション、XSS、認証バイパスなどの脆弱性を網羅的に洗い出してくれる。しかも「ここをこう直せば安全になる」という修正案付き。</p>
+  </div>
+
+  <div class="article-section">
+    <h2>誰向け？</h2>
+    <p><strong>直接関係がある人:</strong> ソフトウェア開発企業のCTO・セキュリティチーム。特に外部監査に年間数百万円かけている企業は注目。</p>
+    <p><strong>間接的に影響がある人:</strong> すべてのソフトウェアユーザー。Mythosが見つけた脆弱性が修正されることで、使っているツールのセキュリティが向上する。</p>
+    <p><strong>今すぐの対応は不要な人:</strong> 一般のビジネスユーザー。Mythosは一般公開されておらず、限定パートナーのみがアクセスできる。</p>
+  </div>
+
+  <div class="article-section">
+    <h2>注意点</h2>
+    <ul>
+      <li><strong>一般公開なし</strong> — Mythos Previewは限定パートナー企業とProject Glasswing参加のオープンソース開発者のみ。API等で自由に使えるわけではない</li>
+      <li><strong>攻撃にも使える</strong> — 脆弱性を見つける能力は、防御にも攻撃にも使える。Anthropicは責任ある開示プロセス（90+45日ルール）で対応</li>
+      <li><strong>発見済み脆弱性の99%以上が未パッチ</strong> — 詳細は非公開。修正が追いつくまで時間がかかる見込み</li>
+      <li><strong>今やるべきこと</strong> — Mythosの恩恵を待つだけでなく、現在使えるClaude（Opus 4.6等）でも自社コードのセキュリティチェックは可能。パッチ適用サイクルの短縮も推奨されている</li>
+    </ul>
+  </div>
+
+  <div class="article-source">
+    元記事: <a href="https://red.anthropic.com/2026/mythos-preview/" target="_blank" rel="noopener">Anthropicで読む</a>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 with-AI Inc. <a href="https://with-ai.jp" target="_blank">with-ai.jp</a> <a href="mailto:info@with-ai.jp">Contact</a></p>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('ham')?.addEventListener('click', () => {
+  document.getElementById('navLinks')?.classList.toggle('open');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>with-AI PORTAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">with-AI <span>PORTAL</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="training/" class="nl">教材</a>
+      <a href="news/" class="nl">NEWS</a>
+      <a href="guide/" class="nl">ガイド</a>
+      <a href="webinar/" class="nl">セミナー</a>
+    </div>
+    <button class="hamburger" id="ham">☰</button>
+  </div>
+</nav>
+
+<main class="world">
+  <div class="world-title">
+    <div class="wt-badge">CLIENT PORTAL</div>
+    <h1>with-AI の世界へようこそ</h1>
+    <p>建物をクリックして探索しよう</p>
+  </div>
+
+  <div class="iso-scene">
+    <div class="ground"><div class="ground-grid"></div></div>
+
+    <a href="training/" class="building b-training">
+      <div class="b-base"><div class="b-front"></div><div class="b-side"></div><div class="b-top"></div></div>
+      <div class="b-window-row"><div class="b-window lit"></div><div class="b-window"></div><div class="b-window lit"></div></div>
+      <div class="b-door"></div>
+      <div class="b-sign">教材</div>
+      <div class="b-smoke"><span></span><span></span><span></span></div>
+      <div class="b-label"><span class="bl-badge bl-new">NEW</span>教材ライブラリ<small>動画・スライド・資料</small></div>
+    </a>
+
+    <a href="news/" class="building b-news">
+      <div class="b-base"><div class="b-front"></div><div class="b-side"></div><div class="b-top"></div></div>
+      <div class="b-antenna"></div>
+      <div class="b-window-row"><div class="b-window lit-blue"></div><div class="b-window lit-blue"></div></div>
+      <div class="b-door"></div>
+      <div class="b-sign">NEWS</div>
+      <div class="b-label"><span class="bl-badge bl-daily">DAILY</span>AI NEWS<small>最新ニュースをお届け</small></div>
+    </a>
+
+    <a href="guide/" class="building b-guide">
+      <div class="b-base"><div class="b-front"></div><div class="b-side"></div><div class="b-top"></div></div>
+      <div class="b-window-row"><div class="b-window lit-green"></div><div class="b-window"></div></div>
+      <div class="b-bookshelf"></div>
+      <div class="b-door"></div>
+      <div class="b-sign">ガイド</div>
+      <div class="b-label">操作ガイド<small>コマンド集・Tips</small></div>
+    </a>
+
+    <a href="webinar/" class="building b-event">
+      <div class="b-base"><div class="b-front"></div><div class="b-side"></div><div class="b-top"></div></div>
+      <div class="b-flag"><span></span></div>
+      <div class="b-window-row"><div class="b-window lit-pink"></div><div class="b-window lit-pink"></div><div class="b-window"></div></div>
+      <div class="b-door"></div>
+      <div class="b-sign">セミナー</div>
+      <div class="b-label"><span class="bl-badge bl-soon">SOON</span>オンラインセミナー<small>セミナー情報・申込</small></div>
+    </a>
+
+    <div class="deco tree t1"><div class="trunk"></div><div class="leaves"></div></div>
+    <div class="deco tree t2"><div class="trunk"></div><div class="leaves"></div></div>
+    <div class="deco tree t3"><div class="trunk"></div><div class="leaves"></div></div>
+    <div class="deco lamp l1"><div class="lamp-post"></div><div class="lamp-light"></div></div>
+    <div class="deco lamp l2"><div class="lamp-post"></div><div class="lamp-light"></div></div>
+
+    <div class="chara idle" id="chara0" style="left:48%;bottom:22%">
+      <div class="chara-thought"></div>
+      <div class="chara-body"></div>
+      <div class="chara-shadow"></div>
+    </div>
+    <div class="chara idle" id="chara1" style="left:20%;bottom:20%">
+      <div class="chara-thought"></div>
+      <div class="chara-body c-blue"></div>
+      <div class="chara-shadow"></div>
+    </div>
+    <div class="chara idle" id="chara2" style="left:70%;bottom:18%">
+      <div class="chara-thought"></div>
+      <div class="chara-body c-green"></div>
+      <div class="chara-shadow"></div>
+    </div>
+    <div class="chara idle" id="chara3" style="left:40%;bottom:24%">
+      <div class="chara-thought"></div>
+      <div class="chara-body c-purple"></div>
+      <div class="chara-shadow"></div>
+    </div>
+    <div class="chara idle" id="chara4" style="left:60%;bottom:19%">
+      <div class="chara-thought"></div>
+      <div class="chara-body c-red"></div>
+      <div class="chara-shadow"></div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">↓ スクロールでお知らせ</div>
+</main>
+
+<section class="news-section">
+  <h2>お知らせ</h2>
+  <div class="news-grid">
+    <div class="news-card">
+      <div class="nc-top"><span class="nc-tag nc-new">NEW</span><time>2026.04.13</time></div>
+      <h3>Claude Code 導入教材をアップしました</h3>
+      <p>教材ライブラリからいつでもご覧いただけます。</p>
+    </div>
+    <div class="news-card">
+      <div class="nc-top"><span class="nc-tag nc-open">OPEN</span><time>2026.04.13</time></div>
+      <h3>with-AI ポータルがオープン</h3>
+      <p>教材・NEWS・ガイド・セミナー、すべてここに。</p>
+    </div>
+  </div>
+</section>
+
+<footer class="p-footer">
+  <p>© 2026 with-AI Inc. <a href="https://with-ai.jp" target="_blank">with-ai.jp</a> <a href="mailto:info@with-ai.jp">Contact</a></p>
+</footer>
+
+<script>
+document.getElementById('ham')?.addEventListener('click',()=>{document.getElementById('navLinks')?.classList.toggle('open')});
+
+// Character AI — 5 residents
+(function() {
+  const scene = document.querySelector('.iso-scene');
+  if (!scene) return;
+
+  const spots = [
+    { left: 15, bottom: 24 }, { left: 38, bottom: 30 },
+    { left: 58, bottom: 26 }, { left: 82, bottom: 22 },
+    { left: 48, bottom: 22 }, { left: 25, bottom: 20 },
+    { left: 70, bottom: 20 }, { left: 10, bottom: 18 },
+    { left: 90, bottom: 17 }, { left: 50, bottom: 18 },
+  ];
+
+  const bubbles = [
+    ['教材かな...', '♪', 'AI!', '☕', '勉強しよう'],
+    ['ニュース見よう', '...', 'へぇ〜', '📰', 'なるほど'],
+    ['ガイド読もう', '?', 'ふむふむ', '💡', 'できた！'],
+    ['セミナー楽しみ', '♪♪', 'わくわく', '✨', 'いいね'],
+    ['散歩中〜', 'やっほ', '☀', 'おーい', 'zzz'],
+  ];
+
+  const charas = [];
+  for (let i = 0; i < 5; i++) {
+    const el = document.getElementById('chara' + i);
+    if (!el) continue;
+    charas.push({
+      el,
+      thought: el.querySelector('.chara-thought'),
+      spot: Math.floor(Math.random() * spots.length),
+      moving: false,
+      myBubbles: bubbles[i],
+    });
+  }
+
+  function setState(c, state) {
+    c.el.classList.remove('idle', 'walking', 'thinking');
+    c.el.classList.add(state);
+  }
+
+  function moveTo(c, spot) {
+    if (c.moving) return;
+    c.moving = true;
+    setState(c, 'walking');
+    c.el.style.left = spot.left + '%';
+    c.el.style.bottom = spot.bottom + '%';
+
+    const dur = 1500 + Math.random() * 1000;
+    setTimeout(() => {
+      c.moving = false;
+      setState(c, 'idle');
+
+      if (Math.random() > 0.4) {
+        setTimeout(() => {
+          const text = c.myBubbles[Math.floor(Math.random() * c.myBubbles.length)];
+          c.thought.textContent = text;
+          setState(c, 'thinking');
+          setTimeout(() => {
+            setState(c, 'idle');
+            c.thought.textContent = '';
+          }, 2000 + Math.random() * 1500);
+        }, 600);
+      }
+    }, dur);
+  }
+
+  function wander(c) {
+    if (c.moving) return;
+    let next;
+    do { next = Math.floor(Math.random() * spots.length); } while (next === c.spot);
+    c.spot = next;
+    moveTo(c, spots[next]);
+  }
+
+  // Each character wanders on its own schedule
+  charas.forEach((c, i) => {
+    setTimeout(() => wander(c), 1500 + i * 1200);
+    setInterval(() => {
+      if (!c.moving && Math.random() > 0.3) wander(c);
+    }, 5000 + i * 1500 + Math.random() * 3000);
+  });
+
+  // Click: nearest character walks to click point
+  scene.addEventListener('click', (e) => {
+    if (e.target.closest('.building')) return;
+    const r = scene.getBoundingClientRect();
+    const left = ((e.clientX - r.left) / r.width) * 100;
+    const bottom = 17 + Math.random() * 10;
+
+    // Find nearest idle character
+    let nearest = null, minDist = Infinity;
+    charas.forEach(c => {
+      if (c.moving) return;
+      const cl = parseFloat(c.el.style.left);
+      const d = Math.abs(cl - left);
+      if (d < minDist) { minDist = d; nearest = c; }
+    });
+    if (nearest) moveTo(nearest, { left, bottom });
+  });
+})();
+</script>
+</body>
+</html>

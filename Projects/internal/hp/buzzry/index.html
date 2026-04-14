@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buzzry | 最短で『バズる』を創造する</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --brand-yellow: #FFD700; 
+            --brand-yellow-dark: #FFC000;
+            --brand-black: #1a1a1a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            cursor: default;
+        }
+
+        /* Impact Fonts */
+        .font-impact {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        /* Highlight Text */
+        .highlight-gold-box {
+            background-color: var(--brand-yellow);
+            color: black;
+            padding: 4px 12px;
+            font-weight: 900;
+            display: inline-block;
+            box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2);
+            transform: skewX(-10deg);
+        }
+
+        /* Bee Mascot */
+        #mascot-bee {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            z-index: 105; /* メニュー(95)より上、ヘッダー(100)より上 */
+            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5));
+            will-change: transform;
+            cursor: pointer;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-yellow);
+            border-radius: 5px;
+        }
+        
+        /* Contact Button Ink Splash Animation (Fix: remove overflow hidden) */
+        .ink-splash-btn {
+            position: relative;
+            z-index: 1;
+            overflow: visible !important;
+        }
+        
+        /* Bee Wings Animation (Faster) */
+        @keyframes buzz {
+            0% { transform: rotate(-15deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.1); }
+            100% { transform: rotate(-15deg) scale(1); }
+        }
+        .bee-wings {
+            animation: buzz 0.05s infinite linear;
+            transform-origin: center;
+        }
+
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        /* About Section Background Text */
+        .about-bg-text {
+            -webkit-text-stroke: 1px rgba(255, 215, 0, 0.1);
+            color: transparent;
+        }
+
+        /* Lucky Keywords Animation */
+        .lucky-word {
+            display: inline-block;
+            color: var(--brand-yellow);
+            font-weight: 900;
+            text-shadow: 0 0 10px var(--brand-yellow);
+        }
+
+        /* Fullscreen Menu */
+        #menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--brand-yellow);
+            z-index: 95; /* ヘッダー(100)の下 */
+            transform: translateY(-100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .menu-link {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: black;
+            text-transform: uppercase;
+            line-height: 1.1;
+            position: relative;
+            transition: all 0.3s;
+            display: block;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .menu-link:hover {
+            -webkit-text-stroke: 2px black;
+            color: transparent;
+            transform: scale(1.1) skewX(-10deg);
+            letter-spacing: 5px;
+        }
+
+        /* Header Styles & Menu Open State */
+        header {
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        /* メニューが開いているときはブレンドモードを通常に戻し、要素を黒にする */
+        header.menu-open {
+            mix-blend-mode: normal !important;
+        }
+        header.menu-open .header-logo {
+            color: black !important;
+        }
+
+        /* Hamburger Button */
+        .hamburger {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            cursor: pointer;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .hamburger span {
+            display: block;
+            height: 3px;
+            background-color: var(--brand-yellow);
+            transition: all 0.3s ease;
+        }
+        .hamburger span:nth-child(1) { width: 40px; }
+        .hamburger span:nth-child(2) { width: 30px; }
+        .hamburger span:nth-child(3) { width: 20px; }
+
+        .hamburger:hover span {
+            width: 40px;
+        }
+
+        /* Hamburger Active State */
+        .hamburger.active span {
+            background-color: black !important; /* 強制的に黒 */
+        }
+        .hamburger.active span:nth-child(1) {
+            width: 40px;
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            width: 40px;
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Initial Loading Animation Class */
+        .hero-char {
+            display: inline-block;
+            opacity: 0;
+            transform-origin: center bottom;
+        }
+
+    </style>
+</head>
+<body class="bg-noise">
+
+    <!-- Bee Mascot -->
+    <div id="mascot-bee">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="bee-wings">
+                <path d="M70 30C85 30 95 10 75 5C55 0 50 25 50 25" fill="#FFF" fill-opacity="0.9" stroke="black" stroke-width="1"/>
+                <path d="M30 30C15 30 5 10 25 5C45 0 50 25 50 25" fill="#FFF" fill-opacity="0.9" stroke="black" stroke-width="1"/>
+            </g>
+            <!-- Body -->
+            <path d="M50 85C65 85 75 75 75 60C75 50 65 45 60 45C65 45 70 35 70 25C70 15 60 15 50 15C40 15 30 15 30 25V60C30 75 40 85 50 85Z" fill="#FFD700" stroke="white" stroke-width="2"/>
+            <!-- Stripes -->
+            <path d="M30 35H70" stroke="black" stroke-width="6" stroke-linecap="round"/>
+            <path d="M30 55H75" stroke="black" stroke-width="6" stroke-linecap="round"/>
+            <!-- Sunglasses -->
+            <path d="M35 25L65 25" stroke="black" stroke-width="5" stroke-linecap="round"/>
+            <!-- Stinger -->
+            <path d="M50 85L50 98" stroke="#FFD700" stroke-width="3"/>
+        </svg>
+    </div>
+
+    <!-- Header & Hamburger -->
+    <header class="fixed top-0 left-0 w-full px-6 py-6 flex justify-between items-center mix-blend-exclusion" id="main-header">
+        <a href="index.html" class="header-logo relative z-[102] transition-colors duration-300 block">
+            <img src="img/logo.png" alt="Buzzry" class="h-10">
+        </a>
+        
+        <!-- Hamburger Menu Button -->
+        <div class="hamburger" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu Overlay -->
+    <div id="menu-overlay">
+        <div class="flex flex-col gap-4">
+            <a href="index.html" class="menu-link text-white pointer-events-none" style="opacity: 0.5;">Top</a>
+            <a href="service.html" class="menu-link">Service</a>
+            <a href="plan.html" class="menu-link">Plan</a>
+            <a href="index.html#company" class="menu-link">Company</a>
+            <a href="contact.html" class="menu-link">Contact</a>
+        </div>
+        <!-- Menu Background Decor -->
+        <div class="absolute inset-0 pointer-events-none opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+    </div>
+
+    <!-- SECTION 1: HERO -->
+    <section class="relative w-full h-screen overflow-hidden flex items-center justify-center bg-[#050505]">
+        <!-- Paint Blobs -->
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#FFD700] rounded-full blur-[120px] opacity-20 animate-pulse"></div>
+        
+        <div class="relative z-10 container mx-auto px-6 text-center">
+            <p class="font-impact text-xl md:text-2xl mb-4 text-white tracking-widest -skew-x-12 opacity-80 hero-sub">
+                CREATE THE <span class="text-[#FFD700]">BUZZ</span>
+            </p>
+            
+            <!-- Hero Title with Split Text for Animation -->
+            <h1 class="text-5xl md:text-8xl font-black leading-none mb-8 transform -skew-x-6 relative">
+                <div class="block text-outline mb-2 overflow-hidden">
+                    <span class="hero-word inline-block">最短で</span>
+                </div>
+                <div class="block text-[#FFD700] text-[1.2em] relative inline-block my-2">
+                    <span class="hero-word inline-block relative z-10">『バズる』</span>
+                    <!-- Paint Splatter behind text -->
+                    <svg class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] -z-10 text-[#FFD700] opacity-0 hero-splatter" viewBox="0 0 200 200">
+                         <path fill="currentColor" d="M42.7,-72.3C55.3,-67.2,65.3,-55.7,73.1,-42.6C80.9,-29.5,86.5,-14.8,84.6,-1.1C82.7,12.6,73.3,25.2,63.6,36.4C53.9,47.6,43.9,57.5,32.3,64.2C20.7,70.9,7.5,74.5,-4.4,72C-16.3,69.5,-27,60.9,-38.3,53.2C-49.6,45.5,-61.6,38.7,-69.3,28.6C-77,18.5,-80.5,5.1,-77.9,-7C-75.3,-19.1,-66.6,-29.9,-56.9,-39.2C-47.2,-48.5,-36.5,-56.3,-25.2,-62.1C-13.9,-67.9,-2,-71.7,11.2,-73.6C24.4,-75.5,30.1,-77.4,42.7,-72.3Z" transform="translate(100 100)" />
+                    </svg>
+                </div>
+                <div class="block overflow-hidden">
+                    <span class="hero-word inline-block">を創造する。</span>
+                </div>
+            </h1>
+            
+            <p class="text-gray-400 mt-6 font-bold tracking-wider hero-desc opacity-0">
+                TikTok運用代行 | SNSマーケティング
+            </p>
+
+            <div class="mt-12">
+                <!-- CTA Button -->
+                <a href="#about" class="inline-block px-12 py-4 bg-white text-black font-black text-xl rounded-full tracking-wider uppercase transform -skew-x-12 hover:scale-105 transition-transform ink-trigger ink-splash-btn group">
+                    <span class="relative z-10">Discover More</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scrolling Text Background -->
+        <div class="absolute bottom-10 left-0 w-full overflow-hidden opacity-20">
+             <div class="flex whitespace-nowrap animate-marquee">
+                 <span class="text-6xl font-impact text-white mx-8">BUZZRY INC.</span>
+                 <span class="text-6xl font-impact text-[#FFD700] mx-8">SOCIAL MEDIA</span>
+                 <span class="text-6xl font-impact text-white mx-8">MARKETING</span>
+                 <span class="text-6xl font-impact text-[#FFD700] mx-8">TIKTOK</span>
+                 <span class="text-6xl font-impact text-white mx-8">INSTAGRAM</span>
+             </div>
+        </div>
+    </section>
+
+    <!-- SECTION NEW: ABOUT BUZZRY -->
+    <section id="about" class="w-full py-32 bg-[#111] relative z-20 border-b border-[#333] overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none">
+            <span class="font-impact text-[12vw] about-bg-text opacity-30 whitespace-nowrap">BUZZRY × BEE</span>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                
+                <div class="group">
+                    <h2 class="font-impact text-5xl md:text-6xl text-white mb-8 -skew-x-12">
+                        ABOUT <span class="text-[#FFD700]">BUZZRY</span>
+                    </h2>
+                    <div class="bg-[#000] border-l-4 border-[#FFD700] p-8 hover:bg-[#1a1a1a] transition-colors relative">
+                        <p class="text-xl leading-relaxed font-bold text-white mb-6">
+                            <span class="text-[#FFD700] text-3xl">『Buzz』</span> + <span class="text-[#FFD700] text-3xl">『(ry』</span>
+                        </p>
+                        <p class="text-gray-400 text-lg">
+                            社名の由来は、「バズる」という意味のBuzzと、省略を表すネットスラング(ryを組み合わせた造語。<br><br>
+                            この二つを合わせることで、<br><br>
+                            <span class="highlight-gold-box text-2xl">「バズるを最短で提供する」</span><br><br>
+                            という意味を込めています。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="group mt-12 lg:mt-0">
+                    <h2 class="font-impact text-5xl md:text-6xl text-white mb-8 -skew-x-12 text-right">
+                        ABOUT <span class="text-[#FFD700]">LOGO</span>
+                    </h2>
+                    <div class="bg-[#000] border-r-4 border-[#FFD700] p-8 hover:bg-[#1a1a1a] transition-colors text-right">
+                        <div class="flex justify-end mb-6">
+                            <svg width="60" height="60" viewBox="0 0 100 100" class="animate-bounce">
+                                <path d="M50 85C65 85 75 75 75 60C75 50 65 45 60 45C65 45 70 35 70 25C70 15 60 15 50 15C40 15 30 15 30 25V60C30 75 40 85 50 85Z" fill="#FFD700"/>
+                                <path d="M30 35H70 M30 55H75" stroke="black" stroke-width="6"/>
+                            </svg>
+                        </div>
+                        <p class="text-gray-400 text-lg leading-relaxed">
+                            『Buzz』には、注目されるという意味に加え、<br>蜂がブンブン飛ぶ音の意味も含まれます。<br>
+                            <br>
+                            蜂はスピリチュアル的に<br><br>
+                            <span class="lucky-word text-2xl">「商売繁盛」</span><br>
+                            <span class="lucky-word text-2xl">「幸運の象徴」</span><br>
+                            <span class="lucky-word text-2xl">「仕事運UP」</span><br><br>
+                            とされる縁起の良い生き物。<br>
+                            お客様に幸運と繁栄を運ぶ存在でありたい。<br>その想いをロゴに込めました。
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: MISSION & VISION -->
+    <section class="w-full py-32 bg-white text-black relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="w-full lg:w-1/2 relative">
+                    <div class="relative p-2 border-4 border-black bg-black transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                         <img src="img/philosophy.jpg" alt="OUR PHILOSOPHY"
+                              class="w-full h-auto">
+                         <div class="absolute -top-10 -right-10 w-32 h-32 bg-[#FFD700] rounded-full mix-blend-multiply opacity-80 blur-lg animate-pulse"></div>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-1/2">
+                    <span class="font-impact text-[#FFD700] bg-black px-4 py-1 text-xl mb-6 inline-block transform -skew-x-12 shadow-[5px_5px_0px_#FFD700]">OUR PHILOSOPHY</span>
+                    <h2 class="text-4xl md:text-5xl font-black mb-10 leading-tight">
+                        SNSが創る、<br>
+                        <span class="highlight-gold-box" style="transform: skewX(-10deg); color:black;">新しい経済力。</span>
+                    </h2>
+                    
+                    <div class="space-y-10">
+                        <div class="pl-6 border-l-4 border-black">
+                            <h3 class="font-bold text-2xl mb-3 flex items-center gap-2 font-impact text-[#FFC000]">
+                                MISSION
+                            </h3>
+                            <p class="text-lg leading-relaxed font-medium text-gray-800">
+                                SNSが創り出す新しい経済力は、デジタル革命の象徴です。<br>
+                                インフルエンサーやデジタルマーケティングが企業収益を押し上げ、GDP成長に貢献する未来を創ります。
+                            </p>
+                        </div>
+                        <div class="pl-6 border-l-4 border-black">
+                            <h3 class="font-bold text-2xl mb-3 flex items-center gap-2 font-impact text-[#FFC000]">
+                                VISION
+                            </h3>
+                            <p class="text-lg leading-relaxed font-medium text-gray-800">
+                                「すべての会社にSNSを」。<br>
+                                グローバルな市場や新たなターゲット層に瞬時に情報を届け、ブランドの露出を劇的に拡大します。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: PINNING / TRANSITION -->
+    <div id="pinned-section" class="relative w-full h-[150vh] bg-black">
+        <div class="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
+            
+            <!-- Layer 1 -->
+            <div class="absolute inset-0 bg-[#050505] z-10 flex items-center justify-center" id="layer-1">
+                <div class="text-center">
+                    <h2 class="text-5xl md:text-7xl font-black text-white transform -skew-x-12 mb-4">
+                        WHY <span class="text-[#FFD700]">BUZZRY?</span>
+                    </h2>
+                    <p class="text-gray-400 text-xl">なぜ、私たちが選ばれるのか。</p>
+                </div>
+            </div>
+
+            <!-- Layer 2 -->
+            <div class="absolute inset-0 z-20" id="layer-2" style="clip-path: circle(0% at 50% 50%);">
+                <div class="absolute inset-0 bg-[#FFD700] flex items-center justify-center">
+                     <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/wall-4-light.png')]"></div>
+                     <div class="container mx-auto px-6 relative z-10" id="layer-2-content">
+                        <h2 class="font-impact text-6xl md:text-9xl text-black text-center mb-8 transform -skew-x-12 leading-none">
+                            SPEED<br>&<br>IMPACT
+                        </h2>
+                        <p class="text-center font-bold text-2xl text-black">
+                            最短でバズる。<br>そのための全てがここにある。
+                        </p>
+                     </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SECTION 4: SERVICES -->
+    <section id="services" class="w-full py-32 bg-[#111] relative z-30">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <span class="font-impact text-[#FFD700] text-xl tracking-widest">OUR SERVICE</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-white mt-4">Buzzryの提供価値</h2>
+            </div>
+
+            <div id="achievements" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-[#1a1a1a] border border-[#333] p-8 rounded-3xl hover:border-[#FFD700] hover:shadow-[0_0_20px_rgba(255,215,0,0.3)] transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-[#FFD700] opacity-10 rounded-bl-full group-hover:scale-150 transition-transform duration-500"></div>
+                    <div class="font-impact text-5xl text-[#FFD700] mb-6 opacity-80">01</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">All-in-One<br><span class="text-sm font-normal text-gray-400">一括おまかせ</span></h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        台本作成から撮影、編集、そして投稿管理まで。SNS運用を一括で支援できる体制が整っています。作業が滞ることなく、スピード感を持ってバズらせます。
+                    </p>
+                </div>
+                <div class="bg-[#1a1a1a] border border-[#333] p-8 rounded-3xl hover:border-[#FFD700] hover:shadow-[0_0_20px_rgba(255,215,0,0.3)] transition-all group relative overflow-hidden mt-0 md:mt-8">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-[#FFD700] opacity-10 rounded-bl-full group-hover:scale-150 transition-transform duration-500"></div>
+                    <div class="font-impact text-5xl text-[#FFD700] mb-6 opacity-80">02</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Algorithm<br><span class="text-sm font-normal text-gray-400">分析×最適化</span></h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        最新のアルゴリズム分析に基づき、最適な運用プランを提案。エンゲージメントを高める質問やアンケートを駆使し、パフォーマンスを最大化します。
+                    </p>
+                </div>
+                <div class="bg-[#1a1a1a] border border-[#333] p-8 rounded-3xl hover:border-[#FFD700] hover:shadow-[0_0_20px_rgba(255,215,0,0.3)] transition-all group relative overflow-hidden mt-0 md:mt-16">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-[#FFD700] opacity-10 rounded-bl-full group-hover:scale-150 transition-transform duration-500"></div>
+                    <div class="font-impact text-5xl text-[#FFD700] mb-6 opacity-80">03</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Creative<br><span class="text-sm font-normal text-gray-400">最短でBUZZを起こす</span></h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        他と差別化される、ユニークで創造的なコンテンツ。視覚的に魅力的な動画制作で、最短距離で「BUZZ」を生み出します。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: COMPANY -->
+    <section id="company" class="w-full py-24 bg-[#050505] relative z-30 border-t border-[#222]">
+        <div class="container mx-auto px-6">
+            <h2 class="font-impact text-4xl text-white mb-12 -skew-x-12"><span class="text-[#FFD700]">WHO</span> WE ARE</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-white">株式会社Buzzry</h3>
+                    <dl class="space-y-4 text-gray-400">
+                        <div class="flex border-b border-[#222] pb-2">
+                            <dt class="w-32 font-bold text-white">CEO</dt>
+                            <dd>北野 萌果</dd>
+                        </div>
+                        <div class="flex border-b border-[#222] pb-2">
+                            <dt class="w-32 font-bold text-white">設立</dt>
+                            <dd>2024年10月30日</dd>
+                        </div>
+                        <div class="flex border-b border-[#222] pb-2">
+                            <dt class="w-32 font-bold text-white">事業内容</dt>
+                            <dd>SNS運用代行事業、マーケティング事業</dd>
+                        </div>
+                        <div class="flex border-b border-[#222] pb-2">
+                            <dt class="w-32 font-bold text-white">ADDRESS</dt>
+                            <dd>東京都渋谷区千駄ヶ谷4丁目12番2号</dd>
+                        </div>
+                    </dl>
+                </div>
+                <div class="relative bg-[#111] p-8 rounded-xl border border-[#333]">
+                     <div class="absolute -top-4 -right-4 bg-[#FFD700] text-black font-bold px-4 py-1 transform rotate-3 z-10 shadow-lg">
+                        CEO Message
+                     </div>
+                     <div class="flex flex-col sm:flex-row gap-6 items-start">
+                         <!-- CEO写真 -->
+                         <div class="w-32 h-32 flex-shrink-0 rounded-full overflow-hidden border-2 border-[#FFD700] bg-[#222]">
+                             <img src="img/ceo.jpg" alt="北野 萌果" class="w-full h-full object-cover">
+                         </div>
+                         <div>
+                             <p class="text-gray-300 leading-relaxed italic">
+                                「SNS運用は半年間でフォロワー5万人を達成。」<br>
+                                不動産投資会社での経験を経て、SNSが持つ無限の可能性を確信しました。
+                                私たちの強みは、ただ投稿するだけでなく、ビジネスの結果に結びつく「熱狂」を生み出すことです。
+                             </p>
+                             <div class="mt-4 text-right font-bold text-white">- Moeka Kitano</div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: CONTACT -->
+    <section id="contact" class="w-full py-40 bg-[#FFD700] text-black relative overflow-hidden z-30 flex flex-col items-center justify-center">
+        <!-- Paint Wave Top -->
+        <div class="absolute top-0 left-0 w-full h-16 bg-[#050505]" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 10%);"></div>
+
+        <h2 class="font-impact text-6xl md:text-8xl mb-8 text-center transform -skew-x-6 leading-none">
+            READY TO<br>BUZZ?
+        </h2>
+        <p class="mb-12 font-bold text-xl text-center">
+            そのアカウント、私たちに任せてみませんか？
+        </p>
+        
+        <a href="contact.html" class="relative group cursor-pointer ink-trigger ink-splash-btn">
+            <div class="absolute top-3 left-3 w-full h-full bg-black rounded-xl"></div>
+            <div class="relative bg-white border-4 border-black px-16 py-6 text-2xl font-black uppercase rounded-xl transform transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1">
+                CONTACT FORM
+            </div>
+        </a>
+        
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="w-full py-12 bg-[#050505] text-center border-t border-[#222]">
+        <div class="container mx-auto px-6">
+            <img src="img/logo.png" alt="Buzzry" class="h-8 mx-auto mb-4">
+            <p class="text-gray-600 text-sm">&copy; 2024 Buzzry Inc. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+        // --- 1. Bee Animation ---
+        const bee = document.getElementById('mascot-bee');
+        gsap.set(bee, { x: window.innerWidth * 0.85, y: window.innerHeight * 0.1 });
+
+        let beeTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 2
+            }
+        });
+
+        beeTl.to(bee, {
+            motionPath: {
+                path: [
+                    { x: window.innerWidth * 0.1, y: window.innerHeight * 0.8 }, 
+                    { x: window.innerWidth * 0.8, y: window.innerHeight * 1.5 }, 
+                    { x: window.innerWidth * 0.2, y: window.innerHeight * 2.2 },
+                    { x: window.innerWidth * 0.5, y: window.innerHeight * 3.5 },
+                    { x: window.innerWidth * 0.9, y: document.body.scrollHeight - 200 }
+                ],
+                curviness: 1.5,
+                autoRotate: true
+            },
+            ease: "power1.inOut"
+        });
+
+        gsap.to(bee, {
+            y: "+=30",
+            x: "-=10",
+            rotation: "+=15",
+            duration: 0.8,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut"
+        });
+
+        bee.addEventListener('mouseenter', () => {
+            gsap.to(bee, {
+                scale: 1.3,
+                rotation: "+=360",
+                x: "+=" + (Math.random() * 200 - 100),
+                y: "+=" + (Math.random() * 200 - 100),
+                duration: 0.4,
+                ease: "back.out(2)"
+            });
+        });
+
+        // --- 2. Lucky Words Animation ---
+        gsap.utils.toArray('.lucky-word').forEach(word => {
+            gsap.fromTo(word, 
+                { scale: 1, opacity: 0.8 },
+                { scale: 1.1, opacity: 1, textShadow: "0 0 20px #FFD700", duration: 0.8, repeat: -1, yoyo: true, ease: "sine.inOut" }
+            );
+        });
+
+        // --- 3. Pinning Animation ---
+        let pinTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#pinned-section",
+                start: "top top",
+                end: "+=1000",
+                scrub: true,
+                pin: true,
+                anticipatePin: 1
+            }
+        });
+
+        pinTl
+            .to("#layer-2", { clipPath: "circle(150% at 50% 50%)", duration: 1, ease: "power1.inOut" })
+            .to("#layer-2-content", { opacity: 1, duration: 0.2 }, "-=0.5");
+
+
+        // --- 4. Hamburger Menu Logic ---
+        const hamburger = document.getElementById('hamburger-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const mainHeader = document.getElementById('main-header'); // ヘッダー取得
+        const menuLinks = document.querySelectorAll('.menu-link');
+        let isMenuOpen = false;
+
+        hamburger.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            hamburger.classList.toggle('active');
+            mainHeader.classList.toggle('menu-open'); // ヘッダーのクラスをトグル
+
+            if (isMenuOpen) {
+                gsap.to(menuOverlay, { y: "0%", duration: 0.5, ease: "power4.out" });
+                gsap.to(menuLinks, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.3 });
+            } else {
+                gsap.to(menuLinks, { y: 50, opacity: 0, duration: 0.3 });
+                gsap.to(menuOverlay, { y: "-100%", duration: 0.5, delay: 0.2, ease: "power4.in" });
+            }
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                isMenuOpen = false;
+                hamburger.classList.remove('active');
+                mainHeader.classList.remove('menu-open'); // リンククリック時もクラス削除
+                gsap.to(menuOverlay, { y: "-100%", duration: 0.5, ease: "power4.in" });
+            });
+        });
+
+        // --- 5. ENTRANCE ANIMATION (NEW) ---
+        const heroTimeline = gsap.timeline();
+        
+        heroTimeline.to(".hero-splatter", {
+            scale: 1.2,
+            opacity: 0.4,
+            duration: 0.6,
+            ease: "power4.out"
+        });
+
+        heroTimeline.from(".hero-word:nth-child(1)", {
+            y: 100,
+            opacity: 0,
+            duration: 0.5,
+            ease: "back.out(1.7)"
+        }, "-=0.4");
+
+        heroTimeline.from(".hero-word:nth-child(2)", {
+            scale: 5,
+            opacity: 0,
+            duration: 0.6,
+            ease: "elastic.out(1, 0.3)"
+        });
+
+        heroTimeline.from(".hero-word:nth-child(3)", {
+            x: 50,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.out"
+        }, "-=0.4");
+
+        heroTimeline.to([".hero-desc", ".ink-splash-btn"], {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.2
+        });
+
+
+        // --- Ink Splash Interaction (Adjusted: Fix Black Box Issue) ---
+        const inkTriggers = document.querySelectorAll('.ink-trigger');
+        
+        inkTriggers.forEach(btn => {
+            btn.addEventListener('mouseenter', (e) => {
+                createSplatter(btn, e);
+            });
+            btn.addEventListener('mouseleave', (e) => {
+                removeSplatter(btn);
+            });
+        });
+
+        function createSplatter(element, e) {
+            // Main Splash Ring (Smaller)
+            const splash = document.createElement('div');
+            splash.classList.add('splash-particle');
+            splash.style.width = '120px';
+            splash.style.height = '120px';
+            splash.style.left = '50%';
+            splash.style.top = '50%';
+            splash.style.transform = 'translate(-50%, -50%) scale(0)';
+            splash.style.zIndex = '-1';
+            splash.style.backgroundColor = '#FFD700';
+            
+            // 修正: これらが抜けていたため四角く表示されていた
+            splash.style.borderRadius = '50%';
+            splash.style.position = 'absolute';
+
+            element.appendChild(splash);
+
+            gsap.to(splash, {
+                scale: 1.2,
+                opacity: 0.3,
+                duration: 0.3,
+                ease: "back.out(1.7)"
+            });
+            
+            // Random Drops (Fewer, Closer)
+            const particleCount = 4;
+            for(let i=0; i<particleCount; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('splash-particle');
+                const size = Math.random() * 8 + 3;
+                drop.style.width = size + 'px';
+                drop.style.height = size + 'px';
+                
+                // 修正: これらも抜けていた
+                drop.style.backgroundColor = '#FFD700';
+                drop.style.borderRadius = '50%';
+                drop.style.position = 'absolute';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 40;
+                
+                drop.style.left = '50%';
+                drop.style.top = '50%';
+                
+                element.appendChild(drop);
+                
+                gsap.to(drop, {
+                    x: Math.cos(angle) * (dist + Math.random() * 20),
+                    y: Math.sin(angle) * (dist + Math.random() * 20),
+                    opacity: 0.8,
+                    scale: 0,
+                    duration: 0.4,
+                    ease: "power2.out",
+                    onComplete: () => drop.remove()
+                });
+            }
+        }
+
+        function removeSplatter(element) {
+            const splashes = element.querySelectorAll('.splash-particle');
+            splashes.forEach(s => {
+                gsap.to(s, {
+                    scale: 0,
+                    opacity: 0,
+                    duration: 0.2,
+                    onComplete: () => s.remove()
+                });
+            });
+        }
+
+    </script>
+</body>
+</html>

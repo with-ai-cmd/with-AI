@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Claude が Microsoft Office 全製品に対応",
+    "url": "https://www.openpr.com/news/4468672/anthropic-rolls-out-claude-for-word-add-in-now-full-microsoft",
+    "source": "OpenPR",
+    "summary": "Word・Excel・PowerPointの中からClaudeを直接呼び出せるようになった。文書の要約・リライト、データ分析の提案、スライドの構成案作成がOfficeから離れずに完結する。",
+    "what_you_can_do": "Officeアドインを追加するだけ。Word上で文章を選択→Claudeに指示、が可能に。",
+    "importance": "高",
+    "action_required": true,
+    "published_at": "2026-04-13",
+    "collected_at": "2026-04-14",
+    "article_path": "articles/2026-04-13-claude-office-integration/index.html"
+  },
+  {
+    "title": "Anthropic がセキュリティ特化モデル「Claude Mythos」を発表",
+    "url": "https://red.anthropic.com/2026/mythos-preview/",
+    "source": "Anthropic",
+    "summary": "コードの脆弱性を自動で検出・修正提案できるモデルが登場。通常のClaudeでは見逃すセキュリティ問題を専門的に発見できる。",
+    "what_you_can_do": "自社のコードベースをMythosに通すと、SQLインジェクションやXSSなどの脆弱性を洗い出せる。セキュリティ監査の工数を大幅に削減。",
+    "importance": "高",
+    "action_required": false,
+    "published_at": "2026-04-07",
+    "collected_at": "2026-04-14",
+    "article_path": "articles/2026-04-07-claude-mythos-security/index.html"
+  },
+  {
+    "title": "Google Gemini 3.1 Pro — 16ベンチマーク中13で最高スコア",
+    "url": "https://tech-insider.org/google-gemini-750-million-users-march-2026-updates/",
+    "source": "Tech Insider",
+    "summary": "Gemini 3.1 Proがほぼ全ベンチマークで首位。特にARC-AGI-2（推論力テスト）で前世代の2倍超のスコア。Google系サービスとの連携が最大の強み。",
+    "what_you_can_do": "Googleアプリ内でGeminiを使う場面（Gmail要約、Docs執筆支援、Meet議事録）の精度が大幅に向上。Pixel端末では音声指示でアプリ操作も可能に。",
+    "importance": "高",
+    "action_required": false,
+    "published_at": "2026-04-11",
+    "collected_at": "2026-04-14"
+  },
+  {
+    "title": "Stanford AI Index 2026 — AI導入企業の格差が鮮明に",
+    "url": "https://spectrum.ieee.org/state-of-ai-index-2026",
+    "source": "IEEE Spectrum",
+    "summary": "AI導入効果の75%を上位20%の企業が獲得。差が出るのは「AI活用の深さ」で、単純なチャット利用だけの企業と業務フロー全体にAIを組み込んだ企業で成果が二極化。",
+    "what_you_can_do": "自社のAI活用が「チャットで聞くだけ」に留まっていないか見直すきっかけに。業務プロセスへの組み込み（自動化・意思決定支援）が成果を分ける。",
+    "importance": "中",
+    "action_required": false,
+    "published_at": "2026-04-13",
+    "collected_at": "2026-04-14"
+  },
+  {
+    "title": "CoreWeave が Anthropic のインフラ基盤に — Claude の応答速度向上へ",
+    "url": "https://www.cnbc.com/2026/04/10/coreweave-anthropic-claude-ai-deal.html",
+    "source": "CNBC",
+    "summary": "AnthropicがCoreWeaveと複数年のGPUインフラ契約を締結。Claude利用者が増えてもレスポンス低下を防ぐ体制が整った。",
+    "what_you_can_do": "直接のアクションは不要。Claudeのピーク時間帯の遅延が改善される見込み。",
+    "importance": "低",
+    "action_required": false,
+    "published_at": "2026-04-10",
+    "collected_at": "2026-04-14"
+  },
+  {
+    "title": "OpenAI、GPT-5.4 リリース — 自律的なマルチステップ作業が可能に",
+    "url": "https://openai.com/news/",
+    "source": "OpenAI",
+    "summary": "100万トークンの長文対応に加え、ソフトウェア環境をまたいだ自律的なワークフロー実行が可能に。デスクトップ作業の自動化テストで人間の正答率を上回った。",
+    "what_you_can_do": "ChatGPT Pro/Plusプランで利用可能。複数ツールをまたぐ作業（調査→整理→レポート作成）を一つの指示で任せられる。",
+    "importance": "高",
+    "action_required": false,
+    "published_at": "2026-04-10",
+    "collected_at": "2026-04-14"
+  },
+  {
+    "title": "Meta が新AIモデルを発表 — エンタープライズ市場へ本格参入",
+    "url": "https://www.cnbc.com/2026/04/08/meta-debuts-first-major-ai-model-since-14-billion-deal-to-bring-in-alexandr-wang.html",
+    "source": "CNBC",
+    "summary": "Scale AI創業者のAlexandr Wang氏を迎えて開発した新モデル。オープンソースのLlamaとは別路線で、企業向けの高精度・高セキュリティモデルとして展開。",
+    "what_you_can_do": "エンタープライズ向けの選択肢が増えた。自社データを外部に出さずにAIを使いたい企業はチェックの価値あり。",
+    "importance": "中",
+    "action_required": false,
+    "published_at": "2026-04-08",
+    "collected_at": "2026-04-14"
+  },
+  {
+    "title": "Google、Gemma 4 をオープンソース公開 — Apache 2.0 で自由に利用可能",
+    "url": "https://blog.mean.ceo/new-ai-model-releases-news-april-2026/",
+    "source": "Mean CEO Blog",
+    "summary": "推論力とエージェント型ワークフローに特化したオープンモデル。Apache 2.0ライセンスで商用利用も自由。自社サーバーで動かせるのが最大の強み。",
+    "what_you_can_do": "API費用をかけずに社内でAIを運用したい場合の選択肢。顧客データを外部に送らずにAI処理が可能。ただしGPU環境が必要。",
+    "importance": "中",
+    "action_required": false,
+    "published_at": "2026-04-09",
+    "collected_at": "2026-04-14"
+  }
+]

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章: .md ファイルを使いこなす — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../shared/doc-theme.css">
+</head>
+<body>
+
+<button class="sb-toggle" id="sbToggle">☰ 目次</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <a href="./" class="sb-back"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg> 教材一覧に戻る</a>
+      <div class="sb-title">第3章</div>
+      <div class="sb-subtitle">.md ファイルを使いこなす</div>
+    </div>
+    <nav class="sb-nav">
+      <a href="#what-is" class="sb-link">CLAUDE.md とは</a>
+      <a href="#basics" class="sb-link">書き方の基本</a>
+      <a href="#rules" class="sb-link">ルールを書く</a>
+      <a href="#roles" class="sb-link">役割を定義する</a>
+      <a href="#prohibitions" class="sb-link">禁止事項</a>
+      <a href="#format" class="sb-link">フォーマット指定</a>
+      <a href="#examples" class="sb-link">実例集</a>
+      <a href="#settings" class="sb-link">settings.json</a>
+      <a href="#projects" class="sb-link">プロジェクト使い分け</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-label">第3章</div>
+        <h1>.md ファイルを使いこなす</h1>
+        <p>CLAUDE.md の書き方から実例集、プロジェクトごとの使い分けまで。</p>
+      </div>
+
+      <!-- ====== CLAUDE.md とは ====== -->
+      <div class="section">
+        <span class="section-anchor" id="what-is"></span>
+        <h2>CLAUDE.md とは</h2>
+        <p><code>CLAUDE.md</code> は、AI への<strong>常時指示書</strong>です。このファイルに書いた内容は、Claude Code が毎回自動で読み込みます。</p>
+        <p>毎回「日本語で回答して」と伝える必要はありません。<code>CLAUDE.md</code> に一度書いておけば、常にその指示に従います。</p>
+
+        <h3>配置場所</h3>
+        <p>プロジェクトのルートフォルダ（一番上の階層）に置きます。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>my-project/
+  CLAUDE.md      <span class="c-cmt"># ← ここに置く</span>
+  その他のファイル...</pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span><code>CLAUDE.md</code> はプレーンテキストファイルです。メモ帳や Cursor で作成・編集できます。</div>
+      </div>
+
+      <!-- ====== 書き方の基本 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="basics"></span>
+        <h2>書き方の基本</h2>
+        <p><code>CLAUDE.md</code> は Markdown 形式で書きます。難しい書式は不要で、シンプルなルールを箇条書きにするだけで十分です。</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 基本的な書き方</span>
+
+- 回答は日本語で
+- 専門用語には簡単な説明を付ける
+- 500文字以内で回答する</pre></div>
+
+        <div class="box box-info"><span class="box-icon"></span>Markdown の見出し（<code>#</code>）や箇条書き（<code>-</code>）を使うと整理しやすくなりますが、普通の文章でも問題ありません。</div>
+      </div>
+
+      <!-- ====== ルールを書く ====== -->
+      <div class="section">
+        <span class="section-anchor" id="rules"></span>
+        <h2>ルールを書く</h2>
+        <p>Claude Code に守ってほしいルールを具体的に書きます。</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># ルール</span>
+
+- 回答は日本語で
+- 500文字以内で簡潔に回答する
+- 分からないことは「分かりません」と正直に答える
+- 数字やデータを引用するときは出典を明記する</pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span>ルールは具体的に書くほど効果的です。「丁寧に」より「です・ます調で」の方が正確に伝わります。</div>
+      </div>
+
+      <!-- ====== 役割を定義する ====== -->
+      <div class="section">
+        <span class="section-anchor" id="roles"></span>
+        <h2>役割を定義する</h2>
+        <p>Claude Code に特定の専門家としての役割を与えることで、回答の質が大きく変わります。</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 役割</span>
+
+あなたは中小企業向けの経営コンサルタントです。
+- 難しい経営用語は使わず、平易な言葉で説明する
+- 具体的な事例を交えて回答する
+- 実行可能なアクションプランを提示する</pre></div>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 役割</span>
+
+あなたはビジネスメールの校正専門家です。
+- 敬語の間違いを指摘する
+- より適切な表現があれば提案する
+- 修正箇所は【修正前】→【修正後】の形式で示す</pre></div>
+
+        <div class="box box-info"><span class="box-icon"></span>役割を定義すると、その分野に特化した回答が得られます。用途に合わせて使い分けましょう。</div>
+      </div>
+
+      <!-- ====== 禁止事項 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="prohibitions"></span>
+        <h2>禁止事項</h2>
+        <p>やってほしくないことを明確に書くことも重要です。</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 禁止事項</span>
+
+- 略語を使わない（例: MTG → ミーティング）
+- 英語で回答しない
+- 推測で数字を出さない
+- 「〜かもしれません」など曖昧な表現を避ける</pre></div>
+
+        <div class="box box-warn"><span class="box-icon"></span>禁止事項は「〜しない」「〜を避ける」と明確に書きましょう。曖昧な表現だと無視されることがあります。</div>
+      </div>
+
+      <!-- ====== フォーマット指定 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="format"></span>
+        <h2>フォーマット指定</h2>
+        <p>出力の形式を指定すると、毎回同じフォーマットで回答が返ってきます。</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 出力フォーマット</span>
+
+- 回答は箇条書きで
+- 重要なポイントは太字にする
+- 最後に「まとめ」を1行で付ける</pre></div>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 出力フォーマット</span>
+
+回答は以下の表形式で出力する:
+| 項目 | 内容 | 備考 |</pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span>フォーマットを指定しておくと、チームで共有したときに出力が統一されます。</div>
+      </div>
+
+      <!-- ====== 実例集 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="examples"></span>
+        <h2>実例集</h2>
+        <p>すぐに使える <code>CLAUDE.md</code> のテンプレートを6つ紹介します。コピーしてそのまま使えます。</p>
+
+        <h3>1. 議事録アシスタント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 議事録アシスタント</span>
+
+あなたは議事録作成の専門家です。
+
+<span class="c-cmt">## ルール</span>
+- 入力されたメモや音声テキストを議事録形式に整理する
+- 日時・参加者・議題・決定事項・次のアクションを必ず含める
+- 発言者が不明な場合は「発言者不明」と記載する
+- 敬称は「さん」で統一する
+
+<span class="c-cmt">## 出力フォーマット</span>
+- 日時:
+- 参加者:
+- 議題:
+- 内容:（箇条書き）
+- 決定事項:
+- 次のアクション:（担当者・期限付き）</pre></div>
+
+        <h3>2. メール校正アシスタント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># メール校正アシスタント</span>
+
+あなたはビジネスメールの校正専門家です。
+
+<span class="c-cmt">## ルール</span>
+- 敬語の誤りを指摘する
+- 冗長な表現を簡潔にする
+- 失礼にあたる表現がないかチェックする
+- 修正箇所は【修正前】→【修正後】で示す
+
+<span class="c-cmt">## 禁止</span>
+- メールの内容や意図を変えない
+- 過度にカジュアルな表現にしない</pre></div>
+
+        <h3>3. 企画書アシスタント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 企画書アシスタント</span>
+
+あなたは企画書作成のサポート役です。
+
+<span class="c-cmt">## ルール</span>
+- 目的・背景・施策・スケジュール・予算の構成で整理する
+- 数値目標を必ず含める
+- 想定されるリスクと対策を記載する
+- 1ページに収まる分量にまとめる
+
+<span class="c-cmt">## 出力フォーマット</span>
+- 企画名:
+- 背景と目的:
+- 施策の概要:
+- スケジュール:
+- 予算:
+- 期待される効果:
+- リスクと対策:</pre></div>
+
+        <h3>4. SNS投稿作成アシスタント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># SNS投稿作成アシスタント</span>
+
+あなたは企業SNS運用の専門家です。
+
+<span class="c-cmt">## ルール</span>
+- 140文字以内で作成する（X / Twitter 向け）
+- 親しみやすいが砕けすぎない文体
+- ハッシュタグは2〜3個まで
+- 行動を促す一文を入れる（CTA）
+
+<span class="c-cmt">## 禁止</span>
+- 絵文字は使わない
+- 競合他社への言及をしない
+- 誇大表現を使わない</pre></div>
+
+        <h3>5. リサーチアシスタント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># リサーチアシスタント</span>
+
+あなたはビジネスリサーチの専門家です。
+
+<span class="c-cmt">## ルール</span>
+- 質問に対して構造化された調査結果を返す
+- 情報源が明確でないものは「未確認情報」と明記する
+- 賛否両方の視点を含める
+- 最後に「調査のまとめ」を3行以内で付ける
+
+<span class="c-cmt">## 出力フォーマット</span>
+- 調査テーマ:
+- 概要:
+- 詳細:（箇条書き）
+- 注意点:
+- まとめ:</pre></div>
+
+        <h3>6. 社内FAQ回答アシスタント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 社内FAQ回答アシスタント</span>
+
+あなたは社内ヘルプデスクの担当者です。
+
+<span class="c-cmt">## ルール</span>
+- 質問に対して簡潔に回答する
+- 手順がある場合は番号付きリストで示す
+- 関連する質問があれば「関連FAQ」として提示する
+- 回答に自信がない場合は「担当部署に確認してください」と案内する
+
+<span class="c-cmt">## 禁止</span>
+- 社外秘の情報を推測で回答しない
+- 個人情報に関する質問には回答しない</pre></div>
+      </div>
+
+      <!-- ====== settings.json ====== -->
+      <div class="section">
+        <span class="section-anchor" id="settings"></span>
+        <h2>settings.json</h2>
+        <p><code>settings.json</code> は Claude Code の動作設定ファイルです。<code>CLAUDE.md</code> が「指示書」なら、<code>settings.json</code> は「環境設定」にあたります。</p>
+
+        <h3>ファイルの場所</h3>
+        <table>
+          <tr><th>種類</th><th>場所</th><th>適用範囲</th></tr>
+          <tr><td>ユーザー設定</td><td><code>~/.claude/settings.json</code></td><td>全プロジェクト共通</td></tr>
+          <tr><td>プロジェクト設定</td><td><code>.claude/settings.json</code></td><td>そのプロジェクトのみ</td></tr>
+        </table>
+
+        <h3>設定できること</h3>
+        <p>許可するコマンド、権限のデフォルト値、環境変数などを設定できます。</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>{
+  "permissions": {
+    "allow": [
+      "Bash(ls)",
+      "Bash(cd)",
+      "Bash(pwd)",
+      "Bash(mkdir)"
+    ],
+    "deny": []
+  }
+}</pre></div>
+        <p>上の例では、<code>ls</code>、<code>cd</code>、<code>pwd</code>、<code>mkdir</code> の実行を常に許可しています。毎回「Allow」を押す手間が省けます。</p>
+
+        <div class="box box-info"><span class="box-icon"></span><code>settings.json</code> は手動で編集するか、<code>/permissions</code> コマンドで管理できます。</div>
+      </div>
+
+      <!-- ====== プロジェクト使い分け ====== -->
+      <div class="section">
+        <span class="section-anchor" id="projects"></span>
+        <h2>プロジェクト使い分け</h2>
+        <p>フォルダごとに異なる <code>CLAUDE.md</code> を置くことで、用途に応じた AI の使い分けができます。</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># フォルダ構成の例</span>
+
+Desktop/
+  meeting-notes/
+    CLAUDE.md      <span class="c-cmt"># ← 議事録アシスタント</span>
+  email-check/
+    CLAUDE.md      <span class="c-cmt"># ← メール校正アシスタント</span>
+  research/
+    CLAUDE.md      <span class="c-cmt"># ← リサーチアシスタント</span></pre></div>
+
+        <p>フォルダを移動するだけで、AI の役割が自動的に切り替わります。</p>
+
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p>用途ごとにフォルダを作る</p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p>各フォルダに <code>CLAUDE.md</code> を置く</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p><code>cd</code> でフォルダに移動して <code>claude</code> を起動する</p></div></div>
+        </div>
+
+        <h3>グローバル設定とプロジェクト設定</h3>
+        <table>
+          <tr><th>種類</th><th>場所</th><th>用途</th></tr>
+          <tr><td>グローバル</td><td><code>~/.claude/CLAUDE.md</code></td><td>全プロジェクト共通のルール（言語設定など）</td></tr>
+          <tr><td>プロジェクト</td><td><code>プロジェクトフォルダ/CLAUDE.md</code></td><td>そのプロジェクト固有のルール</td></tr>
+        </table>
+        <p>両方が存在する場合、グローバル設定の上にプロジェクト設定が上書きされます。</p>
+
+        <div class="box box-tip"><span class="box-icon"></span>グローバルの <code>CLAUDE.md</code> に「回答は日本語で」と書いておけば、全てのプロジェクトで日本語回答がデフォルトになります。</div>
+      </div>
+
+      <!-- Chapter nav -->
+      <div class="chapter-nav">
+        <a href="ch2-commands.html">&larr; 第2章: 基本コマンド</a>
+        <a href="ch4-agents.html">第4章: エージェント &rarr;</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/doc-utils.js"></script>
+</body>
+</html>

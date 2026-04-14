@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>はじめてのAIエージェント作成 — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../shared/doc-theme.css">
+</head>
+<body>
+
+<button class="sb-toggle" id="sbToggle">☰ 目次</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <a href="../" class="sb-back"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg> 教材一覧に戻る</a>
+      <div class="sb-title">はじめてのAIエージェント作成</div>
+      <div class="sb-subtitle">手を動かして覚える実践ガイド</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">STEP 1</div>
+      <a href="#what" class="sb-link">エージェントって何？</a>
+      <a href="#first" class="sb-link">30秒で最初のエージェント</a>
+      <div class="sb-section">STEP 2</div>
+      <a href="#upgrade" class="sb-link">エージェントを賢くする</a>
+      <a href="#rules" class="sb-link">ルールを追加する</a>
+      <a href="#format" class="sb-link">出力を整える</a>
+      <div class="sb-section">STEP 3</div>
+      <a href="#practical" class="sb-link">実務エージェントを作る</a>
+      <a href="#meeting" class="sb-link">作ってみよう: 議事録AI</a>
+      <div class="sb-section">STEP 4</div>
+      <a href="#multi" class="sb-link">複数ファイルで拡張する</a>
+      <a href="#mcp" class="sb-link">外部サービスと繋げる</a>
+      <div class="sb-section">STEP 5</div>
+      <a href="#templates" class="sb-link">コピペで使えるテンプレ集</a>
+      <a href="#next" class="sb-link">次のステップ</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-label">WORKSHOP</div>
+        <h1>はじめてのAIエージェント作成</h1>
+        <p>読むだけじゃなくて、一緒に作る。この教材が終わる頃にはエージェントが1つ完成します。</p>
+      </div>
+
+      <!-- ====== エージェントって何？ ====== -->
+      <div class="section">
+        <span class="section-anchor" id="what"></span>
+        <h2>エージェントって何？</h2>
+        <p>「エージェント」って聞くと難しそうだけど、正体は超シンプル。</p>
+
+        <div class="card-row">
+          <div class="card card-l">
+            <h4>普通のClaude</h4>
+            <p>毎回「日本語で」「箇条書きで」と伝える必要がある</p>
+          </div>
+          <div class="card card-l">
+            <h4>エージェント</h4>
+            <p>最初に指示書を置いておけば、毎回自動で読んでくれる</p>
+          </div>
+        </div>
+
+        <p>つまり<strong>エージェント = フォルダ + 指示書（CLAUDE.md）</strong>。これだけ。</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>my-agent/          <span class="c-cmt"># ← ただのフォルダ</span>
+  CLAUDE.md        <span class="c-cmt"># ← 指示書（テキストファイル）</span></pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span>プログラミングは一切不要。テキストファイルを1つ書くだけで、自分専用のAIが作れます。</div>
+      </div>
+
+      <!-- ====== 30秒で最初のエージェント ====== -->
+      <div class="section">
+        <span class="section-anchor" id="first"></span>
+        <h2>30秒で最初のエージェント</h2>
+        <p>まずは何も考えず、手を動かしてみましょう。</p>
+
+        <h3>やること</h3>
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p>デスクトップにフォルダを作る</p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p>その中に <code>CLAUDE.md</code> を作る</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p>Claude Code を起動する</p></div></div>
+        </div>
+
+        <h3>Step 1: フォルダを作る</h3>
+        <p>ターミナルで以下を実行（コピペでOK）:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>mkdir ~/Desktop/my-first-agent
+cd ~/Desktop/my-first-agent</pre></div>
+
+        <h3>Step 2: CLAUDE.md を作る</h3>
+        <p>以下の内容をそのままコピペ:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># メール下書きアシスタント</span>
+
+あなたはビジネスメールの下書きを作る専門家です。
+
+<span class="c-cmt">## ルール</span>
+- 回答は日本語で
+- です・ます調で丁寧に
+- 件名も一緒に提案する
+- 短く簡潔に（3〜5文程度）</pre></div>
+
+        <p>ファイルの作り方がわからない人は、ターミナルでこう打てばOK:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>cat &lt;&lt;'EOF' &gt; CLAUDE.md
+# メール下書きアシスタント
+
+あなたはビジネスメールの下書きを作る専門家です。
+
+## ルール
+- 回答は日本語で
+- です・ます調で丁寧に
+- 件名も一緒に提案する
+- 短く簡潔に（3〜5文程度）
+EOF</pre></div>
+
+        <h3>Step 3: Claude Code を起動</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>claude</pre></div>
+        <p>起動したら、こう話しかけてみて:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>山田さんに打ち合わせのお礼メールを書いて</pre></div>
+
+        <div class="box box-ok"><span class="box-icon"></span><strong>おめでとう！</strong> これがあなたの最初のエージェントです。件名付きで丁寧なメールが返ってきたはず。CLAUDE.md に書いたルールが自動で適用されています。</div>
+      </div>
+
+      <!-- ====== エージェントを賢くする ====== -->
+      <div class="section">
+        <span class="section-anchor" id="upgrade"></span>
+        <h2>エージェントを賢くする</h2>
+        <p>最初のエージェントは動いたけど、まだ「普通のメール」しか書けない。ここからが本番。CLAUDE.md を育てていきます。</p>
+
+        <h3>CLAUDE.md の基本構造</h3>
+        <p>CLAUDE.md は4つのパーツで書くと整理しやすい:</p>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># ① 役割（誰として動くか）</span>
+あなたは○○の専門家です。
+
+<span class="c-cmt">## ② ルール（守ること）</span>
+- ○○する
+- ○○する
+
+<span class="c-cmt">## ③ 禁止事項（やらないこと）</span>
+- ○○しない
+- ○○しない
+
+<span class="c-cmt">## ④ 出力フォーマット（どう返すか）</span>
+以下の形式で出力する:
+- 件名:
+- 本文:</pre></div>
+
+        <table>
+          <tr><th>パーツ</th><th>書くこと</th><th>効果</th></tr>
+          <tr><td>① 役割</td><td>専門家・アシスタント等</td><td>回答の質と視点が変わる</td></tr>
+          <tr><td>② ルール</td><td>「〜する」の形式</td><td>毎回の指示が不要になる</td></tr>
+          <tr><td>③ 禁止事項</td><td>「〜しない」の形式</td><td>やってほしくないことを防ぐ</td></tr>
+          <tr><td>④ フォーマット</td><td>出力の型を指定</td><td>毎回同じ形式で返ってくる</td></tr>
+        </table>
+
+        <div class="box box-tip"><span class="box-icon"></span>全部書く必要はありません。①だけでも動きます。必要に応じて②③④を足していく、がおすすめ。</div>
+      </div>
+
+      <!-- ====== ルールを追加する ====== -->
+      <div class="section">
+        <span class="section-anchor" id="rules"></span>
+        <h2>ルールを追加する</h2>
+        <p>さっき作ったメールエージェントを、もっと実用的にしてみましょう。</p>
+
+        <h3>Before（さっきの状態）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># メール下書きアシスタント</span>
+あなたはビジネスメールの下書きを作る専門家です。
+
+<span class="c-cmt">## ルール</span>
+- 回答は日本語で
+- です・ます調で丁寧に
+- 件名も一緒に提案する
+- 短く簡潔に（3〜5文程度）</pre></div>
+
+        <h3>After（進化版）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># メール下書きアシスタント</span>
+
+あなたはビジネスメールの下書きを作る専門家です。
+相手との関係性に合わせて、適切な丁寧さで書きます。
+
+<span class="c-cmt">## ルール</span>
+- 回答は日本語で
+- 件名も一緒に提案する
+- 短く簡潔に（本文3〜5文）
+- 初対面の相手には「お世話になっております」で始める
+- 社内メールは「お疲れさまです」で始める
+- 相手の名前は「○○様」で統一する
+
+<span class="c-cmt">## 禁止事項</span>
+- 「拝啓」「敬具」は使わない（硬すぎる）
+- 「取り急ぎ」は使わない（雑に見える）
+- 絵文字は使わない
+
+<span class="c-cmt">## 出力フォーマット</span>
+以下の形式で出力する:
+
+【件名】○○○
+【本文】
+○○○</pre></div>
+
+        <p>CLAUDE.md を上書き保存したら、Claude Code に話しかけてみて:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>初対面の佐藤部長に、来週の面談のお願いメールを書いて</pre></div>
+
+        <div class="box box-info"><span class="box-icon"></span>「初対面」と言っただけで「お世話になっております」で始まり、「○○様」表記になるはず。これがルールの力です。</div>
+
+        <h3>ルールの書き方のコツ</h3>
+        <table>
+          <tr><th>悪い例</th><th>良い例</th><th>理由</th></tr>
+          <tr><td>丁寧に書く</td><td>です・ます調で書く</td><td>「丁寧」は人によって違う</td></tr>
+          <tr><td>短めに</td><td>本文3〜5文で</td><td>数字で指定すると正確</td></tr>
+          <tr><td>適切な敬語で</td><td>初対面は「お世話になっております」</td><td>条件+具体的な表現</td></tr>
+        </table>
+
+        <div class="box box-tip"><span class="box-icon"></span><strong>ポイント:</strong> 曖昧な言葉を避けて、具体的に書く。「いい感じに」ではなく「3つの候補を出して」。</div>
+      </div>
+
+      <!-- ====== 出力を整える ====== -->
+      <div class="section">
+        <span class="section-anchor" id="format"></span>
+        <h2>出力を整える</h2>
+        <p>フォーマットを指定すると、毎回同じ形式で返ってくるようになります。チームで使うときに特に便利。</p>
+
+        <h3>表形式で返す</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">## 出力フォーマット</span>
+回答は以下の表形式で:
+| 項目 | 内容 |
+|------|------|</pre></div>
+
+        <h3>番号付きステップで返す</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">## 出力フォーマット</span>
+以下の構成で回答する:
+1. 結論（1文）
+2. 理由（2〜3文）
+3. 次のアクション（箇条書き）</pre></div>
+
+        <h3>テンプレート形式で返す</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">## 出力フォーマット</span>
+以下のテンプレートで出力する:
+
+---
+【件名】
+【宛先】
+【本文】
+【補足】あれば記載、なければ省略
+---</pre></div>
+      </div>
+
+      <!-- ====== 実務エージェントを作る ====== -->
+      <div class="section">
+        <span class="section-anchor" id="practical"></span>
+        <h2>実務エージェントを作る</h2>
+        <p>ここまでの知識で、もう実務で使えるエージェントが作れます。ポイントは3つ:</p>
+
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p><strong>業務を1つ選ぶ</strong> — 毎日やってる定型作業がベスト</p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p><strong>「いつもこうやってる」を言語化する</strong> — 暗黙のルールを書き出す</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p><strong>CLAUDE.md に書く</strong> — 役割 + ルール + フォーマット</p></div></div>
+        </div>
+
+        <div class="box box-info"><span class="box-icon"></span>最初から完璧を目指さなくてOK。まず動かして、「ここが違う」と思ったらルールを足す。これを繰り返すのが一番早い。</div>
+      </div>
+
+      <!-- ====== 作ってみよう: 議事録AI ====== -->
+      <div class="section">
+        <span class="section-anchor" id="meeting"></span>
+        <h2>作ってみよう: 議事録AI</h2>
+        <p>実際に手を動かして、議事録エージェントを作りましょう。</p>
+
+        <h3>Step 1: フォルダを作る</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>mkdir ~/Desktop/meeting-notes
+cd ~/Desktop/meeting-notes</pre></div>
+
+        <h3>Step 2: CLAUDE.md を書く</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 議事録エージェント</span>
+
+あなたは議事録作成の専門家です。
+打ち合わせの内容を入力すると、きれいな議事録に整形します。
+
+<span class="c-cmt">## ルール</span>
+- 箇条書きのメモや音声文字起こしを受け取る
+- 発言者が不明でも、文脈から推測して振り分ける
+- 敬称は「さん」で統一
+- 決定事項が曖昧な場合は「要確認」と注記する
+
+<span class="c-cmt">## 禁止事項</span>
+- 会議で話されていない内容を追加しない
+- 数字やデータを推測で補完しない
+
+<span class="c-cmt">## 出力フォーマット</span>
+以下の形式で議事録を出力する:
+
+---
+日時: YYYY-MM-DD HH:MM
+参加者: ○○さん、○○さん
+場所: （オンライン / 会議室名）
+
+<span class="c-cmt">### 議題</span>
+1. ○○について
+
+<span class="c-cmt">### 内容</span>
+- （発言者）○○○○
+- （発言者）○○○○
+
+<span class="c-cmt">### 決定事項</span>
+- ○○○○
+
+<span class="c-cmt">### 次のアクション</span>
+- [ ] ○○さん: ○○を○月○日までに
+- [ ] ○○さん: ○○を確認
+---</pre></div>
+
+        <h3>Step 3: 試してみる</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>claude</pre></div>
+        <p>起動したら、以下をコピペして投げてみて:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>以下のメモを議事録にして:
+
+田中と佐藤で来月のキャンペーンの話
+・SNS広告を増やす方向で合意
+・予算は50万、田中が稟議出す
+・デザインは外注、佐藤が見積もり取る
+・来週金曜までに素案作る</pre></div>
+
+        <div class="box box-ok"><span class="box-icon"></span>雑なメモが、フォーマット通りの議事録に変換されたはず。「次のアクション」に担当者と期限が入っているのがポイント。</div>
+
+        <h3>Step 4: 使いながら育てる</h3>
+        <p>実際に使ってみて「ここが違う」と思ったら、CLAUDE.md にルールを足す:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># こういうのを後から追加する</span>
+- 会議の目的が不明な場合は「会議目的: 要確認」と記載する
+- アクションアイテムには必ず期限を入れる（不明なら「期限未定」）
+- 金額が出たら太字にする</pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span><strong>エージェント作りの本質:</strong> 最初から完璧に書こうとしない。「使う → 直す → 使う」のループを回すのが最速。</div>
+      </div>
+
+      <!-- ====== 複数ファイルで拡張する ====== -->
+      <div class="section">
+        <span class="section-anchor" id="multi"></span>
+        <h2>複数ファイルで拡張する</h2>
+        <p>CLAUDE.md が長くなってきたら、ファイルを分けて整理できます。</p>
+
+        <h3>参照ファイルを置く</h3>
+        <p>例えば、議事録エージェントに「社内メンバー一覧」を持たせたい場合:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>meeting-notes/
+  CLAUDE.md           <span class="c-cmt"># エージェントの指示書</span>
+  members.md          <span class="c-cmt"># メンバー一覧</span></pre></div>
+
+        <p><code>members.md</code> の中身:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 社内メンバー一覧</span>
+
+| 名前 | 部署 | 役職 |
+|------|------|------|
+| 田中太郎 | 営業部 | 部長 |
+| 佐藤花子 | マーケ部 | リーダー |
+| 鈴木一郎 | 開発部 | エンジニア |</pre></div>
+
+        <p>CLAUDE.md にこう書き足す:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">## 参照ファイル</span>
+- members.md にメンバー一覧がある。名前が出たら部署と役職を自動で付ける</pre></div>
+
+        <div class="box box-info"><span class="box-icon"></span>Claude Code は同じフォルダ内のファイルを読めます。CLAUDE.md で「このファイルを参照して」と書くだけでOK。</div>
+
+        <h3>テンプレートファイルを置く</h3>
+        <p>「毎回この形式で」という出力が複雑な場合、テンプレートファイルを別に作る:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>meeting-notes/
+  CLAUDE.md
+  members.md
+  template.md          <span class="c-cmt"># 出力テンプレート</span></pre></div>
+
+        <p>CLAUDE.md:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">## 出力フォーマット</span>
+template.md の形式に従って出力する</pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span>CLAUDE.md はシンプルに保つ。詳細は別ファイルに分ける。これがエージェントを長く使うコツ。</div>
+      </div>
+
+      <!-- ====== 外部サービスと繋げる ====== -->
+      <div class="section">
+        <span class="section-anchor" id="mcp"></span>
+        <h2>外部サービスと繋げる</h2>
+        <p>Claude Code は「MCP」という仕組みで外部サービスと繋がります。設定するだけで使えます。</p>
+
+        <h3>何ができるようになる？</h3>
+        <table>
+          <tr><th>サービス</th><th>できること</th></tr>
+          <tr><td>Notion</td><td>ページの読み書き、DB検索・更新</td></tr>
+          <tr><td>Gmail</td><td>メール検索、下書き作成</td></tr>
+          <tr><td>Google Calendar</td><td>予定の確認・作成</td></tr>
+          <tr><td>Slack</td><td>メッセージ送信、チャンネル管理</td></tr>
+        </table>
+
+        <h3>例: NotionにDBを持つ議事録エージェント</h3>
+        <p>MCPでNotionを繋いだ状態で、CLAUDE.md にこう書く:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 議事録エージェント（Notion連携版）</span>
+
+あなたは議事録作成の専門家です。
+
+<span class="c-cmt">## 連携</span>
+- 議事録はNotionの議事録DBに保存する
+- 参加者はNotionの人脈DBから検索する
+
+<span class="c-cmt">## 処理フロー</span>
+1. メモを受け取ったら議事録に整形する
+2. 完成したらNotionに自動保存する
+3. 保存先のURLを表示する</pre></div>
+
+        <div class="box box-info"><span class="box-icon"></span>MCP の設定方法はマスター講座の第6章で詳しく解説しています。ここでは「CLAUDE.md にこう書けば繋がる」というイメージだけ掴んでおけばOK。</div>
+      </div>
+
+      <!-- ====== コピペで使えるテンプレ集 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="templates"></span>
+        <h2>コピペで使えるテンプレ集</h2>
+        <p>フォルダを作って CLAUDE.md にコピペするだけで使えます。</p>
+
+        <h3>営業メール作成エージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 営業メール作成エージェント</span>
+
+あなたは営業メール作成の専門家です。
+相手の業界・課題に合わせてパーソナライズされたメールを書きます。
+
+<span class="c-cmt">## ルール</span>
+- 相手の名前・会社名・業界を聞いてから書く
+- 件名は20文字以内（開封率が高い長さ）
+- 本文は読了時間30秒以内（150文字以内）
+- 必ず1つだけCTA（次のアクション）を入れる
+- 「弊社は〜」の自社紹介は最小限に
+
+<span class="c-cmt">## 禁止事項</span>
+- 「突然のご連絡失礼します」は使わない
+- 複数の依頼を1通に入れない
+- 添付ファイルの言及はしない（初回メールでは送らない前提）
+
+<span class="c-cmt">## 出力フォーマット</span>
+【件名】
+【本文】
+【送信前チェック】
+- [ ] 相手の名前は正しいか
+- [ ] CTAは1つだけか
+- [ ] 30秒で読めるか</pre></div>
+
+        <h3>日報作成エージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 日報作成エージェント</span>
+
+あなたは日報作成を手伝うアシスタントです。
+箇条書きのメモを受け取り、上司が読みやすい日報に整えます。
+
+<span class="c-cmt">## ルール</span>
+- 「やったこと」を成果ベースで書き直す（「メール書いた」→「A社への提案メールを送付」）
+- 明日やることも提案する（今日の流れから推測）
+- 困っていることは「相談事項」として別枠にする
+- 全体で200文字以内
+
+<span class="c-cmt">## 出力フォーマット</span>
+【今日の成果】
+- ○○○
+- ○○○
+
+【明日の予定】
+- ○○○
+
+【相談事項】
+- ○○○（なければ「特になし」）</pre></div>
+
+        <h3>カスタマーサポート回答エージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># カスタマーサポート回答エージェント</span>
+
+あなたはカスタマーサポートの回答作成者です。
+顧客からの問い合わせに対して、丁寧で正確な回答を作成します。
+
+<span class="c-cmt">## ルール</span>
+- まず共感の一文を入れる（「ご不便をおかけし申し訳ございません」等）
+- 回答は手順がある場合は番号付きで示す
+- 専門用語は使わない。使う場合は括弧で説明を添える
+- 最後に「他にご不明な点がございましたらお気軽にお問い合わせください」を入れる
+
+<span class="c-cmt">## 禁止事項</span>
+- 回答に自信がないことを書かない（調査が必要なら「確認してご連絡します」）
+- 他社サービスとの比較をしない
+- 個人情報を推測で記載しない
+
+<span class="c-cmt">## 出力フォーマット</span>
+【回答】
+○○○
+
+【補足】必要な場合のみ</pre></div>
+
+        <h3>企画書アシスタントエージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 企画書アシスタント</span>
+
+あなたは企画書作成のサポート役です。
+アイデアを受け取り、上司に通る企画書の構成に整えます。
+
+<span class="c-cmt">## ルール</span>
+- 「なぜやるのか」（背景）を最初に書く
+- 数値目標を必ず含める（不明なら「要設定」と注記）
+- リスクと対策をセットで書く
+- A4一枚に収まる分量にまとめる
+
+<span class="c-cmt">## 出力フォーマット</span>
+【企画名】
+【背景と目的】
+【施策の概要】
+【スケジュール】
+【予算】
+【期待される効果】
+【リスクと対策】</pre></div>
+      </div>
+
+      <!-- ====== 次のステップ ====== -->
+      <div class="section">
+        <span class="section-anchor" id="next"></span>
+        <h2>次のステップ</h2>
+        <p>ここまでで、エージェントの作り方の基本は身につきました。</p>
+
+        <h3>今日やったこと</h3>
+        <ul class="checklist">
+          <li>フォルダ + CLAUDE.md でエージェントを作った</li>
+          <li>ルール・禁止事項・フォーマットで賢くした</li>
+          <li>議事録エージェントを実際に作った</li>
+          <li>複数ファイルで拡張する方法を学んだ</li>
+          <li>外部サービス連携のイメージを掴んだ</li>
+        </ul>
+
+        <h3>もっと深く学ぶなら</h3>
+        <div class="card-row">
+          <div class="card">
+            <h4>マスター講座</h4>
+            <p>全7章の体系的な講座。API連携やチーム運用まで。<a href="../claude-code/">→ 講座を見る</a></p>
+          </div>
+          <div class="card">
+            <h4>AI NEWS</h4>
+            <p>最新のAIアップデート情報。<a href="../../news/">→ ニュースを見る</a></p>
+          </div>
+        </div>
+
+        <div class="box box-tip"><span class="box-icon"></span><strong>一番大事なこと:</strong> エージェントは「使いながら育てる」もの。今日作ったものを明日の仕事で使ってみて、足りないルールを足していこう。</div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/doc-utils.js"></script>
+</body>
+</html>

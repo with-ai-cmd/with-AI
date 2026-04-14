@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>操作ガイド — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo">with-AI <span>PORTAL</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="../training/" class="nl">教材</a>
+      <a href="../news/" class="nl">NEWS</a>
+      <a href="../guide/" class="nl active">ガイド</a>
+      <a href="../webinar/" class="nl">セミナー</a>
+    </div>
+    <button class="hamburger" id="ham">☰</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <a href="../" class="back-link">← ホームに戻る</a>
+
+  <div class="page-header">
+    <h1>操作ガイド</h1>
+    <p>Claude Code のコマンド集・キーボード操作・トラブルシューティング</p>
+  </div>
+
+  <!-- キーボード操作 -->
+  <div class="section-label">キーボード操作</div>
+
+  <div class="content-card">
+    <h3>Enter</h3>
+    <p>入力した指示を送信します。</p>
+  </div>
+  <div class="content-card">
+    <h3>Esc</h3>
+    <p>Claudeの回答を途中で止めます。間違った指示を出したとき、長すぎる回答を止めたいときに使います。</p>
+  </div>
+  <div class="content-card">
+    <h3>↑（上矢印キー）</h3>
+    <p>過去に入力した指示を呼び出します。同じ指示をもう一度実行したいときに便利です。</p>
+  </div>
+  <div class="content-card">
+    <h3>Ctrl + C</h3>
+    <p>Claude Codeを終了します。もう一度 <code>claude</code> と入力すれば再開できます。</p>
+  </div>
+  <div class="content-card">
+    <h3>Cmd + `（Mac）/ Ctrl + `（Windows）</h3>
+    <p>Cursorのターミナルを開く / 閉じる。 ` キーはキーボード左上、数字の1の左隣にあります。</p>
+  </div>
+
+  <!-- スラッシュコマンド -->
+  <div class="section-label">スラッシュコマンド</div>
+
+  <div class="content-card">
+    <h3>/help</h3>
+    <p>使えるコマンドの一覧を表示します。困ったらまずこれ。</p>
+    <div class="cmd-block">/help</div>
+  </div>
+  <div class="content-card">
+    <h3>/compact</h3>
+    <p>長い会話を要約して軽くします。動作が遅くなったときに実行してください。</p>
+    <div class="cmd-block">/compact</div>
+  </div>
+  <div class="content-card">
+    <h3>/status</h3>
+    <p>ログイン状態とプランを確認します。認証がうまくいかないときに。</p>
+    <div class="cmd-block">/status</div>
+  </div>
+  <div class="content-card">
+    <h3>/login</h3>
+    <p>再ログインします。認証が切れたときに使います。</p>
+    <div class="cmd-block">/login</div>
+  </div>
+  <div class="content-card">
+    <h3>/clear</h3>
+    <p>会話をリセットします。最初からやり直したいときに。</p>
+    <div class="cmd-block">/clear</div>
+  </div>
+
+  <!-- 困ったときの対処法 -->
+  <div class="section-label">困ったときの対処法</div>
+
+  <div class="content-card">
+    <h3>Step 1: Claude Codeを再起動する</h3>
+    <p>Ctrl+Cで終了 → <code>claude</code> で再起動。ほとんどの問題はこれで直ります。</p>
+  </div>
+  <div class="content-card">
+    <h3>Step 2: 会話をリセットする</h3>
+    <p><code>/clear</code> と入力。会話履歴が消えて最初からやり直せます。</p>
+    <div class="cmd-block">/clear</div>
+  </div>
+  <div class="content-card">
+    <h3>Step 3: ヘルスチェックする</h3>
+    <p><code>claude doctor</code> と入力。設定やインストールの問題を自動診断します。</p>
+    <div class="cmd-block">claude doctor</div>
+  </div>
+  <div class="content-card">
+    <h3>Step 4: Cursorごと再起動する</h3>
+    <p>Cursorを完全に閉じて → もう一度起動 → ターミナルを開く → <code>claude</code>。環境変数やPATHの問題はこれで直ります。</p>
+  </div>
+
+  <!-- CLAUDE.md -->
+  <div class="section-label">CLAUDE.md の使い方</div>
+
+  <div class="content-card">
+    <h3>CLAUDE.md とは？</h3>
+    <p>プロジェクトフォルダに置く「AIへの常時指示書」です。ここに書いた内容をClaude Codeが常に守ります。</p>
+  </div>
+  <div class="content-card">
+    <h3>書き方の例</h3>
+    <div class="cmd-block">あなたは優秀なビジネスアシスタントです。<br>回答は必ず日本語で行ってください。<br>ですます調で、分かりやすく説明してください。<br>略語や技術用語は避けてください。</div>
+  </div>
+  <div class="content-card">
+    <h3>活用パターン</h3>
+    <p><strong>ルール:</strong>「回答は500文字以内で」「箇条書きで」</p>
+    <p><strong>役割:</strong>「あなたは〇〇の専門家です」</p>
+    <p><strong>禁止:</strong>「英語は使わない」「コードは書かない」</p>
+    <p><strong>フォーマット:</strong>「見出しをつけて」「表形式で」</p>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 with-AI Inc. <a href="https://with-ai.jp" target="_blank">with-ai.jp</a> <a href="mailto:info@with-ai.jp">Contact</a></p>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('ham')?.addEventListener('click', () => {
+  document.getElementById('navLinks')?.classList.toggle('open');
+});
+</script>
+</body>
+</html>

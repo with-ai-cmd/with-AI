@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4T5HCY4Y"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JJ4T5HCY4Y');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO -->
+    <title>Claude Codeとは？"AIが仕事をこなす時代"を実現する最強ツールの全貌と使い方 | with-AI株式会社</title>
+    <meta name="description" content="Claude Codeの使い方を徹底解説。Anthropic社が開発した自律型AIエージェントの機能、非エンジニア向けCowork、ビジネス活用事例、導入ステップまで。AI業務自動化の最前線をお伝えします。">
+    <meta name="keywords" content="Claude Code 使い方, Claude Code とは, AIエージェント, Cowork, Claude, Anthropic, AI業務自動化">
+    <link rel="canonical" href="https://with-ai.jp/blog/claude-code-guide.html">
+
+    <!-- Favicon -->
+    <link rel="icon" href="../img/favicon.ico" sizes="any">
+
+    <!-- OGP -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://with-ai.jp/blog/claude-code-guide.html">
+    <meta property="og:title" content="Claude Codeとは？"AIが仕事をこなす時代"を実現する最強ツールの全貌と使い方">
+    <meta property="og:description" content="Claude Codeの使い方を徹底解説。Anthropic社が開発した自律型AIエージェントの機能、非エンジニア向けCowork、ビジネス活用事例、導入ステップまで。">
+    <meta property="og:image" content="https://with-ai.jp/img/img-1.webp">
+    <meta property="og:site_name" content="with-AI inc">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Claude Codeとは？"AIが仕事をこなす時代"を実現する最強ツールの全貌と使い方">
+    <meta name="twitter:description" content="Claude Codeの使い方を徹底解説。Anthropic社が開発した自律型AIエージェントの機能、非エンジニア向けCowork、ビジネス活用事例、導入ステップまで。">
+
+    <!-- Structured Data: Article -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Claude Codeとは？"AIが仕事をこなす時代"を実現する最強ツールの全貌と使い方",
+      "description": "Claude Codeの使い方を徹底解説。Anthropic社が開発した自律型AIエージェントの機能、非エンジニア向けCowork、ビジネス活用事例、導入ステップまで。",
+      "author": {
+        "@type": "Person",
+        "name": "勝又 海斗",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "with-AI株式会社"
+        }
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "with-AI株式会社",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://with-ai.jp/img/logo.webp"
+        }
+      },
+      "datePublished": "2026-03-23",
+      "dateModified": "2026-03-23",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://with-ai.jp/blog/claude-code-guide.html"
+      },
+      "keywords": ["Claude Code", "AIエージェント", "Cowork", "Anthropic", "AI業務自動化"]
+    }
+    </script>
+
+    <!-- BreadcrumbList Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://with-ai.jp/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://with-ai.jp/blog/" },
+        { "@type": "ListItem", "position": 3, "name": "Claude Codeとは？全貌と使い方" }
+      ]
+    }
+    </script>
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@100;300;400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root{--blue:#00457A;--sky:#48A8E1;--cyan:#00b9ff;--teal:#00cbaf;--text:#3B3B3B;--gradient:linear-gradient(135deg,#00457A,#48A8E1);--en:'Albert Sans',sans-serif;--jp:'Zen Kaku Gothic New',sans-serif;--mono:'JetBrains Mono',monospace;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:var(--jp);background:#EDEDF0;background-image:linear-gradient(rgba(0,69,122,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,69,122,.03) 1px,transparent 1px);background-size:60px 60px;color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+        ::selection{background:var(--sky);color:#fff;}
+        .f-en{font-family:var(--en);}
+        .f-mono{font-family:var(--mono);}
+        .text-gradient{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+        /* Shining text */
+        .text-shine-anim{background:linear-gradient(90deg,#00457A 0%,#48A8E1 30%,#00457A 45%,#48A8E1 55%,#fff 58%,#48A8E1 61%,#00457A 75%,#48A8E1 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:text-shine 8s ease-in-out infinite;}
+        @keyframes text-shine{0%{background-position:100% 0}100%{background-position:-100% 0}}
+
+        /* Nav */
+        .hero-nav{font-family:var(--en);font-size:14px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(72,168,225,.6);text-decoration:none;position:relative;padding:.3rem 0;transition:all .4s cubic-bezier(.22,1,.36,1);text-shadow:0 0 8px rgba(72,168,225,.15);}
+        .hero-nav::after{content:'';position:absolute;bottom:0;right:0;width:0;height:2px;background:linear-gradient(90deg,#48A8E1,#00cbaf);transition:width .4s cubic-bezier(.22,1,.36,1);}
+        .hero-nav:hover{color:#48A8E1;text-shadow:0 0 20px rgba(72,168,225,.5);transform:translateX(-4px);}
+        .hero-nav:hover::after{width:100%;}
+        .hero-nav.active{color:#48A8E1;font-weight:800;text-shadow:0 0 12px rgba(72,168,225,.3);}
+        .hero-nav.active::after{width:100%;}
+        .hero-nav{animation:nav-glow 3s ease-in-out infinite;}
+        .hero-nav:nth-child(1){animation-delay:0s;}.hero-nav:nth-child(2){animation-delay:.4s;}.hero-nav:nth-child(3){animation-delay:.8s;}.hero-nav:nth-child(4){animation-delay:1.2s;}.hero-nav:nth-child(5){animation-delay:1.6s;}.hero-nav:nth-child(6){animation-delay:2s;}
+        @keyframes nav-glow{0%,100%{text-shadow:0 0 8px rgba(72,168,225,.1);color:rgba(72,168,225,.5);}50%{text-shadow:0 0 16px rgba(72,168,225,.4);color:rgba(72,168,225,.8);}}
+        .hero-nav:hover{animation:none;}.hero-nav.active{animation:none;}
+        .hero-nav-cta{margin-top:.5rem;padding:.5rem 1.2rem;border-radius:8px;border:1.5px solid rgba(72,168,225,.3);font-size:12px;transition:all .4s ease;}
+        .hero-nav-cta:hover{background:var(--sky);color:#fff;border-color:var(--sky);text-shadow:none;transform:translateX(0);box-shadow:0 8px 24px rgba(72,168,225,.3);}
+        .hero-nav-cta::after{display:none;}
+
+        /* Floating orbs */
+        .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:.2;animation:orb-drift 20s ease-in-out infinite;}
+        .orb-1{width:500px;height:500px;background:var(--sky);top:5%;left:-8%;animation-delay:0s;}
+        .orb-2{width:400px;height:400px;background:var(--teal);bottom:0;right:-8%;animation-delay:-7s;}
+        .orb-3{width:350px;height:350px;background:#5884f1;top:45%;left:35%;animation-delay:-14s;opacity:.12;}
+        @keyframes orb-drift{0%,100%{transform:translate(0,0)}25%{transform:translate(30px,-20px)}50%{transform:translate(-20px,30px)}75%{transform:translate(20px,20px)}}
+
+        /* Float animation for 3D objects */
+        @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+        @keyframes blink{0%,100%{opacity:var(--o,1)}50%{opacity:0.05}}
+
+        /* Scroll bar */
+        #scroll-bar{position:fixed;top:0;left:0;height:3px;background:var(--gradient);z-index:100;transform-origin:left;transform:scaleX(0);}
+
+        /* Reveal */
+        .reveal{opacity:0;transform:translateY(50px);transition:all 1.2s cubic-bezier(0.16,1,0.3,1);}
+        .reveal.active{opacity:1;transform:translateY(0);}
+
+        /* Glass card */
+        .glass-card{background:rgba(255,255,255,.45);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border:1px solid rgba(255,255,255,.5);border-radius:20px;}
+
+        /* CTA button */
+        .btn-g{display:inline-flex;align-items:center;gap:.75rem;background:var(--gradient);color:#fff;padding:1.1rem 2.8rem;border-radius:60px;font-family:var(--en);font-weight:700;font-size:.9rem;letter-spacing:.04em;transition:all .4s;text-decoration:none;position:relative;overflow:hidden;}
+        .btn-g::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .6s;}
+        .btn-g:hover::after{transform:translateX(100%);}
+        .btn-g:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,69,122,.25);}
+
+        /* Article body */
+        .article-body h2{font-size:1.6rem;font-weight:900;color:var(--blue);margin-top:3.5rem;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:2px solid rgba(0,69,122,.08);line-height:1.6;}
+        .article-body h3{font-size:1.25rem;font-weight:700;color:var(--text);margin-top:2rem;margin-bottom:1rem;padding-left:1rem;border-left:3px solid var(--sky);line-height:1.6;}
+        .article-body p{margin-bottom:1.5rem;font-size:1rem;line-height:2;color:rgba(59,59,59,.75);font-weight:400;}
+        .article-body ul{margin-bottom:1.5rem;padding-left:1.5rem;}
+        .article-body ul li{margin-bottom:.5rem;font-size:1rem;line-height:2;color:rgba(59,59,59,.75);font-weight:400;list-style:disc;}
+        .article-body ol{margin-bottom:1.5rem;padding-left:1.5rem;}
+        .article-body ol li{margin-bottom:.75rem;font-size:1rem;line-height:2;color:rgba(59,59,59,.75);font-weight:400;list-style:decimal;}
+
+        .key-point{background:rgba(0,69,122,.04);border-left:4px solid var(--sky);padding:1.5rem 2rem;margin:2rem 0;border-radius:0 12px 12px 0;}
+        .key-point p{margin-bottom:0;font-weight:500;color:var(--blue);}
+
+        .use-case-card{background:rgba(255,255,255,.35);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.4);padding:1.5rem 2rem;margin-bottom:1rem;border-radius:12px;transition:all .3s ease;}
+        .use-case-card:hover{border-color:var(--sky);box-shadow:0 4px 20px rgba(0,69,122,.05);}
+
+        .step-number{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--gradient);color:#fff;font-size:15px;font-weight:700;border-radius:50%;margin-right:14px;flex-shrink:0;font-family:var(--en);}
+
+        /* Footer */
+        .ft-link{font-size:14px;font-weight:400;color:rgba(255,255,255,.7);transition:all .4s cubic-bezier(.22,1,.36,1);padding:4px 0;position:relative;}
+        .ft-link:hover{color:#fff;transform:translateX(6px);text-shadow:0 0 16px rgba(255,255,255,.6),0 0 40px rgba(72,168,225,.3);}
+        .ft-link::before{content:'';position:absolute;left:-12px;top:50%;transform:translateY(-50%);width:4px;height:4px;border-radius:50%;background:#48A8E1;opacity:0;transition:all .3s;box-shadow:0 0 8px rgba(72,168,225,.5);}
+        .ft-link:hover::before{opacity:1;left:-8px;}
+
+        /* Mobile menu */
+        #mob-menu a{font-family:var(--en);}
+    </style>
+</head>
+<body>
+
+    <div id="scroll-bar"></div>
+
+    <!-- FLOATING ORBS -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- 3D SVG OBJECTS (fixed layer) -->
+    <svg class="fixed hidden md:block pointer-events-none" style="top:8%;left:3%;width:350px;height:180px;z-index:1;animation:fl 5s ease-in-out infinite;" viewBox="0 0 350 180" fill="none">
+        <defs><linearGradient id="t1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="50%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs>
+        <rect x="0" y="60" width="350" height="32" rx="16" fill="url(#t1)" transform="rotate(-18 175 76)" opacity=".4"/>
+    </svg>
+    <svg class="fixed hidden md:block pointer-events-none" style="bottom:5%;right:-3%;width:400px;height:400px;z-index:1;animation:fl 7s ease-in-out .8s infinite;" viewBox="0 0 400 400" fill="none">
+        <defs><linearGradient id="a1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs>
+        <path d="M400,200 A200,200 0 0,0 200,0" stroke="url(#a1)" stroke-width="45" fill="none" opacity=".3" stroke-linecap="round"/>
+    </svg>
+    <svg class="fixed hidden md:block pointer-events-none" style="top:55%;right:5%;width:60px;height:60px;z-index:1;animation:fl 3s ease-in-out infinite;" viewBox="0 0 60 60" fill="none">
+        <defs><radialGradient id="sp1" cx="35%" cy="35%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00457A"/></radialGradient></defs>
+        <circle cx="30" cy="30" r="26" fill="url(#sp1)" opacity=".5"/>
+        <ellipse cx="22" cy="20" rx="8" ry="5" fill="white" opacity=".3" transform="rotate(-20 22 20)"/>
+    </svg>
+
+    <!-- MOBILE MENU -->
+    <div id="mob-menu" class="fixed inset-0 bg-[#00457A] z-40 flex flex-col items-center justify-center gap-6 translate-x-full transition-transform duration-500 md:hidden">
+        <a href="../index.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Home</a>
+        <a href="../stance.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Stance</a>
+        <a href="../service.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Service</a>
+        <a href="./" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Blog</a>
+        <a href="../company.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Company</a>
+        <a href="../contact.html" class="btn-g mt-4 !bg-white !text-[#00457A]">Contact Us</a>
+    </div>
+
+    <!-- FIXED NAV (right-side) -->
+    <nav class="fixed top-10 right-10 md:right-16 z-50 hidden md:flex flex-col items-end gap-5">
+        <a href="../index.html" class="hero-nav">Home</a>
+        <a href="../stance.html" class="hero-nav">Stance</a>
+        <a href="../service.html" class="hero-nav">Service</a>
+        <a href="./" class="hero-nav">Blog</a>
+        <a href="../company.html" class="hero-nav">Company</a>
+        <a href="../contact.html" class="hero-nav hero-nav-cta">Contact</a>
+    </nav>
+
+    <!-- MOBILE HAMBURGER -->
+    <button id="mob-btn" class="fixed top-6 right-6 z-50 md:hidden flex flex-col gap-1.5" aria-label="Menu">
+        <span class="w-7 h-[2px] bg-[#00457A] transition-all duration-300 origin-center"></span>
+        <span class="w-7 h-[2px] bg-[#00457A] transition-all duration-300"></span>
+        <span class="w-5 h-[2px] bg-[#00457A] transition-all duration-300 origin-center"></span>
+    </button>
+
+    <!-- LOGO -->
+    <a href="../index.html" class="fixed top-8 left-8 md:left-14 z-30">
+        <img src="../img/logo-full.png" alt="with-AI" class="h-7 md:h-9" style="filter:drop-shadow(0 2px 10px rgba(0,69,122,.06));">
+    </a>
+
+    <!-- ARTICLE -->
+    <main class="relative z-10 pt-32 pb-24 px-5 md:px-12">
+        <div class="max-w-3xl mx-auto">
+
+            <!-- Breadcrumb -->
+            <nav class="mb-8 reveal">
+                <ol class="flex items-center gap-2 text-[12px] f-en font-500 tracking-wide" style="color:rgba(59,59,59,.4);">
+                    <li><a href="../index.html" class="hover:text-[#48A8E1] transition-colors">Home</a></li>
+                    <li class="mx-1">/</li>
+                    <li><a href="./" class="hover:text-[#48A8E1] transition-colors">Blog</a></li>
+                    <li class="mx-1">/</li>
+                    <li style="color:rgba(59,59,59,.6);">Claude Codeとは？全貌と使い方</li>
+                </ol>
+            </nav>
+
+            <!-- Article Header -->
+            <header class="mb-12 reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="f-en text-[10px] font-700 tracking-[.3em] uppercase text-white px-4 py-1.5 rounded-full" style="background:var(--gradient);">AI Tools</span>
+                    <time datetime="2026-03-23" class="f-mono text-[12px] tracking-wider" style="color:rgba(59,59,59,.4);">2026.03.23</time>
+                </div>
+                <h1 class="text-2xl md:text-4xl font-900 leading-relaxed tracking-tight mb-8" style="color:var(--blue);">
+                    Claude Codeとは？<br class="md:hidden">"AIが仕事をこなす時代"を実現する<br class="md:hidden">最強ツールの全貌と使い方
+                </h1>
+                <div class="flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-700 f-en" style="background:var(--gradient);">K</div>
+                    <div>
+                        <p class="text-sm font-700" style="color:var(--text);">勝又 海斗</p>
+                        <p class="text-[12px]" style="color:rgba(59,59,59,.4);">with-AI株式会社</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Glass Card Article Body -->
+            <div class="glass-card p-8 md:p-12 reveal">
+
+                <!-- Lead -->
+                <div class="mb-10">
+                    <div class="key-point">
+                        <p>「AIに仕事を任せたいけど、何を使えばいいか分からない」「ChatGPTは試したけど、業務で本格的に使うには物足りない」 &#8212; そう感じている方にこそ知ってほしいのが、Anthropic社の<strong>Claude Code</strong>です。この記事では、Claude Codeの基本から実践的な活用事例、導入ステップまでを丁寧に解説します。</p>
+                    </div>
+                </div>
+
+                <!-- Article Body -->
+                <div class="article-body">
+
+                    <!-- H2-1 -->
+                    <h2>Claude Codeとは？ &#8212; ただのチャットAIではない「AIエージェント」</h2>
+
+                    <h3>Anthropic社が開発した自律型AIツール</h3>
+                    <p>Claude Codeは、AI企業Anthropic（アンソロピック）社が開発した<strong>自律型AIエージェントツール</strong>です。従来のチャットAIとは根本的に異なり、あなたのPC上で直接ファイルを操作し、タスクを実行できます。</p>
+                    <p>一般的なチャットAI（ChatGPTなど）は「質問すると回答が返ってくる」という対話型のツールです。一方、Claude Codeは「指示を出すと、実際に作業を行ってくれる」実行型のAI。この違いは非常に大きいです。</p>
+
+                    <h3>ChatGPTとの決定的な違い</h3>
+                    <p>Claude Codeが従来のAIと一線を画す点は主に3つあります。</p>
+                    <ul>
+                        <li><strong>ローカル環境で動く</strong> &#8212; あなたのPC内のファイルやフォルダに直接アクセスし、作業を実行します</li>
+                        <li><strong>ファイルを直接操作する</strong> &#8212; ドキュメントの作成・編集・整理をAIが自律的に行います</li>
+                        <li><strong>複数のステップを自動で遂行する</strong> &#8212; 一つの指示から、必要な手順を判断し、連続して実行します</li>
+                    </ul>
+                    <p>つまり、これまで「AIに聞く → 自分で作業する」だったワークフローが、「AIに指示する → AIが作業する → 人が確認する」に変わります。</p>
+
+                    <h3>「質問→回答」ではなく「指示→実行」の時代</h3>
+                    <p>この変化を私たちは<strong>「AIエージェント時代」</strong>と呼んでいます。AIが単なるアドバイザーから、実際に手を動かすチームメンバーへと進化した &#8212; それがClaude Codeの本質です。</p>
+
+                    <!-- H2-2 -->
+                    <h2>Claude Codeで何ができるのか？ &#8212; 5つの革新的な機能</h2>
+
+                    <h3>1. ファイルの作成・編集・整理を自律的に実行</h3>
+                    <p>Claude Codeは、Excel・PDF・テキストファイルなど、さまざまな形式のファイルを読み込み、作成・編集できます。「この資料をもとにレポートを作って」と指示すれば、ファイルの読み込みから構成の設計、文書の作成まで一貫して行います。</p>
+
+                    <h3>2. コードを書く・デバッグする・テストまで一気通貫</h3>
+                    <p>もともとコーディング支援ツールとして開発された背景があり、プログラムの作成能力は極めて高いです。エンジニアだけでなく、「ちょっとした自動化スクリプトが欲しい」といったビジネス現場のニーズにも対応します。</p>
+
+                    <h3>3. Gmail・Notion・Google Drive等の外部サービスとMCP連携</h3>
+                    <p><strong>MCP（Model Context Protocol）</strong>という仕組みを使うことで、Claude Codeは外部サービスと接続できます。たとえば、Gmailからメールを取得して内容を要約したり、Google Driveのファイルを読み取って分析したり。これまでバラバラだったツールがAIを介して一つにつながるイメージです。</p>
+
+                    <h3>4. Skills（スキル）でカスタム業務フローを記憶</h3>
+                    <p>繰り返し行う作業を<strong>「Skill」</strong>として登録しておけば、次回からは一言で同じフローを再現できます。たとえば「月末レポート作成」というSkillを作れば、データ取得 → 集計 → 資料作成 → メール送信準備、という流れを毎月ワンクリックで実行可能です。</p>
+
+                    <h3>5. 複数のサブエージェントを並列稼働させる「AIチーム」</h3>
+                    <p>Claude Codeは、一つのタスクを複数のサブエージェント（子タスクを担当するAI）に分割して並列に実行できます。リサーチ、文書作成、データ分析を同時に走らせることで、人間なら数時間かかる作業を数分で完了させることも可能です。</p>
+
+                    <div class="key-point">
+                        <p>ポイント：Claude Codeは「一つの質問に答えるAI」ではなく、「チームのように複数タスクを同時にこなすAI」です。この並列処理こそが、ビジネスにおける生産性革命の鍵になります。</p>
+                    </div>
+
+                    <!-- H2-3 -->
+                    <h2>非エンジニアでも使える「Cowork」の登場</h2>
+
+                    <h3>黒い画面（ターミナル）不要のデスクトップアプリ</h3>
+                    <p>Claude Codeの唯一のハードルだったのが、ターミナル（コマンドラインインターフェース）での操作でした。しかし、<strong>Cowork</strong>の登場でその壁が取り払われました。Coworkは、Claude Codeのパワーをグラフィカルなデスクトップアプリとして提供するツールです。</p>
+
+                    <h3>チャットUIでClaude Codeの実行力を操作</h3>
+                    <p>Coworkでは、普段使い慣れたチャット形式でAIに指示を出せます。「この資料を要約して」「売上データをグラフにまとめて」と話しかけるだけで、裏ではClaude Codeが実行力を発揮し、結果をファイルとして返してくれます。</p>
+
+                    <h3>非エンジニアの業務自動化が現実に</h3>
+                    <p>経営者、営業担当、バックオフィスのスタッフ &#8212; 技術的な知識がなくても、Coworkを通じてAIエージェントを業務に組み込めるようになりました。これは、AI活用の民主化という意味で非常に大きな一歩です。</p>
+
+                    <!-- H2-4 -->
+                    <h2>実際の活用事例 &#8212; ビジネスでこう使う</h2>
+
+                    <p>私たちwith-AIが実際に運用している事例や、クライアント企業での活用パターンをご紹介します。</p>
+
+                    <div class="use-case-card">
+                        <h3 style="margin-top:0;border-left:none;padding-left:0;">事例1: 一言で予算戦略レポートを自動作成</h3>
+                        <p>「来期の広告予算について、過去12ヶ月のデータをもとに戦略レポートを作って」 &#8212; たったこの一言から、Claude Codeはスプレッドシートの数値を読み取り、トレンド分析を行い、推奨予算配分を含む20ページのレポートを自動生成しました。従来なら丸一日かかっていた作業が、約15分で完了しています。</p>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3 style="margin-top:0;border-left:none;padding-left:0;">事例2: 会議録音データから議事録→お礼メールまで全自動</h3>
+                        <p>会議の音声データをClaude Codeに渡すだけで、文字起こし → 要点整理 → 議事録作成 → 参加者へのお礼メール下書きまでを一気に処理。MCPでGmailと連携しているため、確認ボタンを押すだけでメール送信まで完結します。</p>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3 style="margin-top:0;border-left:none;padding-left:0;">事例3: AIエージェントチームによる爆速リサーチ</h3>
+                        <p>新規事業の市場調査で、Claude Codeのサブエージェント機能を活用。「競合分析」「市場規模の推定」「顧客ニーズの整理」を3つのエージェントが並列で実行し、最終的に一つの統合レポートとしてまとめました。3人分のリサーチ作業が、30分で終わった実感があります。</p>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h3 style="margin-top:0;border-left:none;padding-left:0;">事例4: HP全体のSEO改善を一晩で完了（with-AI実体験）</h3>
+                        <p>私たちwith-AIの自社サイトで実際に行った事例です。Claude Codeに「SEOの観点で全ページを分析して、改善すべき点をリストアップ→修正まで実行して」と指示。title・description・見出し構造・内部リンクの最適化を全ページに対して実行し、翌朝にはすべての修正が完了していました。</p>
+                    </div>
+
+                    <!-- H2-5 -->
+                    <h2>Claude Code導入の始め方 &#8212; 3ステップ</h2>
+
+                    <p>「面白そうだけど、どこから始めればいいの？」という方のために、具体的な導入ステップをお伝えします。</p>
+
+                    <div class="flex items-start gap-4 mb-8 mt-8">
+                        <span class="step-number">1</span>
+                        <div>
+                            <h3 style="margin-top:0;border-left:none;padding-left:0;">Claude Codeをインストール</h3>
+                            <p>Anthropic社の公式サイトからClaude Codeをダウンロードし、インストールします。Claudeの有料プラン（Pro / Max）またはAPIキーが必要です。ターミナルでの操作が必要ですが、公式ドキュメントに沿えば数分で完了します。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 mb-8">
+                        <span class="step-number">2</span>
+                        <div>
+                            <h3 style="margin-top:0;border-left:none;padding-left:0;">Coworkで簡単な業務から試す</h3>
+                            <p>ターミナル操作に抵抗がある方は、Coworkのデスクトップアプリを使いましょう。まずは「メールの下書きを作って」「この資料を要約して」など、シンプルなタスクから始めるのがおすすめです。小さな成功体験を積み重ねることで、活用の幅が自然と広がります。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 mb-8">
+                        <span class="step-number">3</span>
+                        <div>
+                            <h3 style="margin-top:0;border-left:none;padding-left:0;">Skillsを作って自社業務にカスタマイズ</h3>
+                            <p>定型業務が見つかったら、それをSkillとして登録しましょう。「毎週月曜の営業レポート作成」「請求書のチェックと集計」など、繰り返す作業ほどAIに任せる価値があります。Skillは一度作れば誰でも使えるので、チーム全体の効率化につながります。</p>
+                        </div>
+                    </div>
+
+                    <div class="key-point">
+                        <p>大切なのは、最初から完璧を目指さないこと。まずは一つの業務で試してみて、「これは使える」という実感を持つところから始めてください。</p>
+                    </div>
+
+                    <!-- H2-6 -->
+                    <h2>AI導入で大切なこと &#8212; ツールに振り回されないために</h2>
+
+                    <h3>AIは「道具」であり「目的」ではない</h3>
+                    <p>Claude Codeは間違いなく強力なツールです。しかし、私たちwith-AIは常にこう考えています &#8212; <strong>AIは手段であり、目的ではない</strong>。どれだけ優れたツールも、「何のために使うのか」が不明確なまま導入すれば、かえって現場を混乱させます。</p>
+
+                    <h3>大事なのは「何を解決したいか」を明確にすること</h3>
+                    <p>AI導入で成果を出している企業に共通しているのは、「この業務のこの課題を解決したい」という目的が明確なことです。ツール選びの前に、まず自社の課題を整理する。その上で、Claude Codeが最適解なのか、別のアプローチが良いのかを判断する。この順番を間違えないことが重要です。</p>
+
+                    <h3>with-AIは現場起点でAI活用を伴走支援します</h3>
+                    <p>私たちは「AIを売る会社」ではありません。お客さまの現場に入り、課題を一緒に整理し、最適な手段を一緒に選び、定着するまで伴走する &#8212; それがwith-AIのスタンスです。</p>
+                    <p>Claude Codeの導入支援はもちろん、「そもそも自社にAIが必要なのか」という段階からご相談いただけます。技術の話だけでなく、業務フローの設計や社内の巻き込み方まで、現場で本当に使われる状態を一緒につくります。</p>
+
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="mt-20 mb-12 reveal">
+                <div class="glass-card p-10 md:p-14 text-center">
+                    <span class="f-en text-[10px] font-700 tracking-[.5em] uppercase mb-4 block" style="color:rgba(0,69,122,.35);">Contact Us</span>
+                    <h3 class="text-xl md:text-2xl font-900 mb-4 tracking-tight" style="color:var(--blue);">AI活用、何から始めるか迷っていませんか？</h3>
+                    <p class="text-sm font-400 leading-relaxed mb-8 max-w-lg mx-auto" style="color:rgba(59,59,59,.55);">Claude Codeの導入相談から、自社に合ったAI活用の設計まで。<br>まずはお気軽にお話しください。</p>
+                    <a href="../contact.html" class="btn-g">
+                        <span class="f-en text-sm font-700 tracking-wider">Contact Us</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative py-24 px-8 md:px-16 overflow-hidden" style="background:#060a14;">
+        <div class="absolute inset-0" style="background-image:linear-gradient(rgba(72,168,225,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(72,168,225,.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;"></div>
+        <svg class="absolute hidden md:block" style="top:10%;right:8%;width:200px;opacity:.15;" viewBox="0 0 200 100" fill="none"><rect x="0" y="30" width="200" height="20" rx="10" fill="url(#t1)" transform="rotate(-18 100 40)"/></svg>
+        <svg class="absolute hidden md:block" style="bottom:15%;left:-2%;width:180px;opacity:.1;" viewBox="0 0 180 180" fill="none"><path d="M180,90 A90,90 0 0,0 90,0" stroke="#48A8E1" stroke-width="25" fill="none" stroke-linecap="round"/></svg>
+
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    <a href="../index.html"><img src="../img/logo-full.png" alt="with-AI" class="h-10 w-auto brightness-[10]"></a>
+                    <p style="color:rgba(255,255,255,.85);font-size:15px;line-height:2;font-weight:500;">Next Era Intelligence Partner<br>Aligning Human and Intelligence.</p>
+                    <p style="color:rgba(255,255,255,.6);font-size:14px;line-height:2;max-width:360px;">with-AI株式会社は、AI導入コンサルティング、AIエージェント構築、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。</p>
+                </div>
+                <div class="lg:col-start-8 lg:col-span-5 grid grid-cols-3 gap-8">
+                    <div class="flex flex-col gap-5">
+                        <h4 class="f-en text-[13px] font-700 tracking-[.25em] uppercase" style="color:rgba(255,255,255,.85);">Explore</h4>
+                        <div class="flex flex-col gap-3">
+                            <a href="../index.html" class="ft-link">Home</a>
+                            <a href="../stance.html" class="ft-link">Stance</a>
+                            <a href="../service.html" class="ft-link">Service</a>
+                            <a href="./" class="ft-link">Blog</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-5">
+                        <h4 class="f-en text-[13px] font-700 tracking-[.25em] uppercase" style="color:rgba(255,255,255,.85);">Info</h4>
+                        <div class="flex flex-col gap-3">
+                            <a href="../company.html" class="ft-link">Company</a>
+                            <a href="../members.html" class="ft-link">Members</a>
+                            <a href="../contact.html" class="ft-link">Contact</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-5">
+                        <h4 class="f-en text-[13px] font-700 tracking-[.25em] uppercase" style="color:rgba(255,255,255,.85);">Legal</h4>
+                        <div class="flex flex-col gap-3">
+                            <a href="../privacy.html" class="ft-link">Privacy Policy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-8" style="border-top:1px solid rgba(255,255,255,.04);">
+                <span class="f-en text-sm font-900 tracking-[.4em] uppercase" style="background:linear-gradient(135deg,#48A8E1,#00cbaf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Next Era</span>
+                <span class="f-en text-xs tracking-widest" style="color:rgba(255,255,255,.2);">&copy; 2026 WITH-AI INC.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    window.addEventListener('load', function(){
+        // Scroll bar
+        ScrollTrigger.create({
+            trigger: document.body,
+            start: 'top top',
+            end: 'bottom bottom',
+            onUpdate: function(self) {
+                document.getElementById('scroll-bar').style.transform = 'scaleX(' + self.progress + ')';
+            }
+        });
+
+        // Reveal on scroll
+        document.querySelectorAll('.reveal').forEach(function(el) {
+            ScrollTrigger.create({
+                trigger: el,
+                start: 'top 85%',
+                once: true,
+                onEnter: function() { el.classList.add('active'); }
+            });
+        });
+    });
+
+    // Mobile menu
+    var mobBtn = document.getElementById('mob-btn');
+    var mobMenu = document.getElementById('mob-menu');
+    if(mobBtn) {
+        mobBtn.addEventListener('click', function(){
+            var lines = mobBtn.querySelectorAll('span');
+            mobMenu.classList.toggle('translate-x-full');
+            mobMenu.classList.toggle('translate-x-0');
+            if(mobMenu.classList.contains('translate-x-0')){
+                lines[0].style.transform='rotate(45deg) translate(4px,4px)';lines[0].style.background='#fff';
+                lines[1].style.opacity='0';
+                lines[2].style.transform='rotate(-45deg) translate(3px,-3px)';lines[2].style.width='1.75rem';lines[2].style.background='#fff';
+            } else {
+                lines[0].style.transform='';lines[0].style.background='';
+                lines[1].style.opacity='1';
+                lines[2].style.transform='';lines[2].style.width='1.25rem';lines[2].style.background='';
+            }
+        });
+    }
+    </script>
+</body>
+</html>

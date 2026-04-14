@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章: 実務活用テクニック — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../shared/doc-theme.css">
+</head>
+<body>
+
+<button class="sb-toggle" id="sbToggle">☰ 目次</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <a href="./" class="sb-back"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg> 教材一覧に戻る</a>
+      <div class="sb-title">第5章</div>
+      <div class="sb-subtitle">実務活用テクニック</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">基本</div>
+      <a href="#prompts" class="sb-link">プロンプトの書き方</a>
+      <a href="#good-bad" class="sb-link">良い例 vs 悪い例</a>
+
+      <div class="sb-section">ファイル操作</div>
+      <a href="#file-create" class="sb-link">ファイルを作る</a>
+      <a href="#file-edit" class="sb-link">ファイルを読む・編集</a>
+
+      <div class="sb-section">応用</div>
+      <a href="#git" class="sb-link">Git 連携</a>
+      <a href="#mistakes" class="sb-link">よくある失敗</a>
+      <a href="#efficiency" class="sb-link">効率化 Tips</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-label">第5章</div>
+        <h1>実務活用テクニック</h1>
+        <p>プロンプトの書き方からファイル操作、Git連携まで。実務で使えるスキルを身につけよう。</p>
+      </div>
+
+      <!-- ====== プロンプトの書き方 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="prompts"></span>
+        <h2>プロンプトの書き方</h2>
+        <p>Claude への指示（プロンプト）は、書き方次第で回答の質が大きく変わります。</p>
+
+        <h3>5W1H を意識する</h3>
+        <p>以下の情報を含めると、Claude は的確に回答できます。</p>
+        <table>
+          <tr><th>要素</th><th>質問</th><th>例</th></tr>
+          <tr><td><strong>Who</strong>（誰が）</td><td>誰の立場で？</td><td>営業担当として</td></tr>
+          <tr><td><strong>What</strong>（何を）</td><td>何を作る？</td><td>提案メールを作成</td></tr>
+          <tr><td><strong>Why</strong>（なぜ）</td><td>目的は？</td><td>新規顧客を獲得するため</td></tr>
+          <tr><td><strong>When</strong>（いつ）</td><td>期限・タイミングは？</td><td>明日の午前中に送信</td></tr>
+          <tr><td><strong>Where</strong>（どこで）</td><td>どの場面で使う？</td><td>初回アプローチ</td></tr>
+          <tr><td><strong>How</strong>（どうやって）</td><td>形式・条件は？</td><td>300文字以内で丁寧に</td></tr>
+        </table>
+
+        <h3>万能テンプレート</h3>
+        <p>迷ったら、このテンプレートに当てはめてみてください。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>○○として、△△のために、□□を作って。
+
+条件:
+- 条件1
+- 条件2
+- 条件3</pre></div>
+        <p>具体例:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>営業マネージャーとして、チームの成績を上司に報告するために、
+先月の営業レポートを作って。
+
+条件:
+- A4で1枚に収まる分量
+- グラフは不要、数字の箇条書きで
+- 改善点と来月の施策も含める</pre></div>
+
+        <h3>ステップごとに指示する</h3>
+        <p>複雑な作業は、一度に全部頼まず段階的に進めるのがコツです。</p>
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p>まず全体の構成を作ってもらう</p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p>構成を確認してOKなら、各セクションを書いてもらう</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p>最後に全体を見直して修正を依頼する</p></div></div>
+        </div>
+        <div class="box box-tip"><span class="box-icon"></span>一度に1000文字の指示を書くより、3回に分けて対話するほうが良い結果になります。</div>
+      </div>
+
+      <!-- ====== 良い例 vs 悪い例 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="good-bad"></span>
+        <h2>良い例 vs 悪い例</h2>
+        <p>同じ目的でも、書き方で結果が大きく変わります。5つの比較で違いを確認しましょう。</p>
+
+        <h3>比較 1: メール作成</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>悪い例</h4>
+            <p>メール書いて</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>良い例</h4>
+            <p>株式会社ABCの田中様に、来週の打ち合わせ日程調整のメールを書いて。候補は火曜と木曜の午後。丁寧なビジネス文体で。</p>
+          </div>
+        </div>
+
+        <h3>比較 2: 資料作成</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>悪い例</h4>
+            <p>いい感じの資料作って</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>良い例</h4>
+            <p>社内向けAI導入提案書を作って。対象は経営層。構成は「現状の課題 → AI導入のメリット → 導入計画 → 予算」の4部構成で、各セクション3行程度。</p>
+          </div>
+        </div>
+
+        <h3>比較 3: 翻訳</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>悪い例</h4>
+            <p>これ英語にして</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>良い例</h4>
+            <p>以下の文章をビジネス英語に翻訳して。取引先への正式な文書なので、フォーマルな表現で。原文と訳文を並べて表示して。</p>
+          </div>
+        </div>
+
+        <h3>比較 4: 要約</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>悪い例</h4>
+            <p>まとめて</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>良い例</h4>
+            <p>この議事録を「決定事項」「TODO（担当者と期限つき）」「次回予定」の3つに分けて箇条書きで要約して。</p>
+          </div>
+        </div>
+
+        <h3>比較 5: 修正依頼</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>悪い例</h4>
+            <p>もっと良くして</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>良い例</h4>
+            <p>この文章の冒頭を、読み手の興味を引くような質問形式に変えて。全体のトーンはもう少しカジュアルに。</p>
+          </div>
+        </div>
+
+        <div class="box box-info"><span class="box-icon"></span>共通するポイント: <strong>具体的に</strong>、<strong>条件を明記</strong>、<strong>形式を指定</strong>。この3つを意識するだけで回答品質が上がります。</div>
+      </div>
+
+      <!-- ====== ファイルを作る ====== -->
+      <div class="section">
+        <span class="section-anchor" id="file-create"></span>
+        <h2>ファイルを作る</h2>
+        <p>Claude はファイルの作成もできます。テキストファイル、Markdownファイルなど、自然な言葉で作れます。</p>
+
+        <h3>1つのファイルを作る</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>meeting-notes.md を作成して。
+内容は今日の定例会議のテンプレートで。</pre></div>
+        <div class="box box-ok"><span class="box-icon"></span>Claude がファイルを作成すると、ターミナルにファイル名とパスが表示されます。</div>
+
+        <h3>複数のファイルを一度に作る</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>以下の3つのファイルを作成して。
+
+1. README.md — プロジェクトの概要説明
+2. TODO.md — タスクリスト（空のテンプレート）
+3. CHANGELOG.md — 変更履歴（初回エントリだけ）</pre></div>
+
+        <h3>既存の内容をファイルにする</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>さっき作ってくれた営業メールの内容を
+mail-draft.md として保存して</pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span>ファイル名に日本語は使えますが、<strong>英語・小文字・ハイフン区切り</strong>のほうがトラブルが少ないです。</div>
+        <div class="box box-warn"><span class="box-icon"></span>Claude がファイルを作成・編集するときは確認メッセージが出ます。内容を確認してから許可してください。</div>
+      </div>
+
+      <!-- ====== ファイルを読む・編集 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="file-edit"></span>
+        <h2>ファイルを読む・編集</h2>
+        <p>既存のファイルを Claude に読み込ませたり、編集してもらうことができます。</p>
+
+        <h3>ファイルを読む</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>README.md の内容を説明して</pre></div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>このフォルダにあるファイルの一覧を見せて</pre></div>
+
+        <h3>ファイルを編集する</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>README.md の3行目を「最終更新: 2026年4月」に修正して</pre></div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>TODO.md の完了したタスクに取り消し線をつけて</pre></div>
+
+        <h3>ファイルの内容を活用する</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>meeting-notes.md を読んで、決定事項だけ抜き出して</pre></div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>report.md の内容を英語に翻訳して、report-en.md として保存して</pre></div>
+
+        <div class="box box-info"><span class="box-icon"></span>Claude はフォルダ内のファイルを自動的に認識します。ファイル名を伝えるだけで、読み込みから編集まで行えます。</div>
+      </div>
+
+      <!-- ====== Git 連携 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="git"></span>
+        <h2>Git 連携</h2>
+        <p>Git は「ファイルのセーブポイント」を作る仕組みです。ゲームのセーブと同じように、いつでも前の状態に戻れます。</p>
+
+        <h3>Git の基本イメージ</h3>
+        <div class="card-row">
+          <div class="card"><h4>セーブ 1</h4><p>最初のバージョン</p></div>
+          <div class="card"><h4>セーブ 2</h4><p>文章を追加した</p></div>
+          <div class="card"><h4>セーブ 3</h4><p>表現を修正した</p></div>
+          <div class="card"><h4>セーブ 4</h4><p>最終版</p></div>
+        </div>
+        <div class="box box-info"><span class="box-icon"></span>Git を使えば「報告書_v1」「報告書_v2_最終」「報告書_v3_本当の最終」のようなファイル名の地獄から解放されます。</div>
+
+        <h3>初期設定（最初の1回だけ）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>git init</pre></div>
+        <div class="box box-ok"><span class="box-icon"></span>これでフォルダが Git 管理下になります。Claude がファイルの変更履歴を追えるようになります。</div>
+
+        <h3>Claude が自動でやってくれること</h3>
+        <p>Claude Code は、ファイルを変更するたびに自動でセーブポイント（コミット）を作ります。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># Claude にファイル作成を頼むと...</span>
+README.md を作成して
+
+<span class="c-cmt"># Claude は裏側で自動的に以下を実行する:</span>
+<span class="c-cmt"># git add README.md</span>
+<span class="c-cmt"># git commit -m "Create README.md"</span></pre></div>
+        <div class="box box-tip"><span class="box-icon"></span>Git のコマンドを覚える必要はありません。Claude が裏側で自動的に管理してくれます。</div>
+
+        <h3>前の状態に戻す</h3>
+        <p>「さっきの変更を取り消したい」というときも Claude に頼めます。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>さっきの変更を元に戻して</pre></div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>README.md を2つ前のバージョンに戻して</pre></div>
+
+        <div class="box box-warn"><span class="box-icon"></span>Git で戻せるのは、セーブポイント（コミット）が作られた変更だけです。こまめにコミットする習慣をつけましょう。</div>
+      </div>
+
+      <!-- ====== よくある失敗 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="mistakes"></span>
+        <h2>よくある失敗</h2>
+        <p>よくあるつまずきポイントと、その解決策を5つ紹介します。</p>
+
+        <h3>失敗 1: 指示が曖昧すぎる</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>問題</h4>
+            <p>「いい感じにして」「もっと良くして」と頼んで、期待と違う結果になる。</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>解決策</h4>
+            <p>何がどう良くないのか具体的に伝える。「冒頭の挨拶をもう少しカジュアルに」「箇条書きを3つに減らして」のように。</p>
+          </div>
+        </div>
+
+        <h3>失敗 2: 一度に大量の指示を出す</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>問題</h4>
+            <p>10個の条件を一度に伝えて、一部が無視される。</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>解決策</h4>
+            <p>3〜5個ずつ段階的に指示する。まず骨格を作り、次に詳細を追加する流れが効果的。</p>
+          </div>
+        </div>
+
+        <h3>失敗 3: 前の会話を忘れている</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>問題</h4>
+            <p>長い会話の後半で、最初に伝えた条件が反映されなくなる。</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>解決策</h4>
+            <p><code>/compact</code> で会話を整理する。または重要な条件は再度伝える。CLAUDE.md に書いておけば常に適用される。</p>
+          </div>
+        </div>
+
+        <h3>失敗 4: 間違ったフォルダで作業</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>問題</h4>
+            <p>別のフォルダで Claude を起動してしまい、関係ないファイルが変更される。</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>解決策</h4>
+            <p>Claude 起動前に <code>pwd</code> で現在地を確認する習慣をつける。エージェントを使う場合は必ず対象フォルダに移動してから。</p>
+          </div>
+        </div>
+
+        <h3>失敗 5: 確認せずに許可する</h3>
+        <div class="card-row">
+          <div class="card card-l" style="border-left-color: var(--red);">
+            <h4>問題</h4>
+            <p>Claude のファイル変更を確認せずに全て許可して、意図しない変更が入る。</p>
+          </div>
+          <div class="card card-l" style="border-left-color: var(--green);">
+            <h4>解決策</h4>
+            <p>変更内容が表示されたら、必ず目を通してから許可する。不安なときは拒否して、指示を修正する。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 効率化 Tips ====== -->
+      <div class="section">
+        <span class="section-anchor" id="efficiency"></span>
+        <h2>効率化 Tips</h2>
+        <p>日々の作業をもっと速く、もっと楽にするためのテクニック集です。</p>
+
+        <h3>1. CLAUDE.md を活用する</h3>
+        <p>繰り返し伝えている指示は CLAUDE.md に書きましょう。毎回伝える手間がなくなります。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># CLAUDE.md に書いておくと便利な内容</span>
+
+## 基本ルール
+- 日本語で回答する
+- 箇条書きを多用する
+- 専門用語は使わず平易な言葉で説明する
+- 出力は必ず Markdown 形式にする</pre></div>
+        <div class="box box-tip"><span class="box-icon"></span>「3回以上同じ指示をしたら CLAUDE.md に書く」をルールにしましょう。</div>
+
+        <h3>2. 良いプロンプトを保存する</h3>
+        <p>うまくいったプロンプトは、テキストファイルに保存しておきましょう。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># prompts.md に保存する例</span>
+
+## 議事録テンプレ
+「以下の会議メモを、決定事項・TODO・次回予定の3つに分けて
+箇条書きで整理して。TODOには担当者と期限をつけて。」
+
+## メール作成テンプレ
+「○○社の△△様に、□□の件でビジネスメールを作成して。
+丁寧な敬語で、本文は3段落構成、件名は20文字以内。」
+
+## 要約テンプレ
+「この文章を3行で要約して。重要なポイントは太字にして。」</pre></div>
+
+        <h3>3. /compact を定期的に使う</h3>
+        <p>会話が長くなると Claude の応答速度が落ちたり、前の指示を忘れやすくなります。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 会話を圧縮して軽くする</span>
+/compact</pre></div>
+        <div class="box box-tip"><span class="box-icon"></span>目安として、20〜30回やりとりしたら <code>/compact</code> を実行しましょう。タスクの切り替え時も効果的です。</div>
+
+        <h3>4. フォルダを整理する</h3>
+        <p>プロジェクトごと、エージェントごとにフォルダを分けると、作業がスムーズになります。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>Desktop/
+  work/
+    project-a/         <span class="c-cmt"># プロジェクトA</span>
+      CLAUDE.md
+    project-b/         <span class="c-cmt"># プロジェクトB</span>
+      CLAUDE.md
+  agents/
+    mail-agent/        <span class="c-cmt"># メール作成</span>
+      CLAUDE.md
+    report-agent/      <span class="c-cmt"># レポート作成</span>
+      CLAUDE.md</pre></div>
+
+        <h3>5. 作業の型を作る</h3>
+        <p>毎日の作業を「型」にして、Claude に効率よく頼みましょう。</p>
+        <div class="steps">
+          <div class="step"><span class="step-n sn-g">1</span><div class="step-body"><p>朝: 「今日のTODOを整理して」（タスク整理エージェント）</p></div></div>
+          <div class="step"><span class="step-n sn-g">2</span><div class="step-body"><p>日中: 必要に応じてエージェントを切り替えて作業</p></div></div>
+          <div class="step"><span class="step-n sn-g">3</span><div class="step-body"><p>夕方: 「今日の作業内容を日報にまとめて」（日報エージェント）</p></div></div>
+        </div>
+
+        <div class="box box-info"><span class="box-icon"></span>最初は1つのエージェントから始めて、慣れたら徐々に増やしていくのがおすすめです。</div>
+
+        <h3>まとめチェックリスト</h3>
+        <ul class="checklist">
+          <li>CLAUDE.md に繰り返しの指示を書いておく</li>
+          <li>良いプロンプトはファイルに保存する</li>
+          <li>/compact で会話を定期的に整理する</li>
+          <li>フォルダを目的別に整理する</li>
+          <li>毎日の作業を「型」にして効率化する</li>
+        </ul>
+      </div>
+
+      <!-- Chapter nav -->
+      <div class="chapter-nav">
+        <a href="ch4-agents.html">&larr; 第4章: エージェントの作り方</a>
+        <a href="ch6-api.html">第6章: API 活用 &rarr;</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/doc-utils.js"></script>
+</body>
+</html>

@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4T5HCY4Y"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JJ4T5HCY4Y');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI SHINE | 社長専属AIエージェント構築サービス | with-AI株式会社</title>
+    <meta name="description" content="AI SHINEは、社長専属のAIエージェントチームを構築し、育て続ける伴走型サービス。指示を出すだけで5人のAIが並列で業務を実行します。">
+    <link rel="canonical" href="https://with-ai.jp/aishine.html">
+    <link rel="icon" href="img/favicon.ico" sizes="any">
+    <meta property="og:type" content="website"><meta property="og:url" content="https://with-ai.jp/aishine.html"><meta property="og:title" content="AI SHINE | 社長専属AIエージェント構築サービス | with-AI株式会社"><meta property="og:description" content="AI SHINEは、社長専属のAIエージェントチームを構築し、育て続ける伴走型サービス。指示を出すだけで5人のAIが並列で業務を実行します。"><meta property="og:image" content="https://with-ai.jp/img/img-1.webp"><meta property="og:site_name" content="with-AI inc">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AI SHINE | 社長専属AIエージェント構築サービス"><meta name="twitter:description" content="指示を出すだけで5人のAIが並列で業務を実行。社長専属AIエージェント構築サービス。"><meta name="twitter:image" content="https://with-ai.jp/img/img-1.webp">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"AI SHINE","provider":{"@type":"Organization","name":"with-AI株式会社","url":"https://with-ai.jp/"},"description":"社長専属のAIエージェントチームを構築し、育て続ける伴走型サービス。指示を出すだけで5人のAIが並列で業務を実行します。","url":"https://with-ai.jp/aishine.html","serviceType":"AI Agent Building Service"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://with-ai.jp/"},{"@type":"ListItem","position":2,"name":"サービス","item":"https://with-ai.jp/service.html"},{"@type":"ListItem","position":3,"name":"AI SHINE","item":"https://with-ai.jp/aishine.html"}]}</script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@100;300;400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root{--blue:#00457A;--sky:#48A8E1;--cyan:#00b9ff;--teal:#00cbaf;--gold:#C89B3C;--bg:#EDEDF0;--text:#3B3B3B;--gradient:linear-gradient(135deg,#00457A,#48A8E1);--gold-gradient:linear-gradient(135deg,#C89B3C,#E8C97A);--en:'Albert Sans',sans-serif;--jp:'Zen Kaku Gothic New',sans-serif;--mono:'JetBrains Mono',monospace;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:var(--jp);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+        ::selection{background:var(--gold);color:#fff;}
+        .f-en{font-family:var(--en);}.f-mono{font-family:var(--mono);}
+        .text-gradient{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .text-gold{background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+        /* Grid bg */
+        .grid-bg{background-image:linear-gradient(rgba(0,69,122,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,69,122,.03) 1px,transparent 1px);background-size:60px 60px;}
+        .dark-grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px;}
+
+        /* Nav */
+        .hero-nav{font-family:var(--en);font-size:14px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(200,155,60,.5);text-decoration:none;position:relative;padding:.3rem 0;transition:all .4s cubic-bezier(.22,1,.36,1);}
+        .hero-nav::after{content:'';position:absolute;bottom:0;right:0;width:0;height:2px;background:linear-gradient(90deg,#C89B3C,#E8C97A);transition:width .4s cubic-bezier(.22,1,.36,1);}
+        .hero-nav:hover{color:var(--gold);transform:translateX(-4px);}
+        .hero-nav:hover::after{width:100%;}
+        .hero-nav.active{color:var(--gold);font-weight:800;}
+        .hero-nav.active::after{width:100%;}
+        .hero-nav{animation:nav-glow-g 3s ease-in-out infinite;}
+        .hero-nav:nth-child(1){animation-delay:0s;}.hero-nav:nth-child(2){animation-delay:.4s;}.hero-nav:nth-child(3){animation-delay:.8s;}.hero-nav:nth-child(4){animation-delay:1.2s;}.hero-nav:nth-child(5){animation-delay:1.6s;}.hero-nav:nth-child(6){animation-delay:2s;}
+        @keyframes nav-glow-g{0%,100%{color:rgba(200,155,60,.4);}50%{color:rgba(200,155,60,.7);}}
+        .hero-nav:hover,.hero-nav.active{animation:none;}
+        .hero-nav-cta{margin-top:.5rem;padding:.5rem 1.2rem;border-radius:8px;border:1.5px solid rgba(200,155,60,.3);font-size:12px;transition:all .4s ease;}
+        .hero-nav-cta:hover{background:var(--gold);color:#fff;border-color:var(--gold);transform:translateX(0);box-shadow:0 8px 24px rgba(200,155,60,.3);}
+        .hero-nav-cta::after{display:none;}
+
+        /* Scroll bar */
+        #scroll-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold-gradient);z-index:100;transform-origin:left;transform:scaleX(0);}
+
+        /* Shine text animation */
+        @keyframes text-shine-anim{0%{background-position:-200% center}100%{background-position:200% center}}
+        .text-shine-anim{background:linear-gradient(90deg,var(--gold) 0%,#E8C97A 25%,#fff 50%,#E8C97A 75%,var(--gold) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:text-shine-anim 4s linear infinite;}
+
+        /* Window chrome — glassmorphism */
+        .win{background:rgba(255,255,255,.45);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border:1px solid rgba(255,255,255,.5);border-radius:16px;overflow:hidden;transition:all .6s cubic-bezier(.22,1,.36,1);position:relative;box-shadow:0 4px 24px rgba(0,69,122,.04),inset 0 1px 0 rgba(255,255,255,.6);transform-style:preserve-3d;}
+        .win:hover{background:rgba(255,255,255,.55);border-color:rgba(200,155,60,.25);box-shadow:0 24px 70px rgba(0,69,122,.1),0 0 50px rgba(200,155,60,.05),inset 0 1px 0 rgba(255,255,255,.7);transform:translateY(-8px);}
+        .win-bar{display:flex;align-items:center;gap:8px;padding:14px 20px;background:rgba(255,255,255,.25);border-bottom:1px solid rgba(255,255,255,.35);}
+        .win-dot{width:10px;height:10px;border-radius:50%;transition:all .3s;}
+        .win:hover .win-dot{transform:scale(1.15);}
+        .win-title{font-family:var(--mono);font-size:12px;color:rgba(0,0,0,.25);margin-left:8px;letter-spacing:.05em;}
+        .win-body{padding:2rem;background:transparent;}
+
+        /* 3D Tilt on hover */
+        .win.tilt{transition:transform .15s ease-out,box-shadow .6s cubic-bezier(.22,1,.36,1),border-color .6s ease;}
+
+        /* Glow border animation */
+        @keyframes border-glow{0%,100%{border-color:rgba(200,155,60,.1);}50%{border-color:rgba(200,155,60,.25);}}
+        .win:hover{animation:border-glow 2s ease-in-out infinite;}
+
+        /* Shimmer overlay on hover */
+        .win::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transition:none;pointer-events:none;z-index:10;}
+        .win:hover::after{left:150%;transition:left .8s ease;}
+
+        /* Terminal window */
+        .term-win{background:#1e1e2e !important;border-color:rgba(0,0,0,.1) !important;}
+        .term-win .win-bar{background:rgba(0,0,0,.3);border-bottom-color:rgba(255,255,255,.06) !important;}
+        .term-win .win-title{color:rgba(255,255,255,.45);}
+        .term-line{font-family:var(--mono);font-size:14px;line-height:2.2;color:rgba(255,255,255,.65);}
+        .term-prompt{color:var(--teal);}
+        .term-cmd{color:#fff;}
+        .term-output{color:rgba(200,155,60,.7);}
+        .term-comment{color:rgba(255,255,255,.2);}
+
+        /* Glass dark card */
+        .win-dark{background:rgba(255,255,255,.06);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;transition:all .6s cubic-bezier(.22,1,.36,1);position:relative;box-shadow:0 4px 24px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.04);transform-style:preserve-3d;}
+        .win-dark:hover{background:rgba(255,255,255,.1);border-color:rgba(200,155,60,.2);box-shadow:0 24px 70px rgba(0,0,0,.2),0 0 50px rgba(200,155,60,.05);transform:translateY(-8px);}
+        .win-dark::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transition:none;pointer-events:none;z-index:10;}
+        .win-dark:hover::after{left:150%;transition:left .8s ease;}
+
+        /* Status badge */
+        .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+        @keyframes status-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 currentColor}50%{opacity:.7;box-shadow:0 0 0 6px transparent}}
+        @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(40,200,64,.4)}100%{box-shadow:0 0 0 10px transparent}}
+        .status-dot{animation:status-pulse 2s ease-in-out infinite,pulse-ring 2s ease-in-out infinite;}
+
+        /* Reveal */
+        .reveal{opacity:0;transform:translateY(40px);transition:all 1s cubic-bezier(0.16,1,0.3,1);}
+        .reveal.active{opacity:1;transform:translateY(0);}
+        .r1{transition-delay:.1s}.r2{transition-delay:.2s}.r3{transition-delay:.3s}.r4{transition-delay:.4s}.r5{transition-delay:.5s}.r6{transition-delay:.6s}
+
+        /* Floating animations */
+        @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @keyframes blink{0%,100%{opacity:var(--o,1)}50%{opacity:0.05}}
+
+        .cf{position:absolute;pointer-events:none;z-index:2;}
+        .cf-dot{border-radius:50%;}.cf-sq{border-radius:3px;transform:rotate(var(--r,0deg));}
+
+        /* Floating orbs */
+        .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:.18;animation:orb-drift 20s ease-in-out infinite;}
+        .orb-1{width:500px;height:500px;background:var(--gold);top:5%;left:-8%;animation-delay:0s;}
+        .orb-2{width:400px;height:400px;background:var(--teal);bottom:0;right:-8%;animation-delay:-7s;}
+        .orb-3{width:350px;height:350px;background:#5884f1;top:45%;left:35%;animation-delay:-14s;opacity:.1;}
+        @keyframes orb-drift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(40px,-30px) scale(1.1)}50%{transform:translate(-20px,40px) scale(.95)}75%{transform:translate(30px,20px) scale(1.05)}}
+
+        /* 3D objects */
+        .obj-3d{position:absolute;pointer-events:none;will-change:transform;}
+        #obj-layer svg.obj-3d:nth-child(odd){animation:obj-float-a 6s ease-in-out infinite;}
+        #obj-layer svg.obj-3d:nth-child(even){animation:obj-float-b 8s ease-in-out infinite;}
+        #obj-layer svg.obj-3d:nth-child(3n){animation-delay:-2s;}
+        #obj-layer svg.obj-3d:nth-child(5n){animation-delay:-4s;}
+        @keyframes obj-float-a{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(1deg)}}
+        @keyframes obj-float-b{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(14px) rotate(-1deg)}}
+
+        /* Parallax */
+        .parallax-slow{will-change:transform;}
+
+        /* Counter */
+        .count-up{display:inline-block;}
+
+        /* Agent hierarchy SVG node animation */
+        @keyframes agent-pulse{0%,100%{r:6}50%{r:8}}
+        @keyframes dash-flow{to{stroke-dashoffset:-20}}
+
+        /* Marquee */
+        .marquee{overflow:hidden;white-space:nowrap;padding:1.2rem 0;}
+        .marquee-inner{display:inline-flex;animation:mq 20s linear infinite;}
+        @keyframes mq{to{transform:translateX(-50%)}}
+        .mq-item{font-family:var(--mono);font-size:13px;font-weight:400;letter-spacing:.1em;padding:0 2rem;flex-shrink:0;color:rgba(200,155,60,.15);}
+
+        /* Command chip */
+        .cmd-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:rgba(255,255,255,.45);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.5);border-radius:100px;font-family:var(--mono);font-size:14px;color:var(--text);cursor:pointer;transition:all .4s cubic-bezier(.22,1,.36,1);white-space:nowrap;}
+        .cmd-chip:hover{background:rgba(200,155,60,.1);border-color:rgba(200,155,60,.3);transform:translateY(-4px);box-shadow:0 12px 30px rgba(200,155,60,.1);}
+        .cmd-chip::before{content:'>';color:var(--gold);font-weight:700;}
+
+        /* Footer */
+        .ft-link{font-size:14px;font-weight:400;color:rgba(255,255,255,.7);transition:all .4s cubic-bezier(.22,1,.36,1);padding:4px 0;position:relative;text-decoration:none;display:block;}
+        .ft-link:hover{color:#fff;transform:translateX(6px);}
+        .ft-link::before{content:'';position:absolute;left:-12px;top:50%;transform:translateY(-50%);width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:0;transition:all .3s;}
+        .ft-link:hover::before{opacity:1;left:-8px;}
+
+        /* Comparison table */
+        .compare-table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:16px;}
+        .compare-table th,.compare-table td{padding:16px 20px;text-align:left;border-bottom:1px solid rgba(255,255,255,.3);}
+        .compare-table thead th{background:rgba(255,255,255,.35);font-weight:700;font-size:14px;}
+        .compare-table tbody td{background:rgba(255,255,255,.2);font-size:15px;line-height:1.8;}
+        .compare-table tbody tr:last-child td{border-bottom:none;}
+        .compare-table .col-shine{background:rgba(200,155,60,.08) !important;border-left:2px solid var(--gold);}
+        .compare-table thead .col-shine{background:rgba(200,155,60,.15) !important;color:var(--gold);font-weight:900;}
+        .compare-bar{height:6px;border-radius:3px;background:rgba(0,69,122,.06);overflow:hidden;margin-top:6px;}
+        .compare-bar-fill{height:100%;border-radius:3px;}
+        .bar-low .compare-bar-fill{width:30%;background:rgba(59,59,59,.2);}
+        .bar-mid .compare-bar-fill{width:55%;background:linear-gradient(90deg,var(--sky),var(--teal));}
+        .bar-high .compare-bar-fill{width:95%;background:var(--gold-gradient);}
+
+        /* Mobile CTA */
+        .mobile-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:90;padding:12px 16px;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.5);box-shadow:0 -4px 20px rgba(0,0,0,.08);transform:translateY(100%);transition:transform .4s cubic-bezier(.22,1,.36,1);}
+        .mobile-cta.visible{transform:translateY(0);}
+        @media(max-width:768px){.mobile-cta{display:block;}}
+
+        /* Scroll bounce */
+        @keyframes scroll-bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+    </style>
+</head>
+<body class="grid-bg">
+
+    <!-- Ambient floating orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- ====== 3D OBJECTS LAYER ====== -->
+    <div id="obj-layer" style="position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;">
+        <!-- Large tube top-left -->
+        <svg class="obj-3d" style="top:4%;left:-2%;width:480px;" viewBox="0 0 480 220" fill="none">
+            <defs>
+                <linearGradient id="ob-t1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C89B3C"/><stop offset="50%" stop-color="#E8C97A"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient>
+                <linearGradient id="ob-t1h" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="rgba(255,255,255,.3)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></linearGradient>
+            </defs>
+            <rect x="0" y="80" width="480" height="44" rx="22" fill="url(#ob-t1)" transform="rotate(-20 240 102)" opacity=".5"/>
+            <rect x="0" y="80" width="480" height="22" rx="11" fill="url(#ob-t1h)" transform="rotate(-20 240 102)" opacity=".3"/>
+        </svg>
+        <!-- Tube mid-right -->
+        <svg class="obj-3d" style="top:30%;right:-3%;width:400px;" viewBox="0 0 400 180" fill="none">
+            <defs><linearGradient id="ob-t2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#00cbaf"/><stop offset="100%" stop-color="#C89B3C"/></linearGradient></defs>
+            <rect x="0" y="65" width="400" height="36" rx="18" fill="url(#ob-t2)" transform="rotate(15 200 83)" opacity=".35"/>
+            <rect x="0" y="65" width="400" height="18" rx="9" fill="url(#ob-t1h)" transform="rotate(15 200 83)" opacity=".2"/>
+        </svg>
+        <!-- Arc top-right -->
+        <svg class="obj-3d" style="top:-5%;right:8%;width:420px;" viewBox="0 0 420 420" fill="none">
+            <path d="M420,210 A210,210 0 0,0 210,0" stroke="url(#ob-t1)" stroke-width="55" fill="none" opacity=".25" stroke-linecap="round"/>
+            <path d="M395,210 A185,185 0 0,0 210,25" stroke="rgba(255,255,255,.1)" stroke-width="22" fill="none" stroke-linecap="round"/>
+            <circle cx="210" cy="0" r="10" fill="#C89B3C" opacity=".4"><animate attributeName="opacity" values=".4;.15;.4" dur="2.5s" repeatCount="indefinite"/></circle>
+        </svg>
+        <!-- 3D Sphere large -->
+        <svg class="obj-3d" style="top:55%;left:5%;width:120px;" viewBox="0 0 120 120" fill="none">
+            <defs><radialGradient id="ob-sp1" cx="35%" cy="30%"><stop offset="0%" stop-color="#E8C97A"/><stop offset="60%" stop-color="#C89B3C"/><stop offset="100%" stop-color="#6b4f1a"/></radialGradient></defs>
+            <circle cx="60" cy="60" r="50" fill="url(#ob-sp1)" opacity=".4"/>
+            <ellipse cx="44" cy="40" rx="18" ry="12" fill="white" opacity=".15" transform="rotate(-25 44 40)"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+        </svg>
+        <!-- 3D Sphere medium -->
+        <svg class="obj-3d" style="top:18%;right:20%;width:80px;" viewBox="0 0 80 80" fill="none">
+            <defs><radialGradient id="ob-sp2" cx="35%" cy="30%"><stop offset="0%" stop-color="#00cbaf"/><stop offset="70%" stop-color="#00457A"/><stop offset="100%" stop-color="#001a3a"/></radialGradient></defs>
+            <circle cx="40" cy="40" r="34" fill="url(#ob-sp2)" opacity=".35"/>
+            <ellipse cx="30" cy="28" rx="12" ry="8" fill="white" opacity=".1" transform="rotate(-25 30 28)"/>
+        </svg>
+        <!-- Spinning ring -->
+        <svg class="obj-3d" style="top:65%;right:6%;width:100px;animation:spin 18s linear infinite;" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="40" stroke="#C89B3C" stroke-width="2" opacity=".12"/>
+            <circle cx="50" cy="50" r="28" stroke="#00cbaf" stroke-width="1.5" stroke-dasharray="5 8" opacity=".08"/>
+            <circle cx="50" cy="10" r="4" fill="#C89B3C" opacity=".35"/>
+        </svg>
+        <!-- Spinning ring 2 -->
+        <svg class="obj-3d" style="top:15%;left:40%;width:70px;animation:spin 25s linear infinite reverse;" viewBox="0 0 70 70" fill="none">
+            <circle cx="35" cy="35" r="28" stroke="#C89B3C" stroke-width="1.5" opacity=".1"/>
+            <circle cx="35" cy="35" r="18" stroke="#00cbaf" stroke-width="1" stroke-dasharray="4 6" opacity=".06"/>
+            <circle cx="35" cy="7" r="3" fill="#C89B3C" opacity=".3"/>
+        </svg>
+        <!-- Confetti squares -->
+        <div class="obj-3d cf-sq" style="width:28px;height:28px;background:rgba(200,155,60,.06);top:10%;left:45%;--r:12deg;animation:blink 3.5s ease-in-out infinite;"></div>
+        <div class="obj-3d cf-sq" style="width:20px;height:20px;background:rgba(0,203,175,.1);top:35%;left:12%;--r:35deg;animation:blink 2.8s ease-in-out .6s infinite;"></div>
+        <div class="obj-3d cf-sq" style="width:16px;height:16px;border:2px solid rgba(200,155,60,.1);top:60%;right:18%;--r:20deg;background:transparent;animation:blink 4s ease-in-out 1s infinite;"></div>
+        <div class="obj-3d cf-sq" style="width:22px;height:22px;background:rgba(0,69,122,.04);bottom:12%;left:32%;--r:8deg;animation:blink 3s ease-in-out .3s infinite;"></div>
+        <div class="obj-3d cf-sq" style="width:14px;height:14px;border:1.5px solid rgba(0,203,175,.08);top:48%;right:35%;--r:45deg;background:transparent;animation:blink 2.5s ease-in-out .8s infinite;"></div>
+        <div class="obj-3d cf-sq" style="width:18px;height:18px;background:rgba(200,155,60,.05);bottom:35%;right:40%;--r:15deg;animation:blink 3.2s ease-in-out 1.5s infinite;"></div>
+        <!-- Confetti dots -->
+        <div class="obj-3d cf-dot" style="width:12px;height:12px;background:var(--teal);top:22%;left:52%;opacity:.12;animation:blink 2s ease-in-out infinite;"></div>
+        <div class="obj-3d cf-dot" style="width:8px;height:8px;background:var(--gold);bottom:30%;left:18%;opacity:.15;animation:blink 2.5s ease-in-out .4s infinite;"></div>
+        <div class="obj-3d cf-dot" style="width:10px;height:10px;background:var(--cyan);top:70%;right:28%;opacity:.1;animation:blink 1.8s ease-in-out .7s infinite;"></div>
+        <div class="obj-3d cf-dot" style="width:6px;height:6px;background:var(--teal);top:45%;left:8%;opacity:.18;animation:blink 3s ease-in-out 1s infinite;"></div>
+        <div class="obj-3d cf-dot" style="width:9px;height:9px;background:var(--gold);bottom:15%;right:10%;opacity:.12;animation:blink 2.2s ease-in-out .9s infinite;"></div>
+    </div><!-- /obj-layer -->
+
+    <!-- ====== SCROLL BAR ====== -->
+    <div id="scroll-bar"></div>
+
+    <!-- ====== RIGHT SIDE NAV (Desktop) ====== -->
+    <nav class="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-end gap-3">
+        <a href="index.html" class="hero-nav">Home</a>
+        <a href="stance.html" class="hero-nav">Stance</a>
+        <a href="service.html" class="hero-nav">Service</a>
+        <a href="blog/" class="hero-nav">Blog</a>
+        <a href="company.html" class="hero-nav">Company</a>
+        <a href="contact.html?service=aishine" class="hero-nav hero-nav-cta">Contact</a>
+    </nav>
+
+    <!-- ====== MOBILE HAMBURGER ====== -->
+    <button id="mob-btn" class="fixed top-6 right-6 z-[60] md:hidden flex flex-col gap-1.5" aria-label="Menu">
+        <span class="w-7 h-[2px] bg-[#00457A] transition-all duration-300 origin-center"></span>
+        <span class="w-7 h-[2px] bg-[#00457A] transition-all duration-300"></span>
+        <span class="w-5 h-[2px] bg-[#00457A] transition-all duration-300 origin-center"></span>
+    </button>
+    <div id="mob-menu" class="fixed inset-0 z-[55] flex flex-col items-center justify-center gap-6 translate-x-full transition-transform duration-500 md:hidden" style="background:#00457A;">
+        <a href="index.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Home</a>
+        <a href="stance.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Stance</a>
+        <a href="service.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Service</a>
+        <a href="blog/" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Blog</a>
+        <a href="company.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Company</a>
+        <a href="contact.html?service=aishine" class="f-en text-sm font-700 tracking-wider mt-4 px-8 py-3 rounded-full" style="background:linear-gradient(135deg,#C89B3C,#E8C97A);color:#fff;">Contact Us</a>
+    </div>
+
+    <!-- ========== 1. HERO ========== -->
+    <section class="relative min-h-screen flex items-center px-6 md:px-16 lg:px-24 overflow-hidden" style="z-index:2;">
+        <a href="index.html" class="absolute top-8 left-8 md:left-14 z-30">
+            <img src="img/logo-full.png" alt="with-AI" class="h-7 md:h-9" style="filter:drop-shadow(0 2px 10px rgba(0,69,122,.06));">
+        </a>
+        <!-- Isometric illustrations -->
+        <img src="img/iso-1.svg" alt="" class="absolute hidden md:block" style="width:180px;top:8%;right:6%;z-index:3;animation:fl 6s ease-in-out infinite;opacity:.7;filter:drop-shadow(0 10px 30px rgba(200,155,60,.1));">
+        <img src="img/iso-2.svg" alt="" class="absolute hidden md:block" style="width:140px;bottom:10%;left:3%;z-index:3;animation:fl 5s ease-in-out 1s infinite;opacity:.6;filter:drop-shadow(0 10px 30px rgba(0,69,122,.08));">
+
+        <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center py-32">
+            <!-- Left -->
+            <div class="reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-6" style="color:var(--gold);">AI Agent Building Service</p>
+                <h1 class="font-black leading-tight mb-6" style="font-size:clamp(2.8rem,9vw,7rem);">
+                    <span class="text-shine-anim">指示を出すだけ。<br>5人のAIが動き出す。</span>
+                </h1>
+                <p class="text-lg md:text-xl font-bold leading-relaxed mb-4" style="color:rgba(59,59,59,.85);">社長専属AIエージェント構築サービス — AI SHINE</p>
+                <p class="text-base leading-loose mb-10" style="color:rgba(59,59,59,.7);line-height:2;">あなた専属のAI社員チームを構築し、育て続ける。経理、リサーチ、資料作成、ライティング、監査。5人のAIが並列で同時に動きます。</p>
+                <a href="contact.html?service=aishine" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold f-en tracking-wider text-base transition-all duration-500 hover:shadow-2xl hover:scale-105" style="background:linear-gradient(135deg,#C89B3C,#E8C97A);box-shadow:0 8px 32px rgba(200,155,60,.3);">
+                    AI社員チームを作る
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h10M11 6l4 4-4 4"/></svg>
+                </a>
+            </div>
+            <!-- Right: Agent Hierarchy SVG -->
+            <div class="reveal r2 flex justify-center">
+                <svg viewBox="0 0 440 380" fill="none" class="w-full max-w-md" style="filter:drop-shadow(0 8px 32px rgba(200,155,60,.12));">
+                    <defs>
+                        <linearGradient id="g-you" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C89B3C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient>
+                        <linearGradient id="g-agent" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#48A8E1"/></linearGradient>
+                        <linearGradient id="g-sub" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient>
+                    </defs>
+                    <!-- Dashed connections YOU to AGENT -->
+                    <line x1="220" y1="62" x2="220" y2="138" stroke="#C89B3C" stroke-width="2" stroke-dasharray="6 4" opacity=".5">
+                        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" repeatCount="indefinite"/>
+                    </line>
+                    <!-- AGENT to Sub connections -->
+                    <line x1="220" y1="192" x2="60" y2="288" stroke="url(#g-sub)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".4"><animate attributeName="stroke-dashoffset" values="0;-20" dur="2.5s" repeatCount="indefinite"/></line>
+                    <line x1="220" y1="192" x2="140" y2="288" stroke="url(#g-sub)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".4"><animate attributeName="stroke-dashoffset" values="0;-20" dur="2.3s" repeatCount="indefinite"/></line>
+                    <line x1="220" y1="192" x2="220" y2="288" stroke="url(#g-sub)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".4"><animate attributeName="stroke-dashoffset" values="0;-20" dur="2.1s" repeatCount="indefinite"/></line>
+                    <line x1="220" y1="192" x2="300" y2="288" stroke="url(#g-sub)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".4"><animate attributeName="stroke-dashoffset" values="0;-20" dur="2.4s" repeatCount="indefinite"/></line>
+                    <line x1="220" y1="192" x2="380" y2="288" stroke="url(#g-sub)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".4"><animate attributeName="stroke-dashoffset" values="0;-20" dur="2.2s" repeatCount="indefinite"/></line>
+                    <!-- YOU node -->
+                    <circle cx="220" cy="42" r="28" fill="url(#g-you)" opacity=".9"/>
+                    <text x="220" y="47" text-anchor="middle" fill="#fff" font-family="Albert Sans,sans-serif" font-size="13" font-weight="800">YOU</text>
+                    <!-- AGENT node -->
+                    <rect x="170" y="140" width="100" height="50" rx="14" fill="url(#g-agent)" opacity=".9"/>
+                    <text x="220" y="170" text-anchor="middle" fill="#fff" font-family="Albert Sans,sans-serif" font-size="12" font-weight="700">AGENT</text>
+                    <!-- Sub-agent nodes -->
+                    <circle cx="60" cy="308" r="24" fill="url(#g-sub)" opacity=".8"><animate attributeName="r" values="24;26;24" dur="3s" repeatCount="indefinite"/></circle>
+                    <text x="60" y="312" text-anchor="middle" fill="#fff" font-family="Albert Sans,sans-serif" font-size="9" font-weight="600">SEC</text>
+                    <text x="60" y="346" text-anchor="middle" fill="#3B3B3B" font-family="Zen Kaku Gothic New,sans-serif" font-size="10" font-weight="500" opacity=".6">Secretary</text>
+
+                    <circle cx="140" cy="308" r="24" fill="url(#g-sub)" opacity=".8"><animate attributeName="r" values="24;26;24" dur="3.2s" begin=".3s" repeatCount="indefinite"/></circle>
+                    <text x="140" y="312" text-anchor="middle" fill="#fff" font-family="Albert Sans,sans-serif" font-size="9" font-weight="600">FIN</text>
+                    <text x="140" y="346" text-anchor="middle" fill="#3B3B3B" font-family="Zen Kaku Gothic New,sans-serif" font-size="10" font-weight="500" opacity=".6">Finance</text>
+
+                    <circle cx="220" cy="308" r="24" fill="url(#g-sub)" opacity=".8"><animate attributeName="r" values="24;26;24" dur="2.8s" begin=".6s" repeatCount="indefinite"/></circle>
+                    <text x="220" y="312" text-anchor="middle" fill="#fff" font-family="Albert Sans,sans-serif" font-size="9" font-weight="600">RES</text>
+                    <text x="220" y="346" text-anchor="middle" fill="#3B3B3B" font-family="Zen Kaku Gothic New,sans-serif" font-size="10" font-weight="500" opacity=".6">Research</text>
+
+                    <circle cx="300" cy="308" r="24" fill="url(#g-sub)" opacity=".8"><animate attributeName="r" values="24;26;24" dur="3.4s" begin=".9s" repeatCount="indefinite"/></circle>
+                    <text x="300" y="312" text-anchor="middle" fill="#fff" font-family="Albert Sans,sans-serif" font-size="9" font-weight="600">WRT</text>
+                    <text x="300" y="346" text-anchor="middle" fill="#3B3B3B" font-family="Zen Kaku Gothic New,sans-serif" font-size="10" font-weight="500" opacity=".6">Writer</text>
+
+                    <circle cx="380" cy="308" r="24" fill="url(#g-sub)" opacity=".8"><animate attributeName="r" values="24;26;24" dur="3.1s" begin="1.2s" repeatCount="indefinite"/></circle>
+                    <text x="380" y="312" text-anchor="middle" fill="#fff" font-family="Albert Sans,sans-serif" font-size="9" font-weight="600">AUD</text>
+                    <text x="380" y="346" text-anchor="middle" fill="#3B3B3B" font-family="Zen Kaku Gothic New,sans-serif" font-size="10" font-weight="500" opacity=".6">Auditor</text>
+                </svg>
+            </div>
+        </div>
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style="animation:scroll-bounce 2s ease-in-out infinite;">
+            <span class="f-mono text-[10px] tracking-[.3em] uppercase" style="color:rgba(200,155,60,.4);">scroll to explore</span>
+            <div class="w-[1px] h-10 rounded-full" style="background:linear-gradient(to bottom,rgba(200,155,60,.3),transparent);"></div>
+        </div>
+    </section>
+
+    <!-- ========== 2. USE CASES ========== -->
+    <section class="relative py-28 md:py-40 px-6 md:px-16 lg:px-24" style="z-index:2;">
+        <img src="img/iso-3.svg" alt="" class="absolute hidden md:block" style="width:130px;bottom:8%;right:5%;z-index:3;animation:fl 6s ease-in-out 1.5s infinite;opacity:.45;filter:drop-shadow(0 8px 24px rgba(0,69,122,.06));">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-4" style="color:var(--gold);">Use Cases</p>
+                <h2 class="f-en font-900 leading-tight" style="font-size:clamp(2rem,5vw,3.5rem);color:var(--blue);">こんな業務が、すべて<span class="text-gold">自動化</span>。</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 mb-12">
+                <!-- Case 1 -->
+                <div class="win tilt reveal r1">
+                    <div class="win-bar">
+                        <span class="win-dot" style="background:#ff5f57;"></span>
+                        <span class="win-dot" style="background:#febc2e;"></span>
+                        <span class="win-dot" style="background:#28c840;"></span>
+                        <span class="win-title">accounting.auto</span>
+                    </div>
+                    <div class="win-body">
+                        <h3 class="f-en font-900 text-xl md:text-2xl mb-4" style="color:var(--blue);">経理・バックオフィス自動化</h3>
+                        <p class="text-base leading-loose" style="color:rgba(59,59,59,.7);line-height:2;">スマホで領収書を撮影 → Google Driveに保存 → AIが自動で文字読取 → freeeに自動仕訳 → 確認するだけ。請求書もワンコマンドで発行。</p>
+                    </div>
+                </div>
+                <!-- Case 2 -->
+                <div class="win tilt reveal r2">
+                    <div class="win-bar">
+                        <span class="win-dot" style="background:#ff5f57;"></span>
+                        <span class="win-dot" style="background:#febc2e;"></span>
+                        <span class="win-dot" style="background:#28c840;"></span>
+                        <span class="win-title">proposal.agent</span>
+                    </div>
+                    <div class="win-body">
+                        <h3 class="f-en font-900 text-xl md:text-2xl mb-4" style="color:var(--blue);">超速・提案書作成</h3>
+                        <p class="text-base leading-loose" style="color:rgba(59,59,59,.7);line-height:2;">商談後、5人の専門家が裏で同時稼働。書記・市場調査・競合調査・戦略家・監査役が並列で動き、翌日にはお礼メールと提案書が完成。</p>
+                    </div>
+                </div>
+                <!-- Case 3 -->
+                <div class="win tilt reveal r3">
+                    <div class="win-bar">
+                        <span class="win-dot" style="background:#ff5f57;"></span>
+                        <span class="win-dot" style="background:#febc2e;"></span>
+                        <span class="win-dot" style="background:#28c840;"></span>
+                        <span class="win-title">seo.audit</span>
+                    </div>
+                    <div class="win-body">
+                        <h3 class="f-en font-900 text-xl md:text-2xl mb-4" style="color:var(--blue);">競合サイト・SEO監査</h3>
+                        <p class="text-base leading-loose" style="color:rgba(59,59,59,.7);line-height:2;">URLを入力するだけで、わずか数分で100点満点のスコア評価。改善アクションプラン付きのプロ級PDFレポートを自動生成。</p>
+                    </div>
+                </div>
+                <!-- Case 4 -->
+                <div class="win tilt reveal r4">
+                    <div class="win-bar">
+                        <span class="win-dot" style="background:#ff5f57;"></span>
+                        <span class="win-dot" style="background:#febc2e;"></span>
+                        <span class="win-dot" style="background:#28c840;"></span>
+                        <span class="win-title">ghost.writer</span>
+                    </div>
+                    <div class="win-body">
+                        <h3 class="f-en font-900 text-xl md:text-2xl mb-4" style="color:var(--blue);">専属ゴーストライター</h3>
+                        <p class="text-base leading-loose" style="color:rgba(59,59,59,.7);line-height:2;">あなたの文章の「癖」や「トーン」を学習し、そっくりの文体で自動作成。ブログ・Xのツリー投稿まで、下書きトレイに直接保存。</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Command chips -->
+            <div class="flex flex-wrap justify-center gap-3 reveal r5">
+                <span class="cmd-chip">見積もり作って</span>
+                <span class="cmd-chip">いつものリサーチして</span>
+                <span class="cmd-chip">競合チェックして</span>
+                <span class="cmd-chip">ブログ書いて</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== MARQUEE ====== -->
+    <div class="marquee" style="z-index:2;position:relative;">
+        <div class="marquee-inner">
+            <span class="mq-item">AI AGENT</span><span class="mq-item">AUTOMATION</span><span class="mq-item">PARALLEL EXECUTION</span><span class="mq-item">24/7 OPERATION</span><span class="mq-item">AI SHINE</span><span class="mq-item">CUSTOM BUILD</span><span class="mq-item">EVOLVE</span><span class="mq-item">TRAIN</span>
+            <span class="mq-item">AI AGENT</span><span class="mq-item">AUTOMATION</span><span class="mq-item">PARALLEL EXECUTION</span><span class="mq-item">24/7 OPERATION</span><span class="mq-item">AI SHINE</span><span class="mq-item">CUSTOM BUILD</span><span class="mq-item">EVOLVE</span><span class="mq-item">TRAIN</span>
+        </div>
+    </div>
+
+    <!-- ========== 3. EVOLUTION (Before / After) ========== -->
+    <section class="relative py-28 md:py-40 px-6 md:px-16 lg:px-24" style="z-index:2;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-4" style="color:var(--gold);">Evolution</p>
+                <h2 class="f-en font-900 leading-tight" style="font-size:clamp(2rem,5vw,3.5rem);color:var(--blue);">AIは「相談相手」から<br class="hidden md:block">「<span class="text-gold">実行する部下</span>」へ</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-stretch">
+                <!-- BEFORE: Terminal style -->
+                <div class="win term-win tilt reveal r1">
+                    <div class="win-bar">
+                        <span class="win-dot" style="background:#ff5f57;"></span>
+                        <span class="win-dot" style="background:#febc2e;"></span>
+                        <span class="win-dot" style="background:#28c840;"></span>
+                        <span class="win-title">before.sh</span>
+                    </div>
+                    <div class="win-body">
+                        <p class="f-mono text-xs tracking-widest uppercase mb-4" style="color:rgba(255,255,255,.3);">&gt; BEFORE</p>
+                        <h3 class="text-xl md:text-2xl font-black mb-6" style="color:rgba(255,255,255,.85);">これまでのAI — 優秀な「相談相手」</h3>
+                        <div class="space-y-1">
+                            <p class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">質問すれば答えてくれる</span></p>
+                            <p class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">しかし「実行」はしてくれない</span></p>
+                            <p class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">コピー&ペーストは人間の仕事</span></p>
+                            <p class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">1つの会話で1つの作業のみ</span></p>
+                        </div>
+                        <div class="mt-6 pt-4" style="border-top:1px solid rgba(255,255,255,.06);">
+                            <p class="term-line"><span class="term-comment">// 結局、人間の手間は減らない</span></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- AFTER: Glass card with gold top border -->
+                <div class="win tilt reveal r2" style="border-top:3px solid var(--gold);">
+                    <div class="win-bar" style="background:linear-gradient(135deg,rgba(200,155,60,.08),rgba(0,203,175,.05));">
+                        <span class="win-dot" style="background:#28c840;"></span>
+                        <span class="win-dot" style="background:#28c840;opacity:.5;"></span>
+                        <span class="win-dot" style="background:#28c840;opacity:.25;"></span>
+                        <span class="win-title" style="color:var(--gold);">agent_v2.0</span>
+                    </div>
+                    <div class="win-body">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="f-mono text-xs tracking-widest uppercase" style="color:var(--gold);">AFTER — SYSTEM ONLINE</span>
+                            <span class="status-dot flex-shrink-0" style="background:#28c840;color:#28c840;"></span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-black mb-6" style="color:var(--blue);">AIエージェント — 実行する「優秀な部下」</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <span class="w-2 h-2 rounded-full mt-2.5 flex-shrink-0" style="background:var(--gold);"></span>
+                                <p class="text-base" style="color:rgba(59,59,59,.8);line-height:2;">PCを操作し業務を最後まで実行</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="w-2 h-2 rounded-full mt-2.5 flex-shrink-0" style="background:var(--teal);"></span>
+                                <p class="text-base" style="color:rgba(59,59,59,.8);line-height:2;">複数ツールを自律的に連携</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="w-2 h-2 rounded-full mt-2.5 flex-shrink-0" style="background:var(--gold);"></span>
+                                <p class="text-base" style="color:rgba(59,59,59,.8);line-height:2;">5人のチームを並列で同時稼働</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="w-2 h-2 rounded-full mt-2.5 flex-shrink-0" style="background:var(--teal);"></span>
+                                <p class="text-base" style="color:rgba(59,59,59,.8);line-height:2;">24時間365日、文句なく働き続ける</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4" style="border-top:1px solid rgba(200,155,60,.15);">
+                            <p class="text-base font-bold" style="color:var(--gold);">人間は指示を出すだけでOK</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 4. THREE PILLARS ========== -->
+    <section class="relative py-28 md:py-40 px-6 md:px-16 lg:px-24" style="z-index:2;">
+        <img src="img/iso-1.svg" alt="" class="absolute hidden md:block" style="width:130px;top:10%;right:8%;z-index:3;animation:fl 7s ease-in-out .5s infinite;opacity:.5;filter:drop-shadow(0 8px 24px rgba(200,155,60,.08));">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-6 reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-4" style="color:var(--gold);">Three Pillars</p>
+                <h2 class="f-en font-900 leading-tight" style="font-size:clamp(2rem,5vw,3.5rem);color:var(--blue);">構築 <span style="color:var(--gold);">&times;</span> 教育 <span style="color:var(--gold);">&times;</span> 伴走</h2>
+            </div>
+            <p class="text-center text-base md:text-lg mb-20 reveal r1" style="color:rgba(59,59,59,.7);line-height:2;">あなた専属のAI社員チームを構築し、育て続ける伴走型サービス。</p>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Pillar 1 -->
+                <div class="win tilt reveal r1">
+                    <div class="win-bar">
+                        <span class="win-dot" style="background:var(--gold);"></span>
+                        <span class="win-dot" style="background:rgba(200,155,60,.3);"></span>
+                        <span class="win-dot" style="background:rgba(200,155,60,.15);"></span>
+                        <span class="win-title">pillar_01</span>
+                    </div>
+                    <div class="win-body text-center">
+                        <p class="f-mono text-xs tracking-[.2em] uppercase mb-4 font-bold" style="color:var(--gold);">Pillar 01</p>
+                        <div class="text-5xl mb-4">&#x2699;&#xFE0F;</div>
+                        <h3 class="f-en font-900 text-xl md:text-2xl mb-2" style="color:var(--blue);">BUILD</h3>
+                        <p class="text-base font-bold mb-4" style="color:var(--text);">構築</p>
+                        <p class="text-base leading-loose" style="color:rgba(59,59,59,.7);line-height:2;">御社専用のAIエージェント環境を一から構築。PC環境のセットアップから外部ツール連携まで完全代行。</p>
+                    </div>
+                </div>
+                <!-- Pillar 2 -->
+                <div class="win tilt reveal r2">
+                    <div class="win-bar">
+                        <span class="win-dot" style="background:var(--gold);"></span>
+                        <span class="win-dot" style="background:rgba(200,155,60,.3);"></span>
+                        <span class="win-dot" style="background:rgba(200,155,60,.15);"></span>
+                        <span class="win-title">pillar_02</span>
+                    </div>
+                    <div class="win-body text-center">
+                        <p class="f-mono text-xs tracking-[.2em] uppercase mb-4 font-bold" style="color:var(--gold);">Pillar 02</p>
+                        <div class="text-5xl mb-4">&#x1F4DA;</div>
+                        <h3 class="f-en font-900 text-xl md:text-2xl mb-2" style="color:var(--blue);">TRAIN</h3>
+                        <p class="text-base font-bold mb-4" style="color:var(--text);">教育</p>
+                        <p class="text-base leading-loose" style="color:rgba(59,59,59,.7);line-height:2;">業務に合わせてAIにスキルを教育・実装。秘書・経理・リサーチ等の基本業務をAIに覚えさせます。</p>
+                    </div>
+                </div>
+                <!-- Pillar 3 -->
+                <div class="win tilt reveal r3">
+                    <div class="win-bar">
+                        <span class="win-dot" style="background:var(--gold);"></span>
+                        <span class="win-dot" style="background:rgba(200,155,60,.3);"></span>
+                        <span class="win-dot" style="background:rgba(200,155,60,.15);"></span>
+                        <span class="win-title">pillar_03</span>
+                    </div>
+                    <div class="win-body text-center">
+                        <p class="f-mono text-xs tracking-[.2em] uppercase mb-4 font-bold" style="color:var(--gold);">Pillar 03</p>
+                        <div class="text-5xl mb-4">&#x1F331;</div>
+                        <h3 class="f-en font-900 text-xl md:text-2xl mb-2" style="color:var(--blue);">EVOLVE</h3>
+                        <p class="text-base font-bold mb-4" style="color:var(--text);">伴走</p>
+                        <p class="text-base leading-loose" style="color:rgba(59,59,59,.7);line-height:2;">毎月の伴走で継続的に進化。AI技術の進歩に合わせ、常に最適な形でアップデートし続けます。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 5. IMPACTS (Dark Section) ========== -->
+    <section class="relative py-28 md:py-40 px-6 md:px-16 lg:px-24 dark-grid-bg" style="z-index:2;background-color:#0a0e1a;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-4" style="color:var(--gold);">Impact</p>
+                <h2 class="f-en font-900 leading-tight text-white" style="font-size:clamp(2rem,5vw,3.5rem);">導入で起こる<span class="text-gold">3つ</span>の劇的変化</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6" id="impact-cards">
+                <!-- Impact 1 -->
+                <div class="win-dark tilt reveal r1">
+                    <div class="p-8 md:p-10 text-center">
+                        <p class="f-en font-900 mb-4" style="font-size:clamp(2.5rem,6vw,3.5rem);color:var(--gold);">
+                            <span class="count-up" data-target="24" data-suffix="h">0h</span> <span style="font-size:.5em;opacity:.6;">&times;</span> <span class="count-up" data-target="365" data-suffix="">0</span>
+                        </p>
+                        <h3 class="f-en font-900 text-xl text-white mb-4">年中無休の稼働環境</h3>
+                        <p class="text-base" style="color:rgba(255,255,255,.55);line-height:2;">朝起きれば完璧なレポートが完成。AI社員に労働時間の制限はありません。</p>
+                    </div>
+                </div>
+                <!-- Impact 2 -->
+                <div class="win-dark tilt reveal r2">
+                    <div class="p-8 md:p-10 text-center">
+                        <p class="f-en font-900 mb-4" style="font-size:clamp(2.5rem,6vw,3.5rem);color:var(--gold);">
+                            <span style="font-size:.6em;opacity:.6;">&times;</span><span class="count-up" data-target="5" data-suffix="">0</span> <span style="font-size:.45em;opacity:.5;">agents</span>
+                        </p>
+                        <h3 class="f-en font-900 text-xl text-white mb-4">並列実行チーム</h3>
+                        <p class="text-base" style="color:rgba(255,255,255,.55);line-height:2;">1回の指示でリサーチ・戦略・資料作成を並列実行。</p>
+                    </div>
+                </div>
+                <!-- Impact 3 -->
+                <div class="win-dark tilt reveal r3">
+                    <div class="p-8 md:p-10 text-center">
+                        <p class="f-en font-900 mb-4" style="font-size:clamp(2.5rem,6vw,3.5rem);color:var(--gold);">
+                            <span class="count-up" data-target="100" data-suffix="%">0%</span> <span style="font-size:.45em;opacity:.5;">focus</span>
+                        </p>
+                        <h3 class="f-en font-900 text-xl text-white mb-4">意思決定に集中</h3>
+                        <p class="text-base" style="color:rgba(255,255,255,.55);line-height:2;">ルーティン業務をAI社員に任せ、社長は意思決定に集中。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 6. COMPARISON ========== -->
+    <section class="relative py-28 md:py-40 px-6 md:px-16 lg:px-24" style="z-index:2;">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-4" style="color:var(--gold);">Comparison</p>
+                <h2 class="f-en font-900 leading-tight" style="font-size:clamp(2rem,5vw,3.5rem);color:var(--blue);">なぜ <span class="text-gold">AI SHINE</span> なのか?</h2>
+            </div>
+            <div class="win reveal r1 overflow-x-auto" style="padding:0;">
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th class="min-w-[140px]"></th>
+                            <th class="min-w-[160px]">ChatGPT等</th>
+                            <th class="min-w-[160px]">SaaS</th>
+                            <th class="min-w-[160px] col-shine">AI SHINE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-bold">カスタマイズ性</td>
+                            <td>
+                                <span>汎用的</span>
+                                <div class="compare-bar bar-low"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td>
+                                <span>設定範囲内</span>
+                                <div class="compare-bar bar-mid"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td class="col-shine font-bold">
+                                <span>御社専用に構築</span>
+                                <div class="compare-bar bar-high"><div class="compare-bar-fill"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">業務の自動実行</td>
+                            <td>
+                                <span>手動コピペ</span>
+                                <div class="compare-bar bar-low"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td>
+                                <span>単一業務のみ</span>
+                                <div class="compare-bar bar-mid"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td class="col-shine font-bold">
+                                <span>複数業務を並列自動化</span>
+                                <div class="compare-bar bar-high"><div class="compare-bar-fill"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">継続的な進化</td>
+                            <td>
+                                <span>自力で学習</span>
+                                <div class="compare-bar bar-low"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td>
+                                <span>アプデ待ち</span>
+                                <div class="compare-bar bar-mid"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td class="col-shine font-bold">
+                                <span>毎月の伴走で成長</span>
+                                <div class="compare-bar bar-high"><div class="compare-bar-fill"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">導入ハードル</td>
+                            <td>
+                                <span>知識が必要</span>
+                                <div class="compare-bar bar-low"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td>
+                                <span>比較的低い</span>
+                                <div class="compare-bar bar-mid"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td class="col-shine font-bold">
+                                <span>すべて代行</span>
+                                <div class="compare-bar bar-high"><div class="compare-bar-fill"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">コスト効率</td>
+                            <td>
+                                <span>低コスト</span>
+                                <div class="compare-bar bar-mid"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td>
+                                <span>月額課金</span>
+                                <div class="compare-bar bar-mid"><div class="compare-bar-fill"></div></div>
+                            </td>
+                            <td class="col-shine font-bold">
+                                <span>ROI最大化</span>
+                                <div class="compare-bar bar-high"><div class="compare-bar-fill"></div></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 7. VOICES ========== -->
+    <section class="relative py-28 md:py-40 px-6 md:px-16 lg:px-24" style="z-index:2;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-4" style="color:var(--gold);">Voice</p>
+                <h2 class="f-en font-900 leading-tight" style="font-size:clamp(2rem,5vw,3.5rem);color:var(--blue);">導入企業様の<span class="text-gold">声</span></h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Voice A -->
+                <div class="win tilt reveal r1">
+                    <div class="win-body">
+                        <span class="text-5xl font-black leading-none block mb-4" style="color:var(--gold);font-family:Georgia,serif;">&#10078;</span>
+                        <p class="text-base leading-loose mb-6" style="color:rgba(59,59,59,.8);line-height:2;">月末の経理処理が丸2日かかっていたのが、AIのおかげで確認ボタンを押すだけに。空いた時間で新規営業に集中でき、売上が前年比120%に伸びました。</p>
+                        <div class="flex items-center gap-3 pt-4" style="border-top:1px solid rgba(200,155,60,.15);">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background:var(--gold);">A</div>
+                            <div>
+                                <p class="text-base font-bold">製造業 A社</p>
+                                <p class="text-base" style="color:rgba(59,59,59,.5);">代表取締役</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Voice B -->
+                <div class="win tilt reveal r2">
+                    <div class="win-body">
+                        <span class="text-5xl font-black leading-none block mb-4" style="color:var(--gold);font-family:Georgia,serif;">&#10078;</span>
+                        <p class="text-base leading-loose mb-6" style="color:rgba(59,59,59,.8);line-height:2;">提案書の作成スピードが劇的に変わりました。商談翌日には高品質な提案書が完成しているので、受注率が明らかに上がっています。</p>
+                        <div class="flex items-center gap-3 pt-4" style="border-top:1px solid rgba(200,155,60,.15);">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background:var(--gold);">B</div>
+                            <div>
+                                <p class="text-base font-bold">コンサル業 B社</p>
+                                <p class="text-base" style="color:rgba(59,59,59,.5);">代表</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Voice C -->
+                <div class="win tilt reveal r3">
+                    <div class="win-body">
+                        <span class="text-5xl font-black leading-none block mb-4" style="color:var(--gold);font-family:Georgia,serif;">&#10078;</span>
+                        <p class="text-base leading-loose mb-6" style="color:rgba(59,59,59,.8);line-height:2;">競合分析に外注で30万円かけていたのが、今はURLを入れるだけ。しかもスピードも精度も外注以上。もっと早く導入すべきでした。</p>
+                        <div class="flex items-center gap-3 pt-4" style="border-top:1px solid rgba(200,155,60,.15);">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background:var(--gold);">C</div>
+                            <div>
+                                <p class="text-base font-bold">不動産業 C社</p>
+                                <p class="text-base" style="color:rgba(59,59,59,.5);">社長</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-base mt-10 reveal r4" style="color:rgba(59,59,59,.4);">※ 現在、先行導入モニター企業様を募集しております</p>
+        </div>
+    </section>
+
+    <!-- ========== 8. FLOW + FINAL CTA ========== -->
+    <section class="relative py-28 md:py-40 px-6 md:px-16 lg:px-24" style="z-index:2;">
+        <img src="img/iso-3.svg" alt="" class="absolute hidden md:block" style="width:120px;top:15%;left:5%;z-index:3;animation:fl 6.5s ease-in-out .3s infinite;opacity:.4;filter:drop-shadow(0 8px 24px rgba(0,69,122,.06));">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-4" style="color:var(--gold);">Flow</p>
+                <h2 class="f-en font-900 leading-tight" style="font-size:clamp(2rem,5vw,3.5rem);color:var(--blue);">導入の<span class="text-gold">流れ</span></h2>
+            </div>
+            <!-- Connecting gradient line (desktop) -->
+            <div class="hidden md:block relative mb-6">
+                <div class="absolute top-1/2 left-[10%] right-[10%] h-[3px] rounded-full" style="background:linear-gradient(90deg,var(--gold),#E8C97A,var(--teal),#48A8E1,var(--gold));opacity:.25;"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="win tilt reveal r1">
+                    <div class="win-body text-center py-8">
+                        <p class="f-en text-3xl font-black mb-3" style="color:var(--gold);">01</p>
+                        <h3 class="text-lg font-black mb-2">無料相談</h3>
+                        <p class="text-base" style="color:rgba(59,59,59,.6);line-height:2;">ボトルネック業務をヒアリング</p>
+                    </div>
+                </div>
+                <div class="win tilt reveal r2">
+                    <div class="win-body text-center py-8">
+                        <p class="f-en text-3xl font-black mb-3" style="color:var(--gold);">02</p>
+                        <h3 class="text-lg font-black mb-2">ご提案</h3>
+                        <p class="text-base" style="color:rgba(59,59,59,.6);line-height:2;">御社専用のエージェント設計書</p>
+                    </div>
+                </div>
+                <div class="win tilt reveal r3">
+                    <div class="win-body text-center py-8">
+                        <p class="f-en text-3xl font-black mb-3" style="color:var(--gold);">03</p>
+                        <h3 class="text-lg font-black mb-2">構築</h3>
+                        <p class="text-base" style="color:rgba(59,59,59,.6);line-height:2;">AI環境の導入・スキル実装</p>
+                    </div>
+                </div>
+                <div class="win tilt reveal r4">
+                    <div class="win-body text-center py-8">
+                        <p class="f-en text-3xl font-black mb-3" style="color:var(--gold);">04</p>
+                        <h3 class="text-lg font-black mb-2">体感</h3>
+                        <p class="text-base" style="color:rgba(59,59,59,.6);line-height:2;">AIエージェントを実際に使う</p>
+                    </div>
+                </div>
+                <div class="win tilt reveal r5" style="background:linear-gradient(135deg,rgba(200,155,60,.15),rgba(232,201,122,.1));border-color:rgba(200,155,60,.3);">
+                    <div class="win-body text-center py-8">
+                        <p class="f-en text-3xl font-black mb-3" style="color:var(--gold);">05</p>
+                        <h3 class="text-lg font-black mb-2">伴走</h3>
+                        <p class="text-base" style="color:rgba(59,59,59,.6);line-height:2;">月額プランで継続的に進化</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== DARK CTA SECTION ====== -->
+    <section class="relative py-28 md:py-40 px-6 md:px-16 lg:px-24 dark-grid-bg overflow-hidden" style="z-index:2;background-color:#0a0e1a;">
+        <!-- Giant background text -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style="z-index:0;">
+            <span class="f-en font-900 tracking-[.1em] uppercase" style="font-size:clamp(5rem,18vw,14rem);color:rgba(200,155,60,.03);white-space:nowrap;">AI SHINE</span>
+        </div>
+        <div class="max-w-3xl mx-auto text-center relative" style="z-index:1;">
+            <div class="reveal">
+                <p class="f-mono text-xs tracking-[.3em] uppercase mb-6" style="color:var(--gold);">Get Started</p>
+                <h2 class="font-black leading-tight mb-8 text-white" style="font-size:clamp(1.8rem,4vw,2.8rem);">まずは、御社の「AI社員チーム」の<br class="hidden md:block">可能性を話しませんか?</h2>
+                <p class="text-base md:text-lg mb-12" style="color:rgba(255,255,255,.6);line-height:2;">無料相談では、御社の業務をヒアリングし、AIエージェントで何が自動化できるかを具体的にお伝えします。売り込みは一切ありません。</p>
+                <a href="contact.html?service=aishine" class="inline-flex items-center gap-3 px-10 py-5 rounded-2xl text-white font-bold f-en tracking-wider text-lg transition-all duration-500 hover:shadow-2xl hover:scale-105" style="background:linear-gradient(135deg,#C89B3C,#E8C97A);box-shadow:0 8px 40px rgba(200,155,60,.35);">
+                    AI社員チームを作る
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h10M11 6l4 4-4 4"/></svg>
+                </a>
+                <p class="mt-8 f-mono text-xs tracking-wider" style="color:rgba(255,255,255,.3);">オンライン対応可 / 最短翌営業日に返信</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="relative py-24 px-8 md:px-16 overflow-hidden dark-grid-bg" style="background:#060a14;z-index:2;">
+        <div class="cf cf-sq absolute" style="width:12px;height:12px;background:rgba(200,155,60,.06);top:15%;left:25%;--r:12deg;animation:blink 3s ease-in-out infinite;"></div>
+        <div class="cf cf-dot absolute" style="width:5px;height:5px;background:rgba(0,203,175,.1);bottom:20%;right:30%;animation:blink 2.5s ease-in-out .5s infinite;"></div>
+
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    <a href="index.html"><img src="img/logo-full.png" alt="with-AI" class="h-10 w-auto brightness-[10]"></a>
+                    <p style="color:rgba(255,255,255,.85);font-size:15px;line-height:2;font-weight:500;">Next Era Intelligence Partner<br>Aligning Human and Intelligence.</p>
+                    <p style="color:rgba(255,255,255,.65);font-size:14px;line-height:2;max-width:360px;">with-AI株式会社は、AI導入コンサルティング、AIエージェント構築、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。</p>
+                </div>
+                <div class="lg:col-start-8 lg:col-span-5 grid grid-cols-3 gap-8">
+                    <div class="flex flex-col gap-5">
+                        <h4 class="f-en text-[13px] font-700 tracking-[.25em] uppercase" style="color:rgba(255,255,255,.85);">Explore</h4>
+                        <div class="flex flex-col gap-3"><a href="index.html" class="ft-link">Home</a><a href="stance.html" class="ft-link">Stance</a><a href="service.html" class="ft-link">Service</a><a href="blog/" class="ft-link">Blog</a></div>
+                    </div>
+                    <div class="flex flex-col gap-5">
+                        <h4 class="f-en text-[13px] font-700 tracking-[.25em] uppercase" style="color:rgba(255,255,255,.85);">Info</h4>
+                        <div class="flex flex-col gap-3"><a href="company.html" class="ft-link">Company</a><a href="members.html" class="ft-link">Members</a><a href="contact.html" class="ft-link">Contact</a></div>
+                    </div>
+                    <div class="flex flex-col gap-5">
+                        <h4 class="f-en text-[13px] font-700 tracking-[.25em] uppercase" style="color:rgba(255,255,255,.85);">Legal</h4>
+                        <div class="flex flex-col gap-3"><a href="privacy.html" class="ft-link">Privacy Policy</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-8" style="border-top:1px solid rgba(255,255,255,.04);">
+                <span class="f-en text-sm font-900 tracking-[.4em] uppercase" style="background:linear-gradient(135deg,#C89B3C,#E8C97A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">AI SHINE</span>
+                <span class="f-en text-xs tracking-widest" style="color:rgba(255,255,255,.2);">&copy; 2026 WITH-AI INC.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====== MOBILE STICKY CTA ====== -->
+    <div id="mobile-cta" class="mobile-cta">
+        <a href="contact.html?service=aishine" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-white font-bold f-en text-base tracking-wider" style="background:linear-gradient(135deg,#C89B3C,#E8C97A);">
+            AI社員チームを作る
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M9 5l3 3-3 3"/></svg>
+        </a>
+    </div>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    window.addEventListener('load', function(){
+
+        // ===== Scroll progress bar =====
+        gsap.to('#scroll-bar', {
+            scaleX:1, ease:'none',
+            scrollTrigger:{ trigger:'body', start:'top top', end:'bottom bottom', scrub:.3 }
+        });
+
+        // ===== Reveal on scroll =====
+        var reveals = document.querySelectorAll('.reveal');
+        var revealObs = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+                if(e.isIntersecting){
+                    e.target.classList.add('active');
+                    revealObs.unobserve(e.target);
+                }
+            });
+        }, { threshold:.15, rootMargin:'0px 0px -40px 0px' });
+        reveals.forEach(function(r){ revealObs.observe(r); });
+
+        // ===== 3D Tilt on cards =====
+        if(window.innerWidth > 768){
+            document.querySelectorAll('.win.tilt, .win-dark.tilt').forEach(function(card){
+                card.addEventListener('mousemove', function(e){
+                    var rect = card.getBoundingClientRect();
+                    var x = (e.clientX - rect.left) / rect.width - .5;
+                    var y = (e.clientY - rect.top) / rect.height - .5;
+                    card.style.transform = 'perspective(800px) rotateY(' + (x*6) + 'deg) rotateX(' + (-y*6) + 'deg) translateY(-8px)';
+                });
+                card.addEventListener('mouseleave', function(){
+                    card.style.transform = '';
+                });
+            });
+        }
+
+        // ===== Parallax on orbs =====
+        document.querySelectorAll('.orb').forEach(function(orb, i){
+            gsap.to(orb, {
+                y: (i%2===0 ? -80 : 60),
+                x: (i%2===0 ? 30 : -30),
+                scrollTrigger:{ trigger:document.body, start:'top top', end:'bottom bottom', scrub:2 }
+            });
+        });
+
+        // ===== Parallax on 3D objects layer =====
+        document.querySelectorAll('#obj-layer .obj-3d').forEach(function(obj, i){
+            var speed = (i%3===0) ? -60 : (i%3===1) ? 40 : -30;
+            var xDrift = (i%2===0) ? 15 : -15;
+            gsap.to(obj, {
+                y: speed, x: xDrift,
+                rotation: (i%2===0) ? 3 : -2,
+                scrollTrigger:{ trigger:document.body, start:'top top', end:'bottom bottom', scrub:1.5 }
+            });
+        });
+
+        // ===== Parallax on section decorative elements =====
+        gsap.utils.toArray('section').forEach(function(sec){
+            sec.querySelectorAll('svg.absolute, .cf').forEach(function(o, i){
+                gsap.to(o, {
+                    y:(i%2===0?-35:35), rotation:(i%3===0?5:-3),
+                    scrollTrigger:{ trigger:sec, start:'top bottom', end:'bottom top', scrub:1 }
+                });
+            });
+        });
+
+        // ===== Counter animation (GSAP-driven) =====
+        document.querySelectorAll('.count-up').forEach(function(el){
+            var target = parseInt(el.getAttribute('data-target'));
+            var suffix = el.getAttribute('data-suffix') || '';
+            ScrollTrigger.create({
+                trigger: el, start:'top 85%', once:true,
+                onEnter: function(){
+                    gsap.to({ v:0 }, {
+                        v:target, duration:2, ease:'power2.out',
+                        snap:{ v:1 },
+                        onUpdate: function(){
+                            el.textContent = Math.round(this.targets()[0].v) + suffix;
+                        }
+                    });
+                }
+            });
+        });
+
+        // ===== Mobile sticky CTA (appears after 600px scroll) =====
+        var mobileCta = document.getElementById('mobile-cta');
+        if(mobileCta){
+            ScrollTrigger.create({
+                trigger: document.body, start:'600px top',
+                onEnter: function(){ mobileCta.classList.add('visible'); },
+                onLeaveBack: function(){ mobileCta.classList.remove('visible'); }
+            });
+        }
+    });
+
+    // ===== Mobile hamburger menu =====
+    var mobBtn = document.getElementById('mob-btn');
+    var mobMenu = document.getElementById('mob-menu');
+    if(mobBtn){
+        mobBtn.addEventListener('click', function(){
+            var lines = mobBtn.querySelectorAll('span');
+            mobMenu.classList.toggle('translate-x-full');
+            mobMenu.classList.toggle('translate-x-0');
+            if(mobMenu.classList.contains('translate-x-0')){
+                lines[0].style.transform = 'rotate(45deg) translate(4px,4px)';
+                lines[0].style.background = '#fff';
+                lines[1].style.opacity = '0';
+                lines[2].style.transform = 'rotate(-45deg) translate(3px,-3px)';
+                lines[2].style.width = '1.75rem';
+                lines[2].style.background = '#fff';
+            } else {
+                lines[0].style.transform = '';
+                lines[0].style.background = '';
+                lines[1].style.opacity = '1';
+                lines[2].style.transform = '';
+                lines[2].style.width = '1.25rem';
+                lines[2].style.background = '';
+            }
+        });
+        // Close on link click
+        document.querySelectorAll('#mob-menu a').forEach(function(a){
+            a.addEventListener('click', function(){
+                mobMenu.classList.add('translate-x-full');
+                mobMenu.classList.remove('translate-x-0');
+                var lines = mobBtn.querySelectorAll('span');
+                lines[0].style.transform = '';
+                lines[0].style.background = '';
+                lines[1].style.opacity = '1';
+                lines[2].style.transform = '';
+                lines[2].style.width = '1.25rem';
+                lines[2].style.background = '';
+            });
+        });
+    }
+    </script>
+</body>
+</html>

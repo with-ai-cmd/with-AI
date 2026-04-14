@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Buzzry - 最短で『バズる』を創造する</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --brand-yellow: #FFD700; 
+            --brand-black: #1a1a1a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            cursor: default;
+        }
+
+        /* Impact Fonts */
+        .font-impact {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        /* Highlight Text */
+        .highlight-gold-box {
+            background-color: var(--brand-yellow);
+            color: black;
+            padding: 4px 12px;
+            font-weight: 900;
+            display: inline-block;
+            box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2);
+            transform: skewX(-10deg);
+        }
+
+        /* Text Outline */
+        .text-outline {
+            -webkit-text-stroke: 1px var(--brand-yellow);
+            color: transparent;
+        }
+
+        /* Bee Mascot */
+        #mascot-bee {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            z-index: 90;
+            filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.5));
+            will-change: transform;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #mascot-bee:hover {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-yellow);
+            border-radius: 5px;
+        }
+        
+        /* Contact Button Ink Splash Animation */
+        .ink-splash-btn {
+            position: relative;
+            z-index: 1;
+            overflow: visible !important;
+        }
+        
+        /* Bee Wings Animation */
+        @keyframes buzz {
+            0% { transform: rotate(-15deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.1); }
+            100% { transform: rotate(-15deg) scale(1); }
+        }
+        .bee-wings {
+            animation: buzz 0.05s infinite linear;
+            transform-origin: center;
+        }
+
+        /* Background Noise */
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header Styles */
+        header {
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        header.menu-open {
+            mix-blend-mode: normal !important;
+        }
+        header.menu-open .header-logo {
+            color: black !important;
+        }
+
+        /* Hamburger Button */
+        .hamburger {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            cursor: pointer;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .hamburger span {
+            display: block;
+            height: 3px;
+            background-color: var(--brand-yellow);
+            transition: all 0.3s ease;
+        }
+        .hamburger span:nth-child(1) { width: 40px; }
+        .hamburger span:nth-child(2) { width: 30px; }
+        .hamburger span:nth-child(3) { width: 20px; }
+        .hamburger:hover span { width: 40px; }
+
+        .hamburger.active span { background-color: black !important; }
+        .hamburger.active span:nth-child(1) { width: 40px; transform: rotate(45deg) translate(8px, 8px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { width: 40px; transform: rotate(-45deg) translate(7px, -7px); }
+
+        /* Fullscreen Menu */
+        #menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--brand-yellow);
+            z-index: 95;
+            transform: translateY(-100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .menu-link {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: black;
+            text-transform: uppercase;
+            line-height: 1.1;
+            position: relative;
+            transition: all 0.3s;
+            display: block;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            text-decoration: none;
+        }
+        .menu-link:hover {
+            -webkit-text-stroke: 2px black;
+            color: transparent;
+            transform: scale(1.1) skewX(-10deg);
+            letter-spacing: 5px;
+        }
+
+        /* Form Styles */
+        .custom-input {
+            width: 100%;
+            background-color: #111;
+            border: 1px solid #333;
+            color: white;
+            padding: 1rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+        .custom-input:focus {
+            border-color: var(--brand-yellow);
+            outline: none;
+            background-color: #1a1a1a;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+        }
+        .custom-label {
+            display: block;
+            font-family: 'Oswald', sans-serif;
+            color: var(--brand-yellow);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+        }
+        .form-group {
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        /* Success Message Overlay */
+        #success-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        #success-message.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-noise"></div>
+
+    <!-- Bee Mascot -->
+    <div id="mascot-bee">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="bee-wings">
+                <path d="M70 30C85 30 95 10 75 5C55 0 50 25 50 25" fill="#FFF" fill-opacity="0.9" stroke="black" stroke-width="1"/>
+                <path d="M30 30C15 30 5 10 25 5C45 0 50 25 50 25" fill="#FFF" fill-opacity="0.9" stroke="black" stroke-width="1"/>
+            </g>
+            <path d="M50 85C65 85 75 75 75 60C75 50 65 45 60 45C65 45 70 35 70 25C70 15 60 15 50 15C40 15 30 15 30 25V60C30 75 40 85 50 85Z" fill="#FFD700" stroke="white" stroke-width="2"/>
+            <path d="M30 35H70 M30 55H75" stroke="black" stroke-width="6" stroke-linecap="round"/>
+            <path d="M35 25L65 25" stroke="black" stroke-width="5" stroke-linecap="round"/>
+            <path d="M50 85L50 98" stroke="#FFD700" stroke-width="3"/>
+        </svg>
+    </div>
+
+    <!-- Header & Hamburger -->
+    <header class="fixed top-0 left-0 w-full px-6 py-6 flex justify-between items-center mix-blend-exclusion" id="main-header">
+        <a href="index.html" class="header-logo relative z-[102] transition-colors duration-300 block">
+            <img src="img/logo.png" alt="Buzzry" class="h-10">
+        </a>
+        
+        <div class="hamburger" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu -->
+    <div id="menu-overlay">
+        <div class="flex flex-col gap-4">
+            <a href="index.html" class="menu-link">Top</a>
+            <a href="service.html" class="menu-link">Service</a>
+            <a href="plan.html" class="menu-link">Plan</a>
+            <a href="index.html#company" class="menu-link">Company</a>
+            <a href="contact.html" class="menu-link text-white pointer-events-none" style="opacity: 0.5;">Contact</a>
+        </div>
+        <div class="absolute inset-0 pointer-events-none opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+    </div>
+
+    <!-- SECTION 1: HERO -->
+    <!-- 修正: 高さ(min-h)を増やし、padding-topを追加してヘッダー被りを防止 -->
+    <section class="relative w-full min-h-[60vh] overflow-hidden flex flex-col justify-end bg-[#050505] pb-20 pt-32">
+        <!-- Paint Overlay -->
+        <div class="absolute top-[-50%] right-[-20%] w-[60vw] h-[60vw] bg-[#FFD700] rounded-full blur-[150px] opacity-10 animate-pulse"></div>
+        
+        <div class="relative z-10 container mx-auto px-6">
+            <p class="font-impact text-xl text-gray-400 tracking-widest -skew-x-12 mb-2 ml-1">GET IN TOUCH</p>
+            <h1 class="text-6xl md:text-9xl font-black leading-none transform -skew-x-6 text-white border-l-8 border-[#FFD700] pl-6 py-4">
+                CONTACT<br>
+                <span class="text-outline">FORM</span>
+            </h1>
+        </div>
+    </section>
+
+    <!-- SECTION 2: FORM -->
+    <section class="w-full py-20 bg-[#111] relative z-10 border-t border-[#333]">
+        <div class="container mx-auto px-6 max-w-3xl">
+            <p class="text-gray-400 mb-12 leading-relaxed">
+                SNS運用、動画制作に関するご相談や、お見積もりのご依頼など、お気軽にお問い合わせください。<br>
+                通常2営業日以内に担当者よりご連絡させていただきます。
+            </p>
+
+            <!-- 
+                IMPORTANT: Google Form Integration Instructions
+                1. Googleフォームを作成し、送信ボタンを押した先のURLではなく、「プレビュー画面」のソースコードを表示します。
+                2. <form action="..."> の URL を下記の action="" にコピーします。 (例: https://docs.google.com/forms/u/0/d/e/xxxxx/formResponse)
+                3. 各質問項目の name="entry.xxxxxxx" を探し、下記の input name="" に書き換えます。
+            -->
+            <form 
+                action="YOUR_GOOGLE_FORM_ACTION_URL_HERE" 
+                method="POST" 
+                target="hidden_iframe"
+                onsubmit="showSuccessMessage()"
+                id="contact-form"
+            >
+                
+                <!-- 会社名 -->
+                <div class="form-group">
+                    <label class="custom-label">COMPANY NAME <span class="text-xs text-gray-500 ml-2">会社名</span></label>
+                    <input type="text" name="entry.123456789" class="custom-input" placeholder="株式会社Buzzry" required>
+                </div>
+
+                <!-- お名前 -->
+                <div class="form-group">
+                    <label class="custom-label">YOUR NAME <span class="text-xs text-gray-500 ml-2">お名前</span></label>
+                    <input type="text" name="entry.987654321" class="custom-input" placeholder="山田 太郎" required>
+                </div>
+
+                <!-- メールアドレス -->
+                <div class="form-group">
+                    <label class="custom-label">EMAIL ADDRESS <span class="text-xs text-gray-500 ml-2">メールアドレス</span></label>
+                    <input type="email" name="entry.111222333" class="custom-input" placeholder="info@example.com" required>
+                </div>
+
+                <!-- お問い合わせ内容 -->
+                <div class="form-group">
+                    <label class="custom-label">MESSAGE <span class="text-xs text-gray-500 ml-2">お問い合わせ内容</span></label>
+                    <textarea name="entry.444555666" class="custom-input h-40" placeholder="ご相談内容をご記入ください。" required></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group mt-12 text-center">
+                    <button type="submit" class="inline-block w-full md:w-auto px-20 py-5 bg-[#FFD700] text-black font-black text-xl rounded-full tracking-wider uppercase transform -skew-x-12 hover:scale-105 transition-transform ink-trigger ink-splash-btn">
+                        SEND MESSAGE
+                    </button>
+                </div>
+
+            </form>
+
+            <!-- 画面遷移を防ぐための隠しiframe -->
+            <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: FOOTER -->
+    <!-- FOOTER -->
+    <footer class="w-full py-12 bg-[#050505] text-center border-t border-[#222]">
+        <div class="container mx-auto px-6">
+            <img src="img/logo.png" alt="Buzzry" class="h-8 mx-auto mb-4">
+            <p class="text-gray-600 text-sm">&copy; 2024 Buzzry Inc. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SUCCESS MESSAGE OVERLAY -->
+    <div id="success-message">
+        <div class="text-center">
+            <div class="font-impact text-6xl text-[#FFD700] mb-4 transform -skew-x-12 animate-bounce">THANK YOU!</div>
+            <h3 class="text-2xl font-bold text-white mb-6">お問い合わせありがとうございます。</h3>
+            <p class="text-gray-400 mb-8">
+                メッセージは正常に送信されました。<br>
+                担当者より折り返しご連絡いたします。
+            </p>
+            <button onclick="closeSuccessMessage()" class="px-8 py-3 border border-white text-white rounded-full hover:bg-white hover:text-black transition-colors">
+                TOPへ戻る
+            </button>
+        </div>
+        <!-- Confetti effect can be added here via JS -->
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- Hamburger Menu Logic ---
+        const hamburger = document.getElementById('hamburger-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const mainHeader = document.getElementById('main-header');
+        const menuLinks = document.querySelectorAll('.menu-link');
+        let isMenuOpen = false;
+
+        hamburger.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            hamburger.classList.toggle('active');
+            mainHeader.classList.toggle('menu-open');
+
+            if (isMenuOpen) {
+                gsap.to(menuOverlay, { y: "0%", duration: 0.5, ease: "power4.out" });
+                gsap.to(menuLinks, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.3 });
+            } else {
+                gsap.to(menuLinks, { y: 50, opacity: 0, duration: 0.3 });
+                gsap.to(menuOverlay, { y: "-100%", duration: 0.5, delay: 0.2, ease: "power4.in" });
+            }
+        });
+
+        // --- Entrance Animation ---
+        gsap.from("h1", {
+            x: -50,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out",
+            delay: 0.2
+        });
+
+        // --- Form Reveal Animation ---
+        gsap.to(".form-group", {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: "form",
+                start: "top 80%"
+            }
+        });
+
+        // --- Google Form Handling ---
+        function showSuccessMessage() {
+            // Googleフォームへの送信は非同期(iframe)で行われるため、
+            // 即座に完了画面を表示する
+            const successOverlay = document.getElementById('success-message');
+            
+            // フォーム送信のラグを考慮して少し遅延させても良い
+            setTimeout(() => {
+                successOverlay.classList.add('active');
+                // フォームをリセット
+                document.getElementById('contact-form').reset();
+            }, 500);
+        }
+
+        function closeSuccessMessage() {
+            // TOPページへ戻る
+            window.location.href = 'index.html';
+        }
+
+        // --- Ink Splash Interaction (CTA) ---
+        const inkTriggers = document.querySelectorAll('.ink-trigger');
+        
+        inkTriggers.forEach(btn => {
+            btn.addEventListener('mouseenter', (e) => {
+                createSplatter(btn, e);
+            });
+            btn.addEventListener('mouseleave', (e) => {
+                removeSplatter(btn);
+            });
+        });
+
+        function createSplatter(element, e) {
+            const splash = document.createElement('div');
+            splash.classList.add('splash-particle');
+            splash.style.width = '120px';
+            splash.style.height = '120px';
+            splash.style.left = '50%';
+            splash.style.top = '50%';
+            splash.style.transform = 'translate(-50%, -50%) scale(0)';
+            splash.style.zIndex = '-1';
+            splash.style.backgroundColor = '#FFD700';
+            splash.style.borderRadius = '50%';
+            splash.style.position = 'absolute';
+            element.appendChild(splash);
+
+            gsap.to(splash, {
+                scale: 1.2,
+                opacity: 0.3,
+                duration: 0.3,
+                ease: "back.out(1.7)"
+            });
+            
+            const particleCount = 4;
+            for(let i=0; i<particleCount; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('splash-particle');
+                const size = Math.random() * 8 + 3;
+                drop.style.width = size + 'px';
+                drop.style.height = size + 'px';
+                drop.style.position = 'absolute';
+                drop.style.backgroundColor = '#FFD700';
+                drop.style.borderRadius = '50%';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 40;
+                
+                drop.style.left = '50%';
+                drop.style.top = '50%';
+                
+                element.appendChild(drop);
+                
+                gsap.to(drop, {
+                    x: Math.cos(angle) * (dist + Math.random() * 20),
+                    y: Math.sin(angle) * (dist + Math.random() * 20),
+                    opacity: 0.8,
+                    scale: 0,
+                    duration: 0.4,
+                    ease: "power2.out",
+                    onComplete: () => drop.remove()
+                });
+            }
+        }
+
+        function removeSplatter(element) {
+            const splashes = element.querySelectorAll('.splash-particle');
+            splashes.forEach(s => {
+                gsap.to(s, {
+                    scale: 0,
+                    opacity: 0,
+                    duration: 0.2,
+                    onComplete: () => s.remove()
+                });
+            });
+        }
+    </script>
+</body>
+</html>

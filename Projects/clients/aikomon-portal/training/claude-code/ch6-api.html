@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章: API連携 — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../shared/doc-theme.css">
+</head>
+<body>
+
+<button class="sb-toggle" id="sbToggle">☰ 目次</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <a href="./" class="sb-back"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg> 教材一覧に戻る</a>
+      <div class="sb-title">第6章</div>
+      <div class="sb-subtitle">API連携</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">基礎知識</div>
+      <a href="#what-is" class="sb-link">API とは</a>
+      <a href="#anthropic-api" class="sb-link">Anthropic API</a>
+      <a href="#api-key" class="sb-link">API キーの管理</a>
+
+      <div class="sb-section">MCP</div>
+      <a href="#mcp" class="sb-link">MCP サーバーとは</a>
+
+      <div class="sb-section">外部サービス連携</div>
+      <a href="#notion" class="sb-link">Notion 連携</a>
+      <a href="#gmail" class="sb-link">Gmail 連携</a>
+      <a href="#slack" class="sb-link">Slack 連携</a>
+      <a href="#calendar" class="sb-link">Calendar 連携</a>
+
+      <div class="sb-section">安全管理</div>
+      <a href="#security" class="sb-link">セキュリティ</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-label">第6章</div>
+        <h1>API連携</h1>
+        <p>外部サービスと Claude Code をつなげて、業務を自動化する方法を学びます。</p>
+      </div>
+
+      <!-- ====== API とは ====== -->
+      <div class="section">
+        <span class="section-anchor" id="what-is"></span>
+        <h2>API とは</h2>
+        <p>API（Application Programming Interface）は、ソフトウェア同士が会話するための「窓口」です。</p>
+
+        <h3>レストランで例えると</h3>
+        <p>API の仕組みは、レストランの注文に似ています。</p>
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p><strong>あなた（アプリ）</strong>がメニューを見て注文する</p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p><strong>ウェイター（API）</strong>が注文をキッチンに伝える</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p><strong>キッチン（外部サービス）</strong>が料理を作って返す</p></div></div>
+        </div>
+        <div class="box box-info"><span class="box-icon"></span>あなたはキッチンの中に入る必要はありません。ウェイター（API）に頼めば、正しい形で結果が届きます。</div>
+
+        <h3>なぜ API が重要なのか</h3>
+        <div class="card-row">
+          <div class="card"><h4>自動化</h4><p>手作業を減らし、繰り返し作業をプログラムに任せられる</p></div>
+          <div class="card"><h4>連携</h4><p>異なるサービス同士をつなげて、データをやり取りできる</p></div>
+          <div class="card"><h4>拡張</h4><p>既存のサービスに新しい機能を追加できる</p></div>
+          <div class="card"><h4>効率化</h4><p>人が画面を操作しなくても、裏側で処理が進む</p></div>
+        </div>
+      </div>
+
+      <!-- ====== Anthropic API ====== -->
+      <div class="section">
+        <span class="section-anchor" id="anthropic-api"></span>
+        <h2>Anthropic API</h2>
+        <p>Anthropic API は、Claude の能力をプログラムから利用するための窓口です。</p>
+
+        <h3>何ができるのか</h3>
+        <div class="card-row">
+          <div class="card"><h4>テキスト生成</h4><p>プログラムから Claude に質問して回答を得る</p></div>
+          <div class="card"><h4>アプリ組み込み</h4><p>自社の Web アプリやツールに AI 機能を追加する</p></div>
+          <div class="card"><h4>バッチ処理</h4><p>大量のデータを一括で AI に処理させる</p></div>
+          <div class="card"><h4>カスタム連携</h4><p>社内システムと Claude を直接つなげる</p></div>
+        </div>
+
+        <h3>API コンソール</h3>
+        <p>Anthropic API の管理画面は以下の URL からアクセスできます。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>https://console.anthropic.com</pre></div>
+        <div class="box box-tip"><span class="box-icon"></span>API コンソールでは、API キーの発行、使用量の確認、請求管理などが行えます。</div>
+      </div>
+
+      <!-- ====== API キー ====== -->
+      <div class="section">
+        <span class="section-anchor" id="api-key"></span>
+        <h2>API キーの管理</h2>
+        <p>API キーは、あなたが正規のユーザーであることを証明する「鍵」です。</p>
+
+        <h3>API キーの取得手順</h3>
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p><strong>console.anthropic.com</strong> にログイン</p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p>左メニューの <strong>API Keys</strong> をクリック</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p><strong>Create Key</strong> をクリック → 名前を付ける</p></div></div>
+          <div class="step"><span class="step-n">4</span><div class="step-body"><p>表示されたキーを <strong>すぐにコピーして安全な場所に保存</strong></p><p class="sub">一度閉じると二度と表示されません</p></div></div>
+        </div>
+
+        <div class="box box-err"><span class="box-icon"></span><strong>絶対にやってはいけないこと:</strong> API キーをソースコードに直接書く、チャットで共有する、Git にコミットする</div>
+
+        <h3>安全な保管方法: .env ファイル</h3>
+        <p>API キーは <code>.env</code> ファイルに保存し、コードからは環境変数として読み込みます。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># .env ファイルの例</span>
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxx</pre></div>
+        <div class="box box-warn"><span class="box-icon"></span><code>.env</code> ファイルは必ず <code>.gitignore</code> に追加してください。Git にアップロードされると、キーが漏洩します。</div>
+      </div>
+
+      <!-- ====== MCP ====== -->
+      <div class="section">
+        <span class="section-anchor" id="mcp"></span>
+        <h2>MCP サーバーとは</h2>
+        <p>MCP（Model Context Protocol）は、Claude Code に「手」を与える仕組みです。</p>
+
+        <h3>MCP の役割</h3>
+        <p>通常の Claude Code はテキストの読み書きが中心ですが、MCP サーバーを接続すると、外部サービスを直接操作できるようになります。</p>
+        <div class="card-row">
+          <div class="card card-l"><h4>MCP なし</h4><p>Claude Code → テキスト出力のみ</p></div>
+          <div class="card card-l"><h4>MCP あり</h4><p>Claude Code → Notion に書き込み、メール送信、カレンダー登録...</p></div>
+        </div>
+
+        <h3>仕組みのイメージ</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">Claude Code（頭脳）</span>
+    |
+    v
+<span class="c-cmt">MCP サーバー（手）</span>
+    |
+    +---> Notion（データベース操作）
+    +---> Gmail（メール送受信）
+    +---> Slack（メッセージ送信）
+    +---> Calendar（予定管理）</pre></div>
+
+        <h3>.mcp.json ファイル</h3>
+        <p>MCP サーバーの設定は、プロジェクトルートの <code>.mcp.json</code> ファイルに記述します。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">// .mcp.json の基本構造</span>
+{
+  "mcpServers": {
+    "サーバー名": {
+      "command": "実行コマンド",
+      "args": ["引数1", "引数2"],
+      "env": {
+        "API_KEY": "キー値"
+      }
+    }
+  }
+}</pre></div>
+        <div class="box box-tip"><span class="box-icon"></span>MCP サーバーは必要なものだけを追加してください。不要なサーバーを接続すると、意図しない操作のリスクが高まります。</div>
+      </div>
+
+      <!-- ====== Notion ====== -->
+      <div class="section">
+        <span class="section-anchor" id="notion"></span>
+        <h2>Notion 連携</h2>
+        <p>Notion MCP サーバーを使うと、Claude Code から直接 Notion のページやデータベースを操作できます。</p>
+
+        <h3>できること</h3>
+        <div class="card-row">
+          <div class="card"><h4>ページ作成・編集</h4><p>議事録や日報を自動で作成</p></div>
+          <div class="card"><h4>データベース検索</h4><p>タスクやプロジェクトを検索・集計</p></div>
+          <div class="card"><h4>コメント追加</h4><p>ページにコメントを自動で追加</p></div>
+          <div class="card"><h4>データ更新</h4><p>ステータスや担当者を一括変更</p></div>
+        </div>
+
+        <h3>設定例</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">// .mcp.json -- Notion 設定例</span>
+{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ntn_xxxxx\", \"Notion-Version\": \"2022-06-28\"}"
+      }
+    }
+  }
+}</pre></div>
+        <div class="box box-info"><span class="box-icon"></span><code>ntn_xxxxx</code> の部分を、Notion のインテグレーションで取得した API キーに置き換えてください。</div>
+      </div>
+
+      <!-- ====== Gmail ====== -->
+      <div class="section">
+        <span class="section-anchor" id="gmail"></span>
+        <h2>Gmail 連携</h2>
+        <p>Gmail MCP サーバーを使うと、Claude Code からメールの読み取りや下書き作成ができます。</p>
+
+        <h3>できること</h3>
+        <div class="card-row">
+          <div class="card"><h4>メール検索</h4><p>条件を指定してメールを検索</p></div>
+          <div class="card"><h4>メール読み取り</h4><p>指定したメールの内容を取得</p></div>
+          <div class="card"><h4>下書き作成</h4><p>返信や新規メールの下書きを作成</p></div>
+          <div class="card"><h4>ラベル管理</h4><p>ラベル一覧の取得</p></div>
+        </div>
+
+        <h3>設定例</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">// .mcp.json -- Gmail 設定例</span>
+{
+  "mcpServers": {
+    "gmail": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/gmail-mcp-server"],
+      "env": {
+        "GMAIL_CLIENT_ID": "your-client-id",
+        "GMAIL_CLIENT_SECRET": "your-client-secret",
+        "GMAIL_REFRESH_TOKEN": "your-refresh-token"
+      }
+    }
+  }
+}</pre></div>
+        <div class="box box-warn"><span class="box-icon"></span>Gmail 連携では Google Cloud Console での OAuth 設定が必要です。管理者に相談してください。</div>
+      </div>
+
+      <!-- ====== Slack ====== -->
+      <div class="section">
+        <span class="section-anchor" id="slack"></span>
+        <h2>Slack 連携</h2>
+        <p>Slack MCP サーバーを使うと、Claude Code からチャンネルへのメッセージ送信や情報取得ができます。</p>
+
+        <h3>できること</h3>
+        <div class="card-row">
+          <div class="card"><h4>メッセージ送信</h4><p>指定チャンネルにメッセージを投稿</p></div>
+          <div class="card"><h4>メッセージ検索</h4><p>キーワードで過去の会話を検索</p></div>
+          <div class="card"><h4>チャンネル一覧</h4><p>参加可能なチャンネルを取得</p></div>
+          <div class="card"><h4>スレッド返信</h4><p>既存のスレッドに返信を追加</p></div>
+        </div>
+
+        <h3>設定例</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">// .mcp.json -- Slack 設定例</span>
+{
+  "mcpServers": {
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/slack-mcp-server"],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-xxxxxxxxxxxx",
+        "SLACK_TEAM_ID": "T0XXXXXXXXX"
+      }
+    }
+  }
+}</pre></div>
+        <div class="box box-info"><span class="box-icon"></span>Slack Bot Token は Slack App の管理画面（api.slack.com/apps）で取得できます。</div>
+      </div>
+
+      <!-- ====== Calendar ====== -->
+      <div class="section">
+        <span class="section-anchor" id="calendar"></span>
+        <h2>Calendar 連携</h2>
+        <p>Google Calendar MCP サーバーを使うと、Claude Code から予定の確認や作成ができます。</p>
+
+        <h3>できること</h3>
+        <div class="card-row">
+          <div class="card"><h4>予定の確認</h4><p>今日・今週の予定を一覧表示</p></div>
+          <div class="card"><h4>予定の作成</h4><p>新しいミーティングを登録</p></div>
+          <div class="card"><h4>空き時間検索</h4><p>参加者全員の空き時間を検索</p></div>
+          <div class="card"><h4>予定の更新</h4><p>既存の予定の時間や場所を変更</p></div>
+        </div>
+
+        <h3>設定例</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">// .mcp.json -- Calendar 設定例</span>
+{
+  "mcpServers": {
+    "google-calendar": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/google-calendar-mcp-server"],
+      "env": {
+        "GCAL_CLIENT_ID": "your-client-id",
+        "GCAL_CLIENT_SECRET": "your-client-secret",
+        "GCAL_REFRESH_TOKEN": "your-refresh-token"
+      }
+    }
+  }
+}</pre></div>
+        <div class="box box-warn"><span class="box-icon"></span>Calendar 連携も Gmail と同様に Google Cloud Console での OAuth 設定が必要です。</div>
+      </div>
+
+      <!-- ====== セキュリティ ====== -->
+      <div class="section">
+        <span class="section-anchor" id="security"></span>
+        <h2>セキュリティ</h2>
+        <p>API 連携を安全に運用するためのルールをまとめます。</p>
+
+        <h3>API キー管理の鉄則</h3>
+        <table>
+          <tr><th>ルール</th><th>理由</th></tr>
+          <tr><td>コードに直接書かない</td><td>Git に残り、漏洩リスクが高い</td></tr>
+          <tr><td><code>.env</code> ファイルで管理する</td><td>環境変数として安全に読み込める</td></tr>
+          <tr><td><code>.gitignore</code> に <code>.env</code> を追加</td><td>Git にアップロードされることを防ぐ</td></tr>
+          <tr><td>キーを定期的にローテーション</td><td>万が一漏洩しても被害を限定できる</td></tr>
+          <tr><td>チャットやメールで共有しない</td><td>第三者に傍受されるリスクがある</td></tr>
+        </table>
+
+        <h3>.gitignore の設定</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># .gitignore に追加すべき項目</span>
+.env
+.env.local
+.env.production
+*.key
+*.pem</pre></div>
+
+        <h3>最小権限の原則</h3>
+        <p>API キーやサービスアカウントには、必要最低限の権限だけを付与してください。</p>
+        <div class="card-row">
+          <div class="card card-l"><h4>良い例</h4><p>Notion: 特定のデータベースのみ読み書き可能</p></div>
+          <div class="card card-l"><h4>悪い例</h4><p>Notion: ワークスペース全体の管理者権限</p></div>
+        </div>
+
+        <h3>セキュリティチェックリスト</h3>
+        <ul class="checklist">
+          <li>API キーは <code>.env</code> ファイルで管理している</li>
+          <li><code>.env</code> は <code>.gitignore</code> に追加済み</li>
+          <li>各サービスの権限は最小限に設定している</li>
+          <li>不要な MCP サーバーは接続していない</li>
+          <li>API キーを定期的にローテーションしている</li>
+          <li>チームメンバーにセキュリティルールを共有している</li>
+        </ul>
+      </div>
+
+      <!-- Chapter nav -->
+      <div class="chapter-nav">
+        <a href="ch5-practical.html">&larr; 第5章: 実践演習</a>
+        <a href="ch7-team.html">第7章: チーム運用 &rarr;</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/doc-utils.js"></script>
+</body>
+</html>

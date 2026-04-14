@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章: チーム運用・応用 — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../shared/doc-theme.css">
+</head>
+<body>
+
+<button class="sb-toggle" id="sbToggle">☰ 目次</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <a href="./" class="sb-back"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg> 教材一覧に戻る</a>
+      <div class="sb-title">第7章</div>
+      <div class="sb-subtitle">チーム運用・応用</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">チーム設計</div>
+      <a href="#team-rules" class="sb-link">チームルール設計</a>
+      <a href="#sharing" class="sb-link">CLAUDE.md の共有</a>
+
+      <div class="sb-section">カスタマイズ</div>
+      <a href="#custom-commands" class="sb-link">カスタムコマンド</a>
+
+      <div class="sb-section">管理・運用</div>
+      <a href="#security" class="sb-link">セキュリティ設定</a>
+      <a href="#best-practices" class="sb-link">運用ベストプラクティス</a>
+
+      <div class="sb-section">まとめ</div>
+      <a href="#next-steps" class="sb-link">次のステップ</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-label">第7章</div>
+        <h1>チーム運用・応用</h1>
+        <p>チーム全体で Claude Code を安全・効率的に活用するための運用ガイドです。</p>
+      </div>
+
+      <!-- ====== チームルール設計 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="team-rules"></span>
+        <h2>チームルール設計</h2>
+        <p>チームで Claude Code を使う場合、ルールを決めておくことが重要です。</p>
+
+        <h3>なぜルールが必要なのか</h3>
+        <div class="card-row">
+          <div class="card"><h4>品質の統一</h4><p>メンバーごとに出力の質がバラつくのを防ぐ</p></div>
+          <div class="card"><h4>セキュリティ</h4><p>機密情報の取り扱いミスを防止する</p></div>
+          <div class="card"><h4>効率化</h4><p>毎回同じ設定をする手間を省く</p></div>
+          <div class="card"><h4>知識の共有</h4><p>うまくいったプロンプトやルールをチーム全体で活用</p></div>
+        </div>
+
+        <h3>ルールで決めるべきこと</h3>
+        <table>
+          <tr><th>項目</th><th>内容の例</th></tr>
+          <tr><td>コーディングスタイル</td><td>言語、インデント、命名規則</td></tr>
+          <tr><td>コミットメッセージ</td><td>フォーマット、言語（日本語/英語）</td></tr>
+          <tr><td>禁止操作</td><td>本番環境への直接デプロイ、force push</td></tr>
+          <tr><td>機密情報</td><td>API キーやパスワードの取り扱い</td></tr>
+          <tr><td>レビュー基準</td><td>AI 生成コードのレビュー必須かどうか</td></tr>
+        </table>
+      </div>
+
+      <!-- ====== CLAUDE.md 共有 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="sharing"></span>
+        <h2>CLAUDE.md の共有</h2>
+        <p>チームルールは <code>CLAUDE.md</code> に書いて、Git で共有するのが最も効率的です。</p>
+
+        <h3>設定ファイルの使い分け</h3>
+        <table>
+          <tr><th>ファイル</th><th>範囲</th><th>Git に含める</th></tr>
+          <tr><td><code>CLAUDE.md</code></td><td>プロジェクト全体のルール</td><td><span class="tag tag-ok">含める</span></td></tr>
+          <tr><td><code>.claude/settings.json</code></td><td>プロジェクト共通設定</td><td><span class="tag tag-ok">含める</span></td></tr>
+          <tr><td><code>.claude/settings.local.json</code></td><td>個人設定（ローカル専用）</td><td><span class="tag tag-ng">含めない</span></td></tr>
+          <tr><td><code>~/.claude/settings.json</code></td><td>ユーザー全体設定</td><td><span class="tag tag-ng">含めない</span></td></tr>
+        </table>
+
+        <div class="box box-tip"><span class="box-icon"></span><code>settings.json</code> はチーム共通のルール、<code>settings.local.json</code> は個人のカスタマイズに使います。</div>
+
+        <h3>CLAUDE.md の例</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># プロジェクトルール</span>
+
+## コーディング規約
+- TypeScript を使用すること
+- 変数名は camelCase
+- コメントは日本語で記述
+
+## Git ルール
+- コミットメッセージは日本語
+- main ブランチへの直接 push 禁止
+- PR にはレビュー必須
+
+## セキュリティ
+- API キーをコードに書かない
+- .env ファイルは Git にコミットしない</pre></div>
+      </div>
+
+      <!-- ====== カスタムコマンド ====== -->
+      <div class="section">
+        <span class="section-anchor" id="custom-commands"></span>
+        <h2>カスタムコマンド</h2>
+        <p>よく使う指示をコマンドとして登録しておくと、チーム全員が同じ操作を簡単に実行できます。</p>
+
+        <h3>コマンドの保存場所</h3>
+        <p>カスタムコマンドは <code>.claude/commands/</code> フォルダ内に Markdown ファイルとして保存します。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># フォルダ構成</span>
+.claude/
+  commands/
+    review.md      <span class="c-cmt"># /review コマンド</span>
+    memo.md        <span class="c-cmt"># /memo コマンド</span>
+    mail.md        <span class="c-cmt"># /mail コマンド</span></pre></div>
+
+        <h3>例1: /review（コードレビュー）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># .claude/commands/review.md</span>
+
+変更されたファイルをレビューしてください。
+以下の観点でチェックし、問題があれば指摘してください。
+
+1. バグやエラーの可能性
+2. セキュリティ上の問題
+3. パフォーマンスの改善点
+4. コーディング規約への準拠
+
+問題がなければ「問題なし」と報告してください。</pre></div>
+
+        <h3>例2: /memo（議事録作成）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># .claude/commands/memo.md</span>
+
+以下の形式で議事録を作成してください。
+
+## 会議情報
+- 日時:
+- 参加者:
+- 議題:
+
+## 決定事項
+
+## TODO
+- [ ] 担当者: タスク内容（期限）
+
+## 次回予定</pre></div>
+
+        <h3>例3: /mail（メール下書き）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># .claude/commands/mail.md</span>
+
+以下の条件でビジネスメールの下書きを作成してください。
+
+- 敬語を使う
+- 簡潔に要点をまとめる
+- 件名も提案する
+- 署名は省略する
+
+$ARGUMENTS の内容をもとにメールを作成してください。</pre></div>
+        <div class="box box-info"><span class="box-icon"></span><code>$ARGUMENTS</code> はコマンド実行時に追加したテキストが入ります。例: <code>/mail 納品日の変更について連絡</code></div>
+      </div>
+
+      <!-- ====== セキュリティ設定 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="security"></span>
+        <h2>セキュリティ設定</h2>
+        <p><code>settings.json</code> を使って、Claude Code の動作に制限をかけることができます。</p>
+
+        <h3>コマンド制限</h3>
+        <p>実行を許可するコマンドと禁止するコマンドを設定できます。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt">// .claude/settings.json</span>
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(npm test)",
+      "Bash(npm run build)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force)",
+      "Bash(curl*)"
+    ]
+  }
+}</pre></div>
+
+        <h3>ファイルアクセス制限</h3>
+        <p>Claude Code がアクセスできるファイルやフォルダを制限することも可能です。</p>
+        <div class="box box-warn"><span class="box-icon"></span>本番環境の設定ファイルや、認証情報を含むファイルへのアクセスは制限しておきましょう。</div>
+
+        <h3>エンタープライズ向けチェックリスト</h3>
+        <ul class="checklist">
+          <li><code>settings.json</code> でコマンドの許可・禁止リストを設定している</li>
+          <li>本番環境への直接操作を禁止している</li>
+          <li>機密ファイルへのアクセスを制限している</li>
+          <li>API キーの管理ルールをチームに周知している</li>
+          <li>AI 生成コードのレビュープロセスを定めている</li>
+          <li>インシデント発生時の対応フローを用意している</li>
+        </ul>
+      </div>
+
+      <!-- ====== ベストプラクティス ====== -->
+      <div class="section">
+        <span class="section-anchor" id="best-practices"></span>
+        <h2>運用ベストプラクティス</h2>
+        <p>日々の運用で意識すべきポイントをまとめます。</p>
+
+        <h3>フォルダ構成を整える</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 推奨フォルダ構成</span>
+project/
+  CLAUDE.md              <span class="c-cmt"># チームルール</span>
+  .claude/
+    settings.json        <span class="c-cmt"># 共通設定</span>
+    settings.local.json  <span class="c-cmt"># 個人設定（Git 対象外）</span>
+    commands/
+      review.md          <span class="c-cmt"># カスタムコマンド</span>
+      memo.md
+  .mcp.json              <span class="c-cmt"># MCP サーバー設定</span>
+  .env                   <span class="c-cmt"># API キー（Git 対象外）</span>
+  .gitignore             <span class="c-cmt"># .env を除外</span></pre></div>
+
+        <h3>CLAUDE.md は少しずつ育てる</h3>
+        <div class="steps">
+          <div class="step"><span class="step-n sn-g">1</span><div class="step-body"><p>最初は基本ルールだけ書く（5〜10行で十分）</p></div></div>
+          <div class="step"><span class="step-n sn-g">2</span><div class="step-body"><p>日々の業務で「毎回同じことを言っている」と気づいたら追記</p></div></div>
+          <div class="step"><span class="step-n sn-g">3</span><div class="step-body"><p>チームメンバーからのフィードバックを反映</p></div></div>
+          <div class="step"><span class="step-n sn-g">4</span><div class="step-body"><p>定期的に見直し、古いルールを整理する</p></div></div>
+        </div>
+        <div class="box box-tip"><span class="box-icon"></span>完璧な CLAUDE.md を最初から作ろうとしないでください。実際に使いながら改善していくのが最も効果的です。</div>
+
+        <h3>/compact でメンテナンスする</h3>
+        <p>長い会話が続くと Claude Code の応答が遅くなったり、文脈を忘れたりすることがあります。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 会話が長くなったら実行</span>
+/compact</pre></div>
+        <div class="box box-info"><span class="box-icon"></span><code>/compact</code> は会話の要点を圧縮して、パフォーマンスを改善します。作業の区切りで実行するのがおすすめです。</div>
+
+        <h3>知識をチームで共有する</h3>
+        <div class="card-row">
+          <div class="card"><h4>うまくいったプロンプト</h4><p>カスタムコマンドとして保存し、チーム全体で使えるようにする</p></div>
+          <div class="card"><h4>トラブルと解決策</h4><p>FAQ として CLAUDE.md や社内ドキュメントに記録する</p></div>
+          <div class="card"><h4>設定ファイル</h4><p>settings.json や .mcp.json を Git で管理し、チームで同じ環境を再現する</p></div>
+          <div class="card"><h4>定期的な振り返り</h4><p>月1回程度、チームで運用状況を確認し、ルールを更新する</p></div>
+        </div>
+      </div>
+
+      <!-- ====== 次のステップ ====== -->
+      <div class="section">
+        <span class="section-anchor" id="next-steps"></span>
+        <h2>次のステップ</h2>
+        <p>全7章を通じて、Claude Code の基礎から応用までを学びました。ここからさらに深く学ぶためのリソースを紹介します。</p>
+
+        <h3>公式ドキュメント</h3>
+        <table>
+          <tr><th>リソース</th><th>URL</th><th>内容</th></tr>
+          <tr><td>Claude Code 公式ドキュメント</td><td><code>code.claude.com</code></td><td>最新の機能やコマンドリファレンス</td></tr>
+          <tr><td>Anthropic 公式ドキュメント</td><td><code>docs.anthropic.com</code></td><td>API リファレンス、ベストプラクティス</td></tr>
+          <tr><td>GitHub Issues</td><td><code>github.com/anthropics/claude-code</code></td><td>バグ報告、機能リクエスト、コミュニティ</td></tr>
+        </table>
+
+        <h3>with-AI サポート</h3>
+        <div class="card-row">
+          <div class="card card-l"><h4>技術サポート</h4><p>導入・運用に関する質問はいつでもご相談ください</p></div>
+          <div class="card card-l"><h4>カスタマイズ支援</h4><p>CLAUDE.md やワークフローの設計をサポートします</p></div>
+        </div>
+      </div>
+
+      <!-- ====== 全7章完了 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="complete"></span>
+        <h2>全7章完了</h2>
+        <p>おめでとうございます。全7章の学習を完了しました。</p>
+        <div class="box box-ok"><span class="box-icon"></span><strong>学習完了:</strong> Claude Code の導入、基本操作、プロンプト設計、CLAUDE.md 活用、実践演習、API 連携、チーム運用の全てを学びました。</div>
+        <p>ここで学んだ知識は、日々の業務で繰り返し使うことで定着していきます。まずは小さな作業から Claude Code を取り入れて、少しずつ活用範囲を広げていきましょう。</p>
+        <div class="box box-tip"><span class="box-icon"></span>困ったときは、この教材にいつでも戻ってきてください。また、with-AI チームが皆さんの活用をサポートします。</div>
+      </div>
+
+      <!-- Chapter nav -->
+      <div class="chapter-nav">
+        <a href="ch6-api.html">&larr; 第6章: API連携</a>
+        <a href="../">教材一覧 &rarr;</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/doc-utils.js"></script>
+</body>
+</html>

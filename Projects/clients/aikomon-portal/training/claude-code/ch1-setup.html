@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章: Claude Code 導入ガイド — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../shared/doc-theme.css">
+</head>
+<body>
+
+<button class="sb-toggle" id="sbToggle">☰ 目次</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <a href="./" class="sb-back"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg> 教材一覧に戻る</a>
+      <div class="sb-title">第1章</div>
+      <div class="sb-subtitle">Claude Code 導入ガイド</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">概要</div>
+      <a href="#overview" class="sb-link">パターン一覧</a>
+      <a href="#prereq" class="sb-link">必要なもの</a>
+
+      <div class="sb-section">Mac</div>
+      <a href="#mac-check" class="sb-link">事前チェック</a>
+      <a href="#mac-cursor" class="sb-link">Cursor インストール</a>
+      <a href="#mac-terminal" class="sb-link">ターミナルを開く</a>
+      <a href="#mac-install" class="sb-link">Claude Code インストール</a>
+      <a href="#mac-verify" class="sb-link">インストール確認</a>
+      <a href="#mac-auth" class="sb-link">ログイン（認証）</a>
+      <a href="#mac-native" class="sb-link">Terminal.app の場合</a>
+
+      <div class="sb-section">Windows</div>
+      <a href="#win-check" class="sb-link">事前チェック</a>
+      <a href="#win-terminal" class="sb-link">ターミナル確認</a>
+      <a href="#win-install" class="sb-link">Claude Code インストール</a>
+      <a href="#win-auth" class="sb-link">確認 & 認証</a>
+      <a href="#win-other" class="sb-link">PowerShell / WSL</a>
+
+      <div class="sb-section">共通</div>
+      <a href="#path" class="sb-link">保存場所 & PATH</a>
+      <a href="#troubleshoot" class="sb-link">トラブルシューティング</a>
+      <a href="#checklist" class="sb-link">完了チェックリスト</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-label">第1章</div>
+        <h1>Claude Code 導入ガイド</h1>
+        <p>Mac / Windows 全パターン対応。インストールからログインまで。</p>
+      </div>
+
+      <!-- ====== Overview ====== -->
+      <div class="section">
+        <span class="section-anchor" id="overview"></span>
+        <h2>パターン一覧</h2>
+        <p>あなたの環境に合ったパターンを選んでください。</p>
+        <div class="card-row">
+          <div class="card"><h4>Mac × Cursor</h4><p>最もおすすめ</p></div>
+          <div class="card"><h4>Mac × Terminal.app</h4><p>Cursor なし</p></div>
+          <div class="card"><h4>Win × Cursor (PowerShell)</h4><p>Windows おすすめ</p></div>
+          <div class="card"><h4>Win × Cursor (cmd)</h4><p>コマンドプロンプト</p></div>
+          <div class="card"><h4>Win × PowerShell 単体</h4><p>Cursor なし</p></div>
+          <div class="card"><h4>Win × WSL</h4><p>Linux 環境</p></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="prereq"></span>
+        <h2>必要なもの</h2>
+        <table>
+          <tr><th>パターン</th><th>Cursor</th><th>Git</th><th>Node.js</th></tr>
+          <tr><td>Mac × Cursor</td><td><span class="tag tag-req">必要</span></td><td><span class="tag tag-ok">自動</span></td><td><span class="tag tag-ok">不要</span></td></tr>
+          <tr><td>Mac × Terminal</td><td><span class="tag tag-ok">不要</span></td><td><span class="tag tag-ok">自動</span></td><td><span class="tag tag-ok">不要</span></td></tr>
+          <tr><td>Win × Cursor (PS)</td><td><span class="tag tag-req">必要</span></td><td><span class="tag tag-ng">要インストール</span></td><td><span class="tag tag-ok">不要</span></td></tr>
+          <tr><td>Win × Cursor (cmd)</td><td><span class="tag tag-req">必要</span></td><td><span class="tag tag-ng">要インストール</span></td><td><span class="tag tag-ok">不要</span></td></tr>
+          <tr><td>Win × PowerShell</td><td><span class="tag tag-ok">不要</span></td><td><span class="tag tag-ng">要インストール</span></td><td><span class="tag tag-ok">不要</span></td></tr>
+          <tr><td>Win × WSL</td><td><span class="tag tag-ok">不要</span></td><td><span class="tag tag-ok">自動</span></td><td><span class="tag tag-ok">不要</span></td></tr>
+        </table>
+        <div class="box box-tip"><span class="box-icon"></span>ネイティブインストーラーを使うので、全パターンで Node.js は不要です。</div>
+      </div>
+
+      <!-- ====== Mac ====== -->
+      <div class="section">
+        <span class="section-anchor" id="mac-check"></span>
+        <h2>事前チェック <span class="h-badge h-badge-mac">Mac</span></h2>
+
+        <h3>macOS バージョン確認（13.0以上が必要）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>sw_vers</pre></div>
+        <div class="card-row">
+          <div class="box box-ok"><span class="box-icon"></span><strong>成功:</strong> ProductVersion が 13.0 以上</div>
+          <div class="box box-err"><span class="box-icon"></span><strong>失敗:</strong> macOS をアップデートしてください</div>
+        </div>
+
+        <h3>ネットワーク接続確認</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>curl -sI https://claude.ai | head -1</pre></div>
+        <div class="card-row">
+          <div class="box box-ok"><span class="box-icon"></span><code>HTTP/2 200</code> → 接続 OK</div>
+          <div class="box box-err"><span class="box-icon"></span>エラー → Wi-Fi / VPN OFF / テザリング</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="mac-cursor"></span>
+        <h2>Cursor インストール <span class="h-badge h-badge-mac">Mac</span></h2>
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p><strong>cursor.com</strong> をブラウザで開く</p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p><strong>Download</strong> をクリック（Mac が自動選択）</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p>ダウンロードされた <code>.dmg</code> ファイルを開く</p></div></div>
+          <div class="step"><span class="step-n">4</span><div class="step-body"><p>Cursor を <strong>Applications</strong> フォルダにドラッグ</p></div></div>
+        </div>
+        <div class="box box-warn"><span class="box-icon"></span>「開発元が未確認」と出た場合 → システム設定 → セキュリティ → 「このまま開く」</div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="mac-terminal"></span>
+        <h2>ターミナルを開く <span class="h-badge h-badge-mac">Mac</span></h2>
+        <p>Cursor の中にターミナル（黒い画面）を表示します。</p>
+        <div class="card-row">
+          <div class="card card-l"><h4>方法A: メニュー</h4><p>上部 → <strong>Terminal</strong> → <strong>New Terminal</strong></p></div>
+          <div class="card card-l"><h4>方法B: ショートカット</h4><p><kbd>Cmd</kbd> + <kbd>`</kbd></p></div>
+        </div>
+        <div class="box box-tip"><span class="box-icon"></span><kbd>`</kbd> キーはキーボード左上、<strong>数字 1 の左隣</strong>です。</div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="mac-install"></span>
+        <h2>Claude Code インストール <span class="h-badge h-badge-mac">Mac</span></h2>
+        <p>以下をコピーしてターミナルに貼り付け（<kbd>Cmd</kbd>+<kbd>V</kbd>）→ <kbd>Enter</kbd></p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>curl -fsSL https://claude.ai/install.sh | bash</pre></div>
+        <div class="box box-ok"><span class="box-icon"></span><code>✓ Claude Code installed successfully!</code> と表示されれば完了</div>
+        <div class="box box-tip"><span class="box-icon"></span>数秒〜1分ほどかかります。途中で止まっても待ってください。</div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="mac-verify"></span>
+        <h2>インストール確認 <span class="h-badge h-badge-mac">Mac</span></h2>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>claude --version</pre></div>
+        <div class="box box-ok"><span class="box-icon"></span><code>Claude Code v1.x.x</code> と表示されれば成功</div>
+
+        <h3>ヘルスチェック（任意）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>claude doctor</pre></div>
+        <div class="box box-err"><span class="box-icon"></span><code>command not found</code> → ターミナルを閉じて開き直す → 再実行</div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="mac-auth"></span>
+        <h2>ログイン（認証）<span class="h-badge h-badge-mac">Mac</span></h2>
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p><code>claude</code> と入力 → <kbd>Enter</kbd></p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p>「<strong>Use Claude.ai</strong>」を選択 → <kbd>Enter</kbd></p><p class="sub">矢印キー ↑↓ で選択</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p>ブラウザが自動で開く → Claude アカウントでログイン</p></div></div>
+          <div class="step"><span class="step-n">4</span><div class="step-body"><p>「<strong>許可</strong>」をクリック</p></div></div>
+          <div class="step"><span class="step-n">5</span><div class="step-body"><p>ターミナルで <code>/status</code> → アカウント情報が出れば完了</p></div></div>
+        </div>
+        <div class="box box-warn"><span class="box-icon"></span>ブラウザが開かない → ターミナルに表示された URL を手動でブラウザに貼り付け</div>
+
+        <h3>Xcode Command Line Tools</h3>
+        <p>初めて <code>git init</code> を実行するとポップアップが出ることがあります。</p>
+        <div class="box box-tip"><span class="box-icon"></span>「インストール」をクリック → 数分待つ → 完了後に再度 <code>git init</code>。初回のみです。</div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="mac-native"></span>
+        <h2>Terminal.app の場合 <span class="h-badge h-badge-mac">Mac</span></h2>
+        <p>Cursor を使わず、Mac 標準のターミナルで使う場合。</p>
+        <div class="card-row">
+          <div class="card card-l"><h4>Spotlight</h4><p><kbd>Cmd</kbd>+<kbd>Space</kbd> →「ターミナル」→ <kbd>Enter</kbd></p></div>
+          <div class="card card-l"><h4>Finder</h4><p>アプリケーション → ユーティリティ → ターミナル</p></div>
+        </div>
+        <div class="box box-info"><span class="box-icon"></span>ターミナルを開いた後の手順は Mac × Cursor と全く同じです。</div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># インストール</span>
+curl -fsSL https://claude.ai/install.sh | bash
+
+<span class="c-cmt"># 確認</span>
+claude --version
+
+<span class="c-cmt"># 認証</span>
+claude</pre></div>
+      </div>
+
+      <!-- ====== Windows ====== -->
+      <div class="section">
+        <span class="section-anchor" id="win-check"></span>
+        <h2>事前チェック <span class="h-badge h-badge-win">Windows</span></h2>
+
+        <h3>Git for Windows の確認（必須）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>where.exe git</pre></div>
+        <div class="card-row">
+          <div class="box box-ok"><span class="box-icon"></span>パスが表示 → Git OK</div>
+          <div class="box box-err"><span class="box-icon"></span>何も出ない → Git 未インストール</div>
+        </div>
+        <div class="box box-warn"><span class="box-icon"></span>Git がない場合: <strong>git-scm.com</strong> → Download → 全てデフォルト → <strong>Cursor 再起動</strong></div>
+
+        <h3>実行ポリシーの確認</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>Get-ExecutionPolicy</pre></div>
+        <div class="card-row">
+          <div class="box box-ok"><span class="box-icon"></span>RemoteSigned / Unrestricted / Bypass → OK</div>
+          <div class="box box-err"><span class="box-icon"></span>Restricted → 下のコマンドを実行</div>
+        </div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</pre></div>
+        <p>→「Y」を入力 → Enter</p>
+
+        <h3>ネットワーク接続確認</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>Test-Connection claude.ai -Count 1</pre></div>
+        <div class="box box-ok"><span class="box-icon"></span><code>Status: Success</code> → 接続 OK</div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="win-terminal"></span>
+        <h2>ターミナル確認 <span class="h-badge h-badge-win">Windows</span></h2>
+        <p>Cursor のターミナルが <strong>PowerShell</strong> であることを確認。</p>
+        <div class="card-row">
+          <div class="box box-ok"><span class="box-icon"></span>上部に「powershell」→ OK</div>
+          <div class="box box-err"><span class="box-icon"></span>「cmd」→ 切り替え必要</div>
+        </div>
+        <div class="box box-tip"><span class="box-icon"></span>切り替え: ターミナル右上「＋」横の「▼」→「PowerShell」を選択</div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="win-install"></span>
+        <h2>Claude Code インストール <span class="h-badge h-badge-win">Windows</span></h2>
+
+        <h3>PowerShell の場合</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>irm https://claude.ai/install.ps1 | iex</pre></div>
+        <div class="box box-ok"><span class="box-icon"></span><code>✓ Claude Code installed successfully!</code> → 成功</div>
+        <div class="box box-err"><span class="box-icon"></span>「irm が認識されません」→ cmd を使っている → PowerShell に切り替え</div>
+
+        <h3>cmd（コマンドプロンプト）の場合</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd</pre></div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="win-auth"></span>
+        <h2>確認 & 認証 <span class="h-badge h-badge-win">Windows</span></h2>
+        <p>Mac と同じ手順です。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># バージョン確認</span>
+claude --version
+
+<span class="c-cmt"># ヘルスチェック</span>
+claude doctor
+
+<span class="c-cmt"># 認証（ブラウザが開く）</span>
+claude
+
+<span class="c-cmt"># ログイン状態確認（Claude Code 内で）</span>
+/status</pre></div>
+        <div class="box box-err"><span class="box-icon"></span><code>'claude' は認識されていません</code> → ターミナルを閉じて開き直す → Cursor 再起動</div>
+      </div>
+
+      <div class="section">
+        <span class="section-anchor" id="win-other"></span>
+        <h2>PowerShell 単体 / WSL <span class="h-badge h-badge-win">Windows</span></h2>
+
+        <h3>PowerShell 単体</h3>
+        <p>スタートメニュー →「PowerShell」と入力 → クリック。以降の手順は Cursor (PS) と同じ。</p>
+
+        <h3>WSL（Windows Subsystem for Linux）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># PowerShell を管理者として実行:</span>
+wsl --install</pre></div>
+        <p>→ PC 再起動 → Ubuntu 起動 → ユーザー名 & パスワード設定</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># WSL 内で（Mac と同じ）</span>
+curl -fsSL https://claude.ai/install.sh | bash
+claude --version
+claude</pre></div>
+      </div>
+
+      <!-- ====== PATH ====== -->
+      <div class="section">
+        <span class="section-anchor" id="path"></span>
+        <h2>保存場所 & PATH <span class="h-badge h-badge-all">共通</span></h2>
+
+        <h3>インストール先</h3>
+        <table>
+          <tr><th>OS</th><th>場所</th></tr>
+          <tr><td>Mac / Linux / WSL</td><td><code>~/.local/bin/claude</code></td></tr>
+          <tr><td>Windows</td><td><code>%USERPROFILE%\.local\bin\claude</code></td></tr>
+        </table>
+
+        <h3>設定ファイル</h3>
+        <table>
+          <tr><th>ファイル</th><th>役割</th></tr>
+          <tr><td><code>CLAUDE.md</code></td><td>AI への常時指示書</td></tr>
+          <tr><td><code>~/.claude/settings.json</code></td><td>ユーザー設定</td></tr>
+          <tr><td><code>.claude/settings.json</code></td><td>プロジェクト固有設定</td></tr>
+          <tr><td><code>~/.claude.json</code></td><td>認証情報・MCP</td></tr>
+          <tr><td><code>.mcp.json</code></td><td>MCP サーバー定義</td></tr>
+        </table>
+
+        <h3>PATH が通っていない場合</h3>
+        <p><code>command not found</code> が出たら実行してください。</p>
+
+        <p><strong>Mac / Linux（zsh）:</strong></p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc</pre></div>
+
+        <p><strong>Windows PowerShell:</strong></p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>$p = [Environment]::GetEnvironmentVariable('PATH','User')
+[Environment]::SetEnvironmentVariable('PATH',"$p;$env:USERPROFILE\.local\bin",'User')</pre></div>
+        <p>→ PowerShell を再起動すると反映。</p>
+      </div>
+
+      <!-- ====== Troubleshoot ====== -->
+      <div class="section">
+        <span class="section-anchor" id="troubleshoot"></span>
+        <h2>トラブルシューティング <span class="h-badge h-badge-all">共通</span></h2>
+
+        <h3>「claude が認識されません」</h3>
+        <div class="steps">
+          <div class="step"><span class="step-n sn-g">1</span><div class="step-body"><p>ターミナルを閉じて開き直す（90%解決）</p></div></div>
+          <div class="step"><span class="step-n sn-g">2</span><div class="step-body"><p>Cursor を完全再起動</p></div></div>
+          <div class="step"><span class="step-n sn-g">3</span><div class="step-body"><p>PATH を手動で追加（上のセクション参照）</p></div></div>
+        </div>
+
+        <h3>「Git for Windows required」</h3>
+        <div class="steps">
+          <div class="step"><span class="step-n sn-b">1</span><div class="step-body"><p><strong>git-scm.com</strong> → Download → インストール</p></div></div>
+          <div class="step"><span class="step-n sn-r">2</span><div class="step-body"><p><strong>Cursor を再起動</strong>（しないと認識されない）</p></div></div>
+          <div class="step"><span class="step-n sn-b">3</span><div class="step-body"><p>インストールコマンドを再実行</p></div></div>
+        </div>
+
+        <h3>「irm が認識されません」</h3>
+        <p>cmd を使っている → PowerShell に切り替え（▼ → PowerShell）、または cmd 用コマンドを使う。</p>
+
+        <h3>ブラウザが開かない</h3>
+        <p>ターミナルに表示された URL をコピー → ブラウザに手動で貼り付け。</p>
+
+        <h3>TLS / ネットワークエラー</h3>
+        <p>VPN OFF → Wi-Fi 切替 → テザリング → 講師に相談。</p>
+
+        <h3>最終手段</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>claude doctor</pre></div>
+        <div class="box box-tip"><span class="box-icon"></span>自動診断コマンド。結果をスクリーンショットして講師に共有してください。</div>
+      </div>
+
+      <!-- ====== Checklist ====== -->
+      <div class="section">
+        <span class="section-anchor" id="checklist"></span>
+        <h2>完了チェックリスト</h2>
+        <p>全てクリアしたら次の章に進みましょう。</p>
+        <ul class="checklist">
+          <li><code>claude --version</code> でバージョンが表示される</li>
+          <li><code>claude doctor</code> で全て通る</li>
+          <li><code>claude</code> → <code>/status</code> でアカウント情報が出る</li>
+          <li>「自己紹介して」と入力して回答が返ってくる</li>
+        </ul>
+      </div>
+
+      <!-- Chapter nav -->
+      <div class="chapter-nav">
+        <a href="../">← 教材一覧</a>
+        <a href="ch2-commands.html">第2章: 基本コマンド →</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/doc-utils.js"></script>
+</body>
+</html>

@@ -1,0 +1,2365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>POLEPOLE GAS コード一覧</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; padding: 24px; }
+h1 { text-align: center; color: #2b6cb0; margin-bottom: 8px; font-size: 24px; }
+.subtitle { text-align: center; color: #718096; margin-bottom: 32px; font-size: 14px; }
+.file-block { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.1); margin-bottom: 24px; overflow: hidden; }
+.file-header { background: #2b6cb0; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+.file-header h2 { font-size: 16px; font-weight: 600; }
+.file-header .desc { font-size: 12px; opacity: .8; }
+.copy-btn { background: #fff; color: #2b6cb0; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all .2s; }
+.copy-btn:hover { background: #ebf4ff; }
+.copy-btn.copied { background: #38a169; color: #fff; }
+.code-area { padding: 0; }
+.code-area textarea { width: 100%; min-height: 200px; border: none; padding: 16px 20px; font-family: 'SF Mono', 'Menlo', 'Consolas', monospace; font-size: 12px; line-height: 1.6; resize: vertical; background: #fafbfc; color: #1a202c; outline: none; }
+.instructions { background: #fff; border-radius: 8px; padding: 24px; margin-bottom: 32px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.instructions h2 { color: #2b6cb0; margin-bottom: 12px; font-size: 18px; }
+.instructions ol { padding-left: 24px; }
+.instructions li { margin-bottom: 8px; line-height: 1.7; }
+.instructions .warn { background: #fffbeb; border-left: 4px solid #d69e2e; padding: 12px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; color: #744210; font-size: 14px; }
+.order-badge { display: inline-block; background: #2b6cb0; color: #fff; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 700; margin-right: 8px; }
+</style>
+</head>
+<body>
+
+<h1>POLEPOLE 入園手続き自動化システム</h1>
+<p class="subtitle">GASコード一覧 - 各ファイルの「コピー」ボタンでコードをコピーし、Apps Scriptエディタに貼り付けてください</p>
+
+<div class="instructions">
+<h2>貼り付け手順</h2>
+<ol>
+<li>Apps Scriptエディタで左側「ファイル」の横の <b>「+」ボタン</b> > <b>「スクリプト」</b> を選択</li>
+<li>ファイル名を入力（下の各ブロックのタイトルに表示されている名前。<b>.gs は不要</b>）</li>
+<li>右側の <b>「コピー」ボタン</b> をクリック</li>
+<li>Apps Scriptエディタのコード入力エリアに <b>Ctrl+V</b>（Macは <b>Cmd+V</b>）で貼り付け</li>
+<li><b>8ファイル全て</b> 繰り返す</li>
+<li>全て追加したら <b>Ctrl+S（Cmd+S）で保存</b></li>
+</ol>
+<div class="warn">注意: 必ずこのページの「コピー」ボタンを使ってください。テキストを手動で選択してコピーすると、記号が変換されてエラーになることがあります。</div>
+</div>
+
+<div class="file-block">
+<div class="file-header">
+<div><h2><span class="order-badge">1</span>00_config</h2><span class="desc">基本設定（施設名・シート名等）</span></div>
+<button class="copy-btn" onclick="copyCode(this, 'code0')">コピー</button>
+</div>
+<div class="code-area"><textarea id="code0" readonly>/**
+ * ============================================
+ * POLEPOLE 入園手続き自動化システム - 設定ファイル
+ * ============================================
+ *
+ * このファイルで各種設定を変更できます。
+ * フォームの質問文やシート名などを修正する場合はここを編集してください。
+ */
+
+// ===== 基本設定 =====
+const CONFIG = {
+  // 施設名
+  FACILITY_NAME: 'POLEPOLE',
+
+  // フォームのタイトル
+  FORM_TITLE: 'POLEPOLE 入園手続き・アセスメントフォーム',
+  FORM_DESCRIPTION: 'お子さんの入園に必要な情報をご入力ください。\n所要時間：約15〜20分',
+
+  // Googleドライブのルートフォルダ名
+  ROOT_FOLDER_NAME: 'POLEPOLE_児童管理',
+
+  // スプレッドシート名
+  SPREADSHEET_NAME: 'POLEPOLE_入園データ管理',
+
+  // 契約書テンプレートのドキュメント名
+  CONTRACT_TEMPLATE_NAME: 'POLEPOLE_契約書テンプレート',
+
+  // メール送信元の表示名
+  EMAIL_SENDER_NAME: 'POLEPOLE 事務局',
+};
+
+// ===== シート名 =====
+const SHEET_NAMES = {
+  MASTER: '全回答データ',
+  BASIC_INFO: '基本情報一覧',
+  ALLERGY: 'アレルギー情報',
+  TRANSPORT: '送迎一覧',
+  CONTACT: '保護者連絡先',
+  ASSESSMENT: 'アセスメント回答一覧',
+  YEARLY_CHANGE: '経年変化シート',
+  SETTINGS: 'システム設定',
+};
+
+// ===== 利用区分 =====
+const ENROLLMENT_TYPES = {
+  PRESCHOOL: '未就学児（新規）',
+  SCHOOL_AGE: '就学児（新規）',
+  CONTINUATION: '継続',
+};
+
+// ===== 写真掲載の選択肢 =====
+const PHOTO_CONSENT = {
+  AGREE: '同意する',
+  DISAGREE: '同意しない',
+  CONDITIONAL: '条件付きで同意する',
+};
+
+// ===== 送迎の選択肢 =====
+const TRANSPORT_OPTIONS = {
+  YES: '希望する',
+  NO: '希望しない',
+};
+
+// ===== PropertiesServiceのキー =====
+const PROP_KEYS = {
+  FORM_ID: 'FORM_ID',
+  SPREADSHEET_ID: 'SPREADSHEET_ID',
+  ROOT_FOLDER_ID: 'ROOT_FOLDER_ID',
+  CONTRACT_TEMPLATE_ID: 'CONTRACT_TEMPLATE_ID',
+};</textarea></div>
+</div>
+
+<div class="file-block">
+<div class="file-header">
+<div><h2><span class="order-badge">2</span>01_setup</h2><span class="desc">初期セットアップ・カスタムメニュー</span></div>
+<button class="copy-btn" onclick="copyCode(this, 'code1')">コピー</button>
+</div>
+<div class="code-area"><textarea id="code1" readonly>/**
+ * ============================================
+ * 初期セットアップ
+ * ============================================
+ *
+ * 【使い方】
+ * 1. Google Apps Scriptエディタでこのプロジェクトを開く
+ * 2. 関数選択で「initialSetup」を選ぶ
+ * 3. 「実行」ボタンを押す
+ * 4. 権限の承認を行う
+ *
+ * これだけで、フォーム・スプレッドシート・ドライブフォルダが自動作成されます。
+ */
+
+function initialSetup() {
+  const ui = SpreadsheetApp.getUi();
+
+  // 確認ダイアログ
+  const result = ui.alert(
+    'POLEPOLE 初期セットアップ',
+    '以下を自動作成します：\n' +
+    '・Googleフォーム（入園手続き用）\n' +
+    '・スプレッドシート（データ管理用・7シート）\n' +
+    '・Googleドライブフォルダ（児童管理用）\n' +
+    '・契約書テンプレート\n\n' +
+    '実行しますか？',
+    ui.ButtonSet.YES_NO
+  );
+
+  if (result !== ui.Button.YES) {
+    ui.alert('セットアップをキャンセルしました。');
+    return;
+  }
+
+  try {
+    Logger.log('===== セットアップ開始 =====');
+
+    // 1. スプレッドシートのシート構成を作成
+    Logger.log('1. スプレッドシートを設定中...');
+    setupSpreadsheet();
+
+    // 2. Googleフォームを作成
+    Logger.log('2. Googleフォームを作成中...');
+    const formId = createEnrollmentForm();
+    PropertiesService.getScriptProperties().setProperty(PROP_KEYS.FORM_ID, formId);
+
+    // 3. ドライブのルートフォルダを作成
+    Logger.log('3. ドライブフォルダを作成中...');
+    const rootFolderId = createRootFolder();
+    PropertiesService.getScriptProperties().setProperty(PROP_KEYS.ROOT_FOLDER_ID, rootFolderId);
+
+    // 4. 契約書テンプレートを作成
+    Logger.log('4. 契約書テンプレートを作成中...');
+    const templateId = createContractTemplate();
+    PropertiesService.getScriptProperties().setProperty(PROP_KEYS.CONTRACT_TEMPLATE_ID, templateId);
+
+    // 5. フォーム送信トリガーを設定
+    Logger.log('5. トリガーを設定中...');
+    setupTrigger(formId);
+
+    // 6. カスタムメニューを追加
+    createCustomMenu();
+
+    Logger.log('===== セットアップ完了 =====');
+
+    ui.alert(
+      'セットアップ完了',
+      'すべての設定が完了しました！\n\n' +
+      '【作成されたもの】\n' +
+      '・Googleフォーム: ' + FormApp.openById(formId).getEditUrl() + '\n' +
+      '・ドライブフォルダ: POLEPOLE_児童管理\n' +
+      '・契約書テンプレート\n\n' +
+      '※フォームのURLを保護者に共有してください。',
+      ui.ButtonSet.OK
+    );
+
+  } catch (e) {
+    Logger.log('エラー: ' + e.message);
+    Logger.log(e.stack);
+    ui.alert('エラーが発生しました: ' + e.message);
+  }
+}
+
+/**
+ * フォーム送信時のトリガーを設定
+ */
+function setupTrigger(formId) {
+  // 既存のトリガーを削除
+  const triggers = ScriptApp.getProjectTriggers();
+  triggers.forEach(trigger => {
+    if (trigger.getHandlerFunction() === 'onFormSubmit') {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+
+  // 新しいトリガーを設定
+  ScriptApp.newTrigger('onFormSubmit')
+    .forForm(FormApp.openById(formId))
+    .onFormSubmit()
+    .create();
+
+  Logger.log('トリガー設定完了');
+}
+
+/**
+ * スプレッドシートを開いた時にカスタムメニューを表示
+ */
+function onOpen() {
+  createCustomMenu();
+}
+
+/**
+ * カスタムメニューを作成
+ */
+function createCustomMenu() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('POLEPOLE管理')
+    .addItem('初期セットアップ', 'initialSetup')
+    .addSeparator()
+    .addItem('契約書を作成', 'showContractDialog')
+    .addItem('メール下書きを作成', 'showEmailDraftDialog')
+    .addSeparator()
+    .addItem('フォームURLを表示', 'showFormUrl')
+    .addItem('ドライブフォルダを開く', 'openRootFolder')
+    .addToUi();
+}
+
+/**
+ * フォームURLを表示
+ */
+function showFormUrl() {
+  const formId = PropertiesService.getScriptProperties().getProperty(PROP_KEYS.FORM_ID);
+  if (!formId) {
+    SpreadsheetApp.getUi().alert('フォームがまだ作成されていません。初期セットアップを実行してください。');
+    return;
+  }
+  const form = FormApp.openById(formId);
+  SpreadsheetApp.getUi().alert(
+    'フォームURL',
+    '編集URL:\n' + form.getEditUrl() + '\n\n' +
+    '回答URL（保護者に共有）:\n' + form.getPublishedUrl(),
+    SpreadsheetApp.getUi().ButtonSet.OK
+  );
+}
+
+/**
+ * ルートフォルダを開く
+ */
+function openRootFolder() {
+  const folderId = PropertiesService.getScriptProperties().getProperty(PROP_KEYS.ROOT_FOLDER_ID);
+  if (!folderId) {
+    SpreadsheetApp.getUi().alert('フォルダがまだ作成されていません。');
+    return;
+  }
+  const url = 'https://drive.google.com/drive/folders/' + folderId;
+  const html = HtmlService.createHtmlOutput(
+    '<script>window.open("' + url + '");google.script.host.close();</script>'
+  ).setWidth(1).setHeight(1);
+  SpreadsheetApp.getUi().showModalDialog(html, 'フォルダを開いています...');
+}</textarea></div>
+</div>
+
+<div class="file-block">
+<div class="file-header">
+<div><h2><span class="order-badge">3</span>02_formBuilder</h2><span class="desc">Googleフォーム自動作成</span></div>
+<button class="copy-btn" onclick="copyCode(this, 'code2')">コピー</button>
+</div>
+<div class="code-area"><textarea id="code2" readonly>/**
+ * ============================================
+ * Googleフォーム自動作成
+ * ============================================
+ *
+ * 3分岐構成：
+ *   1. 未就学児（新規）→ 基本情報 + 未就学児アセスメント
+ *   2. 就学児（新規）  → 基本情報 + 就学児アセスメント
+ *   3. 継続            → 継続用アセスメントのみ
+ */
+
+function createEnrollmentForm() {
+  const form = FormApp.create(CONFIG.FORM_TITLE);
+  form.setDescription(CONFIG.FORM_DESCRIPTION);
+  form.setIsQuiz(false);
+  form.setCollectEmail(true);
+  form.setAllowResponseEdits(false);
+  form.setLimitOneResponsePerUser(false);
+
+  // ===== セクション1: 利用区分の選択 =====
+  const enrollmentType = form.addListItem()
+    .setTitle('利用区分を選択してください')
+    .setRequired(true);
+
+  // 分岐先のページを先に作成
+  const pageBasicInfo = form.addPageBreakItem().setTitle('基本情報');
+  const pagePreschool = form.addPageBreakItem().setTitle('未就学児アセスメント（お子さんのご様子）');
+  const pageSchoolAge = form.addPageBreakItem().setTitle('就学児アセスメント（お子さんのご様子）');
+  const pageContinuation = form.addPageBreakItem().setTitle('継続 アセスメント');
+  const pageCommon = form.addPageBreakItem().setTitle('写真掲載・送迎・その他');
+  const pageEnd = form.addPageBreakItem().setTitle('入力完了');
+
+  // ----- 基本情報セクション -----
+  buildBasicInfoSection(form, pageBasicInfo);
+
+  // ----- 未就学児アセスメント -----
+  buildPreschoolSection(form, pagePreschool);
+
+  // ----- 就学児アセスメント -----
+  buildSchoolAgeSection(form, pageSchoolAge);
+
+  // ----- 継続アセスメント -----
+  buildContinuationSection(form, pageContinuation);
+
+  // ----- 共通セクション（写真・送迎等） -----
+  buildCommonEndSection(form, pageCommon);
+
+  // ----- 完了ページ -----
+  pageEnd.setHelpText('ご入力ありがとうございました。\n内容を確認の上、スタッフよりご連絡いたします。');
+
+  // ===== 分岐ロジックの設定 =====
+  // 利用区分の選択による分岐
+  enrollmentType.setChoices([
+    enrollmentType.createChoice(ENROLLMENT_TYPES.PRESCHOOL, pageBasicInfo),
+    enrollmentType.createChoice(ENROLLMENT_TYPES.SCHOOL_AGE, pageBasicInfo),
+    enrollmentType.createChoice(ENROLLMENT_TYPES.CONTINUATION, pageContinuation),
+  ]);
+
+  // 基本情報 → 未就学児/就学児アセスメントへの分岐はonFormSubmitで処理
+  // （Googleフォームの制約上、1つの質問からの分岐のみ可能）
+  // 代わりに、基本情報の最後に再度区分を確認する質問を配置
+  // → buildBasicInfoSectionの末尾で対応
+
+  // スプレッドシートとリンク
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  form.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId());
+
+  Logger.log('フォーム作成完了: ' + form.getEditUrl());
+  return form.getId();
+}
+
+/**
+ * 基本情報セクションを構築
+ */
+function buildBasicInfoSection(form, pageBreak) {
+  pageBreak.setHelpText('お子さんとご家族の基本情報をご入力ください。');
+
+  // ----- お子さんの情報 -----
+  form.addSectionHeaderItem().setTitle('お子さんの情報');
+
+  form.addTextItem()
+    .setTitle('お子さんのお名前')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('お子さんのお名前（ふりがな）')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('呼び名（ニックネーム）')
+    .setRequired(false);
+
+  form.addDateItem()
+    .setTitle('生年月日')
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('性別')
+    .setChoiceValues(['男', '女'])
+    .setRequired(true);
+  // ※「回答しない」の選択肢は要修正確認
+
+  form.addTextItem()
+    .setTitle('年齢（例：3歳5ヶ月）')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('平熱（例：36.5）')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('血液型')
+    .setChoiceValues(['A型', 'B型', 'O型', 'AB型', '不明'])
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('RH')
+    .setChoiceValues(['+', '−', '不明'])
+    .setRequired(false);
+
+  // ----- 所属・通所情報 -----
+  form.addSectionHeaderItem().setTitle('所属・通所情報');
+
+  form.addTextItem()
+    .setTitle('所属している保育園・幼稚園・学校')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('通所している支援事業所')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('通所受給者証')
+    .setChoiceValues(['ある', 'なし'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('発達検査を受けた機関')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('具体的な診断名（なしの場合は「なし」とご記入ください）')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('その他医療機関')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('治療中の病気・既往歴（なしの場合は「なし」）')
+    .setRequired(false);
+
+  // ----- アレルギー -----
+  form.addSectionHeaderItem().setTitle('アレルギー情報');
+
+  const allergyItem = form.addMultipleChoiceItem()
+    .setTitle('アレルギーの有無')
+    .setChoiceValues(['あり', 'なし'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('アレルギーの詳細（ありの場合、具体的にご記入ください）')
+    .setRequired(false);
+
+  // ----- 住所・連絡先 -----
+  form.addSectionHeaderItem().setTitle('住所・連絡先');
+
+  form.addTextItem()
+    .setTitle('郵便番号（例：000-0000）')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('住所（市町村名）')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('住所（町名・番地・建物名）')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('電話番号（自宅）')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('携帯電話番号①（保護者名：　　　）')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('携帯電話番号②（保護者名：　　　）')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('保護者メールアドレス')
+    .setHelpText('契約書類の送付等に使用します。')
+    .setRequired(true);
+
+  // ----- 緊急連絡先 -----
+  form.addSectionHeaderItem().setTitle('緊急連絡先');
+
+  form.addTextItem()
+    .setTitle('緊急連絡先① 氏名')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('緊急連絡先① 続柄')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('緊急連絡先① 電話番号')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('緊急連絡先② 氏名')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('緊急連絡先② 続柄')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('緊急連絡先② 電話番号')
+    .setRequired(true);
+
+  // ----- 家族構成 -----
+  form.addSectionHeaderItem().setTitle('家族構成');
+
+  form.addParagraphTextItem()
+    .setTitle('ご家族について（名前・ふりがな・続柄・年齢）')
+    .setHelpText('例：\n山田太郎（やまだたろう）・父・35歳\n山田花子（やまだはなこ）・母・33歳\n山田次郎（やまだじろう）・兄・5歳')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('祖父母・その他（日常で交流のあるご親戚や別居の祖父母など）')
+    .setHelpText('例：\n山田一郎（やまだいちろう）・祖父・同居\n山田良子（やまだよしこ）・祖母・別居')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('その他（知らせておきたい事項があればご記入ください）')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('連絡に関する補足事項')
+    .setRequired(false);
+
+  // ----- 基本情報の最後に利用区分を再確認（分岐用） -----
+  const branchItem = form.addMultipleChoiceItem()
+    .setTitle('お子さんの区分を選択してください');
+
+  // この分岐先は後で設定する必要がある（ページ参照の関係）
+  // → setupFormBranching() で対応
+}
+
+/**
+ * 未就学児アセスメントセクション
+ */
+function buildPreschoolSection(form, pageBreak) {
+  pageBreak.setHelpText('お子さんのご様子についてお聞かせください。\n※補足があれば自由記述欄にご記入ください。');
+
+  // ----- 行動面 -----
+  form.addSectionHeaderItem().setTitle('お子さんの行動について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('視線は合いますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('視線が合い始めた時期（分かれば）')
+    .setHelpText('例：1歳6ヶ月')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('興味を持った時、指をさして伝えますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('指さしをした方向を一緒に見ますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('オウム返しが目立ちますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('だっこされることを嫌がりますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('体を同じパターンで動かし続けますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('予定の変更でパニックになったりしますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('思い通りにならないとかんしゃくを起こしたりしますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('かんしゃく等がある場合、どのように対処していますか？')
+    .setRequired(false);
+
+  // ----- 発語・理解面 -----
+  form.addSectionHeaderItem().setTitle('発語・理解面');
+
+  form.addMultipleChoiceItem()
+    .setTitle('発語状況')
+    .setChoiceValues(['言葉が出ている', '言葉が出ていない', '単語のみ', 'その他'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('発語について詳しく教えてください')
+    .setHelpText('出ている場合の具体的な言葉や、その他の状況を自由にご記入ください')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('言葉ではないが、指さしや動作で自分の気持ちを表現しますか？')
+    .setChoiceValues(['表現する', '表現しない'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('簡単な言葉（「ちょうだい」「バイバイ」など）が分かりますか？')
+    .setChoiceValues(['わかる', 'わからない'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('理解面について補足があればご記入ください')
+    .setRequired(false);
+
+  // ----- 排泄 -----
+  form.addSectionHeaderItem().setTitle('排泄について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('パンツの種類')
+    .setChoiceValues(['紙パンツ', '布パンツ', '併用'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('尿意や便意を教えますか？')
+    .setChoiceValues(['教える', '教えない', '時々教える'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('トイレでしますか？')
+    .setChoiceValues(['する', 'しない', '時々する'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('※男の子の場合：トイレの仕方')
+    .setChoiceValues(['立ってする', '座ってする', '該当なし'])
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('トイレトレーニングをしていますか？')
+    .setChoiceValues(['している', 'していない'])
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('トイレに行くのを嫌がりますか？')
+    .setChoiceValues(['嫌がる', '嫌がらない'])
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('排泄について補足があればご記入ください')
+    .setHelpText('例：トイレに行くのを嫌がる、特定の場所でしかしない等')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('排泄に関する具体的な配慮があればご記入ください')
+    .setRequired(false);
+
+  // ----- 衣服 -----
+  form.addSectionHeaderItem().setTitle('着替えについて');
+
+  form.addCheckboxItem()
+    .setTitle('お子さんが自分でできることを選んでください')
+    .setChoiceValues([
+      'ズボンを脱げる', 'ズボンをはける',
+      '服を脱げる', '服を着れる',
+      '靴下を脱げる', '靴下をはける',
+      '靴を脱げる', '靴をはける',
+      'ボタンができる', 'チャックができる'
+    ])
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('着替えについて、具体的にどこまでできますか？')
+    .setHelpText('例：上着は自分で着れるが、ボタンは介助が必要')
+    .setRequired(false);
+
+  // ----- 食事 -----
+  form.addSectionHeaderItem().setTitle('食事について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('食事の好き嫌い')
+    .setChoiceValues(['何でも食べる', '好き嫌いがある'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('好きな食べ物・おやつ')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('嫌いな食べ物・おやつ')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('食事方法')
+    .setChoiceValues(['自分で食べる', '大人が食べさせる', '一部介助が必要'])
+    .setRequired(true);
+
+  form.addCheckboxItem()
+    .setTitle('※自分で食べる場合、使用するもの')
+    .setChoiceValues(['手づかみ', 'スプーン', 'フォーク', '箸'])
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('食事量')
+    .setChoiceValues(['多い', '普通', '少ない', 'ムラがある'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('食事に関する具体的な配慮があればご記入ください')
+    .setHelpText('例：刻み食が必要、特定の食感を嫌がる等')
+    .setRequired(false);
+
+  // ----- 運動・感覚 -----
+  form.addSectionHeaderItem().setTitle('運動・感覚について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('身体を動かす遊びは？')
+    .setChoiceValues(['好き', '苦手'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('戸外あそびは？')
+    .setChoiceValues(['好き', '苦手'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('音に敏感な様子がありますか？')
+    .setChoiceValues(['ある', 'ない'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('※音に敏感な場合、どんな音を嫌がりますか？')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('さわったり濡れることを嫌がることがありますか？')
+    .setChoiceValues(['ある', 'ない'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('※嫌がる場合、どんな物（事）を嫌がりますか？')
+    .setRequired(false);
+
+  // ----- あそび -----
+  form.addSectionHeaderItem().setTitle('あそびについて');
+
+  form.addMultipleChoiceItem()
+    .setTitle('他の子どもに興味がありますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('大人とあそぶことを好みますか？')
+    .setChoiceValues(['はい', '1人あそびが多い'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('どんな遊びが好きですか？')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('お気に入りのおもちゃなどは？')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('好きな絵本は？')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('興味のあるキャラクターは？')
+    .setRequired(false);
+
+  // ----- 自由記述 -----
+  form.addSectionHeaderItem().setTitle('お子さんについて教えてください');
+
+  form.addParagraphTextItem()
+    .setTitle('お子さんはどんな性格だと思いますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('通所園に対しての願い（要望・希望）はありますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('以前は出来なかったけど、出来るようになったことはありますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('現在、子育てをしていて、困っていること・悩んでいること・心配ごとはありますか？')
+    .setRequired(false);
+}
+
+/**
+ * 就学児アセスメントセクション
+ */
+function buildSchoolAgeSection(form, pageBreak) {
+  pageBreak.setHelpText('お子さんのご様子についてお聞かせください。\n※補足があれば自由記述欄にご記入ください。');
+
+  // ----- 行動面（未就学児と同じ） -----
+  form.addSectionHeaderItem().setTitle('お子さんの行動について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('視線は合いますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('視線が合い始めた時期（分かれば）')
+    .setHelpText('例：1歳6ヶ月')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('興味を持った時、指をさして伝えますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('指さしをした方向を一緒に見ますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('オウム返しが目立ちますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('だっこされることを嫌がりますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('体を同じパターンで動かし続けますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('予定の変更でパニックになったりしますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('思い通りにならないとかんしゃくを起こしたりしますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('かんしゃく等がある場合、どのように対処していますか？')
+    .setRequired(false);
+
+  // ----- 学校関連 -----
+  form.addSectionHeaderItem().setTitle('学校について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('在籍している学級')
+    .setChoiceValues(['通常学級', '特別支援学級', '特別支援学校', 'その他'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('在籍学級について補足（「その他」の場合など）')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('学校への通学状況')
+    .setChoiceValues(['毎日通学', '時々欠席', '不登校気味', 'その他'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('通学状況について補足（「その他」の場合など）')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('学校にお願いしている配慮があれば教えてください')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('宿題支援の方法について教えてください')
+    .setHelpText('例：間違いは直してほしい、できる範囲で良い、見守りだけで良い等')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('対人関係で配慮していることがあれば教えてください')
+    .setRequired(false);
+
+  // ----- POLEPOLE利用日以外の過ごし方 -----
+  form.addSectionHeaderItem().setTitle('POLEPOLE利用日以外の過ごし方');
+  form.addSectionHeaderItem().setHelpText('各曜日のPOLEPOLE利用日以外の過ごし方を教えてください');
+
+  form.addTextItem().setTitle('月曜日の過ごし方').setHelpText('例：自宅、学童、放課後デイ等').setRequired(false);
+  form.addTextItem().setTitle('火曜日の過ごし方').setRequired(false);
+  form.addTextItem().setTitle('水曜日の過ごし方').setRequired(false);
+  form.addTextItem().setTitle('木曜日の過ごし方').setRequired(false);
+  form.addTextItem().setTitle('金曜日の過ごし方').setRequired(false);
+  form.addTextItem().setTitle('土曜日の過ごし方').setRequired(false);
+
+  // ----- 排泄 -----
+  form.addSectionHeaderItem().setTitle('排泄について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('パンツの種類')
+    .setChoiceValues(['紙パンツ', '布パンツ', '併用'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('尿意や便意を教えますか？')
+    .setChoiceValues(['教える', '教えない', '時々教える'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('トイレでしますか？')
+    .setChoiceValues(['する', 'しない', '時々する'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('トイレに行くのを嫌がりますか？')
+    .setChoiceValues(['嫌がる', '嫌がらない'])
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('排泄について補足があればご記入ください')
+    .setRequired(false);
+
+  // ----- 衣服 -----
+  form.addSectionHeaderItem().setTitle('着替えについて');
+
+  form.addMultipleChoiceItem()
+    .setTitle('身辺自立の状況')
+    .setChoiceValues(['自立', '一部介助あり'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('着替え等について、具体的にどこまでできますか？')
+    .setHelpText('例：ボタンは自分でできるが、靴紐は介助が必要')
+    .setRequired(false);
+
+  // ----- 食事 -----
+  form.addSectionHeaderItem().setTitle('食事について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('食事の好き嫌い')
+    .setChoiceValues(['何でも食べる', '好き嫌いがある'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('好きな食べ物・おやつ')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('嫌いな食べ物・おやつ')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('食事方法')
+    .setChoiceValues(['自分で食べる', '大人が食べさせる', '一部介助が必要'])
+    .setRequired(true);
+
+  form.addCheckboxItem()
+    .setTitle('※自分で食べる場合、使用するもの')
+    .setChoiceValues(['手づかみ', 'スプーン', 'フォーク', '箸'])
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('食事量')
+    .setChoiceValues(['多い', '普通', '少ない', 'ムラがある'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('食事に関する具体的な配慮があればご記入ください')
+    .setRequired(false);
+
+  // ----- 言語 -----
+  form.addSectionHeaderItem().setTitle('言語について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('発語状況')
+    .setChoiceValues(['言葉が出ている', '言葉が出ていない', '単語のみ', 'その他'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('発語について詳しく教えてください')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('言葉ではないが、指さしや動作で自分の気持ちを表現しますか？')
+    .setChoiceValues(['表現する', '表現しない'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('簡単な言葉（「ちょうだい」「バイバイ」など）が分かりますか？')
+    .setChoiceValues(['わかる', 'わからない'])
+    .setRequired(true);
+
+  // ----- 運動・感覚 -----
+  form.addSectionHeaderItem().setTitle('運動・感覚について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('身体を動かす遊びは？')
+    .setChoiceValues(['好き', '苦手'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('戸外あそびは？')
+    .setChoiceValues(['好き', '苦手'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('音に敏感な様子がありますか？')
+    .setChoiceValues(['ある', 'ない'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('※音に敏感な場合、どんな音を嫌がりますか？')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('さわったり濡れることを嫌がることがありますか？')
+    .setChoiceValues(['ある', 'ない'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('※嫌がる場合、どんな物（事）を嫌がりますか？')
+    .setRequired(false);
+
+  // ----- あそび -----
+  form.addSectionHeaderItem().setTitle('あそびについて');
+
+  form.addMultipleChoiceItem()
+    .setTitle('他のお子さんに興味がありますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('特に仲のいいお子さんはいますか？')
+    .setChoiceValues(['はい', 'いいえ'])
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('大人とあそぶことを好みますか？')
+    .setChoiceValues(['はい', '1人あそびが多い'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('どんな遊びが好きですか？')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('お気に入りのおもちゃなどは？')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('好きな絵本は？')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('興味のあるキャラクターは？')
+    .setRequired(false);
+
+  // ----- コミュニケーション（就学児固有） -----
+  form.addSectionHeaderItem().setTitle('お子さんのコミュニケーションについて');
+
+  form.addMultipleChoiceItem()
+    .setTitle('お子さんは、学校での出来事をご家族に話しますか？')
+    .setChoiceValues(['話す', '話さない'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('※話す場合、どんな話をしますか？')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('お子さんは、自分の気持ちをご家族に話しますか？')
+    .setChoiceValues(['話す', '話さない'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('※話す場合、どんな話をしますか？')
+    .setRequired(false);
+
+  // ----- 自由記述 -----
+  form.addSectionHeaderItem().setTitle('お子さんについて教えてください');
+
+  form.addParagraphTextItem()
+    .setTitle('お子さんはどんな性格だと思いますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('以前は出来なかったけど、出来るようになったことはありますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('お子さんにどのように育ってほしい（どのように育てたい）ですか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('現在、子育てをしていて、困っていること・悩んでいること・心配ごとはありますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('学校生活やご家庭で困っていることはありますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('支援で特に見てほしいことはありますか？')
+    .setRequired(false);
+}
+
+/**
+ * 継続アセスメントセクション
+ */
+function buildContinuationSection(form, pageBreak) {
+  pageBreak.setHelpText('継続利用のアセスメントです。\n現在のお子さんのご様子についてお聞かせください。');
+
+  form.addTextItem()
+    .setTitle('お子さんのお名前')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('お子さんのお名前（ふりがな）')
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('お子さんの区分')
+    .setChoiceValues(['未就学児', '就学児'])
+    .setRequired(true);
+
+  // ----- 就学児用の質問 -----
+  form.addSectionHeaderItem().setTitle('学校でのご様子（就学児の方のみご回答ください）');
+
+  form.addMultipleChoiceItem()
+    .setTitle('お子さんは、学校での出来事をご家族に話しますか？')
+    .setChoiceValues(['話す', '話さない', '該当なし（未就学児）'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('※話す場合、どんな話をしますか？')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('お子さんは、自分の気持ちをご家族に話しますか？')
+    .setChoiceValues(['話す', '話さない'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('※話す場合、どんな話をしますか？')
+    .setRequired(false);
+
+  // ----- 共通 -----
+  form.addSectionHeaderItem().setTitle('お子さんについて教えてください');
+
+  form.addParagraphTextItem()
+    .setTitle('お子さんはどんな性格だと思いますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('以前は出来なかったけど、出来るようになったことはありますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('お子さんにどのように育ってほしい（どのように育てたい）ですか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('現在、子育てをしていて、困っていること・悩んでいること・心配ごとはありますか？')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('通所園・学校に対しての願い（要望・希望）はありますか？')
+    .setRequired(false);
+}
+
+/**
+ * 共通終了セクション（写真・送迎）
+ */
+function buildCommonEndSection(form, pageBreak) {
+  pageBreak.setHelpText('最後に、写真掲載と送迎についてお答えください。');
+
+  // ----- 写真掲載 -----
+  form.addSectionHeaderItem().setTitle('写真掲載について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('活動中の写真掲載について')
+    .setHelpText('POLEPOLEの活動報告やお便り等での写真掲載についてお聞きします。')
+    .setChoiceValues([
+      PHOTO_CONSENT.AGREE,
+      PHOTO_CONSENT.DISAGREE,
+      PHOTO_CONSENT.CONDITIONAL
+    ])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('※「条件付きで同意する」の場合、条件をご記入ください')
+    .setHelpText('例：施設内の掲示のみ可、SNSへの掲載は不可等')
+    .setRequired(false);
+
+  // ----- 送迎 -----
+  form.addSectionHeaderItem().setTitle('送迎について');
+
+  const transportItem = form.addMultipleChoiceItem()
+    .setTitle('送迎を希望しますか？')
+    .setChoiceValues([
+      TRANSPORT_OPTIONS.YES,
+      TRANSPORT_OPTIONS.NO
+    ])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('送迎について補足事項があればご記入ください')
+    .setRequired(false);
+
+  // 送迎先の住所（送迎ありの場合のみ記入）
+  form.addTextItem()
+    .setTitle('送迎先の住所（送迎を希望する場合にご記入ください）')
+    .setHelpText('基本情報の住所と異なる場合にご記入ください。同じ場合は「同上」とご記入ください。')
+    .setRequired(false);
+}</textarea></div>
+</div>
+
+<div class="file-block">
+<div class="file-header">
+<div><h2><span class="order-badge">4</span>03_triggerHandler</h2><span class="desc">フォーム送信時の自動処理</span></div>
+<button class="copy-btn" onclick="copyCode(this, 'code3')">コピー</button>
+</div>
+<div class="code-area"><textarea id="code3" readonly>/**
+ * ============================================
+ * フォーム送信時の自動処理（トリガーハンドラ）
+ * ============================================
+ *
+ * フォームが送信されると自動的に実行されます。
+ * 1. 各シートへのデータ振り分け
+ * 2. ドライブフォルダの作成
+ */
+
+function onFormSubmit(e) {
+  try {
+    const response = e.response;
+    const itemResponses = response.getItemResponses();
+
+    // 回答をオブジェクトに変換
+    const answers = {};
+    itemResponses.forEach(function(itemResponse) {
+      answers[itemResponse.getItem().getTitle()] = itemResponse.getResponse();
+    });
+
+    Logger.log('フォーム回答受信: ' + JSON.stringify(answers));
+
+    // 利用区分を判定
+    const enrollmentType = answers['利用区分を選択してください'] || '';
+    const childName = answers['お子さんのお名前'] || '';
+    const timestamp = new Date();
+
+    // 1. 各シートにデータを振り分け
+    distributeToSheets(answers, enrollmentType, timestamp);
+
+    // 2. 新規の場合のみドライブフォルダを作成
+    if (enrollmentType !== ENROLLMENT_TYPES.CONTINUATION) {
+      const photoConsent = answers['活動中の写真掲載について'] || '';
+      createChildFolder(childName, photoConsent, enrollmentType);
+    } else {
+      // 継続の場合は経年変化シートに追加
+      addYearlyChangeData(answers, timestamp);
+    }
+
+    Logger.log('処理完了: ' + childName);
+
+  } catch (error) {
+    Logger.log('onFormSubmitエラー: ' + error.message);
+    Logger.log(error.stack);
+    // エラー通知メールを送信
+    MailApp.sendEmail(
+      Session.getActiveUser().getEmail(),
+      '[POLEPOLE] フォーム処理エラー',
+      'フォーム送信の自動処理でエラーが発生しました。\n\n' +
+      'エラー内容: ' + error.message + '\n\n' +
+      'スタックトレース:\n' + error.stack
+    );
+  }
+}
+
+/**
+ * 各シートにデータを振り分け
+ */
+function distributeToSheets(answers, enrollmentType, timestamp) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // ----- 基本情報一覧 -----
+  if (enrollmentType !== ENROLLMENT_TYPES.CONTINUATION) {
+    const basicSheet = ss.getSheetByName(SHEET_NAMES.BASIC_INFO);
+    if (basicSheet) {
+      basicSheet.appendRow([
+        timestamp,
+        enrollmentType,
+        answers['お子さんのお名前'] || '',
+        answers['お子さんのお名前（ふりがな）'] || '',
+        answers['呼び名（ニックネーム）'] || '',
+        answers['生年月日'] || '',
+        answers['年齢（例：3歳5ヶ月）'] || '',
+        answers['性別'] || '',
+        answers['平熱（例：36.5）'] || '',
+        answers['血液型'] || '',
+        answers['RH'] || '',
+        answers['所属している保育園・幼稚園・学校'] || '',
+        answers['通所している支援事業所'] || '',
+        answers['通所受給者証'] || '',
+        answers['発達検査を受けた機関'] || '',
+        answers['具体的な診断名（なしの場合は「なし」とご記入ください）'] || '',
+        answers['その他医療機関'] || '',
+        answers['治療中の病気・既往歴（なしの場合は「なし」）'] || '',
+      ]);
+    }
+  }
+
+  // ----- アレルギー情報 -----
+  if (enrollmentType !== ENROLLMENT_TYPES.CONTINUATION) {
+    const allergySheet = ss.getSheetByName(SHEET_NAMES.ALLERGY);
+    if (allergySheet) {
+      const hasAllergy = answers['アレルギーの有無'] || '';
+      allergySheet.appendRow([
+        timestamp,
+        answers['お子さんのお名前'] || '',
+        answers['お子さんのお名前（ふりがな）'] || '',
+        hasAllergy,
+        answers['アレルギーの詳細（ありの場合、具体的にご記入ください）'] || '',
+        answers['食事に関する具体的な配慮があればご記入ください'] || '',
+      ]);
+
+      // アレルギーありの場合、行を赤色でハイライト
+      if (hasAllergy === 'あり') {
+        const lastRow = allergySheet.getLastRow();
+        allergySheet.getRange(lastRow, 1, 1, allergySheet.getLastColumn())
+          .setBackground('#FFCDD2');
+      }
+    }
+  }
+
+  // ----- 送迎一覧 -----
+  if (enrollmentType !== ENROLLMENT_TYPES.CONTINUATION) {
+    const transportSheet = ss.getSheetByName(SHEET_NAMES.TRANSPORT);
+    if (transportSheet) {
+      transportSheet.appendRow([
+        timestamp,
+        answers['お子さんのお名前'] || '',
+        answers['お子さんのお名前（ふりがな）'] || '',
+        answers['郵便番号（例：000-0000）'] || '',
+        answers['住所（市町村名）'] || '',
+        answers['住所（町名・番地・建物名）'] || '',
+        answers['送迎を希望しますか？'] || '',
+        answers['送迎先の住所（送迎を希望する場合にご記入ください）'] || '',
+        answers['送迎について補足事項があればご記入ください'] || '',
+      ]);
+
+      // 送迎ありの場合、行を青色でハイライト
+      if (answers['送迎を希望しますか？'] === TRANSPORT_OPTIONS.YES) {
+        const lastRow = transportSheet.getLastRow();
+        transportSheet.getRange(lastRow, 1, 1, transportSheet.getLastColumn())
+          .setBackground('#BBDEFB');
+      }
+    }
+  }
+
+  // ----- 保護者連絡先 -----
+  if (enrollmentType !== ENROLLMENT_TYPES.CONTINUATION) {
+    const contactSheet = ss.getSheetByName(SHEET_NAMES.CONTACT);
+    if (contactSheet) {
+      contactSheet.appendRow([
+        timestamp,
+        answers['お子さんのお名前'] || '',
+        answers['保護者メールアドレス'] || '',
+        answers['電話番号（自宅）'] || '',
+        answers['携帯電話番号①（保護者名：　　　）'] || '',
+        answers['携帯電話番号②（保護者名：　　　）'] || '',
+        answers['緊急連絡先① 氏名'] || '',
+        answers['緊急連絡先① 続柄'] || '',
+        answers['緊急連絡先① 電話番号'] || '',
+        answers['緊急連絡先② 氏名'] || '',
+        answers['緊急連絡先② 続柄'] || '',
+        answers['緊急連絡先② 電話番号'] || '',
+        answers['連絡に関する補足事項'] || '',
+      ]);
+    }
+  }
+
+  // ----- アセスメント回答一覧 -----
+  const assessmentSheet = ss.getSheetByName(SHEET_NAMES.ASSESSMENT);
+  if (assessmentSheet) {
+    // アセスメント関連の全回答を記録
+    const assessmentData = [
+      timestamp,
+      enrollmentType,
+      answers['お子さんのお名前'] || '',
+    ];
+
+    // 行動面
+    const behaviorKeys = [
+      '視線は合いますか？',
+      '興味を持った時、指をさして伝えますか？',
+      '指さしをした方向を一緒に見ますか？',
+      'オウム返しが目立ちますか？',
+      'だっこされることを嫌がりますか？',
+      '体を同じパターンで動かし続けますか？',
+      '予定の変更でパニックになったりしますか？',
+      '思い通りにならないとかんしゃくを起こしたりしますか？',
+      'かんしゃく等がある場合、どのように対処していますか？',
+    ];
+
+    behaviorKeys.forEach(function(key) {
+      assessmentData.push(answers[key] || '');
+    });
+
+    // 発語・排泄・衣服・食事・運動・あそび
+    const dailyKeys = [
+      '発語状況',
+      '発語について詳しく教えてください',
+      'パンツの種類',
+      '尿意や便意を教えますか？',
+      'トイレでしますか？',
+      '排泄について補足があればご記入ください',
+      '食事の好き嫌い',
+      '好きな食べ物・おやつ',
+      '嫌いな食べ物・おやつ',
+      '食事方法',
+      '食事量',
+      '身体を動かす遊びは？',
+      '戸外あそびは？',
+      '音に敏感な様子がありますか？',
+      'さわったり濡れることを嫌がることがありますか？',
+      '他の子どもに興味がありますか？',
+      'どんな遊びが好きですか？',
+    ];
+
+    dailyKeys.forEach(function(key) {
+      assessmentData.push(answers[key] || '');
+    });
+
+    // 自由記述
+    const freeTextKeys = [
+      'お子さんはどんな性格だと思いますか？',
+      '以前は出来なかったけど、出来るようになったことはありますか？',
+      '現在、子育てをしていて、困っていること・悩んでいること・心配ごとはありますか？',
+    ];
+
+    freeTextKeys.forEach(function(key) {
+      assessmentData.push(answers[key] || '');
+    });
+
+    assessmentSheet.appendRow(assessmentData);
+  }
+}
+
+/**
+ * 経年変化シートにデータを追加
+ */
+function addYearlyChangeData(answers, timestamp) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const yearlySheet = ss.getSheetByName(SHEET_NAMES.YEARLY_CHANGE);
+
+  if (!yearlySheet) return;
+
+  const childName = answers['お子さんのお名前'] || '';
+  const year = timestamp.getFullYear();
+  const month = timestamp.getMonth() + 1;
+
+  yearlySheet.appendRow([
+    timestamp,
+    year + '年度',
+    childName,
+    answers['お子さんのお名前（ふりがな）'] || '',
+    answers['お子さんの区分'] || '',
+    answers['お子さんは、学校での出来事をご家族に話しますか？'] || '',
+    answers['※話す場合、どんな話をしますか？'] || '',
+    answers['お子さんは、自分の気持ちをご家族に話しますか？'] || '',
+    answers['お子さんはどんな性格だと思いますか？'] || '',
+    answers['以前は出来なかったけど、出来るようになったことはありますか？'] || '',
+    answers['お子さんにどのように育ってほしい（どのように育てたい）ですか？'] || '',
+    answers['現在、子育てをしていて、困っていること・悩んでいること・心配ごとはありますか？'] || '',
+    answers['通所園・学校に対しての願い（要望・希望）はありますか？'] || '',
+  ]);
+}</textarea></div>
+</div>
+
+<div class="file-block">
+<div class="file-header">
+<div><h2><span class="order-badge">5</span>04_sheetManager</h2><span class="desc">スプレッドシート管理</span></div>
+<button class="copy-btn" onclick="copyCode(this, 'code4')">コピー</button>
+</div>
+<div class="code-area"><textarea id="code4" readonly>/**
+ * ============================================
+ * スプレッドシート管理
+ * ============================================
+ *
+ * 7つのシートを自動作成し、ヘッダーと書式を設定します。
+ */
+
+function setupSpreadsheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // ----- 1. 基本情報一覧 -----
+  createSheetWithHeaders(ss, SHEET_NAMES.BASIC_INFO, [
+    'タイムスタンプ', '利用区分',
+    '氏名', 'ふりがな', '呼び名',
+    '生年月日', '年齢', '性別', '平熱', '血液型', 'RH',
+    '所属園・学校', '通所支援事業所',
+    '通所受給者証', '発達検査機関', '診断名',
+    'その他医療機関', '治療中の病気・既往歴',
+  ], '#E8F5E9'); // 薄緑
+
+  // ----- 2. アレルギー情報 -----
+  const allergySheet = createSheetWithHeaders(ss, SHEET_NAMES.ALLERGY, [
+    'タイムスタンプ', '氏名', 'ふりがな',
+    'アレルギー有無', 'アレルギー詳細',
+    '食事の配慮',
+  ], '#FFF3E0'); // 薄オレンジ
+
+  // アレルギーシートの条件付き書式を設定
+  if (allergySheet) {
+    setupAllergyConditionalFormatting(allergySheet);
+  }
+
+  // ----- 3. 送迎一覧 -----
+  createSheetWithHeaders(ss, SHEET_NAMES.TRANSPORT, [
+    'タイムスタンプ', '氏名', 'ふりがな',
+    '郵便番号', '市町村名', '町名・番地・建物名',
+    '送迎希望', '送迎先住所', '送迎補足',
+  ], '#E3F2FD'); // 薄青
+
+  // ----- 4. 保護者連絡先 -----
+  createSheetWithHeaders(ss, SHEET_NAMES.CONTACT, [
+    'タイムスタンプ', '児童氏名',
+    'メールアドレス',
+    '自宅電話', '携帯①', '携帯②',
+    '緊急連絡先① 氏名', '緊急連絡先① 続柄', '緊急連絡先① 電話',
+    '緊急連絡先② 氏名', '緊急連絡先② 続柄', '緊急連絡先② 電話',
+    '連絡補足事項',
+  ], '#F3E5F5'); // 薄紫
+
+  // ----- 5. アセスメント回答一覧 -----
+  createSheetWithHeaders(ss, SHEET_NAMES.ASSESSMENT, [
+    'タイムスタンプ', '利用区分', '氏名',
+    // 行動面
+    '視線', '指さし', '共同注視', 'オウム返し',
+    'だっこ嫌がり', '常同行動', 'パニック', 'かんしゃく',
+    'かんしゃく対処法',
+    // 発語・日常生活
+    '発語状況', '発語詳細',
+    'パンツ種類', '尿意便意', 'トイレ使用',
+    '排泄補足',
+    '食事好き嫌い', '好きな食べ物', '嫌いな食べ物',
+    '食事方法', '食事量',
+    '身体遊び', '戸外遊び',
+    '音の過敏', '触覚過敏',
+    '子どもへの興味', '好きな遊び',
+    // 自由記述
+    '性格', 'できるようになったこと', '悩み・心配ごと',
+  ], '#FFF9C4'); // 薄黄
+
+  // ----- 6. 経年変化シート -----
+  createSheetWithHeaders(ss, SHEET_NAMES.YEARLY_CHANGE, [
+    'タイムスタンプ', '年度', '氏名', 'ふりがな', '区分',
+    '学校の出来事を話す', '話す内容',
+    '気持ちを話す',
+    '性格',
+    'できるようになったこと',
+    '育ってほしい姿',
+    '悩み・心配ごと',
+    '通所園・学校への願い',
+  ], '#E0F7FA'); // 薄シアン
+
+  // ----- 7. システム設定 -----
+  const settingsSheet = createSheetWithHeaders(ss, SHEET_NAMES.SETTINGS, [
+    '設定名', '設定値', '説明',
+  ], '#ECEFF1'); // 薄グレー
+
+  if (settingsSheet) {
+    settingsSheet.appendRow(['FACILITY_NAME', CONFIG.FACILITY_NAME, '施設名']);
+    settingsSheet.appendRow(['ROOT_FOLDER_NAME', CONFIG.ROOT_FOLDER_NAME, 'ドライブルートフォルダ名']);
+    settingsSheet.appendRow(['CONTRACT_TEMPLATE_NAME', CONFIG.CONTRACT_TEMPLATE_NAME, '契約書テンプレート名']);
+  }
+
+  // デフォルトのSheet1を削除（あれば）
+  const defaultSheet = ss.getSheetByName('シート1') || ss.getSheetByName('Sheet1');
+  if (defaultSheet && ss.getSheets().length > 1) {
+    ss.deleteSheet(defaultSheet);
+  }
+
+  Logger.log('スプレッドシート設定完了');
+}
+
+/**
+ * ヘッダー付きのシートを作成
+ */
+function createSheetWithHeaders(ss, sheetName, headers, headerColor) {
+  // 既存シートがあれば何もしない
+  let sheet = ss.getSheetByName(sheetName);
+  if (sheet) {
+    Logger.log('シート既存（スキップ）: ' + sheetName);
+    return sheet;
+  }
+
+  // 新規シート作成
+  sheet = ss.insertSheet(sheetName);
+
+  // ヘッダーを設定
+  const headerRange = sheet.getRange(1, 1, 1, headers.length);
+  headerRange.setValues([headers]);
+  headerRange.setFontWeight('bold');
+  headerRange.setBackground(headerColor);
+  headerRange.setHorizontalAlignment('center');
+  headerRange.setBorder(true, true, true, true, true, true);
+
+  // 列幅を自動調整
+  headers.forEach(function(_, i) {
+    sheet.setColumnWidth(i + 1, 120);
+  });
+
+  // 1行目を固定
+  sheet.setFrozenRows(1);
+
+  // フィルターを設定
+  sheet.getRange(1, 1, 1, headers.length).createFilter();
+
+  Logger.log('シート作成完了: ' + sheetName);
+  return sheet;
+}
+
+/**
+ * アレルギーシートに条件付き書式を設定
+ * アレルギー「あり」の行が赤く目立つようにする
+ */
+function setupAllergyConditionalFormatting(sheet) {
+  // アレルギー有無の列（D列）が「あり」の場合、行全体を赤背景に
+  const rule = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo('あり')
+    .setBackground('#FFCDD2')
+    .setFontColor('#B71C1C')
+    .setBold(true)
+    .setRanges([sheet.getRange('D2:D1000')])
+    .build();
+
+  // アレルギー「なし」の場合は緑
+  const ruleNo = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo('なし')
+    .setBackground('#C8E6C9')
+    .setRanges([sheet.getRange('D2:D1000')])
+    .build();
+
+  sheet.setConditionalFormatRules([rule, ruleNo]);
+
+  Logger.log('アレルギーシートの条件付き書式設定完了');
+}</textarea></div>
+</div>
+
+<div class="file-block">
+<div class="file-header">
+<div><h2><span class="order-badge">6</span>05_driveManager</h2><span class="desc">Googleドライブ フォルダ管理</span></div>
+<button class="copy-btn" onclick="copyCode(this, 'code5')">コピー</button>
+</div>
+<div class="code-area"><textarea id="code5" readonly>/**
+ * ============================================
+ * Googleドライブ フォルダ自動作成
+ * ============================================
+ *
+ * 児童ごとのフォルダを自動作成します。
+ * - 写真掲載「同意しない」の場合は写真フォルダを作成しない
+ * - 契約書控えフォルダは必ず作成
+ */
+
+/**
+ * ルートフォルダを作成
+ */
+function createRootFolder() {
+  const rootFolder = DriveApp.createFolder(CONFIG.ROOT_FOLDER_NAME);
+
+  // サブフォルダ構造を作成
+  rootFolder.createFolder('_テンプレート');
+
+  Logger.log('ルートフォルダ作成完了: ' + rootFolder.getUrl());
+  return rootFolder.getId();
+}
+
+/**
+ * 児童ごとのフォルダを作成
+ *
+ * フォルダ構成:
+ *   POLEPOLE_児童管理/
+ *   └── 〇〇〇〇（児童名）/
+ *       ├── 契約書控え/
+ *       ├── アセスメント/
+ *       ├── 写真/          ← 写真掲載に同意した場合のみ
+ *       └── その他書類/
+ */
+function createChildFolder(childName, photoConsent, enrollmentType) {
+  if (!childName) {
+    Logger.log('児童名が空のためフォルダ作成をスキップ');
+    return null;
+  }
+
+  // ルートフォルダを取得
+  const rootFolderId = PropertiesService.getScriptProperties().getProperty(PROP_KEYS.ROOT_FOLDER_ID);
+  if (!rootFolderId) {
+    Logger.log('ルートフォルダが見つかりません');
+    return null;
+  }
+
+  const rootFolder = DriveApp.getFolderById(rootFolderId);
+
+  // 同名フォルダが既にあるかチェック
+  const existingFolders = rootFolder.getFoldersByName(childName);
+  if (existingFolders.hasNext()) {
+    Logger.log('同名フォルダが既に存在します: ' + childName);
+    return existingFolders.next().getId();
+  }
+
+  // 児童フォルダを作成
+  const childFolder = rootFolder.createFolder(childName);
+
+  // サブフォルダを作成
+  childFolder.createFolder('契約書控え');
+  childFolder.createFolder('アセスメント');
+  childFolder.createFolder('その他書類');
+
+  // 写真フォルダ：同意しない場合は作成しない
+  if (photoConsent !== PHOTO_CONSENT.DISAGREE) {
+    childFolder.createFolder('写真');
+    Logger.log('写真フォルダを作成しました: ' + childName);
+  } else {
+    Logger.log('写真掲載不同意のため写真フォルダは作成しません: ' + childName);
+  }
+
+  Logger.log('児童フォルダ作成完了: ' + childName + ' (' + childFolder.getUrl() + ')');
+  return childFolder.getId();
+}
+
+/**
+ * 手動で児童フォルダを作成するダイアログ
+ */
+function showCreateFolderDialog() {
+  const html = HtmlService.createHtmlOutput(`
+    <style>
+      body { font-family: Arial, sans-serif; padding: 16px; }
+      label { display: block; margin-top: 12px; font-weight: bold; }
+      input, select { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+      button { margin-top: 16px; padding: 10px 24px; background: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 4px; }
+      button:hover { background: #45a049; }
+    </style>
+    <h3>児童フォルダ作成</h3>
+    <label>児童名</label>
+    <input type="text" id="childName" placeholder="例：山田太郎">
+    <label>写真掲載</label>
+    <select id="photoConsent">
+      <option value="${PHOTO_CONSENT.AGREE}">同意する</option>
+      <option value="${PHOTO_CONSENT.DISAGREE}">同意しない</option>
+      <option value="${PHOTO_CONSENT.CONDITIONAL}">条件付きで同意する</option>
+    </select>
+    <button onclick="createFolder()">フォルダ作成</button>
+    <script>
+      function createFolder() {
+        const name = document.getElementById('childName').value;
+        const consent = document.getElementById('photoConsent').value;
+        if (!name) { alert('児童名を入力してください'); return; }
+        google.script.run
+          .withSuccessHandler(function() { alert('フォルダを作成しました: ' + name); google.script.host.close(); })
+          .withFailureHandler(function(e) { alert('エラー: ' + e.message); })
+          .createChildFolder(name, consent, '手動作成');
+      }
+    </script>
+  `).setWidth(400).setHeight(320);
+
+  SpreadsheetApp.getUi().showModalDialog(html, '児童フォルダ作成');
+}</textarea></div>
+</div>
+
+<div class="file-block">
+<div class="file-header">
+<div><h2><span class="order-badge">7</span>06_contractManager</h2><span class="desc">契約書テンプレート・生成</span></div>
+<button class="copy-btn" onclick="copyCode(this, 'code6')">コピー</button>
+</div>
+<div class="code-area"><textarea id="code6" readonly>/**
+ * ============================================
+ * 契約書テンプレート管理
+ * ============================================
+ *
+ * 1. 契約書テンプレート（Googleドキュメント）を自動作成
+ * 2. 児童情報を差し込んで契約書を生成
+ * 3. PDFに変換して児童フォルダに保存
+ */
+
+/**
+ * 契約書テンプレートを作成
+ */
+function createContractTemplate() {
+  const doc = DocumentApp.create(CONFIG.CONTRACT_TEMPLATE_NAME);
+  const body = doc.getBody();
+
+  // ----- テンプレートの内容 -----
+  // ※ {{変数名}} はフォーム回答から自動差し込みされます
+
+  body.appendParagraph('児童発達支援・放課後等デイサービス')
+    .setAlignment(DocumentApp.HorizontalAlignment.CENTER)
+    .setFontSize(12);
+
+  body.appendParagraph('POLEPOLE 利用契約書')
+    .setAlignment(DocumentApp.HorizontalAlignment.CENTER)
+    .setFontSize(18)
+    .setBold(true);
+
+  body.appendParagraph('');
+
+  body.appendParagraph('契約日：　　　　年　　　月　　　日')
+    .setFontSize(11);
+
+  body.appendParagraph('');
+
+  // 甲（利用者）
+  body.appendParagraph('【甲（利用者・保護者）】')
+    .setBold(true).setFontSize(12);
+
+  const userTable = body.appendTable([
+    ['利用児童氏名', '{{児童氏名}}'],
+    ['ふりがな', '{{ふりがな}}'],
+    ['生年月日', '{{生年月日}}'],
+    ['住所', '〒{{郵便番号}}\n{{市町村名}}{{町名番地}}'],
+    ['保護者氏名', ''],
+    ['電話番号', '{{携帯電話}}'],
+    ['メールアドレス', '{{メールアドレス}}'],
+  ]);
+  formatTable(userTable);
+
+  body.appendParagraph('');
+
+  // 乙（事業者）
+  body.appendParagraph('【乙（事業者）】')
+    .setBold(true).setFontSize(12);
+
+  const providerTable = body.appendTable([
+    ['事業所名', 'POLEPOLE'],
+    ['所在地', ''],
+    ['代表者', ''],
+    ['電話番号', ''],
+  ]);
+  formatTable(providerTable);
+
+  body.appendParagraph('');
+
+  // 契約内容
+  body.appendParagraph('【契約内容】')
+    .setBold(true).setFontSize(12);
+
+  body.appendParagraph(
+    '甲は、乙が提供する児童発達支援・放課後等デイサービスを利用するにあたり、' +
+    '以下の事項について同意し、本契約を締結します。'
+  ).setFontSize(11);
+
+  body.appendParagraph('');
+
+  // 条項
+  const articles = [
+    '第1条（目的）\n本契約は、甲の児童が乙の提供するサービスを利用するにあたり、必要な事項を定めることを目的とする。',
+    '第2条（サービスの内容）\n乙は、甲の児童に対し、個別支援計画に基づいた児童発達支援・放課後等デイサービスを提供する。',
+    '第3条（利用日及び利用時間）\n利用日及び利用時間は、甲乙協議の上、別途定める。',
+    '第4条（利用料）\n利用料は、児童福祉法に基づく公費負担及び甲の自己負担額とする。',
+    '第5条（送迎）\n送迎の有無及び内容については、甲乙協議の上、別途定める。',
+    '第6条（個人情報の取扱い）\n乙は、甲の個人情報を適切に管理し、サービス提供の目的以外には使用しない。',
+    '第7条（写真等の取扱い）\n活動記録等における写真掲載については、別途同意書による。',
+    '第8条（契約の解除）\n甲又は乙は、30日前までに書面により通知することで、本契約を解除することができる。',
+    '第9条（その他）\n本契約に定めのない事項については、甲乙誠意をもって協議し、解決する。',
+  ];
+
+  articles.forEach(function(article) {
+    body.appendParagraph(article).setFontSize(11);
+    body.appendParagraph('');
+  });
+
+  // 署名欄
+  body.appendParagraph('上記の内容に同意し、本契約を締結します。')
+    .setFontSize(11);
+
+  body.appendParagraph('');
+  body.appendParagraph('');
+
+  const signTable = body.appendTable([
+    ['甲（保護者）署名', '', '日付', '　　年　　月　　日'],
+    ['乙（事業者）署名', '', '日付', '　　年　　月　　日'],
+  ]);
+  formatTable(signTable);
+
+  doc.saveAndClose();
+
+  // テンプレートフォルダに移動
+  const rootFolderId = PropertiesService.getScriptProperties().getProperty(PROP_KEYS.ROOT_FOLDER_ID);
+  if (rootFolderId) {
+    const rootFolder = DriveApp.getFolderById(rootFolderId);
+    const templateFolders = rootFolder.getFoldersByName('_テンプレート');
+    if (templateFolders.hasNext()) {
+      templateFolders.next().addFile(DriveApp.getFileById(doc.getId()));
+      DriveApp.getRootFolder().removeFile(DriveApp.getFileById(doc.getId()));
+    }
+  }
+
+  Logger.log('契約書テンプレート作成完了: ' + doc.getUrl());
+  return doc.getId();
+}
+
+/**
+ * テーブルの書式設定
+ */
+function formatTable(table) {
+  for (var i = 0; i < table.getNumRows(); i++) {
+    for (var j = 0; j < table.getRow(i).getNumCells(); j++) {
+      table.getRow(i).getCell(j).setFontSize(11);
+      if (j === 0) {
+        table.getRow(i).getCell(j).setBackgroundColor('#F5F5F5');
+        table.getRow(i).getCell(j).setBold(true);
+      }
+    }
+  }
+}
+
+/**
+ * 契約書を生成するダイアログ
+ */
+function showContractDialog() {
+  // 基本情報シートから児童一覧を取得
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const basicSheet = ss.getSheetByName(SHEET_NAMES.BASIC_INFO);
+
+  if (!basicSheet || basicSheet.getLastRow() < 2) {
+    SpreadsheetApp.getUi().alert('基本情報が登録されていません。');
+    return;
+  }
+
+  const data = basicSheet.getDataRange().getValues();
+  const children = [];
+  for (var i = 1; i < data.length; i++) {
+    children.push({
+      name: data[i][2],  // 氏名
+      furigana: data[i][3], // ふりがな
+      row: i + 1,
+    });
+  }
+
+  const childOptions = children.map(function(c) {
+    return '<option value="' + c.row + '">' + c.name + '（' + c.furigana + '）</option>';
+  }).join('');
+
+  const html = HtmlService.createHtmlOutput(`
+    <style>
+      body { font-family: Arial, sans-serif; padding: 16px; }
+      label { display: block; margin-top: 12px; font-weight: bold; }
+      select { width: 100%; padding: 8px; margin-top: 4px; }
+      button { margin-top: 16px; padding: 10px 24px; background: #1976D2; color: white; border: none; cursor: pointer; border-radius: 4px; }
+      button:hover { background: #1565C0; }
+      .info { color: #666; font-size: 12px; margin-top: 8px; }
+    </style>
+    <h3>契約書作成</h3>
+    <label>児童を選択</label>
+    <select id="childRow">${childOptions}</select>
+    <p class="info">※ テンプレートをコピーして児童情報を差し込みます。<br>
+    作成後、署名部分を調整してください。</p>
+    <button onclick="generate()">契約書を作成</button>
+    <script>
+      function generate() {
+        const row = document.getElementById('childRow').value;
+        google.script.run
+          .withSuccessHandler(function(url) {
+            alert('契約書を作成しました。\\nGoogleドキュメントで開きます。');
+            window.open(url);
+            google.script.host.close();
+          })
+          .withFailureHandler(function(e) { alert('エラー: ' + e.message); })
+          .generateContract(parseInt(row));
+      }
+    </script>
+  `).setWidth(400).setHeight(300);
+
+  SpreadsheetApp.getUi().showModalDialog(html, '契約書作成');
+}
+
+/**
+ * 契約書を生成（テンプレートから児童情報を差し込み）
+ */
+function generateContract(basicInfoRow) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const basicSheet = ss.getSheetByName(SHEET_NAMES.BASIC_INFO);
+  const contactSheet = ss.getSheetByName(SHEET_NAMES.CONTACT);
+  const transportSheet = ss.getSheetByName(SHEET_NAMES.TRANSPORT);
+
+  // 基本情報を取得
+  const basicData = basicSheet.getRange(basicInfoRow, 1, 1, basicSheet.getLastColumn()).getValues()[0];
+  const childName = basicData[2];
+  const furigana = basicData[3];
+  const birthDate = basicData[5];
+
+  // 連絡先情報を取得（氏名で検索）
+  const contactData = findRowByChildName(contactSheet, childName);
+  const email = contactData ? contactData[2] : '';
+  const phone = contactData ? contactData[4] : '';
+
+  // 住所情報を取得
+  const transportData = findRowByChildName(transportSheet, childName);
+  const postalCode = transportData ? transportData[3] : '';
+  const city = transportData ? transportData[4] : '';
+  const address = transportData ? transportData[5] : '';
+
+  // テンプレートをコピー
+  const templateId = PropertiesService.getScriptProperties().getProperty(PROP_KEYS.CONTRACT_TEMPLATE_ID);
+  const templateFile = DriveApp.getFileById(templateId);
+  const newFile = templateFile.makeCopy(childName + '_利用契約書');
+
+  // 差し込み
+  const doc = DocumentApp.openById(newFile.getId());
+  const body = doc.getBody();
+
+  body.replaceText('\\{\\{児童氏名\\}\\}', childName);
+  body.replaceText('\\{\\{ふりがな\\}\\}', furigana);
+  body.replaceText('\\{\\{生年月日\\}\\}', birthDate ? Utilities.formatDate(new Date(birthDate), 'Asia/Tokyo', 'yyyy年MM月dd日') : '');
+  body.replaceText('\\{\\{郵便番号\\}\\}', postalCode);
+  body.replaceText('\\{\\{市町村名\\}\\}', city);
+  body.replaceText('\\{\\{町名番地\\}\\}', address);
+  body.replaceText('\\{\\{携帯電話\\}\\}', phone);
+  body.replaceText('\\{\\{メールアドレス\\}\\}', email);
+
+  doc.saveAndClose();
+
+  // 児童フォルダの「契約書控え」に移動
+  moveToChildContractFolder(childName, newFile);
+
+  return doc.getUrl();
+}
+
+/**
+ * 児童名でシート内を検索
+ */
+function findRowByChildName(sheet, childName) {
+  if (!sheet || sheet.getLastRow() < 2) return null;
+
+  const data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][1] === childName) { // 氏名列（B列）
+      return data[i];
+    }
+  }
+  return null;
+}
+
+/**
+ * 契約書ファイルを児童フォルダの「契約書控え」に移動
+ */
+function moveToChildContractFolder(childName, file) {
+  const rootFolderId = PropertiesService.getScriptProperties().getProperty(PROP_KEYS.ROOT_FOLDER_ID);
+  if (!rootFolderId) return;
+
+  const rootFolder = DriveApp.getFolderById(rootFolderId);
+  const childFolders = rootFolder.getFoldersByName(childName);
+
+  if (childFolders.hasNext()) {
+    const childFolder = childFolders.next();
+    const contractFolders = childFolder.getFoldersByName('契約書控え');
+
+    if (contractFolders.hasNext()) {
+      contractFolders.next().addFile(file);
+      DriveApp.getRootFolder().removeFile(file);
+      Logger.log('契約書を「契約書控え」フォルダに移動: ' + childName);
+    }
+  }
+}</textarea></div>
+</div>
+
+<div class="file-block">
+<div class="file-header">
+<div><h2><span class="order-badge">8</span>07_emailManager</h2><span class="desc">メール下書き・送信管理</span></div>
+<button class="copy-btn" onclick="copyCode(this, 'code7')">コピー</button>
+</div>
+<div class="code-area"><textarea id="code7" readonly>/**
+ * ============================================
+ * メール下書き作成・送信管理
+ * ============================================
+ *
+ * 契約書をPDFに変換し、保護者へのメール下書きを作成します。
+ * スタッフが署名調整後、ボタンを押すだけで送信できます。
+ */
+
+/**
+ * メール下書き作成ダイアログを表示
+ */
+function showEmailDraftDialog() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const contactSheet = ss.getSheetByName(SHEET_NAMES.CONTACT);
+
+  if (!contactSheet || contactSheet.getLastRow() < 2) {
+    SpreadsheetApp.getUi().alert('連絡先情報が登録されていません。');
+    return;
+  }
+
+  // 児童一覧を取得
+  const data = contactSheet.getDataRange().getValues();
+  const children = [];
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][1] && data[i][2]) { // 氏名とメールアドレスがある行
+      children.push({
+        name: data[i][1],
+        email: data[i][2],
+        row: i + 1,
+      });
+    }
+  }
+
+  const childOptions = children.map(function(c) {
+    return '<option value="' + c.row + '">' + c.name + '（' + c.email + '）</option>';
+  }).join('');
+
+  const html = HtmlService.createHtmlOutput(`
+    <style>
+      body { font-family: Arial, sans-serif; padding: 16px; }
+      label { display: block; margin-top: 12px; font-weight: bold; }
+      select, input, textarea { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+      textarea { height: 120px; }
+      .btn-group { margin-top: 16px; display: flex; gap: 8px; }
+      button { padding: 10px 20px; color: white; border: none; cursor: pointer; border-radius: 4px; }
+      .btn-draft { background: #FF9800; }
+      .btn-draft:hover { background: #F57C00; }
+      .btn-send { background: #4CAF50; }
+      .btn-send:hover { background: #388E3C; }
+      .info { color: #666; font-size: 12px; margin-top: 4px; }
+    </style>
+    <h3>保護者へのメール</h3>
+
+    <label>児童を選択</label>
+    <select id="childRow" onchange="updatePreview()">${childOptions}</select>
+
+    <label>メールの種類</label>
+    <select id="emailType" onchange="updateTemplate()">
+      <option value="contract">契約書送付</option>
+      <option value="welcome">入園のご案内</option>
+      <option value="custom">カスタム</option>
+    </select>
+
+    <label>件名</label>
+    <input type="text" id="subject" value="【POLEPOLE】利用契約書のご送付">
+
+    <label>本文</label>
+    <textarea id="body"></textarea>
+
+    <label>契約書PDFを添付</label>
+    <select id="attachPdf">
+      <option value="yes">添付する</option>
+      <option value="no">添付しない</option>
+    </select>
+    <p class="info">※ 児童フォルダ内の「契約書控え」から最新のファイルを添付します</p>
+
+    <div class="btn-group">
+      <button class="btn-draft" onclick="createDraft()">下書き保存</button>
+      <button class="btn-send" onclick="sendNow()">今すぐ送信</button>
+    </div>
+
+    <script>
+      function updateTemplate() {
+        const type = document.getElementById('emailType').value;
+        const subject = document.getElementById('subject');
+        const body = document.getElementById('body');
+
+        if (type === 'contract') {
+          subject.value = '【POLEPOLE】利用契約書のご送付';
+          body.value = '保護者様\\n\\nいつもお世話になっております。\\nPOLEPOLEでございます。\\n\\n利用契約書を送付いたします。\\n内容をご確認いただき、ご署名の上ご返送をお願いいたします。\\n\\nご不明な点がございましたら、お気軽にお問い合わせください。\\n\\nPOLEPOLE 事務局';
+        } else if (type === 'welcome') {
+          subject.value = '【POLEPOLE】ご入園のご案内';
+          body.value = '保護者様\\n\\nこの度はPOLEPOLEへのご入園、誠にありがとうございます。\\n\\nお子様と一緒に活動できることを、スタッフ一同楽しみにしております。\\n\\n今後の流れにつきまして、別途ご連絡させていただきます。\\n\\nPOLEPOLE 事務局';
+        } else {
+          subject.value = '【POLEPOLE】';
+          body.value = '';
+        }
+      }
+
+      function createDraft() {
+        const row = document.getElementById('childRow').value;
+        const subject = document.getElementById('subject').value;
+        const body = document.getElementById('body').value;
+        const attachPdf = document.getElementById('attachPdf').value;
+
+        google.script.run
+          .withSuccessHandler(function() {
+            alert('下書きを作成しました。\\nGmailの下書きフォルダをご確認ください。');
+            google.script.host.close();
+          })
+          .withFailureHandler(function(e) { alert('エラー: ' + e.message); })
+          .createEmailDraft(parseInt(row), subject, body, attachPdf === 'yes');
+      }
+
+      function sendNow() {
+        if (!confirm('このメールを今すぐ送信しますか？')) return;
+
+        const row = document.getElementById('childRow').value;
+        const subject = document.getElementById('subject').value;
+        const body = document.getElementById('body').value;
+        const attachPdf = document.getElementById('attachPdf').value;
+
+        google.script.run
+          .withSuccessHandler(function() {
+            alert('メールを送信しました。');
+            google.script.host.close();
+          })
+          .withFailureHandler(function(e) { alert('エラー: ' + e.message); })
+          .sendEmailNow(parseInt(row), subject, body, attachPdf === 'yes');
+      }
+
+      // 初期表示時にテンプレートを読み込み
+      updateTemplate();
+    </script>
+  `).setWidth(500).setHeight(620);
+
+  SpreadsheetApp.getUi().showModalDialog(html, 'メール作成');
+}
+
+/**
+ * メール下書きを作成
+ */
+function createEmailDraft(contactRow, subject, bodyText, attachPdf) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const contactSheet = ss.getSheetByName(SHEET_NAMES.CONTACT);
+  const contactData = contactSheet.getRange(contactRow, 1, 1, contactSheet.getLastColumn()).getValues()[0];
+
+  const childName = contactData[1];
+  const email = contactData[2];
+
+  if (!email) {
+    throw new Error('メールアドレスが登録されていません: ' + childName);
+  }
+
+  // 本文内の改行を処理
+  const htmlBody = bodyText.replace(/\n/g, '<br>');
+
+  const options = {
+    htmlBody: htmlBody,
+    name: CONFIG.EMAIL_SENDER_NAME,
+  };
+
+  // PDF添付
+  if (attachPdf) {
+    const pdfBlob = getContractPdf(childName);
+    if (pdfBlob) {
+      options.attachments = [pdfBlob];
+    }
+  }
+
+  // 下書き作成
+  GmailApp.createDraft(email, subject, bodyText, options);
+
+  Logger.log('メール下書き作成完了: ' + childName + ' (' + email + ')');
+}
+
+/**
+ * メールを即時送信
+ */
+function sendEmailNow(contactRow, subject, bodyText, attachPdf) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const contactSheet = ss.getSheetByName(SHEET_NAMES.CONTACT);
+  const contactData = contactSheet.getRange(contactRow, 1, 1, contactSheet.getLastColumn()).getValues()[0];
+
+  const childName = contactData[1];
+  const email = contactData[2];
+
+  if (!email) {
+    throw new Error('メールアドレスが登録されていません: ' + childName);
+  }
+
+  const htmlBody = bodyText.replace(/\n/g, '<br>');
+
+  const options = {
+    htmlBody: htmlBody,
+    name: CONFIG.EMAIL_SENDER_NAME,
+  };
+
+  if (attachPdf) {
+    const pdfBlob = getContractPdf(childName);
+    if (pdfBlob) {
+      options.attachments = [pdfBlob];
+    }
+  }
+
+  MailApp.sendEmail(email, subject, bodyText, options);
+
+  Logger.log('メール送信完了: ' + childName + ' (' + email + ')');
+}
+
+/**
+ * 契約書をPDFとして取得
+ */
+function getContractPdf(childName) {
+  const rootFolderId = PropertiesService.getScriptProperties().getProperty(PROP_KEYS.ROOT_FOLDER_ID);
+  if (!rootFolderId) return null;
+
+  const rootFolder = DriveApp.getFolderById(rootFolderId);
+  const childFolders = rootFolder.getFoldersByName(childName);
+
+  if (!childFolders.hasNext()) return null;
+
+  const childFolder = childFolders.next();
+  const contractFolders = childFolder.getFoldersByName('契約書控え');
+
+  if (!contractFolders.hasNext()) return null;
+
+  const contractFolder = contractFolders.next();
+  const files = contractFolder.getFiles();
+
+  // 最新のファイルを取得
+  let latestFile = null;
+  let latestDate = new Date(0);
+
+  while (files.hasNext()) {
+    const file = files.next();
+    if (file.getDateCreated() > latestDate) {
+      latestDate = file.getDateCreated();
+      latestFile = file;
+    }
+  }
+
+  if (!latestFile) return null;
+
+  // GoogleドキュメントをPDFに変換
+  if (latestFile.getMimeType() === MimeType.GOOGLE_DOCS) {
+    const blob = DriveApp.getFileById(latestFile.getId()).getAs('application/pdf');
+    blob.setName(childName + '_利用契約書.pdf');
+    return blob;
+  }
+
+  // すでにPDFの場合はそのまま返す
+  if (latestFile.getMimeType() === MimeType.PDF) {
+    return latestFile.getBlob();
+  }
+
+  return null;
+}</textarea></div>
+</div>
+
+<script>
+function copyCode(btn, textareaId) {
+  const textarea = document.getElementById(textareaId);
+  textarea.select();
+  navigator.clipboard.writeText(textarea.value).then(function() {
+    btn.textContent = 'コピー完了!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = 'コピー';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>

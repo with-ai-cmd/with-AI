@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4T5HCY4Y"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JJ4T5HCY4Y');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>with-AI株式会社 | AI導入・DX推進の伴走パートナー</title>
+    <meta name="description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。">
+    <meta name="keywords" content="with-AI, AI導入, AIコンサルティング, AI人材育成, DX推進, システム開発, AI SHINE, AIエージェント, AIKOMON">
+    <link rel="canonical" href="https://with-ai.jp/">
+    <link rel="icon" href="img/favicon.ico" sizes="any">
+    <meta property="og:type" content="website"><meta property="og:url" content="https://with-ai.jp/"><meta property="og:title" content="with-AI株式会社 | AI導入・DX推進の伴走パートナー"><meta property="og:description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。"><meta property="og:image" content="https://with-ai.jp/img/img-1.webp"><meta property="og:site_name" content="with-AI inc">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="with-AI株式会社 | AI導入・DX推進の伴走パートナー"><meta name="twitter:description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"with-AI株式会社","alternateName":"with-AI inc","url":"https://with-ai.jp/","logo":"https://with-ai.jp/img/logo.webp","contactPoint":{"@type":"ContactPoint","contactType":"customer service","areaServed":"JP","availableLanguage":"Japanese"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"with-AI株式会社","url":"https://with-ai.jp/","description":"AI導入コンサルティング、DX人材育成、システム開発を通じて企業の持続的な進化を支えるパートナー"}</script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --blue: #0A3B8E;
+            --cyan: #48A8E1;
+            --gradient: linear-gradient(135deg, #0A3B8E 0%, #48A8E1 100%);
+            --ink: #080E1A;
+            --warm: #F5F0EB;
+            --warmgray: #B8AFA5;
+            --serif: 'Playfair Display', serif;
+            --sans: 'Zen Kaku Gothic New', sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:var(--sans);background:#fff;color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+        ::selection{background:var(--ink);color:#fff;}
+
+        .text-gradient{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+        /* --- LOADER --- */
+        #loader{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;align-items:center;justify-content:center;}
+        .loader-count{font-family:var(--serif);font-size:clamp(3rem,10vw,8rem);font-weight:900;color:#fff;font-style:italic;}
+
+        /* --- MARQUEE --- */
+        .marquee{overflow:hidden;white-space:nowrap;border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06);}
+        .marquee-inner{display:inline-flex;animation:scroll-marquee 30s linear infinite;}
+        .marquee-dark .marquee-inner{animation:scroll-marquee 25s linear infinite;}
+        @keyframes scroll-marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        .marquee-item{padding:1.2rem 3rem;font-family:var(--serif);font-size:1rem;font-weight:400;letter-spacing:0.05em;color:rgba(0,0,0,0.12);font-style:italic;flex-shrink:0;}
+        .marquee-dark .marquee-item{color:rgba(255,255,255,0.08);}
+        .marquee-item .dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--cyan);margin:0 2rem;vertical-align:middle;opacity:0.4;}
+
+        /* --- REVEAL --- */
+        .reveal{opacity:0;transform:translateY(50px);transition:all 1.4s cubic-bezier(0.16,1,0.3,1);}
+        .reveal.active{opacity:1;transform:translateY(0);}
+        .reveal-left{opacity:0;transform:translateX(-60px);transition:all 1.4s cubic-bezier(0.16,1,0.3,1);}
+        .reveal-left.active{opacity:1;transform:translateX(0);}
+        .reveal-right{opacity:0;transform:translateX(60px);transition:all 1.4s cubic-bezier(0.16,1,0.3,1);}
+        .reveal-right.active{opacity:1;transform:translateX(0);}
+        .r-d-1{transition-delay:0.1s}.r-d-2{transition-delay:0.2s}.r-d-3{transition-delay:0.3s}.r-d-4{transition-delay:0.4s}.r-d-5{transition-delay:0.5s}
+        #hero-content{opacity:0;transform:translateY(40px);}
+
+        /* --- SPLIT TEXT --- */
+        .split-char{display:inline-block;opacity:0;transform:translateY(30px);}
+
+        /* --- SERVICE CARD --- */
+        .svc-card{
+            display:block;text-decoration:none;color:inherit;
+            border-bottom:1px solid rgba(0,0,0,0.06);
+            padding:3rem 0;
+            transition:all 0.5s cubic-bezier(0.22,1,0.36,1);
+            position:relative;
+        }
+        .svc-card:first-child{border-top:1px solid rgba(0,0,0,0.06);}
+        .svc-card:hover{padding-left:2rem;}
+        .svc-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--gradient);transition:width 0.5s ease;}
+        .svc-card:hover::after{width:4px;}
+        .svc-num{font-family:var(--serif);font-size:4rem;font-weight:900;font-style:italic;line-height:1;color:rgba(0,0,0,0.04);position:absolute;right:0;top:50%;transform:translateY(-50%);transition:all 0.5s ease;}
+        .svc-card:hover .svc-num{color:rgba(10,59,142,0.06);right:1rem;}
+        .svc-tag{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--warmgray);margin-bottom:0.5rem;display:block;}
+        .svc-title{font-family:var(--serif);font-size:1.8rem;font-weight:700;margin-bottom:0.5rem;transition:color 0.3s;}
+        .svc-card:hover .svc-title{color:var(--blue);}
+        .svc-desc{font-size:0.8rem;color:var(--warmgray);font-weight:300;max-width:480px;}
+
+        /* --- BLOG CARD --- */
+        .blog-card{
+            display:block;text-decoration:none;color:inherit;
+            padding:2rem;border:1px solid rgba(0,0,0,0.04);
+            transition:all 0.5s cubic-bezier(0.22,1,0.36,1);
+            position:relative;overflow:hidden;
+        }
+        .blog-card::before{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gradient);transition:width 0.6s ease;}
+        .blog-card:hover{box-shadow:0 20px 60px rgba(0,0,0,0.04);transform:translateY(-4px);}
+        .blog-card:hover::before{width:100%;}
+
+        /* --- DARK SECTION --- */
+        .section-dark{background:var(--ink);color:#fff;position:relative;overflow:hidden;}
+        .section-dark::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(72,168,225,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(72,168,225,0.02) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+
+        /* --- CTA --- */
+        .cta-pill{
+            display:inline-flex;align-items:center;gap:0.75rem;
+            background:var(--ink);color:#fff;
+            padding:1rem 2.5rem;border-radius:60px;
+            font-weight:700;font-size:0.85rem;letter-spacing:0.05em;
+            transition:all 0.4s ease;text-decoration:none;position:relative;overflow:hidden;
+        }
+        .cta-pill:hover{box-shadow:0 12px 40px rgba(8,14,26,0.2);transform:translateY(-2px);}
+        .cta-pill-light{background:#fff;color:var(--ink);border:1px solid rgba(0,0,0,0.08);}
+        .cta-pill-light:hover{border-color:var(--cyan);box-shadow:0 12px 40px rgba(10,59,142,0.08);}
+        .cta-pill-gradient{background:var(--gradient);color:#fff;border:none;}
+        .cta-pill-gradient:hover{box-shadow:0 12px 40px rgba(10,59,142,0.25);}
+
+        /* Footer */
+        .footer-link{font-size:0.8rem;font-weight:400;color:rgba(255,255,255,0.25);transition:all 0.3s;}
+        .footer-link:hover{color:var(--cyan);transform:translateX(4px);}
+
+        /* Scroll progress */
+        #scroll-progress{position:fixed;top:0;left:0;height:2px;background:var(--gradient);z-index:100;transform-origin:left;transform:scaleX(0);}
+
+        /* Profile cards */
+        .profile-card{
+            background:var(--warm);border-radius:20px;padding:2.5rem;
+            min-height:340px;display:flex;flex-direction:column;justify-content:space-between;
+            transition:all 0.6s cubic-bezier(0.22,1,0.36,1);text-decoration:none;color:inherit;position:relative;
+        }
+        .profile-card:hover{transform:translateY(-8px);box-shadow:0 30px 80px rgba(0,0,0,0.06);}
+        .profile-btn{position:absolute;bottom:1.5rem;right:1.5rem;width:40px;height:40px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:all 0.4s;}
+        .profile-card:hover .profile-btn{background:var(--gradient);transform:scale(1.1);}
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+
+    <!-- Loader: Counter style -->
+    <div id="loader">
+        <div class="loader-count" id="loader-count">0</div>
+    </div>
+
+    <!-- Header -->
+    <nav id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-black/[0.04] py-4 px-6 md:px-12 flex justify-between items-center -translate-y-full transition-transform duration-700">
+        <a href="index.html"><img src="img/logo.webp" alt="with-AI" class="h-6 md:h-7 grayscale hover:grayscale-0 transition-all"></a>
+        <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 z-50" onclick="toggleMenu()">
+            <span class="menu-line w-6 h-[1.5px] bg-current transition-all duration-300"></span>
+            <span class="menu-line w-6 h-[1.5px] bg-current transition-all duration-300"></span>
+            <span class="menu-line w-4 h-[1.5px] bg-current transition-all duration-300"></span>
+        </button>
+        <div class="hidden md:flex gap-10 items-center" style="font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,0,0,0.3);">
+            <a href="stance.html" class="hover:text-[#0A3B8E] transition-colors">Stance</a>
+            <a href="service.html" class="hover:text-[#0A3B8E] transition-colors">Service</a>
+            <a href="blog/" class="hover:text-[#0A3B8E] transition-colors">Blog</a>
+            <a href="company.html" class="hover:text-[#0A3B8E] transition-colors">Company</a>
+            <a href="contact.html" class="hover:text-[#0A3B8E] transition-colors font-bold text-[#0A3B8E]/60">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-[#080E1A] z-40 flex flex-col items-center justify-center gap-8 translate-x-full transition-transform duration-500 ease-in-out md:hidden">
+        <a href="index.html" class="text-xl font-light tracking-[0.4em] uppercase text-white/30 hover:text-white transition-colors" style="font-family:var(--serif);font-style:italic;">Home</a>
+        <a href="stance.html" class="text-xl font-light tracking-[0.4em] uppercase text-white/30 hover:text-white transition-colors" style="font-family:var(--serif);font-style:italic;">Stance</a>
+        <a href="service.html" class="text-xl font-light tracking-[0.4em] uppercase text-white/30 hover:text-white transition-colors" style="font-family:var(--serif);font-style:italic;">Service</a>
+        <a href="blog/" class="text-xl font-light tracking-[0.4em] uppercase text-white/30 hover:text-white transition-colors" style="font-family:var(--serif);font-style:italic;">Blog</a>
+        <a href="company.html" class="text-xl font-light tracking-[0.4em] uppercase text-white/30 hover:text-white transition-colors" style="font-family:var(--serif);font-style:italic;">Company</a>
+        <a href="contact.html" class="text-xl font-bold tracking-[0.4em] uppercase text-white border-b border-white/20 pb-2" style="font-family:var(--serif);font-style:italic;">Contact</a>
+    </div>
+
+    <!-- ========== HERO ========== -->
+    <section class="min-h-screen flex flex-col justify-center relative overflow-hidden">
+        <!-- Large background text -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+            <span style="font-family:var(--serif);font-size:clamp(10rem,25vw,22rem);font-weight:900;font-style:italic;color:rgba(10,59,142,0.02);line-height:1;white-space:nowrap;">with-AI</span>
+        </div>
+
+        <div id="hero-content" class="px-8 md:px-16 lg:px-24 z-20 max-w-5xl">
+            <div class="mb-6" style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--warmgray);">
+                Est. 2024 &mdash; Tokyo, Japan
+            </div>
+            <h1 style="font-family:var(--serif);font-weight:900;font-style:italic;line-height:1.05;letter-spacing:-0.02em;" class="text-5xl md:text-7xl lg:text-8xl xl:text-[8.5rem] mb-8">
+                <span class="text-gradient">Step into</span><br>
+                <span class="text-gradient">the Next Era</span>
+            </h1>
+            <div class="flex flex-col md:flex-row md:items-end gap-8 md:gap-16">
+                <p class="text-sm text-[#B8AFA5] font-light max-w-sm leading-relaxed">
+                    AIは「導入する」時代から「共に働く」時代へ。<br>
+                    with-AIが、その転換点に立ち会います。
+                </p>
+                <a href="contact.html" class="cta-pill-gradient px-8 py-4 text-sm self-start">
+                    無料相談する
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 right-8 md:right-16 z-20">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--warmgray);writing-mode:vertical-rl;">Scroll to explore</div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee">
+        <div class="marquee-inner">
+            <span class="marquee-item">AI Consulting <span class="dot"></span></span>
+            <span class="marquee-item">Agent Building <span class="dot"></span></span>
+            <span class="marquee-item">DX Strategy <span class="dot"></span></span>
+            <span class="marquee-item">System Architecture <span class="dot"></span></span>
+            <span class="marquee-item">Education & Training <span class="dot"></span></span>
+            <span class="marquee-item">Business Transformation <span class="dot"></span></span>
+            <span class="marquee-item">AI Consulting <span class="dot"></span></span>
+            <span class="marquee-item">Agent Building <span class="dot"></span></span>
+            <span class="marquee-item">DX Strategy <span class="dot"></span></span>
+            <span class="marquee-item">System Architecture <span class="dot"></span></span>
+            <span class="marquee-item">Education & Training <span class="dot"></span></span>
+            <span class="marquee-item">Business Transformation <span class="dot"></span></span>
+        </div>
+    </div>
+
+    <!-- ========== ABOUT ========== -->
+    <section class="py-32 md:py-48 px-8 md:px-16 lg:px-24 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            <div class="lg:col-span-5 reveal-left">
+                <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--warmgray);margin-bottom:2rem;">(01) About</div>
+                <h2 style="font-family:var(--serif);font-weight:900;font-style:italic;line-height:1.1;" class="text-3xl md:text-5xl lg:text-6xl mb-8">
+                    <span class="text-gradient">未来を創る</span><br>
+                    <em class="not-italic text-[#B8AFA5]/40">インテリジェンス</em>
+                </h2>
+            </div>
+            <div class="lg:col-span-6 lg:col-start-7 reveal-right">
+                <div class="space-y-8 text-[#6B7A99] text-sm md:text-base leading-[1.9] font-light pt-4 lg:pt-16">
+                    <p>テクノロジーのあり方が大きく変わりつつある今、求められているのは、組織の価値観やフェーズに寄り添い、確かな進化を支える知能のかたちです。</p>
+                    <p>with-AIが導くデータサイエンスの洞察、実装するためのアーキテクチャ。私たちは、持続的な成長に欠かせないパートナーとして挑戦しています。</p>
+                </div>
+                <a href="stance.html" class="mt-10 inline-flex items-center gap-3 group" style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);">
+                    Read our stance
+                    <svg class="w-4 h-4 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES (LIST STYLE) ========== -->
+    <section class="py-32 md:py-48 px-8 md:px-16 lg:px-24 bg-[#FAFBFD]">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal mb-20">
+                <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--warmgray);margin-bottom:2rem;">(02) Services</div>
+                <h2 style="font-family:var(--serif);font-weight:900;font-style:italic;line-height:1.1;" class="text-3xl md:text-5xl">
+                    What <span class="text-gradient">We Do</span>
+                </h2>
+            </div>
+
+            <div class="reveal">
+                <a href="aikomon.html" class="svc-card flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                    <div class="flex-grow">
+                        <span class="svc-tag">Advisory</span>
+                        <h3 class="svc-title">AIKOMON</h3>
+                        <p class="svc-desc">経営と現場の間に立ち、本質的な仕組みを整える伴走型支援を提供します。</p>
+                    </div>
+                    <div class="svc-num">01</div>
+                </a>
+                <a href="service.html" class="svc-card flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                    <div class="flex-grow">
+                        <span class="svc-tag">Learning</span>
+                        <h3 class="svc-title">with-AI Plus</h3>
+                        <p class="svc-desc">実務ベースでAIを習得。現場で即座に成果を出すためのスキルを提供します。</p>
+                    </div>
+                    <div class="svc-num">02</div>
+                </a>
+                <a href="aishine.html" class="svc-card flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                    <div class="flex-grow">
+                        <span class="svc-tag">AI Agent</span>
+                        <h3 class="svc-title">AI SHINE</h3>
+                        <p class="svc-desc">社長専属のAIエージェントチームを構築。業務を自動化し、企業の未来を輝かせます。</p>
+                    </div>
+                    <div class="svc-num">03</div>
+                </a>
+                <a href="service.html" class="svc-card flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                    <div class="flex-grow">
+                        <span class="svc-tag">Engineering</span>
+                        <h3 class="svc-title">System Design</h3>
+                        <p class="svc-desc">AIを仕組みとして定着させる。最適なアーキテクチャを実装します。</p>
+                    </div>
+                    <div class="svc-num">04</div>
+                </a>
+                <a href="service.html" class="svc-card flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                    <div class="flex-grow">
+                        <span class="svc-tag">Recruit</span>
+                        <h3 class="svc-title">Inspire Recruit</h3>
+                        <p class="svc-desc">価値観から始まる採用イベント。企業と学生の本質的なマッチングを実現。</p>
+                    </div>
+                    <div class="svc-num">05</div>
+                </a>
+                <a href="service.html" class="svc-card flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                    <div class="flex-grow">
+                        <span class="svc-tag">Community</span>
+                        <h3 class="svc-title">経営者会</h3>
+                        <p class="svc-desc">リーダーのための対話と学びの場。新たな可能性を共に拓きます。</p>
+                    </div>
+                    <div class="svc-num">06</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee dark -->
+    <div class="marquee marquee-dark section-dark">
+        <div class="marquee-inner">
+            <span class="marquee-item">Intelligence <span class="dot"></span></span>
+            <span class="marquee-item">Transformation <span class="dot"></span></span>
+            <span class="marquee-item">Automation <span class="dot"></span></span>
+            <span class="marquee-item">Next Era <span class="dot"></span></span>
+            <span class="marquee-item">with-AI <span class="dot"></span></span>
+            <span class="marquee-item">Intelligence <span class="dot"></span></span>
+            <span class="marquee-item">Transformation <span class="dot"></span></span>
+            <span class="marquee-item">Automation <span class="dot"></span></span>
+            <span class="marquee-item">Next Era <span class="dot"></span></span>
+            <span class="marquee-item">with-AI <span class="dot"></span></span>
+        </div>
+    </div>
+
+    <!-- ========== BLOG ========== -->
+    <section class="py-32 md:py-48 px-8 md:px-16 lg:px-24">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16 reveal">
+                <div>
+                    <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--warmgray);margin-bottom:2rem;">(03) Blog</div>
+                    <h2 style="font-family:var(--serif);font-weight:900;font-style:italic;line-height:1.1;" class="text-3xl md:text-5xl">
+                        Latest <span class="text-gradient">Thinking</span>
+                    </h2>
+                </div>
+                <a href="blog/" style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);" class="flex items-center gap-2 hover:gap-4 transition-all">
+                    View All <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 reveal">
+                <a href="blog/ai-agent-evolution-2026.html" class="blog-card">
+                    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--warmgray);margin-bottom:1.5rem;" class="flex justify-between">
+                        <span>AI Trends</span><span>2026.03.27</span>
+                    </div>
+                    <h3 style="font-family:var(--serif);font-weight:700;font-size:1.1rem;line-height:1.5;">AIエージェント最新動向 2026 - 自律型AIが変えるビジネスの未来</h3>
+                </a>
+                <a href="blog/ai-subsidy-2026-guide.html" class="blog-card">
+                    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--warmgray);margin-bottom:1.5rem;" class="flex justify-between">
+                        <span>AI x 補助金</span><span>2026.03.25</span>
+                    </div>
+                    <h3 style="font-family:var(--serif);font-weight:700;font-size:1.1rem;line-height:1.5;">デジタル化・AI導入補助金 2026 完全ガイド</h3>
+                </a>
+                <a href="blog/claude-code-guide.html" class="blog-card">
+                    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--warmgray);margin-bottom:1.5rem;" class="flex justify-between">
+                        <span>AI Tools</span><span>2026.03.23</span>
+                    </div>
+                    <h3 style="font-family:var(--serif);font-weight:700;font-size:1.1rem;line-height:1.5;">Claude Codeとは？ AIコーディングツールの革命</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== COMPANY ========== -->
+    <section class="py-32 md:py-48 px-8 md:px-16 lg:px-24 bg-[#FAFBFD]">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal mb-16">
+                <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--warmgray);margin-bottom:2rem;">(04) Company</div>
+                <h2 style="font-family:var(--serif);font-weight:900;font-style:italic;line-height:1.1;" class="text-3xl md:text-5xl">
+                    About <span class="text-gradient">Us</span>
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+                <a href="company.html" class="profile-card group">
+                    <h3 style="font-family:var(--serif);font-weight:700;font-size:1.2rem;">会社概要</h3>
+                    <div class="flex-grow flex items-center justify-center opacity-10"><svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-width="1"/></svg></div>
+                    <div class="profile-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="members.html" class="profile-card group" style="background:#E8ECF2">
+                    <h3 style="font-family:var(--serif);font-weight:700;font-size:1.2rem;">代表挨拶・メンバー</h3>
+                    <div class="flex-grow flex items-center justify-center opacity-10"><svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="1"/></svg></div>
+                    <div class="profile-btn" style="background:var(--blue)"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="contact.html" class="profile-card group">
+                    <h3 style="font-family:var(--serif);font-weight:700;font-size:1.2rem;">お問い合わせ</h3>
+                    <div class="flex-grow flex items-center justify-center opacity-10"><svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-width="1"/></svg></div>
+                    <div class="profile-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA DARK ========== -->
+    <section class="section-dark py-32 md:py-48 px-8 md:px-16 lg:px-24">
+        <div class="max-w-3xl mx-auto text-center relative z-10 reveal">
+            <h2 style="font-family:var(--serif);font-weight:900;font-style:italic;line-height:1.15;" class="text-3xl md:text-5xl lg:text-6xl mb-8">
+                <span class="text-gradient">Next Era</span>への<br>
+                第一歩を。
+            </h2>
+            <p class="text-sm text-white/30 font-light mb-12 max-w-md mx-auto leading-relaxed">
+                まずは御社の課題をお聞かせください。<br>AIで何が変わりうるかを、具体的にお伝えします。
+            </p>
+            <a href="contact.html" class="cta-pill-gradient px-10 py-4 text-base">
+                無料で相談する
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#080E1A] pt-24 pb-12 px-8 md:px-24 border-t border-white/[0.04]">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    <a href="index.html"><img src="img/logo.webp" alt="with-AI" class="h-9 w-auto brightness-200"></a>
+                    <p class="text-white/15 text-xs leading-loose font-light">Next Era Intelligence Partner<br>Aligning Human and Intelligence.</p>
+                </div>
+                <div class="lg:col-start-7 lg:col-span-6 grid grid-cols-3 gap-12">
+                    <div class="flex flex-col gap-5">
+                        <h4 style="font-family:var(--mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.15);">Explore</h4>
+                        <div class="flex flex-col gap-3"><a href="index.html" class="footer-link">Home</a><a href="stance.html" class="footer-link">Stance</a><a href="service.html" class="footer-link">Service</a><a href="blog/" class="footer-link">Blog</a></div>
+                    </div>
+                    <div class="flex flex-col gap-5">
+                        <h4 style="font-family:var(--mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.15);">Info</h4>
+                        <div class="flex flex-col gap-3"><a href="company.html" class="footer-link">Company</a><a href="members.html" class="footer-link">Members</a><a href="contact.html" class="footer-link">Contact</a></div>
+                    </div>
+                    <div class="flex flex-col gap-5">
+                        <h4 style="font-family:var(--mono);font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.15);">Legal</h4>
+                        <div class="flex flex-col gap-3"><a href="privacy.html" class="footer-link">Privacy Policy</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/[0.04]">
+                <span style="font-family:var(--serif);font-size:0.7rem;font-weight:900;font-style:italic;letter-spacing:0.3em;text-transform:uppercase;" class="text-gradient">Next Era</span>
+                <span style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:rgba(255,255,255,0.1);">&copy; 2026 WITH-AI INC.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // Counter loader
+        function initLoader() {
+            const counter = document.getElementById('loader-count');
+            let count = 0;
+            document.body.style.overflow = 'hidden';
+            const interval = setInterval(() => {
+                count += Math.floor(Math.random() * 8) + 2;
+                if (count >= 100) { count = 100; clearInterval(interval); }
+                counter.textContent = count;
+                if (count === 100) {
+                    gsap.timeline()
+                        .to("#loader-count", { scale: 1.2, duration: 0.3, ease: "power2.out" })
+                        .to("#loader", { yPercent: -100, duration: 0.8, ease: "power4.inOut", delay: 0.2 })
+                        .set("#loader", { display: "none" })
+                        .to("#hero-content", { opacity: 1, y: 0, duration: 1.6, ease: "power3.out" })
+                        .set("body", { overflow: "auto" })
+                        .to("#main-header", { translateY: 0, duration: 0.8, ease: "power2.out" }, "-=1");
+                }
+            }, 30);
+        }
+
+        // Reveal
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+        // Scroll
+        window.addEventListener('scroll', () => {
+            const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            document.getElementById('scroll-progress').style.transform = `scaleX(${pct})`;
+            const h = document.getElementById('main-header');
+            if (h) h.style.transform = window.scrollY > 100 ? 'translateY(0)' : 'translateY(-100%)';
+        });
+
+        // Mobile menu
+        function toggleMenu() {
+            const m = document.getElementById('mobile-menu');
+            const l = document.querySelectorAll('.menu-line');
+            m.classList.toggle('translate-x-full'); m.classList.toggle('translate-x-0');
+            if (m.classList.contains('translate-x-0')) { l[0].style.transform='rotate(45deg) translate(4px,4px)'; l[1].style.opacity='0'; l[2].style.transform='rotate(-45deg) translate(3px,-3px)'; l[2].style.width='1.5rem'; }
+            else { l[0].style.transform=''; l[1].style.opacity='1'; l[2].style.transform=''; l[2].style.width='1rem'; }
+        }
+
+        window.addEventListener('load', initLoader);
+    </script>
+</body>
+</html>

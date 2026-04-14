@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan | Buzzry - 最短で『バズる』を創造する</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --brand-yellow: #FFD700; 
+            --brand-black: #1a1a1a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            cursor: default;
+        }
+
+        /* Impact Fonts */
+        .font-impact {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        /* Highlight Text */
+        .highlight-gold-box {
+            background-color: var(--brand-yellow);
+            color: black;
+            padding: 4px 12px;
+            font-weight: 900;
+            display: inline-block;
+            box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2);
+            transform: skewX(-10deg);
+        }
+
+        /* Text Outline */
+        .text-outline {
+            -webkit-text-stroke: 1px var(--brand-yellow);
+            color: transparent;
+        }
+
+        /* Bee Mascot */
+        #mascot-bee {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            z-index: 90;
+            filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.5));
+            will-change: transform;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #mascot-bee:hover {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-yellow);
+            border-radius: 5px;
+        }
+        
+        /* Contact Button Ink Splash Animation */
+        .ink-splash-btn {
+            position: relative;
+            z-index: 1;
+            overflow: visible !important;
+        }
+        
+        /* Bee Wings Animation */
+        @keyframes buzz {
+            0% { transform: rotate(-15deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.1); }
+            100% { transform: rotate(-15deg) scale(1); }
+        }
+        .bee-wings {
+            animation: buzz 0.05s infinite linear;
+            transform-origin: center;
+        }
+
+        /* Background Noise */
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header Styles */
+        header {
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        header.menu-open {
+            mix-blend-mode: normal !important;
+        }
+        header.menu-open .header-logo {
+            color: black !important;
+        }
+
+        /* Hamburger Button */
+        .hamburger {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            cursor: pointer;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .hamburger span {
+            display: block;
+            height: 3px;
+            background-color: var(--brand-yellow);
+            transition: all 0.3s ease;
+        }
+        .hamburger span:nth-child(1) { width: 40px; }
+        .hamburger span:nth-child(2) { width: 30px; }
+        .hamburger span:nth-child(3) { width: 20px; }
+        .hamburger:hover span { width: 40px; }
+
+        .hamburger.active span { background-color: black !important; }
+        .hamburger.active span:nth-child(1) { width: 40px; transform: rotate(45deg) translate(8px, 8px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { width: 40px; transform: rotate(-45deg) translate(7px, -7px); }
+
+        /* Fullscreen Menu */
+        #menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--brand-yellow);
+            z-index: 95;
+            transform: translateY(-100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .menu-link {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: black;
+            text-transform: uppercase;
+            line-height: 1.1;
+            position: relative;
+            transition: all 0.3s;
+            display: block;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            text-decoration: none;
+        }
+        .menu-link:hover {
+            -webkit-text-stroke: 2px black;
+            color: transparent;
+            transform: scale(1.1) skewX(-10deg);
+            letter-spacing: 5px;
+        }
+
+        /* Plan Card Styles */
+        .plan-card {
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .plan-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--brand-yellow);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+        }
+        .plan-card ul li {
+            position: relative;
+            padding-left: 1.5em;
+        }
+        .plan-card ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--brand-yellow);
+            font-weight: bold;
+        }
+        
+        /* Recommended Ribbon */
+        .ribbon {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            width: 120px;
+            background: var(--brand-yellow);
+            color: black;
+            font-weight: 900;
+            text-align: center;
+            line-height: 30px;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-noise"></div>
+
+    <!-- Bee Mascot -->
+    <div id="mascot-bee">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="bee-wings">
+                <path d="M70 30C85 30 95 10 75 5C55 0 50 25 50 25" fill="#FFF" fill-opacity="0.9" stroke="black" stroke-width="1"/>
+                <path d="M30 30C15 30 5 10 25 5C45 0 50 25 50 25" fill="#FFF" fill-opacity="0.9" stroke="black" stroke-width="1"/>
+            </g>
+            <path d="M50 85C65 85 75 75 75 60C75 50 65 45 60 45C65 45 70 35 70 25C70 15 60 15 50 15C40 15 30 15 30 25V60C30 75 40 85 50 85Z" fill="#FFD700" stroke="white" stroke-width="2"/>
+            <path d="M30 35H70 M30 55H75" stroke="black" stroke-width="6" stroke-linecap="round"/>
+            <path d="M35 25L65 25" stroke="black" stroke-width="5" stroke-linecap="round"/>
+            <path d="M50 85L50 98" stroke="#FFD700" stroke-width="3"/>
+        </svg>
+    </div>
+
+    <!-- Header & Hamburger -->
+    <header class="fixed top-0 left-0 w-full px-6 py-6 flex justify-between items-center mix-blend-exclusion" id="main-header">
+        <a href="index.html" class="header-logo relative z-[102] transition-colors duration-300 block">
+            <img src="img/logo.png" alt="Buzzry" class="h-10">
+        </a>
+        
+        <div class="hamburger" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu -->
+    <div id="menu-overlay">
+        <div class="flex flex-col gap-4">
+            <a href="index.html" class="menu-link">Top</a>
+            <a href="service.html" class="menu-link">Service</a>
+            <a href="plan.html" class="menu-link text-white pointer-events-none" style="opacity: 0.5;">Plan</a>
+            <a href="index.html#company" class="menu-link">Company</a>
+            <a href="contact.html" class="menu-link">Contact</a>
+        </div>
+        <div class="absolute inset-0 pointer-events-none opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+    </div>
+
+    <!-- SECTION 1: HERO -->
+    <section class="relative w-full h-[60vh] overflow-hidden flex items-end justify-start bg-[#050505] pb-20">
+        <!-- Paint Overlay -->
+        <div class="absolute top-[-50%] right-[-20%] w-[60vw] h-[60vw] bg-[#FFD700] rounded-full blur-[150px] opacity-10 animate-pulse"></div>
+        
+        <div class="relative z-10 container mx-auto px-6">
+            <p class="font-impact text-xl text-gray-400 tracking-widest -skew-x-12 mb-2 ml-1">PRICE & PLAN</p>
+            <h1 class="text-6xl md:text-9xl font-black leading-none transform -skew-x-6 text-white border-l-8 border-[#FFD700] pl-6">
+                PLANNING<br>
+                <span class="text-outline">TABLE</span>
+            </h1>
+        </div>
+    </section>
+
+    <!-- SECTION 2: INTRO -->
+    <section class="w-full py-20 bg-[#111] relative z-10 border-t border-[#333]">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">
+                成果にコミットする、<br>
+                <span class="highlight-gold-box mt-2">3つの最強プラン</span>
+            </h2>
+            <p class="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                Buzzryでは、お客様のフェーズと目標に合わせて最適なプランをご用意しています。
+                とりあえず始めたい方から、本気で業界No.1を狙う企業様まで。
+                無駄なコストを省き、結果が出る運用体制を提供します。
+            </p>
+        </div>
+    </section>
+
+    <!-- SECTION 3: PRICING CARDS -->
+    <section class="w-full py-32 bg-[#050505] relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                
+                <!-- Plan 1: Light -->
+                <div class="plan-card bg-[#111] border border-[#333] rounded-2xl p-8 relative overflow-hidden group">
+                    <div class="font-impact text-4xl text-gray-500 mb-2">LIGHT</div>
+                    <div class="text-sm text-gray-400 mb-6">まずはここから。素材支給でコストを抑える。</div>
+                    <div class="text-4xl font-bold text-white mb-8">
+                        <span class="text-2xl">月額</span> 20<span class="text-xl">万円〜</span>
+                    </div>
+                    
+                    <ul class="space-y-4 text-gray-300 text-sm mb-12 border-t border-[#333] pt-8">
+                        <li>企画・構成作成 (月8本)</li>
+                        <li>動画編集 (月8本)</li>
+                        <li>投稿代行</li>
+                        <li>簡易レポート (月1回)</li>
+                        <li class="text-gray-600 line-through">撮影代行</li>
+                        <li class="text-gray-600 line-through">定例ミーティング</li>
+                    </ul>
+
+                    <a href="contact.html" class="block w-full py-4 text-center border border-white text-white font-bold rounded-full hover:bg-white hover:text-black transition-colors">
+                        申し込む
+                    </a>
+                </div>
+
+                <!-- Plan 2: Standard (Recommended) -->
+                <div class="plan-card bg-[#1a1a1a] border-2 border-[#FFD700] rounded-2xl p-8 relative overflow-hidden transform md:-translate-y-4 z-10 shadow-[0_0_20px_rgba(255,215,0,0.1)]">
+                    <div class="ribbon">RECOMMENDED</div>
+                    <div class="font-impact text-4xl text-[#FFD700] mb-2">STANDARD</div>
+                    <div class="text-sm text-gray-400 mb-6">撮影から分析まで丸投げ。一番選ばれています。</div>
+                    <div class="text-5xl font-bold text-white mb-8">
+                        <span class="text-2xl">月額</span> 40<span class="text-xl">万円〜</span>
+                    </div>
+                    
+                    <ul class="space-y-4 text-white text-sm mb-12 border-t border-[#333] pt-8 font-medium">
+                        <li>企画・構成作成 (月12本)</li>
+                        <li><span class="text-[#FFD700]">プロカメラマン撮影</span> (月1回)</li>
+                        <li>動画編集 (月12本)</li>
+                        <li>投稿代行・コメント管理</li>
+                        <li>詳細分析レポート (月1回)</li>
+                        <li>定例ミーティング (月1回)</li>
+                    </ul>
+
+                    <a href="contact.html" class="block w-full py-4 text-center bg-[#FFD700] text-black font-bold rounded-full hover:bg-[#ffe44d] transition-colors ink-trigger ink-splash-btn">
+                        今すぐ相談する
+                    </a>
+                </div>
+
+                <!-- Plan 3: Premium -->
+                <div class="plan-card bg-[#111] border border-[#333] rounded-2xl p-8 relative overflow-hidden group">
+                    <div class="font-impact text-4xl text-white mb-2">PREMIUM</div>
+                    <div class="text-sm text-gray-400 mb-6">圧倒的スピードで業界を制圧する。</div>
+                    <div class="text-4xl font-bold text-white mb-8">
+                        <span class="text-2xl">月額</span> 80<span class="text-xl">万円〜</span>
+                    </div>
+                    
+                    <ul class="space-y-4 text-gray-300 text-sm mb-12 border-t border-[#333] pt-8">
+                        <li>企画・構成作成 (月30本/毎日投稿)</li>
+                        <li>プロカメラマン撮影 (月2回)</li>
+                        <li>高度な動画編集 (エフェクト多用)</li>
+                        <li>投稿・コメント・DM管理</li>
+                        <li>競合分析・詳細レポート</li>
+                        <li>定例ミーティング (月2回)</li>
+                        <li>広告運用代行 (OP)</li>
+                    </ul>
+
+                    <a href="contact.html" class="block w-full py-4 text-center border border-white text-white font-bold rounded-full hover:bg-white hover:text-black transition-colors">
+                        申し込む
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: OPTIONS -->
+    <section class="w-full py-24 bg-[#111] relative z-10 border-t border-[#333]">
+        <div class="container mx-auto px-6">
+            <h3 class="font-impact text-3xl text-white mb-12 text-center">ADDITIONAL <span class="text-[#FFD700]">OPTIONS</span></h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-[#050505] p-6 border border-[#222] rounded-lg text-center">
+                    <h4 class="font-bold text-lg mb-2 text-white">広告運用代行</h4>
+                    <p class="text-sm text-gray-400">TikTok広告、Meta広告の運用を代行し、ブーストをかけます。</p>
+                </div>
+                <div class="bg-[#050505] p-6 border border-[#222] rounded-lg text-center">
+                    <h4 class="font-bold text-lg mb-2 text-white">インフルエンサー起用</h4>
+                    <p class="text-sm text-gray-400">ブランドに合ったインフルエンサーをキャスティングします。</p>
+                </div>
+                <div class="bg-[#050505] p-6 border border-[#222] rounded-lg text-center">
+                    <h4 class="font-bold text-lg mb-2 text-white">ライブ配信支援</h4>
+                    <p class="text-sm text-gray-400">TikTok Liveの企画・機材セッティング・運営をサポート。</p>
+                </div>
+                <div class="bg-[#050505] p-6 border border-[#222] rounded-lg text-center">
+                    <h4 class="font-bold text-lg mb-2 text-white">SNS運用内製化研修</h4>
+                    <p class="text-sm text-gray-400">社内で運用できるよう、ノウハウをレクチャーします。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: CTA -->
+    <section id="contact" class="w-full py-40 bg-[#FFD700] text-black relative overflow-hidden z-30 flex flex-col items-center justify-center">
+        <!-- Paint Wave Top -->
+        <div class="absolute top-0 left-0 w-full h-16 bg-[#111]" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 10%);"></div>
+
+        <h2 class="font-impact text-5xl md:text-7xl mb-8 text-center transform -skew-x-6 leading-none">
+            START<br>YOUR BUZZ
+        </h2>
+        <p class="mb-12 font-bold text-xl text-center">
+            まずは無料相談から。<br>
+            貴社の可能性を診断いたします。
+        </p>
+        
+        <a href="contact.html" class="relative group cursor-pointer ink-trigger ink-splash-btn">
+            <div class="absolute top-3 left-3 w-full h-full bg-black rounded-xl"></div>
+            <div class="relative bg-white border-4 border-black px-16 py-6 text-2xl font-black uppercase rounded-xl transform transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1">
+                CONTACT FORM
+            </div>
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="w-full py-12 bg-[#050505] text-center border-t border-[#222]">
+        <div class="container mx-auto px-6">
+            <img src="img/logo.png" alt="Buzzry" class="h-8 mx-auto mb-4">
+            <p class="text-gray-600 text-sm">&copy; 2024 Buzzry Inc. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- Hamburger Menu Logic ---
+        const hamburger = document.getElementById('hamburger-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const mainHeader = document.getElementById('main-header');
+        const menuLinks = document.querySelectorAll('.menu-link');
+        let isMenuOpen = false;
+
+        hamburger.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            hamburger.classList.toggle('active');
+            mainHeader.classList.toggle('menu-open');
+
+            if (isMenuOpen) {
+                gsap.to(menuOverlay, { y: "0%", duration: 0.5, ease: "power4.out" });
+                gsap.to(menuLinks, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.3 });
+            } else {
+                gsap.to(menuLinks, { y: 50, opacity: 0, duration: 0.3 });
+                gsap.to(menuOverlay, { y: "-100%", duration: 0.5, delay: 0.2, ease: "power4.in" });
+            }
+        });
+
+        // --- Entrance Animation ---
+        gsap.from("h1", {
+            x: -50,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out",
+            delay: 0.2
+        });
+
+        // --- Scroll Reveal Animations ---
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            gsap.from(section.children, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                },
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: "power2.out"
+            });
+        });
+
+        // --- Ink Splash Interaction (CTA) ---
+        const inkTriggers = document.querySelectorAll('.ink-trigger');
+        
+        inkTriggers.forEach(btn => {
+            btn.addEventListener('mouseenter', (e) => {
+                createSplatter(btn, e);
+            });
+            btn.addEventListener('mouseleave', (e) => {
+                removeSplatter(btn);
+            });
+        });
+
+        function createSplatter(element, e) {
+            const splash = document.createElement('div');
+            splash.classList.add('splash-particle');
+            splash.style.width = '120px';
+            splash.style.height = '120px';
+            splash.style.left = '50%';
+            splash.style.top = '50%';
+            splash.style.transform = 'translate(-50%, -50%) scale(0)';
+            splash.style.zIndex = '-1';
+            splash.style.backgroundColor = '#FFD700';
+            splash.style.borderRadius = '50%';
+            splash.style.position = 'absolute';
+            element.appendChild(splash);
+
+            gsap.to(splash, {
+                scale: 1.2,
+                opacity: 0.3,
+                duration: 0.3,
+                ease: "back.out(1.7)"
+            });
+            
+            const particleCount = 4;
+            for(let i=0; i<particleCount; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('splash-particle');
+                const size = Math.random() * 8 + 3;
+                drop.style.width = size + 'px';
+                drop.style.height = size + 'px';
+                drop.style.position = 'absolute';
+                drop.style.backgroundColor = '#FFD700';
+                drop.style.borderRadius = '50%';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 40;
+                
+                drop.style.left = '50%';
+                drop.style.top = '50%';
+                
+                element.appendChild(drop);
+                
+                gsap.to(drop, {
+                    x: Math.cos(angle) * (dist + Math.random() * 20),
+                    y: Math.sin(angle) * (dist + Math.random() * 20),
+                    opacity: 0.8,
+                    scale: 0,
+                    duration: 0.4,
+                    ease: "power2.out",
+                    onComplete: () => drop.remove()
+                });
+            }
+        }
+
+        function removeSplatter(element) {
+            const splashes = element.querySelectorAll('.splash-particle');
+            splashes.forEach(s => {
+                gsap.to(s, {
+                    scale: 0,
+                    opacity: 0,
+                    duration: 0.2,
+                    onComplete: () => s.remove()
+                });
+            });
+        }
+    </script>
+</body>
+</html>

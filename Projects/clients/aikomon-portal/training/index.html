@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教材ライブラリ — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .library {
+      max-width: 800px; margin: 0 auto;
+      padding: 24px 24px 80px;
+    }
+
+    /* Header */
+    .lib-header {
+      text-align: center; padding: 28px 0 20px;
+      border-bottom: 1px solid var(--border); margin-bottom: 28px;
+    }
+    .lib-icon {
+      width: 56px; height: 56px; margin: 0 auto 12px;
+      background: var(--claude-bg); border: 1px solid var(--border);
+      border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    }
+    /* CSS book icon */
+    .lib-icon-book {
+      width: 24px; height: 28px; position: relative;
+      background: var(--claude); border-radius: 2px 4px 4px 2px;
+      box-shadow: -3px 0 0 #A06B50;
+    }
+    .lib-icon-book::before {
+      content: ''; position: absolute; top: 6px; left: 5px;
+      width: 14px; height: 2px; background: rgba(255,255,255,0.6);
+      box-shadow: 0 5px 0 rgba(255,255,255,0.4), 0 10px 0 rgba(255,255,255,0.3);
+    }
+    .lib-header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .lib-header p { font-size: 13px; color: var(--text2); }
+
+    /* Bookshelf */
+    .shelf {
+      margin-bottom: 32px;
+    }
+    .shelf-label {
+      font-size: 10px; font-weight: 600; color: var(--text3);
+      letter-spacing: 0.5px; text-transform: uppercase;
+      margin-bottom: 12px; padding-left: 4px;
+    }
+    .shelf-row {
+      display: flex; gap: 16px; padding: 20px 20px 16px;
+      background: linear-gradient(180deg, var(--surface) 0%, #EAE7DE 100%);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      position: relative;
+      overflow-x: auto;
+    }
+    /* Shelf wood edge */
+    .shelf-row::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(180deg, #D4D0C6, #C4C0B6);
+      border-radius: 0 0 10px 10px;
+    }
+
+    /* Book */
+    .book {
+      display: flex; flex-direction: column; justify-content: flex-end;
+      min-width: 120px; height: 170px;
+      border-radius: 3px 6px 6px 3px;
+      padding: 12px 10px;
+      text-decoration: none; color: #fff;
+      position: relative;
+      transition: all 0.25s cubic-bezier(.22,1,.36,1);
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.1), inset -2px 0 4px rgba(0,0,0,0.08);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .book:hover {
+      transform: translateY(-12px) rotate(-1deg);
+      box-shadow: 4px 8px 20px rgba(0,0,0,0.15);
+      text-decoration: none;
+    }
+    /* Spine line */
+    .book::before {
+      content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px;
+      width: 2px; background: rgba(255,255,255,0.2); border-radius: 1px;
+    }
+    /* Page edge */
+    .book::after {
+      content: ''; position: absolute; right: -3px; top: 3px; bottom: 3px;
+      width: 3px;
+      background: linear-gradient(180deg, #F5F3EF, #E8E5DF, #F5F3EF);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .book-badge {
+      display: inline-block; padding: 1px 6px; border-radius: 3px;
+      font-size: 8px; font-weight: 600; letter-spacing: 0.5px;
+      background: rgba(255,255,255,0.25); color: #fff;
+      margin-bottom: 6px; align-self: flex-start;
+    }
+    .book-title {
+      font-size: 12px; font-weight: 700; line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .book-meta {
+      font-size: 9px; opacity: 0.7;
+    }
+
+    /* Book colors */
+    .book-claude { background: linear-gradient(180deg, #C4876A, #A06B50); }
+    .book-blue { background: linear-gradient(180deg, #5B8BC4, #4070A0); }
+    .book-green { background: linear-gradient(180deg, #5A9E72, #408060); }
+    .book-purple { background: linear-gradient(180deg, #8A7AC4, #6A5AA0); }
+
+    /* Faded books (coming soon) */
+    .book.faded {
+      opacity: 0.45; pointer-events: none;
+      filter: grayscale(0.3);
+    }
+    .book.faded:hover { transform: none; box-shadow: 2px 2px 8px rgba(0,0,0,0.1); }
+
+    /* Reading character */
+    .reader {
+      position: absolute; bottom: 8px; right: 16px;
+      z-index: 5;
+    }
+    .reader-body {
+      width: 14px; height: 18px;
+      background: linear-gradient(180deg, var(--blue), #4070A0);
+      border-radius: 5px 5px 2px 2px; position: relative;
+    }
+    .reader-body::before {
+      content: ''; position: absolute; top: 3px; left: 2px;
+      width: 2px; height: 2px; background: #fff; border-radius: 50%;
+      box-shadow: 5px 0 0 #fff;
+    }
+    /* Tiny book in hand */
+    .reader-book {
+      width: 8px; height: 6px; background: var(--claude);
+      border-radius: 1px; margin: -2px auto 0;
+      box-shadow: -1px 0 0 #A06B50;
+    }
+    .reader-shadow {
+      width: 12px; height: 4px; background: rgba(0,0,0,0.06);
+      border-radius: 50%; margin: 2px auto 0;
+    }
+    .reader { animation: readerBob 3s ease-in-out infinite; }
+    @keyframes readerBob { 0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)} }
+
+    /* Back link */
+    .lib-back {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; color: var(--text3); text-decoration: none;
+      margin-bottom: 4px;
+    }
+    .lib-back:hover { color: var(--claude); text-decoration: none; }
+
+    /* Footer */
+    .lib-footer {
+      text-align: center; padding: 20px 0 0; margin-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--text3);
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .shelf-row { gap: 12px; padding: 16px 14px 12px; }
+      .book { min-width: 100px; height: 150px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo">with-AI <span>PORTAL</span></a>
+    <a href="../" class="lib-back">← ポータルに戻る</a>
+  </div>
+</nav>
+
+<div class="library">
+
+  <div class="lib-header">
+    <div class="lib-icon"><div class="lib-icon-book"></div></div>
+    <h1>教材ライブラリ</h1>
+    <p>本棚から読みたい講座を選んでください</p>
+  </div>
+
+  <!-- Shelf 1: 公開中 -->
+  <div class="shelf">
+    <div class="shelf-label">公開中</div>
+    <div class="shelf-row">
+      <a href="claude-code/" class="book book-claude">
+        <div class="book-badge">全7章</div>
+        <div class="book-title">Claude Code<br>マスター講座</div>
+        <div class="book-meta">初心者〜中級者</div>
+      </a>
+
+      <a href="agent-workshop/" class="book book-blue">
+        <div class="book-badge">WORKSHOP</div>
+        <div class="book-title">はじめての<br>AIエージェント<br>作成</div>
+        <div class="book-meta">初心者向け</div>
+      </a>
+
+      <!-- Reader character sitting on shelf -->
+      <div class="reader">
+        <div class="reader-body"></div>
+        <div class="reader-book"></div>
+        <div class="reader-shadow"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shelf 2: 準備中 -->
+  <div class="shelf">
+    <div class="shelf-label">準備中</div>
+    <div class="shelf-row">
+      <div class="book book-blue faded">
+        <div class="book-badge">SOON</div>
+        <div class="book-title">生成AI<br>基礎講座</div>
+        <div class="book-meta">入門</div>
+      </div>
+
+      <div class="book book-green faded">
+        <div class="book-badge">SOON</div>
+        <div class="book-title">AIガイド<br>ライン作成</div>
+        <div class="book-meta">実務者向け</div>
+      </div>
+
+      <div class="book book-purple faded">
+        <div class="book-badge">SOON</div>
+        <div class="book-title">プロンプト<br>エンジニアリング</div>
+        <div class="book-meta">初級〜上級</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lib-footer">
+    <p>with-AI PORTAL — © 2026 with-AI Inc.</p>
+  </div>
+
+</div>
+
+</body>
+</html>

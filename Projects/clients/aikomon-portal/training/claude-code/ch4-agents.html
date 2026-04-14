@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章: エージェントの作り方 — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../shared/doc-theme.css">
+</head>
+<body>
+
+<button class="sb-toggle" id="sbToggle">☰ 目次</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <a href="./" class="sb-back"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg> 教材一覧に戻る</a>
+      <div class="sb-title">第4章</div>
+      <div class="sb-subtitle">エージェントの作り方</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">基礎</div>
+      <a href="#what-is" class="sb-link">エージェントとは</a>
+      <a href="#create-folder" class="sb-link">フォルダを作る</a>
+      <a href="#create-md" class="sb-link">CLAUDE.md を作る</a>
+      <a href="#verify" class="sb-link">動作確認</a>
+
+      <div class="sb-section">応用</div>
+      <a href="#patterns" class="sb-link">設計パターン</a>
+      <a href="#multiple" class="sb-link">複数エージェント</a>
+      <a href="#cases" class="sb-link">実務事例</a>
+      <a href="#tips" class="sb-link">パワーアップのコツ</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-label">第4章</div>
+        <h1>エージェントの作り方</h1>
+        <p>フォルダ + CLAUDE.md = 専門AI。あなただけのエージェントを作ろう。</p>
+      </div>
+
+      <!-- ====== エージェントとは ====== -->
+      <div class="section">
+        <span class="section-anchor" id="what-is"></span>
+        <h2>エージェントとは</h2>
+        <p>エージェントとは、<strong>特定の仕事に特化した Claude</strong> のことです。フォルダと CLAUDE.md を組み合わせるだけで作れます。</p>
+
+        <h3>仕組み</h3>
+        <div class="box box-info"><span class="box-icon"></span><strong>フォルダ</strong> + <strong>CLAUDE.md（指示書）</strong> = エージェント。Claude はそのフォルダ内で起動すると、CLAUDE.md の指示に従って動きます。</div>
+
+        <h3>通常の Claude とエージェントの違い</h3>
+        <table>
+          <tr><th>項目</th><th>通常の Claude</th><th>エージェント</th></tr>
+          <tr><td>性格・口調</td><td>毎回デフォルト</td><td>CLAUDE.md で固定</td></tr>
+          <tr><td>専門知識</td><td>なし（汎用）</td><td>CLAUDE.md で指定</td></tr>
+          <tr><td>出力形式</td><td>毎回指示が必要</td><td>自動で統一</td></tr>
+          <tr><td>前提情報</td><td>毎回伝える必要あり</td><td>CLAUDE.md に記載済み</td></tr>
+          <tr><td>切り替え</td><td>---</td><td>フォルダを移動するだけ</td></tr>
+        </table>
+
+        <div class="box box-tip"><span class="box-icon"></span>「毎回同じことを説明するのが面倒」と感じたら、エージェントにする合図です。</div>
+      </div>
+
+      <!-- ====== フォルダを作る ====== -->
+      <div class="section">
+        <span class="section-anchor" id="create-folder"></span>
+        <h2>フォルダを作る</h2>
+        <p>エージェント用のフォルダを作り、Git で管理を始めます。</p>
+
+        <h3>Step 1: デスクトップに移動</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>cd ~/Desktop</pre></div>
+
+        <h3>Step 2: エージェント用フォルダを作成</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>mkdir mail-agent</pre></div>
+
+        <h3>Step 3: フォルダに移動</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>cd mail-agent</pre></div>
+
+        <h3>Step 4: Git を初期化</h3>
+        <p>Claude が変更履歴を管理できるようにします。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>git init</pre></div>
+        <div class="box box-ok"><span class="box-icon"></span><code>Initialized empty Git repository</code> と表示されれば成功です。</div>
+        <div class="box box-tip"><span class="box-icon"></span>フォルダ名は自由ですが、<strong>英語・小文字・ハイフン区切り</strong>がおすすめです（例: <code>sales-agent</code>、<code>report-agent</code>）。</div>
+      </div>
+
+      <!-- ====== CLAUDE.md を作る ====== -->
+      <div class="section">
+        <span class="section-anchor" id="create-md"></span>
+        <h2>CLAUDE.md を作る</h2>
+        <p>CLAUDE.md は「エージェントの性格と能力を決める設計書」です。このファイルがエージェントの頭脳になります。</p>
+
+        <h3>Claude に作ってもらう方法</h3>
+        <p>フォルダ内で Claude を起動します。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>claude</pre></div>
+        <p>Claude が起動したら、以下のように指示します。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>営業メール作成エージェントのCLAUDE.mdを作成して。
+丁寧なビジネス日本語で、相手の会社名と用件を聞いてからメールを作る設計にして。</pre></div>
+
+        <h3>CLAUDE.md の完成例</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 営業メール作成エージェント</span>
+
+## 役割
+あなたは営業メール作成の専門家です。
+丁寧なビジネス日本語で、効果的な営業メールを作成します。
+
+## ルール
+- 必ず最初に「送信先の会社名」「担当者名」「用件」を確認する
+- 件名は20文字以内で要点を伝える
+- 本文は3段落構成（挨拶・本題・締め）
+- 敬語は「です・ます」調で統一
+- 押しつけがましくない表現を使う
+
+## 出力形式
+件名: ○○○○
+---
+本文:
+（メール本文）
+
+## 注意事項
+- 個人情報は扱わない
+- 不明点があれば必ず質問する</pre></div>
+
+        <div class="box box-info"><span class="box-icon"></span>CLAUDE.md は何度でも修正できます。使いながら少しずつ改善していくのがコツです。</div>
+      </div>
+
+      <!-- ====== 動作確認 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="verify"></span>
+        <h2>動作確認</h2>
+        <p>エージェントが正しく動くかテストしましょう。</p>
+
+        <h3>テスト 1: 自己紹介させる</h3>
+        <p>フォルダ内で Claude を起動し、次のように入力します。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>自己紹介して</pre></div>
+        <div class="card-row">
+          <div class="box box-ok"><span class="box-icon"></span>CLAUDE.md に書いた役割どおりの自己紹介が返ってくれば成功</div>
+          <div class="box box-err"><span class="box-icon"></span>汎用的な回答 → CLAUDE.md がフォルダ直下にあるか確認</div>
+        </div>
+
+        <h3>テスト 2: 実際のタスクを依頼</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>株式会社サンプルの田中様宛に、
+弊社の新サービス紹介のメールを作成して。</pre></div>
+        <div class="box box-ok"><span class="box-icon"></span>CLAUDE.md のルールどおりの形式でメールが出力されれば完璧です。</div>
+
+        <h3>チェックポイント</h3>
+        <ul class="checklist">
+          <li>自己紹介が CLAUDE.md の役割と一致している</li>
+          <li>出力形式が CLAUDE.md で指定したとおりになっている</li>
+          <li>ルールが守られている（敬語、構成など）</li>
+        </ul>
+      </div>
+
+      <!-- ====== 設計パターン ====== -->
+      <div class="section">
+        <span class="section-anchor" id="patterns"></span>
+        <h2>設計パターン</h2>
+        <p>CLAUDE.md の書き方には4つのパターンがあります。目的に合わせて使い分けましょう。</p>
+
+        <div class="card-row">
+          <div class="card"><h4>1. シンプル型</h4><p>最小限の指示だけ</p></div>
+          <div class="card"><h4>2. 詳細型</h4><p>役割+ルール+禁止事項</p></div>
+          <div class="card"><h4>3. テンプレート型</h4><p>出力形式を固定</p></div>
+          <div class="card"><h4>4. コンテキスト型</h4><p>会社情報・背景を含む</p></div>
+        </div>
+
+        <h3>パターン 1: シンプル型</h3>
+        <p>最小限の指示だけを書くパターン。簡単なタスク向きです。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 翻訳エージェント</span>
+
+日本語を英語に翻訳する。
+ビジネス文書向けのフォーマルな表現を使う。
+原文と翻訳を並べて表示する。</pre></div>
+
+        <h3>パターン 2: 詳細型</h3>
+        <p>役割・ルール・出力形式を細かく指定するパターン。品質を安定させたいときに。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 議事録まとめエージェント</span>
+
+## 役割
+会議の議事録を整理・要約する専門家。
+
+## 入力
+ユーザーから会議のメモやテキストを受け取る。
+
+## 出力形式
+1. 会議名・日時・参加者
+2. 議題一覧（箇条書き）
+3. 決定事項（箇条書き）
+4. TODO（担当者・期限つき）
+5. 次回予定
+
+## ルール
+- 曖昧な表現は「要確認」と注記する
+- 数字や固有名詞は正確に残す
+- 3行以内の要約を冒頭に入れる</pre></div>
+
+        <h3>パターン 3: テンプレート型</h3>
+        <p>出力のテンプレートを含めるパターン。毎回同じ形式で出力させたいときに。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 日報作成エージェント</span>
+
+## 役割
+日報を決まったフォーマットで作成する。
+
+## ユーザーへの質問
+最初に以下を聞く:
+1. 今日やったこと
+2. 困っていること
+3. 明日の予定
+
+## テンプレート
+【日報】○月○日（○）
+
+■ 本日の実績
+- （箇条書き）
+
+■ 課題・相談事項
+- （箇条書き、なければ「特になし」）
+
+■ 明日の予定
+- （箇条書き）</pre></div>
+
+        <h3>パターン 4: コンテキスト型</h3>
+        <p>会社情報や専門知識を含めるパターン。社内の前提知識が必要なときに。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 社内FAQ回答エージェント</span>
+
+## 役割
+社内の問い合わせに回答するサポート担当。
+
+## 会社情報
+- 会社名: 株式会社サンプル
+- 営業時間: 9:00-18:00（土日祝休み）
+- 問い合わせ先: support@example.com
+
+## よくある質問
+- 有給申請 → 社内ポータルの「申請」メニューから
+- 経費精算 → 経理部にレシート原本を提出
+- 会議室予約 → Googleカレンダーの「会議室」を選択
+
+## ルール
+- わからないことは「担当部署に確認します」と回答
+- 個人情報に関する質問には回答しない</pre></div>
+
+        <h3>どれを選べばいい？</h3>
+        <table>
+          <tr><th>状況</th><th>おすすめパターン</th><th>理由</th></tr>
+          <tr><td>まず試したい</td><td>1. シンプル型</td><td>1行で始められる</td></tr>
+          <tr><td>業務で本格的に使う</td><td>2. 詳細型</td><td>ルールが明確で安定する</td></tr>
+          <tr><td>定型作業を自動化</td><td>3. テンプレート型</td><td>出力が毎回統一される</td></tr>
+          <tr><td>チームで共有する</td><td>4. コンテキスト型</td><td>誰が使っても同じ品質</td></tr>
+        </table>
+        <div class="box box-tip"><span class="box-icon"></span>迷ったら 2. 詳細型 から始めて、必要に応じて 3. 4. を組み合わせましょう。</div>
+      </div>
+
+      <!-- ====== 複数エージェント ====== -->
+      <div class="section">
+        <span class="section-anchor" id="multiple"></span>
+        <h2>複数エージェント</h2>
+        <p>用途ごとにフォルダを分ければ、複数のエージェントを持てます。</p>
+
+        <h3>フォルダ構成の例</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>Desktop/
+  mail-agent/          <span class="c-cmt"># 営業メール作成</span>
+    CLAUDE.md
+  minutes-agent/       <span class="c-cmt"># 議事録まとめ</span>
+    CLAUDE.md
+  sns-agent/           <span class="c-cmt"># SNS投稿作成</span>
+    CLAUDE.md
+  faq-agent/           <span class="c-cmt"># 社内FAQ回答</span>
+    CLAUDE.md</pre></div>
+
+        <h3>エージェントの切り替え方</h3>
+        <p>使いたいエージェントのフォルダに移動して Claude を起動するだけです。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 営業メールエージェントを使う</span>
+cd ~/Desktop/mail-agent
+claude
+
+<span class="c-cmt"># 終了して、議事録エージェントに切り替え</span>
+/exit
+cd ~/Desktop/minutes-agent
+claude</pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span>Cursor を使っている場合は「File → Open Folder」でフォルダを開くだけで切り替えられます。</div>
+        <div class="box box-info"><span class="box-icon"></span>それぞれのエージェントは完全に独立しています。設定が他のエージェントに影響することはありません。</div>
+      </div>
+
+      <!-- ====== 実務事例 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="cases"></span>
+        <h2>実務事例</h2>
+        <p>すぐに使える6つのエージェントを紹介します。CLAUDE.md をコピーしてそのまま使えます。</p>
+
+        <h3>1. 営業メール作成エージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 営業メール作成エージェント</span>
+
+## 役割
+丁寧なビジネス日本語で営業メールを作成する専門家。
+
+## 手順
+1. 送信先（会社名・担当者名）を聞く
+2. 用件（新規提案/フォローアップ/お礼など）を聞く
+3. メールを作成して提示する
+
+## ルール
+- 件名は20文字以内
+- 本文は3段落（挨拶・本題・締め）
+- 「です・ます」調で統一
+- 押しつけがましい表現は避ける</pre></div>
+        <p>使い方の例:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>株式会社ABCの鈴木様に、弊社のAIコンサル紹介メールを作って</pre></div>
+
+        <h3>2. 議事録まとめエージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 議事録まとめエージェント</span>
+
+## 役割
+会議メモを構造化された議事録に整理する。
+
+## 出力形式
+1. 3行要約
+2. 会議情報（日時・参加者）
+3. 議題と議論内容
+4. 決定事項
+5. TODO（担当者・期限）
+6. 次回予定
+
+## ルール
+- 曖昧な内容は「要確認」と注記
+- 数字・固有名詞は正確に保持
+- 発言者が不明な場合は「発言者不明」と記載</pre></div>
+        <p>使い方の例:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>以下の会議メモを議事録にまとめて。
+
+田中: 新商品の発売日は来月15日でいきましょう
+佐藤: 広告予算は50万円で足りますか？
+田中: 70万円に増額を検討。佐藤さん見積もり出して
+鈴木: パッケージデザインは今週金曜に最終確認</pre></div>
+
+        <h3>3. SNS投稿作成エージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># SNS投稿作成エージェント</span>
+
+## 役割
+企業SNS（X / Instagram / LinkedIn）の投稿文を作成する。
+
+## 手順
+1. プラットフォーム（X / Instagram / LinkedIn）を聞く
+2. 投稿内容のテーマを聞く
+3. 3パターンの投稿案を提示する
+
+## プラットフォーム別ルール
+- X: 140文字以内、ハッシュタグ2-3個
+- Instagram: 親しみやすい文体、ハッシュタグ10-15個
+- LinkedIn: ビジネス向け、専門性を出す
+
+## 共通ルール
+- ターゲット層を意識した言葉選び
+- 行動を促す一文を入れる（CTA）
+- 炎上リスクのある表現は避ける</pre></div>
+        <p>使い方の例:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>Xで、弊社の新しいAI研修サービスについて投稿したい</pre></div>
+
+        <h3>4. 社内FAQ回答エージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># 社内FAQ回答エージェント</span>
+
+## 役割
+社員からの社内手続きに関する質問に回答する。
+
+## 会社情報
+- 営業時間: 9:00-18:00（土日祝休み）
+- 総務部: 内線100 / soumu@example.com
+- 経理部: 内線200 / keiri@example.com
+- IT部: 内線300 / it-support@example.com
+
+## よくある質問と回答
+- 有給申請 → 社内ポータル「申請」→「有給休暇」、3営業日前まで
+- 経費精算 → 経理部にレシート原本提出、月末締め翌月5日払い
+- 会議室予約 → Googleカレンダーで「会議室」リソースを選択
+- PC不具合 → IT部に内線300、リモートの場合はメール
+- 名刺発注 → 総務部にメール、納期約1週間
+
+## ルール
+- わからないことは「担当部署にお問い合わせください」と案内
+- 個人情報に関する回答はしない
+- 親しみやすく丁寧な口調</pre></div>
+        <p>使い方の例:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>有給申請ってどうやるの？</pre></div>
+
+        <h3>5. レポート作成エージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># レポート作成エージェント</span>
+
+## 役割
+業務データからわかりやすいレポートを作成する。
+
+## 手順
+1. レポートの種類（週報/月報/分析）を聞く
+2. データや情報を受け取る
+3. 構造化されたレポートを作成する
+
+## 出力形式
+【○○レポート】対象期間: ○月○日〜○月○日
+
+■ サマリー（3行以内）
+
+■ 主要指標
+  - 指標1: 数値（前期比 +/-○%）
+  - 指標2: 数値（前期比 +/-○%）
+
+■ 詳細分析
+
+■ 課題と対策
+
+■ 次のアクション
+
+## ルール
+- 数字は具体的に記載
+- 専門用語は避け、わかりやすい言葉で書く</pre></div>
+        <p>使い方の例:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>先月の売上データ: 1月 500万、2月 480万、3月 620万。
+月次レポートを作成して。</pre></div>
+
+        <h3>6. タスク整理エージェント</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># タスク整理エージェント</span>
+
+## 役割
+散らばったタスクを整理し、優先順位をつける。
+
+## 手順
+1. タスクの一覧を受け取る
+2. 緊急度と重要度で分類する
+3. 優先順位付きのタスクリストを作成する
+
+## 出力形式
+【タスク整理結果】
+
+■ 今すぐやる（緊急 + 重要）
+  1. タスク名 — 期限: ○月○日
+
+■ 計画的にやる（重要だが急ぎでない）
+  1. タスク名 — 推奨期限: ○月○日
+
+■ 誰かに頼む（緊急だが自分でなくてよい）
+  1. タスク名 — 委任先候補: ○○
+
+■ やらない/後回し
+  1. タスク名 — 理由: ○○
+
+## ルール
+- 期限が不明なタスクは確認する
+- 「全部重要」と言われたら具体的な判断基準を提示
+- 1回のタスクは最大20個まで</pre></div>
+        <p>使い方の例:</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>今抱えてるタスク:
+- 来週の会議資料作成
+- 今日中にクライアントに返信
+- 新人研修の準備（来月）
+- 経費精算（今週末まで）
+- ウェブサイトリニューアル案
+優先順位つけて整理して</pre></div>
+      </div>
+
+      <!-- ====== パワーアップのコツ ====== -->
+      <div class="section">
+        <span class="section-anchor" id="tips"></span>
+        <h2>パワーアップのコツ</h2>
+        <p>エージェントをもっと賢くするための3つのテクニックを紹介します。</p>
+
+        <h3>1. Few-shot（具体例を入れる）</h3>
+        <p>「こういう入力にはこう返す」という例を CLAUDE.md に書くと、精度が大幅に上がります。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># CLAUDE.md に追加する例</span>
+
+## 入出力の例
+
+### 例1
+入力: 「明日の会議リスケして」
+出力: 以下の情報を教えてください。
+  1. 現在の会議日時
+  2. 変更希望の日時
+  3. 参加者への連絡要否
+
+### 例2
+入力: 「鈴木さんにお礼メール」
+出力: 以下の情報を教えてください。
+  1. お礼の内容（何に対するお礼か）
+  2. 鈴木さんの会社名
+  3. 送信の緊急度</pre></div>
+        <div class="box box-tip"><span class="box-icon"></span>例は2〜3個入れるのが効果的です。多すぎると逆効果になることもあります。</div>
+
+        <h3>2. 段階的に改善する</h3>
+        <p>最初から完璧を目指さず、使いながら少しずつ CLAUDE.md を改善していきましょう。</p>
+        <div class="steps">
+          <div class="step"><span class="step-n sn-b">1</span><div class="step-body"><p>まず最小限の CLAUDE.md で始める</p></div></div>
+          <div class="step"><span class="step-n sn-b">2</span><div class="step-body"><p>実際に使ってみて「ここが違う」を見つける</p></div></div>
+          <div class="step"><span class="step-n sn-b">3</span><div class="step-body"><p>CLAUDE.md にルールを追加・修正する</p></div></div>
+          <div class="step"><span class="step-n sn-b">4</span><div class="step-body"><p>再度テストして改善を確認する</p></div></div>
+        </div>
+        <div class="box box-ok"><span class="box-icon"></span>完璧を目指さず、使いながら育てるのがコツです。</div>
+
+        <h3>3. フィードバックループ</h3>
+        <p>Claude 自身にエージェントの改善を相談できます。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># Claude に改善提案を聞く</span>
+さっきの出力はちょっと堅すぎた。
+もう少しカジュアルにするために、CLAUDE.mdにどんなルールを追加すればいい？</pre></div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># CLAUDE.md 自体の改善を依頼する</span>
+今のCLAUDE.mdを見直して、改善点があれば修正して。</pre></div>
+        <div class="box box-info"><span class="box-icon"></span>Claude 自身がエージェント設計のアドバイザーになってくれます。遠慮なく相談しましょう。</div>
+
+        <h3>まとめチェックリスト</h3>
+        <ul class="checklist">
+          <li>具体例（Few-shot）を2〜3個入れる</li>
+          <li>使いながら段階的に CLAUDE.md を改善する</li>
+          <li>Claude にフィードバックを求める</li>
+          <li>うまくいった CLAUDE.md はバックアップを取る</li>
+        </ul>
+      </div>
+
+      <!-- Chapter nav -->
+      <div class="chapter-nav">
+        <a href="ch3-md-files.html">&larr; 第3章: CLAUDE.md の書き方</a>
+        <a href="ch5-practical.html">第5章: 実務活用テクニック &rarr;</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/doc-utils.js"></script>
+</body>
+</html>

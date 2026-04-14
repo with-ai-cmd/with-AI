@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>with-AI株式会社 | AI導入・DX推進の伴走パートナー</title>
+<meta name="description" content="with-AI株式会社は、AIテクノロジーを用いた伴走型支援で企業のDX推進・AI導入を成功に導くコンサルティング会社です。設計から実装、定着まで一気通貫でサポートします。">
+<meta property="og:title" content="with-AI株式会社 | AI導入・DX推進の伴走パートナー">
+<meta property="og:description" content="AIテクノロジーを用いた伴走型支援で、ビジネスは次のレベルへ。設計から実装、定着まで一気通貫でサポート。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://with-ai.co.jp">
+<meta property="og:image" content="https://with-ai.co.jp/img/logo-full.png">
+<meta property="og:site_name" content="with-AI株式会社">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/favicon.ico">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png.png">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@100;200;300;400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4T5HCY4Y"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-JJ4T5HCY4Y');
+</script>
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "with-AI株式会社",
+  "url": "https://with-ai.co.jp",
+  "logo": "https://with-ai.co.jp/img/logo-full.png",
+  "description": "AIテクノロジーを用いた伴走型支援で企業のDX推進・AI導入を成功に導くコンサルティング会社",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "JP"
+  },
+  "sameAs": []
+}
+</script>
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        blue: { DEFAULT: '#00457A' },
+        sky: { DEFAULT: '#48A8E1' },
+        cyan: { DEFAULT: '#00b9ff' },
+        teal: { DEFAULT: '#00cbaf' },
+        green: { DEFAULT: '#5dc806' },
+        yellow: { DEFAULT: '#e9c02b' },
+        dark: { DEFAULT: '#0B1222' },
+        navy: { DEFAULT: '#002E52' }
+      },
+      fontFamily: {
+        en: ['"Albert Sans"', 'sans-serif'],
+        jp: ['"Zen Kaku Gothic New"', 'sans-serif']
+      },
+      borderRadius: {
+        card: '28px',
+        btn: '60px'
+      }
+    }
+  }
+}
+</script>
+
+<style>
+/* ===== CSS RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  font-family: 'Albert Sans', 'Zen Kaku Gothic New', sans-serif;
+  background: #EDEDF0;
+  color: #1a1a2e;
+  overflow-x: hidden;
+}
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --blue: #00457A;
+  --sky: #48A8E1;
+  --cyan: #00b9ff;
+  --teal: #00cbaf;
+  --green: #5dc806;
+  --yellow: #e9c02b;
+  --dark: #0B1222;
+  --navy: #002E52;
+  --grid-color: rgba(0, 69, 122, 0.06);
+}
+
+/* ===== GRID BACKGROUND ===== */
+.grid-bg {
+  background-color: #EDEDF0;
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.grid-bg-dark {
+  background-color: #0B1222;
+  background-image:
+    linear-gradient(rgba(72,168,225,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(72,168,225,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.grid-bg-cta {
+  background-color: #00457A;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ===== LOADER ===== */
+#loader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--blue);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#loader .scan-line {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), var(--sky), rgba(255,255,255,0.8), transparent);
+  animation: scanDown 2s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(72,168,225,0.6), 0 0 60px rgba(72,168,225,0.3);
+}
+
+@keyframes scanDown {
+  0% { top: -2px; opacity: 1; }
+  80% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+#loader .loader-logo {
+  width: 200px;
+  opacity: 0;
+  filter: brightness(0) invert(1);
+  animation: loaderFadeIn 1s ease 0.5s forwards;
+}
+
+@keyframes loaderFadeIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+#loader.hide {
+  animation: loaderSlideUp 0.8s ease-in-out forwards;
+}
+
+@keyframes loaderSlideUp {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+/* ===== HORIZONTAL SCROLL WRAPPER ===== */
+#horizontal-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+#horizontal-track {
+  display: flex;
+  width: 600vw;
+  will-change: transform;
+}
+
+.panel {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== DOT NAVIGATION ===== */
+#dot-nav {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#dot-nav .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(0, 69, 122, 0.2);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  border: none;
+  padding: 0;
+}
+
+#dot-nav .dot.active {
+  background: var(--blue);
+  box-shadow: 0 0 10px rgba(0, 69, 122, 0.4);
+  transform: scale(1.3);
+}
+
+#dot-nav .dot:hover {
+  background: var(--sky);
+  transform: scale(1.2);
+}
+
+/* ===== HERO GRADIENT TEXT ===== */
+.hero-title {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 900;
+  font-size: clamp(56px, 8vw, 110px);
+  line-height: 1.05;
+  background: linear-gradient(135deg, #00457A 0%, #48A8E1 40%, #ffffff 50%, #48A8E1 60%, #00457A 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shineGradient 8s linear infinite;
+}
+
+@keyframes shineGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== HERO NAV ===== */
+.hero-nav-link {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--blue);
+  text-decoration: none;
+  position: relative;
+  display: block;
+  padding: 4px 0;
+  transition: color 0.3s;
+}
+
+.hero-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--blue);
+  transition: width 0.3s;
+}
+
+.hero-nav-link:hover::after {
+  width: 100%;
+}
+
+.hero-nav-link.contact-link {
+  border: 1px solid var(--blue);
+  padding: 6px 16px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.hero-nav-link.contact-link::after { display: none; }
+
+/* Nav glow animation */
+.hero-nav-link:nth-child(1) { animation: navGlow 3s ease-in-out 0s infinite; }
+.hero-nav-link:nth-child(2) { animation: navGlow 3s ease-in-out 0.3s infinite; }
+.hero-nav-link:nth-child(3) { animation: navGlow 3s ease-in-out 0.6s infinite; }
+.hero-nav-link:nth-child(4) { animation: navGlow 3s ease-in-out 0.9s infinite; }
+.hero-nav-link:nth-child(5) { animation: navGlow 3s ease-in-out 1.2s infinite; }
+.hero-nav-link:nth-child(6) { animation: navGlow 3s ease-in-out 1.5s infinite; }
+
+@keyframes navGlow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; text-shadow: 0 0 8px rgba(72,168,225,0.3); }
+}
+
+/* ===== FLOATING ISOMETRIC ===== */
+.iso-float {
+  animation: isoFloat 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.iso-float-delay {
+  animation: isoFloat 6s ease-in-out 2s infinite;
+}
+
+.iso-float-slow {
+  animation: isoFloat 8s ease-in-out 1s infinite;
+}
+
+@keyframes isoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+@keyframes bgSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== BLINKING ELEMENTS ===== */
+.blink-square {
+  animation: blink 3s ease-in-out infinite;
+}
+
+.blink-dot {
+  animation: blink 2.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.6; }
+}
+
+/* ===== SCROLL INDICATOR ===== */
+.scroll-indicator {
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.5; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(5px); }
+}
+
+/* ===== SERVICE CARDS ===== */
+.service-card {
+  border-radius: 28px;
+  padding: 28px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.service-card .card-number {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.service-card .card-arrow {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.service-card:hover .card-arrow {
+  background: rgba(255,255,255,0.8);
+}
+
+/* ===== BLOG CARDS ===== */
+.blog-card {
+  background: white;
+  border-radius: 28px;
+  padding: 32px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+}
+
+.blog-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* ===== COMPANY CARDS ===== */
+.company-card {
+  background: white;
+  border-radius: 28px;
+  padding: 40px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.company-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.company-card .card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 28px;
+}
+
+/* ===== CTA SECTION ===== */
+.cta-title {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 900;
+  font-size: clamp(36px, 5vw, 72px);
+  background: linear-gradient(135deg, #48A8E1 0%, #00cbaf 50%, #48A8E1 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shineGradient 6s linear infinite;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 18px 48px;
+  border-radius: 60px;
+  background: linear-gradient(135deg, #48A8E1, #00cbaf);
+  color: white;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(72,168,225,0.4);
+}
+
+/* ===== BACKGROUND OBJECTS ===== */
+.bg-object {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 1;
+}
+
+/* ===== SERVICE CHIP TAGS ===== */
+.service-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Albert Sans', sans-serif;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,69,122,0.08);
+}
+
+.service-chip .chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.7);
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+}
+
+footer a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: white;
+}
+
+/* ===== HERO ENTRANCE ANIMATIONS (pure CSS) ===== */
+.hero-content { opacity: 1; }
+
+@keyframes heroSlideUp {
+  from { opacity: 0; transform: translateY(60px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroSlideRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes heroPop {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Title lines - always visible, inherit shine from parent */
+.hero-title > div { opacity: 1; }
+
+/* Subtitle */
+.hero-subtitle-area {
+  opacity: 0; animation: heroSlideUp 0.8s cubic-bezier(.16,1,.3,1) 2.7s forwards;
+}
+
+/* Nav links stagger */
+.hero-nav-link {
+  opacity: 0; animation: heroSlideRight 0.5s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-nav-link:nth-child(1) { animation-delay: 2.4s; }
+.hero-nav-link:nth-child(2) { animation-delay: 2.48s; }
+.hero-nav-link:nth-child(3) { animation-delay: 2.56s; }
+.hero-nav-link:nth-child(4) { animation-delay: 2.64s; }
+.hero-nav-link:nth-child(5) { animation-delay: 2.72s; }
+.hero-nav-link:nth-child(6) { animation-delay: 2.8s; }
+
+/* Logo */
+#hero-logo {
+  opacity: 0; animation: heroFadeIn 0.6s ease 2.2s forwards;
+}
+
+/* Service chips pop */
+.service-chip {
+  opacity: 0; animation: heroPop 0.4s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+.service-chip:nth-child(1) { animation-delay: 2.8s; }
+.service-chip:nth-child(2) { animation-delay: 2.88s; }
+.service-chip:nth-child(3) { animation-delay: 2.96s; }
+.service-chip:nth-child(4) { animation-delay: 3.04s; }
+
+/* Iso images */
+.iso-image {
+  animation: heroSlideUp 0.8s cubic-bezier(.16,1,.3,1) forwards;
+}
+.iso-image:nth-child(1) { animation-delay: 2.6s; }
+.iso-image:nth-child(2) { animation-delay: 2.75s; }
+.iso-image:nth-child(3) { animation-delay: 2.9s; }
+
+/* Scroll indicator */
+.scroll-indicator-wrap {
+  opacity: 0; animation: heroFadeIn 0.5s ease 3.2s forwards;
+}
+
+/* Background objects */
+.bg-object {
+  animation: heroFadeIn 1s ease forwards;
+  animation-delay: 2.5s;
+  opacity: 0;
+}
+
+/* ===== DARK PANEL OVERLAY CARD ===== */
+.problem-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 28px;
+  padding: 48px;
+  max-width: 600px;
+  backdrop-filter: blur(20px);
+}
+
+/* ===== MOBILE STYLES ===== */
+@media (max-width: 767px) {
+  #horizontal-track {
+    display: block;
+    width: 100%;
+  }
+
+  .panel {
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  #dot-nav { display: none; }
+
+  .bg-object { display: none !important; }
+
+  .hero-title {
+    font-size: 40px;
+    text-align: center;
+  }
+
+  .hero-line-2, .hero-line-3 {
+    padding-left: 0 !important;
+  }
+
+  .iso-image { display: none; }
+  .iso-mobile { display: block !important; width: 80px; opacity: 0.3; }
+
+  .service-grid-panel {
+    grid-template-columns: 1fr !important;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .company-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .panel-inner {
+    padding: 60px 20px !important;
+  }
+
+  .hero-nav { display: none; }
+
+  .hero-subtitle-area {
+    text-align: center !important;
+    margin-top: 24px !important;
+  }
+
+  .chips-row {
+    justify-content: center !important;
+  }
+
+  .scroll-indicator-wrap { display: none; }
+
+  .problem-card {
+    padding: 28px;
+    max-width: 100%;
+  }
+}
+
+/* ===== PANEL CONTENT ALIGNMENT ===== */
+.panel-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 80px;
+  position: relative;
+  z-index: 5;
+}
+</style>
+</head>
+<body>
+
+<!-- ======================== LOADER ======================== -->
+<div id="loader">
+  <div class="scan-line"></div>
+  <img src="img/logo-full.png" alt="with-AI" class="loader-logo">
+</div>
+
+<!-- ======================== DOT NAVIGATION ======================== -->
+<nav id="dot-nav" aria-label="Section navigation">
+  <button class="dot active" data-index="0" aria-label="Hero"></button>
+  <button class="dot" data-index="1" aria-label="Problem"></button>
+  <button class="dot" data-index="2" aria-label="Services"></button>
+  <button class="dot" data-index="3" aria-label="Blog"></button>
+  <button class="dot" data-index="4" aria-label="Company"></button>
+  <button class="dot" data-index="5" aria-label="Contact"></button>
+</nav>
+
+<!-- FIXED NAV (visible across all panels) -->
+<nav id="fixed-nav" class="hidden md:flex" style="position:fixed;top:36px;right:48px;z-index:50;flex-direction:column;align-items:flex-end;gap:10px;">
+  <a href="#" class="hero-nav-link">Home</a>
+  <a href="stance.html" class="hero-nav-link">Stance</a>
+  <a href="service.html" class="hero-nav-link">Service</a>
+  <a href="blog/" class="hero-nav-link">Blog</a>
+  <a href="company.html" class="hero-nav-link">Company</a>
+  <a href="contact.html" class="hero-nav-link contact-link">Contact</a>
+</nav>
+
+<!-- ======================== HORIZONTAL SCROLL SECTION ======================== -->
+<section id="horizontal-wrapper">
+
+  <!-- ===== SHARED BACKGROUND OBJECTS (parallax via ScrollTrigger) ===== -->
+
+  <!-- TUBE 1: large diagonal (morphable) -->
+  <svg class="bg-object" id="bg-tube" width="380" height="200" viewBox="0 0 380 200" style="top:8%;left:25%;">
+    <defs><linearGradient id="tubeGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A" stop-opacity=".65"/><stop offset="50%" stop-color="#48A8E1" stop-opacity=".6"/><stop offset="100%" stop-color="#00cbaf" stop-opacity=".55"/></linearGradient></defs>
+    <rect id="tube1-body" x="0" y="70" width="380" height="36" rx="18" fill="url(#tubeGrad)"/>
+    <ellipse id="tube1-cap1" cx="12" cy="88" rx="18" ry="20" fill="#00cbaf" opacity=".5"/>
+    <ellipse id="tube1-cap2" cx="368" cy="88" rx="18" ry="20" fill="#00457A" opacity=".3"/>
+  </svg>
+
+  <!-- TUBE 2: opposite angle (morphable) -->
+  <svg class="bg-object" id="bg-tube2" width="300" height="200" viewBox="0 0 300 200" style="top:38%;left:55%;">
+    <defs><linearGradient id="tubeGrad2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#00cbaf" stop-opacity=".5"/><stop offset="100%" stop-color="#48A8E1" stop-opacity=".45"/></linearGradient></defs>
+    <rect id="tube2-body" x="0" y="70" width="300" height="28" rx="14" fill="url(#tubeGrad2)"/>
+    <ellipse id="tube2-cap" cx="8" cy="84" rx="14" ry="16" fill="#48A8E1" opacity=".4"/>
+  </svg>
+
+  <!-- VERTICAL BAR -->
+  <svg class="bg-object" id="bg-vbar" width="50" height="800" viewBox="0 0 50 800" style="top:0;left:36%;">
+    <defs><linearGradient id="vbarGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#48A8E1" stop-opacity="0"/><stop offset="25%" stop-color="#48A8E1" stop-opacity=".12"/><stop offset="50%" stop-color="#00457A" stop-opacity=".15"/><stop offset="75%" stop-color="#00cbaf" stop-opacity=".08"/><stop offset="100%" stop-color="#00cbaf" stop-opacity="0"/></linearGradient></defs>
+    <rect x="15" y="0" width="20" height="800" fill="url(#vbarGrad)"/>
+  </svg>
+
+  <!-- LARGE ARC right (morphable stroke) -->
+  <svg class="bg-object" id="bg-arc" width="420" height="420" viewBox="0 0 420 420" style="bottom:5%;left:70%;">
+    <defs><linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A" stop-opacity=".45"/><stop offset="100%" stop-color="#00cbaf" stop-opacity=".4"/></linearGradient></defs>
+    <path id="arc-main" d="M420,210 A210,210 0 0,0 210,0" stroke="url(#arcGrad)" stroke-width="55" fill="none" stroke-linecap="round"/>
+    <path id="arc-inner" d="M385,210 A175,175 0 0,0 210,35" stroke="#48A8E1" stroke-width="30" fill="none" opacity=".15" stroke-linecap="round"/>
+    <circle id="arc-dot" cx="210" cy="0" r="8" fill="#00cbaf" opacity=".6"><animate attributeName="opacity" values=".6;.2;.6" dur="2s" repeatCount="indefinite"/></circle>
+  </svg>
+
+  <!-- SEMI-CIRCLE top -->
+  <svg class="bg-object" id="bg-semi" width="200" height="100" viewBox="0 0 200 100" style="top:-3%;left:75%;">
+    <defs><linearGradient id="semiGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#48A8E1" stop-opacity=".35"/><stop offset="100%" stop-color="#00cbaf" stop-opacity=".3"/></linearGradient></defs>
+    <path d="M10,100 A90,90 0 0,1 190,100" stroke="url(#semiGrad)" stroke-width="30" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- CURVED BAND left -->
+  <svg class="bg-object" id="bg-band" width="320" height="160" viewBox="0 0 320 160" style="bottom:12%;left:-2%;">
+    <defs><linearGradient id="bandGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#48A8E1" stop-opacity=".35"/><stop offset="100%" stop-color="#00cbaf" stop-opacity=".3"/></linearGradient></defs>
+    <path d="M10,140 Q160,-20 310,90" stroke="url(#bandGrad)" stroke-width="45" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- SPHERE 1 -->
+  <svg class="bg-object" id="bg-sph1" width="60" height="60" viewBox="0 0 60 60" style="top:45%;left:8%;">
+    <defs><radialGradient id="sphGrad1" cx="35%" cy="35%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00457A"/></radialGradient></defs>
+    <circle cx="30" cy="30" r="22" fill="url(#sphGrad1)" opacity=".5"/><circle cx="24" cy="24" r="6" fill="#fff" opacity=".3"/>
+  </svg>
+
+  <!-- SPHERE 2 -->
+  <svg class="bg-object" id="bg-sph2" width="40" height="40" viewBox="0 0 40 40" style="top:18%;left:78%;">
+    <defs><radialGradient id="sphGrad2" cx="35%" cy="35%"><stop offset="0%" stop-color="#00cbaf"/><stop offset="100%" stop-color="#00457A"/></radialGradient></defs>
+    <circle cx="20" cy="20" r="16" fill="url(#sphGrad2)" opacity=".45"/><circle cx="15" cy="15" r="4" fill="#fff" opacity=".25"/>
+  </svg>
+
+  <!-- SPINNING RING -->
+  <svg class="bg-object" id="bg-ring" width="100" height="100" viewBox="0 0 100 100" style="bottom:22%;left:82%;animation:bgSpin 12s linear infinite;">
+    <circle cx="50" cy="50" r="38" stroke="#48A8E1" stroke-width="2" fill="none" opacity=".15"/>
+    <circle cx="50" cy="50" r="28" stroke="#00cbaf" stroke-width="1" fill="none" opacity=".1" stroke-dasharray="4 6"/>
+    <circle cx="50" cy="12" r="4" fill="#00cbaf" opacity=".4"/>
+  </svg>
+
+  <!-- 3-BLOCK CLUSTER -->
+  <svg class="bg-object" id="bg-blocks" width="70" height="35" viewBox="0 0 70 35" style="top:22%;left:38%;">
+    <rect x="0" y="5" width="18" height="18" rx="3" fill="#00457A" opacity=".18"><animate attributeName="opacity" values=".18;.06;.18" dur="2.5s" repeatCount="indefinite"/></rect>
+    <rect x="24" y="5" width="18" height="18" rx="3" fill="#00cbaf" opacity=".22"><animate attributeName="opacity" values=".22;.08;.22" dur="2s" begin=".3s" repeatCount="indefinite"/></rect>
+    <rect x="48" y="5" width="18" height="18" rx="3" fill="#48A8E1" opacity=".15"><animate attributeName="opacity" values=".15;.04;.15" dur="3s" begin=".6s" repeatCount="indefinite"/></rect>
+  </svg>
+
+  <!-- BLINKING SQUARES -->
+  <div class="bg-object blink-square" id="bg-sq1" style="top:5%;left:34%;width:30px;height:30px;background:rgba(0,69,122,.08);border-radius:3px;"></div>
+  <div class="bg-object blink-square" id="bg-sq2" style="top:16%;left:41%;width:22px;height:22px;background:rgba(0,203,175,.15);border-radius:3px;transform:rotate(45deg);animation-delay:.5s;"></div>
+  <div class="bg-object blink-square" id="bg-sq3" style="top:20%;left:82%;width:16px;height:16px;border:2px solid rgba(72,168,225,.2);border-radius:3px;background:transparent;animation-delay:1s;"></div>
+  <div class="bg-object blink-square" id="bg-sq4" style="top:10%;left:72%;width:12px;height:12px;border:2px solid rgba(72,168,225,.12);border-radius:3px;background:transparent;transform:rotate(15deg);animation-delay:.3s;"></div>
+  <div class="bg-object blink-square" id="bg-sq5" style="bottom:6%;left:22%;width:26px;height:26px;background:rgba(0,69,122,.05);border-radius:3px;transform:rotate(10deg);animation-delay:.8s;"></div>
+  <div class="bg-object blink-square" id="bg-sq6" style="bottom:20%;left:36%;width:18px;height:18px;background:rgba(0,203,175,.12);border-radius:3px;animation-delay:1.2s;"></div>
+  <div class="bg-object blink-square" id="bg-sq7" style="top:55%;left:85%;width:20px;height:20px;background:rgba(72,168,225,.1);border-radius:3px;transform:rotate(30deg);animation-delay:.7s;"></div>
+  <div class="bg-object blink-square" id="bg-sq8" style="top:70%;left:15%;width:14px;height:14px;background:rgba(0,203,175,.12);border-radius:3px;transform:rotate(20deg);animation-delay:1.5s;"></div>
+  <div class="bg-object blink-square" id="bg-sq9" style="bottom:35%;left:73%;width:24px;height:24px;border:2px solid rgba(0,69,122,.06);border-radius:3px;background:transparent;transform:rotate(5deg);animation-delay:.2s;"></div>
+
+  <!-- BLINKING DOTS -->
+  <div class="bg-object blink-dot" id="bg-dot1" style="top:13%;left:47%;width:14px;height:14px;background:var(--teal);border-radius:50%;"></div>
+  <div class="bg-object blink-dot" id="bg-dot2" style="bottom:28%;left:70%;width:10px;height:10px;background:var(--teal);border-radius:50%;animation-delay:.4s;"></div>
+  <div class="bg-object blink-dot" id="bg-dot3" style="top:60%;left:50%;width:8px;height:8px;background:var(--cyan);border-radius:50%;animation-delay:.6s;"></div>
+  <div class="bg-object blink-dot" id="bg-dot4" style="top:8%;left:58%;width:12px;height:12px;background:var(--sky);border-radius:50%;animation-delay:1s;"></div>
+  <div class="bg-object blink-dot" id="bg-dot5" style="bottom:12%;left:60%;width:6px;height:6px;background:var(--teal);border-radius:50%;animation-delay:.9s;"></div>
+
+  <!-- ===== HORIZONTAL TRACK ===== -->
+  <div id="horizontal-track">
+
+    <!-- ============ PANEL 0: HERO ============ -->
+    <div class="panel grid-bg" id="panel-hero">
+
+      <!-- (objects moved to wrapper level for cross-panel parallax) -->
+
+      <!-- Isometric images -->
+      <img src="img/iso-1.svg" alt="" class="iso-image iso-float" style="position:absolute;top:8%;right:12%;width:200px;z-index:6;opacity:.85;">
+      <img src="img/iso-2.svg" alt="" class="iso-image iso-float-delay" style="position:absolute;bottom:10%;left:5%;width:170px;z-index:6;opacity:.8;">
+      <img src="img/iso-3.svg" alt="" class="iso-image iso-float-slow" style="position:absolute;top:45%;right:5%;width:140px;z-index:6;opacity:.75;">
+
+      <!-- Hero Content -->
+      <div class="hero-content" id="hero-content" style="position:absolute;inset:0;z-index:10;">
+
+        <!-- Top-left: Logo -->
+        <a href="/" id="hero-logo" style="position:absolute;top:36px;left:48px;">
+          <img src="img/logo-full.png" alt="with-AI" style="height:32px;">
+        </a>
+
+        <!-- Nav moved to fixed position outside panels -->
+
+        <!-- Main hero text area -->
+        <div style="position:absolute;top:50%;left:48px;transform:translateY(-50%);max-width:70%;">
+          <div class="hero-title" style="margin-bottom:0;">
+            <div>Step into</div>
+            <div class="hero-line-2" style="padding-left:15%;">the Next</div>
+            <div class="hero-line-3" style="padding-left:8%;">Era.</div>
+          </div>
+        </div>
+
+        <!-- Right side subtitle + chips (positioned to right of "Era.") -->
+        <div class="hero-subtitle-area" style="position:absolute;top:58%;right:15%;max-width:340px;text-align:left;">
+          <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:500;color:#333;line-height:1.8;margin-bottom:20px;">
+            AIテクノロジーを用いた伴走型支援で、<br>ビジネスは次のレベルへ。
+          </p>
+          <div class="chips-row" style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="service-chip"><span class="chip-dot" style="background:#00457A;"></span>AIKOMON</span>
+            <span class="service-chip"><span class="chip-dot" style="background:#e9c02b;"></span>AI SHINE</span>
+            <span class="service-chip"><span class="chip-dot" style="background:#9b59b6;"></span>System Design</span>
+            <span class="service-chip"><span class="chip-dot" style="background:#00cbaf;"></span>with-AI Plus</span>
+          </div>
+        </div>
+
+        <!-- Bottom-right: Scroll indicator -->
+        <div class="scroll-indicator-wrap" style="position:absolute;bottom:40px;right:48px;display:flex;align-items:center;gap:12px;">
+          <span style="font-family:'Albert Sans',sans-serif;font-size:12px;font-weight:600;color:var(--blue);letter-spacing:2px;text-transform:uppercase;" class="scroll-indicator">Scroll</span>
+          <svg width="32" height="32" viewBox="0 0 32 32" class="scroll-indicator">
+            <circle cx="16" cy="16" r="14" stroke="var(--blue)" stroke-width="1.5" fill="none" opacity="0.4"/>
+            <path d="M13 12 L19 16 L13 20" stroke="var(--blue)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PANEL 1: WHO WE ARE ============ -->
+    <div class="panel grid-bg" id="panel-about">
+      <div class="panel-inner" style="flex-direction:row;align-items:center;gap:60px;">
+        <!-- Left: Text -->
+        <div style="flex:1;max-width:55%;">
+          <p style="font-family:'Albert Sans',sans-serif;font-size:14px;font-weight:600;color:var(--teal);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;">01 / WHO WE ARE</p>
+          <h2 style="font-family:'Albert Sans',sans-serif;font-weight:900;font-size:clamp(32px,4vw,56px);line-height:1.3;margin-bottom:40px;">
+            <span style="background:linear-gradient(135deg,#00457A,#48A8E1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">未来を創る</span><br>
+            <span style="background:linear-gradient(135deg,#00457A,#48A8E1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">「インテリジェンス」へ</span>
+          </h2>
+          <div style="space-y:24px;">
+            <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;line-height:2.2;color:rgba(59,59,59,.6);margin-bottom:20px;">
+              テクノロジーのあり方が大きく変わりつつある今、求められているのは、組織の価値観やフェーズに寄り添い、確かな進化を支える知能のかたちです。
+            </p>
+            <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;line-height:2.2;color:rgba(59,59,59,.6);">
+              with-AIが導くデータサイエンスの洞察、実装するためのアーキテクチャ。私たちは、持続的な成長に欠かせないパートナーとして挑戦しています。
+            </p>
+          </div>
+          <a href="stance.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:32px;font-family:'Albert Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#00457A;text-decoration:none;">
+            Read our stance <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+          </a>
+        </div>
+        <!-- Right: Isometric -->
+        <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+          <img src="img/iso-2.svg" alt="" class="iso-float" style="width:clamp(220px,22vw,380px);opacity:0.9;filter:drop-shadow(0 10px 30px rgba(0,69,122,.1));">
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PANEL 2: SERVICES ============ -->
+    <div class="panel grid-bg" id="panel-services">
+      <div class="panel-inner">
+        <div style="margin-bottom:36px;">
+          <p style="font-family:'Albert Sans',sans-serif;font-size:14px;font-weight:600;color:var(--blue);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">Services</p>
+          <h2 style="font-family:'Albert Sans',sans-serif;font-weight:900;font-size:clamp(32px,4vw,52px);color:var(--blue);line-height:1.2;">What We Offer</h2>
+        </div>
+        <div class="service-grid-panel" style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:20px;flex:1;max-height:60vh;">
+
+          <!-- Card 1: AIKOMON -->
+          <a href="aikomon.html" style="text-decoration:none;color:inherit;">
+            <div class="service-card" style="background:linear-gradient(135deg,#e8f4fd,#d0eafc);height:100%;">
+              <div class="card-number" style="background:var(--blue);">01</div>
+              <span style="font-size:11px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;">AI Advisor</span>
+              <h3 style="font-family:'Albert Sans',sans-serif;font-weight:800;font-size:22px;color:#1a1a2e;margin:8px 0;">AIKOMON</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#555;line-height:1.7;">AI顧問サービス。戦略立案から実装支援まで伴走します。</p>
+              <div class="card-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 2: with-AI Plus -->
+          <a href="service.html" style="text-decoration:none;color:inherit;">
+            <div class="service-card" style="background:linear-gradient(135deg,#e0f7f3,#c8f0ea);height:100%;">
+              <div class="card-number" style="background:var(--teal);">02</div>
+              <span style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:1px;text-transform:uppercase;">AI Integration</span>
+              <h3 style="font-family:'Albert Sans',sans-serif;font-weight:800;font-size:22px;color:#1a1a2e;margin:8px 0;">with-AI Plus</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#555;line-height:1.7;">月額制AI導入支援。チームに最適なAI活用を設計。</p>
+              <div class="card-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 3: AI SHINE -->
+          <a href="aishine.html" style="text-decoration:none;color:inherit;">
+            <div class="service-card" style="background:linear-gradient(135deg,#fef9e7,#fdf3c7);height:100%;">
+              <div class="card-number" style="background:var(--yellow);">03</div>
+              <span style="font-size:11px;font-weight:700;color:#c7a620;letter-spacing:1px;text-transform:uppercase;">AI Training</span>
+              <h3 style="font-family:'Albert Sans',sans-serif;font-weight:800;font-size:22px;color:#1a1a2e;margin:8px 0;">AI SHINE</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#555;line-height:1.7;">AI人材育成研修。実務直結のスキルを習得。</p>
+              <div class="card-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 4: System Design -->
+          <a href="service.html" style="text-decoration:none;color:inherit;">
+            <div class="service-card" style="background:linear-gradient(135deg,#f3ecfc,#e8ddf7);height:100%;">
+              <div class="card-number" style="background:#9b59b6;">04</div>
+              <span style="font-size:11px;font-weight:700;color:#9b59b6;letter-spacing:1px;text-transform:uppercase;">Development</span>
+              <h3 style="font-family:'Albert Sans',sans-serif;font-weight:800;font-size:22px;color:#1a1a2e;margin:8px 0;">System Design</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#555;line-height:1.7;">AIシステム設計・開発。業務に最適な仕組みを構築。</p>
+              <div class="card-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 5: Inspire Recruit -->
+          <a href="service.html" style="text-decoration:none;color:inherit;">
+            <div class="service-card" style="background:linear-gradient(135deg,#fde8f0,#fad0e0);height:100%;">
+              <div class="card-number" style="background:#e84393;">05</div>
+              <span style="font-size:11px;font-weight:700;color:#e84393;letter-spacing:1px;text-transform:uppercase;">Recruiting</span>
+              <h3 style="font-family:'Albert Sans',sans-serif;font-weight:800;font-size:22px;color:#1a1a2e;margin:8px 0;">Inspire Recruit</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#555;line-height:1.7;">AI活用の採用支援。採用プロセスを革新。</p>
+              <div class="card-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 6: 経営者会 -->
+          <a href="service.html" style="text-decoration:none;color:inherit;">
+            <div class="service-card" style="background:linear-gradient(135deg,#e8fce8,#d0f5d0);height:100%;">
+              <div class="card-number" style="background:var(--green);">06</div>
+              <span style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase;">Community</span>
+              <h3 style="font-family:'Albert Sans',sans-serif;font-weight:800;font-size:20px;color:#1a1a2e;margin:8px 0;">経営者会</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#555;line-height:1.7;">AI活用の経営者コミュニティ。最新知見を共有。</p>
+              <div class="card-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PANEL 3: BLOG ============ -->
+    <div class="panel grid-bg" id="panel-blog">
+      <div class="panel-inner" style="justify-content:center;">
+        <div style="margin-bottom:36px;">
+          <p style="font-family:'Albert Sans',sans-serif;font-size:14px;font-weight:600;color:var(--blue);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">Blog</p>
+          <h2 style="font-family:'Albert Sans',sans-serif;font-weight:900;font-size:clamp(32px,4vw,52px);color:var(--blue);line-height:1.2;">Latest Articles</h2>
+        </div>
+        <div class="blog-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;">
+
+          <!-- Blog 1 -->
+          <div class="blog-card">
+            <span class="blog-tag" style="background:#e8f4fd;color:var(--blue);">AI Trend</span>
+            <h3 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:18px;color:#1a1a2e;line-height:1.6;margin-bottom:16px;">AIエージェント最新動向 2026</h3>
+            <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#888;line-height:1.7;margin-bottom:16px;">AIエージェントの最新トレンドと企業活用の展望を解説。</p>
+            <span style="font-family:'Albert Sans',sans-serif;font-size:12px;color:#aaa;font-weight:500;">2026.03.27</span>
+          </div>
+
+          <!-- Blog 2 -->
+          <div class="blog-card">
+            <span class="blog-tag" style="background:#e0f7f3;color:var(--teal);">補助金</span>
+            <h3 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:18px;color:#1a1a2e;line-height:1.6;margin-bottom:16px;">AI導入補助金 2026 完全ガイド</h3>
+            <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#888;line-height:1.7;margin-bottom:16px;">2026年のAI導入に使える補助金・助成金を徹底解説。</p>
+            <span style="font-family:'Albert Sans',sans-serif;font-size:12px;color:#aaa;font-weight:500;">2026.03.25</span>
+          </div>
+
+          <!-- Blog 3 -->
+          <div class="blog-card">
+            <span class="blog-tag" style="background:#f3ecfc;color:#9b59b6;">Tech</span>
+            <h3 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:18px;color:#1a1a2e;line-height:1.6;margin-bottom:16px;">Claude Codeとは？</h3>
+            <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#888;line-height:1.7;margin-bottom:16px;">Anthropic社のClaude Codeの特徴と活用方法を紹介。</p>
+            <span style="font-family:'Albert Sans',sans-serif;font-size:12px;color:#aaa;font-weight:500;">2026.03.23</span>
+          </div>
+
+        </div>
+        <div style="margin-top:32px;">
+          <a href="blog/" style="font-family:'Albert Sans',sans-serif;font-size:14px;font-weight:700;color:var(--blue);text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:gap 0.3s;" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='8px'">
+            View All
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PANEL 4: COMPANY ============ -->
+    <div class="panel grid-bg" id="panel-company">
+      <div class="panel-inner" style="align-items:center;">
+        <div style="text-align:center;margin-bottom:48px;">
+          <p style="font-family:'Albert Sans',sans-serif;font-size:14px;font-weight:600;color:var(--blue);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">Company</p>
+          <h2 style="font-family:'Albert Sans',sans-serif;font-weight:900;font-size:clamp(32px,4vw,52px);color:var(--blue);line-height:1.2;">About Us</h2>
+        </div>
+        <div class="company-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:900px;width:100%;">
+
+          <!-- Company Card 1 -->
+          <a href="company.html" style="text-decoration:none;color:inherit;">
+            <div class="company-card">
+              <div class="card-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+              </div>
+              <h3 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:18px;color:#1a1a2e;margin-bottom:8px;">会社概要</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#888;line-height:1.7;">企業理念・事業内容・会社情報</p>
+            </div>
+          </a>
+
+          <!-- Company Card 2 -->
+          <a href="members.html" style="text-decoration:none;color:inherit;">
+            <div class="company-card">
+              <div class="card-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <h3 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:18px;color:#1a1a2e;margin-bottom:8px;">代表挨拶・メンバー</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#888;line-height:1.7;">チーム紹介・代表メッセージ</p>
+            </div>
+          </a>
+
+          <!-- Company Card 3 -->
+          <a href="contact.html" style="text-decoration:none;color:inherit;">
+            <div class="company-card">
+              <div class="card-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <h3 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:18px;color:#1a1a2e;margin-bottom:8px;">お問い合わせ</h3>
+              <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#888;line-height:1.7;">ご相談・お見積り依頼</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PANEL 5: CTA ============ -->
+    <div class="panel grid-bg-cta" id="panel-cta">
+      <div class="panel-inner" style="align-items:center;text-align:center;">
+        <h2 class="cta-title" style="margin-bottom:24px;">Ready for<br>the Next Era?</h2>
+        <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:17px;color:rgba(255,255,255,0.7);line-height:1.8;margin-bottom:40px;max-width:480px;">
+          AIの力で、ビジネスを次のステージへ。<br>まずは無料相談からお気軽にどうぞ。
+        </p>
+        <a href="contact.html" class="cta-btn">無料で相談する</a>
+      </div>
+    </div>
+
+  </div><!-- /horizontal-track -->
+</section><!-- /horizontal-wrapper -->
+
+<!-- ======================== FOOTER ======================== -->
+<footer style="padding:60px 48px 32px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;">
+
+      <!-- Logo & tagline -->
+      <div>
+        <img src="img/logo-full.png" alt="with-AI" style="height:28px;filter:brightness(0) invert(1);margin-bottom:16px;">
+        <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;line-height:1.8;color:rgba(255,255,255,0.5);">
+          AIテクノロジーを用いた伴走型支援で、<br>ビジネスは次のレベルへ。
+        </p>
+      </div>
+
+      <!-- Explore -->
+      <div>
+        <h4 style="font-family:'Albert Sans',sans-serif;font-weight:700;font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Explore</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="stance.html" style="font-size:14px;">Stance</a></li>
+          <li><a href="service.html" style="font-size:14px;">Service</a></li>
+          <li><a href="aikomon.html" style="font-size:14px;">AIKOMON</a></li>
+          <li><a href="aishine.html" style="font-size:14px;">AI SHINE</a></li>
+          <li><a href="blog/" style="font-size:14px;">Blog</a></li>
+        </ul>
+      </div>
+
+      <!-- Info -->
+      <div>
+        <h4 style="font-family:'Albert Sans',sans-serif;font-weight:700;font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Info</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="company.html" style="font-size:14px;">Company</a></li>
+          <li><a href="members.html" style="font-size:14px;">Members</a></li>
+          <li><a href="news.html" style="font-size:14px;">News</a></li>
+          <li><a href="contact.html" style="font-size:14px;">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h4 style="font-family:'Albert Sans',sans-serif;font-weight:700;font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Legal</h4>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="privacy.html" style="font-size:14px;">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;text-align:center;">
+      <p style="font-family:'Albert Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.3);">&copy; 2026 with-AI Inc. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ======================== JAVASCRIPT ======================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ===== LOADER + HERO ENTRANCE =====
+  const loader = document.getElementById('loader');
+
+  // Simple loader hide
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      loader.style.transition = 'transform 0.8s cubic-bezier(.4,0,.2,1)';
+      loader.style.transform = 'translateY(-100%)';
+      setTimeout(() => { loader.style.display = 'none'; }, 800);
+    }, 1500);
+  });
+
+  // ===== MOBILE CHECK =====
+  const isMobile = window.innerWidth < 768;
+
+  if (!isMobile) {
+    // ===== GSAP HORIZONTAL SCROLL =====
+    gsap.registerPlugin(ScrollTrigger);
+
+    const track = document.getElementById('horizontal-track');
+    const panels = gsap.utils.toArray('.panel');
+    const totalPanels = panels.length;
+
+    const scrollTween = gsap.to(track, {
+      x: () => -(track.scrollWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#horizontal-wrapper',
+        pin: true,
+        scrub: 1,
+        end: () => '+=' + (track.scrollWidth - window.innerWidth),
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          // Update dot navigation
+          const progress = self.progress;
+          const activeIndex = Math.round(progress * (totalPanels - 1));
+          document.querySelectorAll('#dot-nav .dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === activeIndex);
+          });
+        }
+      }
+    });
+
+    // ===== DOT NAVIGATION CLICK =====
+    document.querySelectorAll('#dot-nav .dot').forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.dataset.index);
+        const targetProgress = index / (totalPanels - 1);
+        const scrollTriggerInstance = scrollTween.scrollTrigger;
+        const targetScroll = scrollTriggerInstance.start + (scrollTriggerInstance.end - scrollTriggerInstance.start) * targetProgress;
+
+        gsap.to(window, {
+          scrollTo: targetScroll,
+          duration: 1,
+          ease: 'power2.inOut'
+        });
+      });
+    });
+
+    // ===== BACKGROUND OBJECT PARALLAX (all objects transform as you scroll) =====
+    const scrollEnd = '+=' + (track.scrollWidth - window.innerWidth);
+    function st(scrubVal) { return { trigger:'#horizontal-wrapper', scrub:scrubVal||1, start:'top top', end:scrollEnd }; }
+
+    // === MOVEMENT + SHAPE MORPHING ===
+
+    // TUBE 1: slides + rotates + body stretches wider & thinner
+    gsap.to('#bg-tube', { x:500, y:80, rotation:35, scale:0.7, ease:'none', scrollTrigger:st(1.5) });
+    gsap.to('#tube1-body', { attr:{width:500, height:18, rx:9, y:85}, ease:'none', scrollTrigger:st(1.5) });
+    gsap.to('#tube1-cap1', { attr:{rx:9, ry:10, cy:94}, ease:'none', scrollTrigger:st(1.5) });
+    gsap.to('#tube1-cap2', { attr:{rx:9, ry:10, cx:490, cy:94}, opacity:0, ease:'none', scrollTrigger:st(1.5) });
+
+    // TUBE 2: slides + body bends (height grows, becomes more square)
+    gsap.to('#bg-tube2', { x:-600, y:-50, rotation:-25, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#tube2-body', { attr:{width:180, height:80, rx:40, y:50}, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#tube2-cap', { attr:{rx:30, ry:30, cx:90, cy:90}, ease:'none', scrollTrigger:st(2) });
+
+    // VERTICAL BAR: thins out + shifts
+    gsap.to('#bg-vbar', { x:400, opacity:0.15, ease:'none', scrollTrigger:st(1) });
+
+    // LARGE ARC: stroke width shrinks, becomes a thin line
+    gsap.to('#bg-arc', { x:-500, y:100, rotation:-20, scale:0.6, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#arc-main', { attr:{'stroke-width':15}, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#arc-inner', { attr:{'stroke-width':8}, opacity:0.3, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#arc-dot', { attr:{r:20, cx:300, cy:50}, ease:'none', scrollTrigger:st(2) });
+
+    // SEMI-CIRCLE: stroke thickens + drops
+    gsap.to('#bg-semi', { x:-300, y:200, rotation:45, ease:'none', scrollTrigger:st(1.5) });
+
+    // CURVED BAND: stroke thins + stretches
+    gsap.to('#bg-band', { x:600, y:-60, rotation:15, scaleX:1.3, ease:'none', scrollTrigger:st(2.5) });
+
+    // SPHERE 1: grows large
+    gsap.to('#bg-sph1', { x:350, y:-120, ease:'none', scrollTrigger:st(1.5) });
+    gsap.to('#bg-sph1 circle:first-child', { attr:{r:45}, opacity:0.3, ease:'none', scrollTrigger:st(1.5) });
+
+    // SPHERE 2: shrinks to dot
+    gsap.to('#bg-sph2', { x:-400, y:150, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#bg-sph2 circle:first-child', { attr:{r:6}, opacity:0.7, ease:'none', scrollTrigger:st(2) });
+
+    // RING: spins + circles expand
+    gsap.to('#bg-ring', { rotation:720, scale:2, x:-300, ease:'none', scrollTrigger:st(3) });
+    gsap.to('#bg-ring circle:first-child', { attr:{r:50, 'stroke-width':4}, ease:'none', scrollTrigger:st(3) });
+
+    // BLOCKS: individual rects grow/shrink
+    gsap.to('#bg-blocks', { x:250, y:80, rotation:30, ease:'none', scrollTrigger:st(1) });
+    gsap.to('#bg-blocks rect:nth-child(1)', { attr:{width:30, height:30, rx:15}, ease:'none', scrollTrigger:st(1) });
+    gsap.to('#bg-blocks rect:nth-child(2)', { attr:{width:10, height:10, rx:5}, ease:'none', scrollTrigger:st(1) });
+    gsap.to('#bg-blocks rect:nth-child(3)', { attr:{width:24, height:24, rx:12}, ease:'none', scrollTrigger:st(1) });
+
+    // SQUARES: drift + morph (square → circle → different sizes)
+    gsap.to('#bg-sq1', { x:-200, y:100, rotation:90, borderRadius:'50%', width:20, height:20, ease:'none', scrollTrigger:st(1) });
+    gsap.to('#bg-sq2', { x:180, y:-70, rotation:-60, borderRadius:'50%', width:30, height:30, ease:'none', scrollTrigger:st(1.5) });
+    gsap.to('#bg-sq3', { x:-300, y:120, rotation:45, borderRadius:'2px', width:8, height:8, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#bg-sq4', { x:120, y:-90, rotation:-30, borderRadius:'50%', width:20, height:20, ease:'none', scrollTrigger:st(1) });
+    gsap.to('#bg-sq5', { x:350, y:50, rotation:70, borderRadius:'50%', width:16, height:16, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#bg-sq6', { x:-250, y:-80, rotation:-50, borderRadius:'2px', width:30, height:30, ease:'none', scrollTrigger:st(1.5) });
+    gsap.to('#bg-sq7', { x:-400, y:60, rotation:40, borderRadius:'50%', width:12, height:12, ease:'none', scrollTrigger:st(2.5) });
+    gsap.to('#bg-sq8', { x:280, y:-110, rotation:-80, borderRadius:'50%', width:22, height:22, ease:'none', scrollTrigger:st(1) });
+    gsap.to('#bg-sq9', { x:-180, y:90, rotation:55, borderRadius:'2px', width:10, height:10, ease:'none', scrollTrigger:st(2) });
+
+    // DOTS: drift + size change (grow/shrink)
+    gsap.to('#bg-dot1', { x:-200, y:60, width:24, height:24, ease:'none', scrollTrigger:st(1) });
+    gsap.to('#bg-dot2', { x:250, y:-80, width:4, height:4, ease:'none', scrollTrigger:st(1.5) });
+    gsap.to('#bg-dot3', { x:-300, y:100, width:18, height:18, ease:'none', scrollTrigger:st(2) });
+    gsap.to('#bg-dot4', { x:180, y:-50, width:3, height:3, ease:'none', scrollTrigger:st(1) });
+    gsap.to('#bg-dot5', { x:-220, y:70, width:16, height:16, ease:'none', scrollTrigger:st(1.5) });
+
+  } else {
+    // ===== MOBILE: Disable horizontal scroll =====
+    document.getElementById('horizontal-track').style.width = '100%';
+    document.getElementById('horizontal-track').style.flexDirection = 'column';
+
+    // Hide dot nav on mobile (CSS already handles this)
+    // Hide bg objects on mobile (CSS already handles this)
+  }
+
+  // ===== GSAP ScrollTo Plugin (for dot nav) =====
+  // Using a simple scrollTo since we didn't load the ScrollTo plugin
+  // Override the dot click to use native scroll
+  if (!isMobile) {
+    document.querySelectorAll('#dot-nav .dot').forEach((dot) => {
+      // Remove old listener and add new one
+      dot.replaceWith(dot.cloneNode(true));
+    });
+
+    document.querySelectorAll('#dot-nav .dot').forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.dataset.index);
+        const totalPanels = document.querySelectorAll('.panel').length;
+        const wrapper = document.getElementById('horizontal-wrapper');
+        const wrapperTop = wrapper.offsetTop;
+        const track = document.getElementById('horizontal-track');
+        const totalScrollable = track.scrollWidth - window.innerWidth;
+        const targetProgress = index / (totalPanels - 1);
+        const targetScroll = wrapperTop + totalScrollable * targetProgress;
+
+        window.scrollTo({
+          top: targetScroll,
+          behavior: 'smooth'
+        });
+      });
+    });
+  }
+
+});
+</script>
+
+</body>
+</html>

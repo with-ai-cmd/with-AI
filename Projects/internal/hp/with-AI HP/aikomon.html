@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4T5HCY4Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JJ4T5HCY4Y');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO -->
+    <title>AIKOMON | 社外AI責任者サービス | with-AI株式会社</title>
+    <meta name="description" content="AIKOMONは、社外のプロフェッショナルが「AI責任者」として御社に参画する新しいサービス。設計→実装→定着まで一気通貫で、AIを"使う"会社からAIと"働く"会社へ変革します。">
+    <meta name="keywords" content="AIKOMON, AI責任者, AI導入, AIコンサルティング, AI業務改革, DX推進, with-AI, 社外CTO, 社外AI責任者">
+    <link rel="canonical" href="https://with-ai.jp/aikomon.html">
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/favicon.ico" sizes="any">
+
+    <!-- OGP -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://with-ai.jp/aikomon.html">
+    <meta property="og:title" content="AIKOMON | 社外AI責任者サービス — 人を増やすな。仕組みを増やせ。">
+    <meta property="og:description" content="設計→実装→定着まで一気通貫。社外のプロフェッショナルがAI責任者として参画し、御社のAI変革を実行します。">
+    <meta property="og:image" content="https://with-ai.jp/img/img-1.webp">
+    <meta property="og:site_name" content="with-AI inc">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AIKOMON | 社外AI責任者サービス — 人を増やすな。仕組みを増やせ。">
+    <meta name="twitter:description" content="設計→実装→定着まで一気通貫。社外のプロフェッショナルがAI責任者として参画し、御社のAI変革を実行します。">
+
+    <!-- Structured Data: Service -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "AIKOMON",
+      "description": "社外AI責任者サービス。設計→実装→定着まで一気通貫で企業のAI変革を実行する。",
+      "provider": {
+        "@type": "Organization",
+        "name": "with-AI株式会社",
+        "url": "https://with-ai.jp/"
+      },
+      "areaServed": "JP",
+      "serviceType": "AI導入コンサルティング・実装支援"
+    }
+    </script>
+
+    <!-- BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://with-ai.jp/" },
+        { "@type": "ListItem", "position": 2, "name": "AIKOMON" }
+      ]
+    }
+    </script>
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@100;300;400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --blue: #00457A;
+            --sky: #48A8E1;
+            --cyan: #00b9ff;
+            --teal: #00cbaf;
+            --pink: #FFDCE6;
+            --purple: #E8E0FF;
+            --bg: #EDEDF0;
+            --text: #3B3B3B;
+            --gradient: linear-gradient(135deg, #00457A, #48A8E1);
+            --en: 'Albert Sans', sans-serif;
+            --jp: 'Zen Kaku Gothic New', sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--jp);
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        ::selection { background: var(--sky); color: #fff; }
+
+        .f-en { font-family: var(--en); }
+        .f-mono { font-family: var(--mono); }
+
+        .text-gradient {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ---- GRID BACKGROUND ---- */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,69,122,.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,69,122,.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ---- FLOATING ORBS ---- */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(80px);
+            will-change: transform;
+        }
+        .orb-sky { width: 500px; height: 500px; background: rgba(72,168,225,.15); top: -10%; left: -5%; }
+        .orb-teal { width: 400px; height: 400px; background: rgba(0,203,175,.12); bottom: 10%; right: -8%; }
+        .orb-purple { width: 450px; height: 450px; background: rgba(180,160,255,.1); top: 40%; right: 10%; }
+        .orb-pink { width: 350px; height: 350px; background: rgba(255,180,200,.1); bottom: 30%; left: 5%; }
+
+        /* ---- 3D SVG OBJECTS (fixed layer) ---- */
+        #three-d-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fl { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes fl2 { 0%,100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-10px) rotate(var(--r, 0deg)); } }
+
+        /* ---- GLASS CARDS ---- */
+        .glass {
+            background: rgba(255,255,255,.45);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid rgba(255,255,255,.6);
+            border-radius: 20px;
+        }
+        .glass-dark {
+            background: rgba(255,255,255,.06);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 20px;
+        }
+
+        /* ---- SCROLL PROGRESS BAR ---- */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient);
+            z-index: 9999;
+            width: 0%;
+            transition: width 0.05s linear;
+        }
+
+        /* ---- TEXT SHINE ANIMATION ---- */
+        .text-shine-anim {
+            background: linear-gradient(
+                90deg,
+                #00457A 0%, #48A8E1 30%, #00457A 45%,
+                #48A8E1 55%, #fff 58%, #48A8E1 61%,
+                #00457A 75%, #48A8E1 100%
+            );
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: text-shine 8s ease-in-out infinite;
+        }
+        @keyframes text-shine {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        /* ---- RIGHT-SIDE FIXED NAV ---- */
+        .side-nav {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .side-nav a {
+            font-family: var(--en);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: rgba(72,168,225,.5);
+            text-decoration: none;
+            position: relative;
+            padding: .2rem 0;
+            transition: all .4s cubic-bezier(.22,1,.36,1);
+            text-align: right;
+        }
+        .side-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #48A8E1, #00cbaf);
+            transition: width .4s cubic-bezier(.22,1,.36,1);
+        }
+        .side-nav a:hover {
+            color: #48A8E1;
+            transform: translateX(-4px);
+        }
+        .side-nav a:hover::after { width: 100%; }
+        .side-nav a.active {
+            color: var(--blue);
+            font-weight: 800;
+        }
+        .side-nav a.active::after { width: 100%; }
+        @media (max-width: 1023px) {
+            .side-nav { display: none; }
+        }
+
+        /* ---- MOBILE HAMBURGER ---- */
+        #mob-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,20,40,.95);
+            backdrop-filter: blur(40px);
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            transform: translateX(100%);
+            transition: transform .5s cubic-bezier(.22,1,.36,1);
+        }
+        #mob-menu.open { transform: translateX(0); }
+        #mob-menu a {
+            font-family: var(--en);
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: .5em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.7);
+            text-decoration: none;
+            transition: color .3s;
+        }
+        #mob-menu a:hover { color: var(--sky); }
+
+        #ham {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            width: 32px;
+            height: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        #ham span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--blue);
+            transition: all .3s;
+            position: absolute;
+            left: 0;
+        }
+        #ham span:nth-child(1) { top: 0; }
+        #ham span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        #ham span:nth-child(3) { bottom: 0; width: 60%; }
+        #ham.active span:nth-child(1) { transform: rotate(45deg); top: 50%; background: #fff; }
+        #ham.active span:nth-child(2) { opacity: 0; }
+        #ham.active span:nth-child(3) { transform: rotate(-45deg); bottom: auto; top: 50%; width: 100%; background: #fff; }
+        @media (min-width: 1024px) { #ham { display: none; } }
+
+        /* ---- HEADER ---- */
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 80;
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all .5s;
+            transform: translateY(-100%);
+        }
+        #main-header.visible { transform: translateY(0); }
+        #main-header.scrolled {
+            background: rgba(237,237,240,.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,.04);
+        }
+
+        /* ---- REVEAL ---- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.2s cubic-bezier(.16,1,.3,1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-d1 { transition-delay: .15s; }
+        .reveal-d2 { transition-delay: .3s; }
+        .reveal-d3 { transition-delay: .45s; }
+        .reveal-d4 { transition-delay: .6s; }
+
+        /* ---- CTA BUTTONS ---- */
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .75rem;
+            background: var(--gradient);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border-radius: 60px;
+            font-family: var(--jp);
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: .05em;
+            transition: all .4s ease;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 48px rgba(0,69,122,.25);
+        }
+        .cta-btn-white {
+            display: inline-flex;
+            align-items: center;
+            gap: .75rem;
+            background: #fff;
+            color: var(--blue);
+            padding: 1rem 2.5rem;
+            border-radius: 60px;
+            font-family: var(--jp);
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: .05em;
+            transition: all .4s ease;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+        .cta-btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 48px rgba(255,255,255,.2);
+        }
+
+        /* ---- STICKY MOBILE CTA ---- */
+        #sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 70;
+            padding: .75rem 1rem;
+            background: rgba(255,255,255,.9);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0,0,0,.06);
+            box-shadow: 0 -4px 24px rgba(0,0,0,.06);
+            transform: translateY(100%);
+            transition: transform .4s ease;
+        }
+        #sticky-cta.visible { transform: translateY(0); }
+        @media (min-width: 768px) { #sticky-cta { display: none; } }
+
+        /* ---- COUNTER ---- */
+        .counter-number {
+            font-family: var(--en);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ---- DARK SECTIONS ---- */
+        .section-dark {
+            background: linear-gradient(135deg, #060a14 0%, #0a1628 60%, #0e2040 100%);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .section-dark::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(72,168,225,.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(72,168,225,.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        .section-dark .text-gradient {
+            background: linear-gradient(135deg, #48A8E1 0%, #00cbaf 50%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ---- TIMELINE ---- */
+        .timeline-line {
+            position: absolute;
+            left: 28px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--sky), var(--teal));
+            opacity: .2;
+        }
+        @media (min-width: 768px) {
+            .timeline-line {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gradient);
+            border: 3px solid var(--bg);
+            position: absolute;
+            left: 21px;
+            top: 2rem;
+            z-index: 2;
+            box-shadow: 0 0 20px rgba(72,168,225,.3);
+        }
+        @media (min-width: 768px) {
+            .timeline-dot {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        /* ---- COMPARISON TABLE ---- */
+        .comp-table th,
+        .comp-table td {
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+        .comp-table thead th {
+            border-bottom: 2px solid rgba(255,255,255,.1);
+        }
+
+        /* ---- FOOTER (dark) ---- */
+        .site-footer {
+            background: #060a14;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .site-footer::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(72,168,225,.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(72,168,225,.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        .footer-link {
+            font-family: var(--en);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            color: rgba(255,255,255,.35);
+            text-decoration: none;
+            transition: all .3s;
+        }
+        .footer-link:hover {
+            color: var(--sky);
+            transform: translateX(4px);
+        }
+
+        /* ---- MISC ---- */
+        .section-padding { padding: 7rem 1.5rem; }
+        @media (min-width: 768px) { .section-padding { padding: 10rem 3rem; } }
+        @media (min-width: 1024px) { .section-padding { padding: 10rem 5rem; } }
+
+        h1, h2, h3, h4, h5, h6 { color: var(--blue); font-weight: 900; }
+        .section-dark h1, .section-dark h2, .section-dark h3 { color: #fff; }
+
+        p, li { color: rgba(59,59,59,.7); font-weight: 400; }
+        .section-dark p, .section-dark li { color: rgba(255,255,255,.55); }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: .5; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS BAR -->
+<div id="scroll-progress"></div>
+
+<!-- FLOATING ORBS -->
+<div class="orb orb-sky" id="orb-sky"></div>
+<div class="orb orb-teal" id="orb-teal"></div>
+<div class="orb orb-purple" id="orb-purple"></div>
+<div class="orb orb-pink" id="orb-pink"></div>
+
+<!-- 3D SVG OBJECTS LAYER (fixed) -->
+<div id="three-d-layer">
+    <!-- Tube top-right -->
+    <svg class="absolute hidden md:block" style="top:8%;right:6%;width:260px;opacity:.18;" viewBox="0 0 260 100" fill="none">
+        <defs><linearGradient id="tube1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs>
+        <rect x="0" y="35" width="260" height="22" rx="11" fill="url(#tube1)" transform="rotate(-12 130 46)"/>
+        <ellipse cx="6" cy="46" rx="11" ry="13" fill="#00cbaf" opacity=".4" transform="rotate(-12 130 46)"/>
+    </svg>
+    <!-- Arc bottom-left -->
+    <svg class="absolute hidden md:block" style="bottom:12%;left:-2%;width:280px;opacity:.12;" viewBox="0 0 280 280" fill="none">
+        <defs><linearGradient id="arc1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#48A8E1"/></linearGradient></defs>
+        <path d="M280,140 A140,140 0 0,0 140,0" stroke="url(#arc1)" stroke-width="35" fill="none" stroke-linecap="round"/>
+    </svg>
+    <!-- Sphere mid-right -->
+    <svg class="absolute hidden md:block" style="top:45%;right:3%;width:50px;opacity:.2;animation:fl 5s ease-in-out infinite;" viewBox="0 0 50 50" fill="none">
+        <defs><radialGradient id="sph1" cx="35%" cy="35%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00457A"/></radialGradient></defs>
+        <circle cx="25" cy="25" r="20" fill="url(#sph1)"/><circle cx="20" cy="18" r="5" fill="#fff" opacity=".15"/>
+    </svg>
+    <!-- Spinning ring bottom-right -->
+    <svg class="absolute hidden md:block" style="bottom:25%;right:12%;width:70px;opacity:.08;animation:spin 20s linear infinite;" viewBox="0 0 70 70" fill="none">
+        <circle cx="35" cy="35" r="28" stroke="#48A8E1" stroke-width="2"/><circle cx="35" cy="35" r="18" stroke="#00cbaf" stroke-width="1" stroke-dasharray="4 6"/>
+        <circle cx="35" cy="7" r="3" fill="#00cbaf" opacity=".6"/>
+    </svg>
+    <!-- Semi-circle top-left -->
+    <svg class="absolute hidden md:block" style="top:22%;left:3%;width:100px;opacity:.1;" viewBox="0 0 100 50" fill="none">
+        <path d="M5,50 A45,45 0 0,1 95,50" stroke="#48A8E1" stroke-width="14" fill="none" stroke-linecap="round"/>
+    </svg>
+    <!-- Confetti squares -->
+    <div class="absolute hidden md:block w-4 h-4 rounded" style="background:rgba(72,168,225,.06);top:15%;left:18%;transform:rotate(25deg);animation:fl2 4s ease-in-out infinite;--r:25deg;"></div>
+    <div class="absolute hidden md:block w-3 h-3 rounded" style="background:rgba(0,203,175,.08);bottom:35%;left:8%;transform:rotate(40deg);animation:fl2 3.5s ease-in-out .5s infinite;--r:40deg;"></div>
+    <div class="absolute hidden md:block w-5 h-5 rounded" style="border:1px solid rgba(72,168,225,.08);top:55%;right:18%;transform:rotate(15deg);animation:fl2 5s ease-in-out 1s infinite;--r:15deg;"></div>
+    <div class="absolute hidden md:block w-2 h-2 rounded-full" style="background:rgba(255,180,200,.12);top:70%;left:25%;animation:fl 3s ease-in-out 2s infinite;"></div>
+    <div class="absolute hidden md:block w-3 h-3 rounded-full" style="background:rgba(180,160,255,.1);top:30%;right:25%;animation:fl 4s ease-in-out 1.5s infinite;"></div>
+</div>
+
+<!-- RIGHT-SIDE FIXED NAV -->
+<nav class="side-nav" id="side-nav">
+    <a href="index.html" data-label="Home">Home</a>
+    <a href="stance.html" data-label="Stance">Stance</a>
+    <a href="service.html" data-label="Service">Service</a>
+    <a href="blog/" data-label="Blog">Blog</a>
+    <a href="company.html" data-label="Company">Company</a>
+    <a href="contact.html" data-label="Contact">Contact</a>
+</nav>
+
+<!-- HEADER -->
+<header id="main-header">
+    <a href="index.html">
+        <img src="img/logo.webp" alt="with-AI" class="h-6 md:h-8 grayscale hover:grayscale-0 transition-all cursor-pointer">
+    </a>
+    <span class="f-en text-[9px] font-black tracking-[.8em] uppercase hidden md:block" style="color:var(--blue);">AIKOMON</span>
+</header>
+
+<!-- MOBILE HAMBURGER -->
+<button id="ham" class="lg:hidden" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+</button>
+
+<!-- MOBILE MENU OVERLAY -->
+<div id="mob-menu">
+    <a href="index.html">Home</a>
+    <a href="stance.html">Stance</a>
+    <a href="service.html">Service</a>
+    <a href="blog/">Blog</a>
+    <a href="company.html">Company</a>
+    <a href="members.html">Members</a>
+    <a href="contact.html" style="font-weight:700;color:#48A8E1;">Contact</a>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECTION 1: HERO -->
+<!-- ======================================================= -->
+<section id="hero" class="min-h-screen flex items-center relative overflow-hidden" style="padding:0 1.5rem;">
+    <div class="container mx-auto max-w-7xl relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" style="padding-top:6rem;padding-bottom:4rem;">
+        <!-- Left: Text -->
+        <div id="hero-content" style="opacity:0;transform:translateY(60px);">
+            <div class="mb-6">
+                <span class="f-en inline-block text-[10px] font-700 tracking-[.5em] uppercase" style="color:rgba(72,168,225,.6);">Social External AI Chief Officer</span>
+            </div>
+            <h1 class="text-shine-anim" style="font-size:clamp(2.8rem,6vw,5rem);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:2rem;">
+                人を増やすな。<br>仕組みを増やせ。
+            </h1>
+            <p style="font-size:clamp(1rem,2vw,1.25rem);color:rgba(59,59,59,.5);font-weight:300;margin-bottom:.5rem;letter-spacing:.08em;">
+                社外に、AI責任者を持つ。<span style="font-weight:700;" class="text-gradient"> &mdash; AIKOMON</span>
+            </p>
+            <p style="font-size:1rem;color:rgba(59,59,59,.4);margin-bottom:3rem;max-width:480px;line-height:1.9;font-weight:400;">
+                「AIがある前提」で、御社のビジネスを再設計する。<br>
+                設計から実装、定着まで。一気通貫で実行責任を持ちます。
+            </p>
+            <a href="contact.html?service=aikomon" class="cta-btn" style="font-size:1.1rem;padding:1.1rem 3rem;">
+                無料相談する
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+            </a>
+        </div>
+
+        <!-- Right: Floating Isometric Illustration -->
+        <div class="hidden lg:flex justify-center items-center relative" id="hero-illust">
+            <img src="img/hero-aikomon.png" alt="DX transformation" class="w-full max-w-lg" style="filter:drop-shadow(0 30px 60px rgba(0,69,122,.12));">
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <span class="f-en text-[8px] font-600 tracking-[.6em] uppercase" style="color:rgba(72,168,225,.4);">Scroll</span>
+        <div style="width:1.5px;height:3rem;background:linear-gradient(180deg,rgba(72,168,225,.15),transparent);border-radius:2px;"></div>
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- SECTION 2: PROBLEM -->
+<!-- ======================================================= -->
+<section id="problem" class="section-dark section-padding">
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <div class="reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="f-en text-[10px] font-700 tracking-[.5em] uppercase" style="color:var(--teal);">01 / Problem</span>
+                <div style="width:3rem;height:1px;background:rgba(255,255,255,.15);"></div>
+            </div>
+            <h2 style="font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.25;margin-bottom:4rem;font-weight:900;">
+                AIを入れたのに、<br><span class="text-gradient">なぜ変わらないのか?</span>
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <!-- Stat card 1 -->
+            <div class="glass-dark reveal reveal-d1" style="padding:2.5rem;">
+                <div class="f-en" style="font-size:3.5rem;font-weight:900;line-height:1;margin-bottom:1rem;">
+                    <span class="text-gradient">7</span><span style="font-size:2rem;color:rgba(255,255,255,.3);">割</span>
+                </div>
+                <p style="font-size:.95rem;line-height:1.8;">
+                    AI導入企業の7割が、AIを「ツール」として扱っている。調べる・書く・作る・まとめる止まり。
+                </p>
+            </div>
+            <!-- Stat card 2 -->
+            <div class="glass-dark reveal reveal-d2" style="padding:2.5rem;">
+                <div style="margin-bottom:1rem;">
+                    <svg class="w-10 h-10" style="color:rgba(72,168,225,.4);" fill="currentColor" viewBox="0 0 24 24"><path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+                <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem;">作業効率は上がる</h3>
+                <p style="font-size:.95rem;line-height:1.8;">
+                    でも、<strong style="color:#fff;">業務効率</strong>も<strong style="color:#fff;">意思決定</strong>も変わらない。売上にも利益にもつながっていない。
+                </p>
+            </div>
+            <!-- Stat card 3 -->
+            <div class="glass-dark reveal reveal-d3" style="padding:2.5rem;">
+                <div style="margin-bottom:1rem;">
+                    <svg class="w-10 h-10" style="color:rgba(72,168,225,.4);" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem;">本当の原因</h3>
+                <p style="font-size:.95rem;line-height:1.8;">
+                    社内に<strong style="color:#fff;">「技術とビジネスをつなぐAI責任者」</strong>がいない。それが、すべての根本原因。
+                </p>
+            </div>
+        </div>
+
+        <div class="reveal text-center">
+            <p class="glass-dark inline-block" style="font-size:.95rem;padding:.8rem 2rem;border-radius:60px;">
+                AIは入れた。でも、<span style="font-weight:700;color:var(--teal);">誰がそれを経営に結びつけるのか?</span>
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- SECTION 3: SOLUTION -->
+<!-- ======================================================= -->
+<section id="solution" class="section-padding relative overflow-hidden">
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <div class="reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="f-en text-[10px] font-700 tracking-[.5em] uppercase" style="color:var(--blue);">02 / Solution</span>
+                <div style="width:3rem;height:1px;background:rgba(0,69,122,.1);"></div>
+            </div>
+            <h2 style="font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.25;margin-bottom:1rem;font-weight:900;">
+                <span class="text-gradient">AIKOMON</span>という選択肢
+            </h2>
+            <p style="font-size:1.05rem;color:rgba(59,59,59,.5);font-weight:400;max-width:600px;margin-bottom:5rem;line-height:1.9;">
+                社外のプロフェッショナルが「AI責任者」として御社に参画。<br>
+                アドバイスだけではなく、設計から実装、定着まで一気通貫で実行責任を持ちます。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Pillar 1 -->
+            <div class="glass reveal reveal-d1" style="padding:2.5rem;text-align:center;transition:all .6s cubic-bezier(.22,1,.36,1);">
+                <div style="margin-bottom:2rem;display:flex;justify-content:center;">
+                    <svg viewBox="0 0 80 80" style="width:60px;height:60px;" fill="none">
+                        <circle cx="40" cy="40" r="30" fill="url(#pG1)" opacity=".08"/>
+                        <circle cx="40" cy="32" r="12" fill="none" stroke="url(#pG1)" stroke-width="2" opacity=".5"/>
+                        <circle cx="40" cy="32" r="5" fill="url(#pG1)" opacity=".25"/>
+                        <rect x="28" y="52" width="24" height="3" rx="1.5" fill="url(#pG1)" opacity=".3"/>
+                        <rect x="32" y="58" width="16" height="3" rx="1.5" fill="url(#pG1)" opacity=".2"/>
+                        <path d="M25 46 L40 46 L36 43 M40 46 L36 49" stroke="url(#pG1)" stroke-width="1.5" opacity=".35"/>
+                        <path d="M40 46 L55 46 L51 43 M55 46 L51 49" stroke="url(#pG1)" stroke-width="1.5" opacity=".35"/>
+                        <defs><linearGradient id="pG1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#48A8E1"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <div class="f-en text-[10px] font-700 tracking-[.4em] uppercase" style="color:var(--blue);margin-bottom:.75rem;">Pillar 01</div>
+                <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:1rem;">業務再設計</h3>
+                <p style="font-size:.95rem;line-height:1.8;">
+                    「AIがある前提」で業務フローを根本から再設計。作業の自動化ではなく、業務構造そのものを最適化します。
+                </p>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div class="glass reveal reveal-d2" style="padding:2.5rem;text-align:center;transition:all .6s cubic-bezier(.22,1,.36,1);">
+                <div style="margin-bottom:2rem;display:flex;justify-content:center;">
+                    <svg viewBox="0 0 80 80" style="width:60px;height:60px;" fill="none">
+                        <rect x="12" y="18" width="56" height="44" rx="5" fill="url(#pG2)" opacity=".06"/>
+                        <rect x="12" y="18" width="56" height="10" rx="5" fill="url(#pG2)" opacity=".12"/>
+                        <circle cx="21" cy="23" r="2" fill="url(#pG2)" opacity=".35"/>
+                        <circle cx="27" cy="23" r="2" fill="url(#pG2)" opacity=".25"/>
+                        <circle cx="33" cy="23" r="2" fill="url(#pG2)" opacity=".15"/>
+                        <rect x="20" y="35" width="22" height="2.5" rx="1.2" fill="url(#pG2)" opacity=".2"/>
+                        <rect x="24" y="41" width="30" height="2.5" rx="1.2" fill="url(#pG2)" opacity=".15"/>
+                        <rect x="24" y="47" width="24" height="2.5" rx="1.2" fill="url(#pG2)" opacity=".12"/>
+                        <path d="M54 42 L64 36 L64 48Z" fill="url(#pG2)" opacity=".25"/>
+                        <defs><linearGradient id="pG2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#48A8E1"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <div class="f-en text-[10px] font-700 tracking-[.4em] uppercase" style="color:var(--blue);margin-bottom:.75rem;">Pillar 02</div>
+                <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:1rem;">AI実装・自動化開発</h3>
+                <p style="font-size:.95rem;line-height:1.8;">
+                    設計した業務フローに最適なAIソリューションを実装。ツール導入だけでなく、業務に根付くシステムを開発します。
+                </p>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div class="glass reveal reveal-d3" style="padding:2.5rem;text-align:center;transition:all .6s cubic-bezier(.22,1,.36,1);">
+                <div style="margin-bottom:2rem;display:flex;justify-content:center;">
+                    <svg viewBox="0 0 80 80" style="width:60px;height:60px;" fill="none">
+                        <circle cx="28" cy="30" r="8" fill="url(#pG3)" opacity=".12"/>
+                        <rect x="22" y="40" width="12" height="18" rx="5" fill="url(#pG3)" opacity=".08"/>
+                        <circle cx="52" cy="30" r="8" fill="url(#pG3)" opacity=".12"/>
+                        <rect x="46" y="40" width="12" height="18" rx="5" fill="url(#pG3)" opacity=".08"/>
+                        <path d="M36 48 Q40 40 44 48" stroke="url(#pG3)" stroke-width="2" fill="none" opacity=".35"/>
+                        <circle cx="40" cy="42" r="3" fill="url(#pG3)" opacity=".25"/>
+                        <path d="M32 66 L40 58 L48 62 L56 52" stroke="url(#pG3)" stroke-width="1.5" fill="none" opacity=".3"/>
+                        <defs><linearGradient id="pG3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#48A8E1"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <div class="f-en text-[10px] font-700 tracking-[.4em] uppercase" style="color:var(--blue);margin-bottom:.75rem;">Pillar 03</div>
+                <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:1rem;">現場への定着支援</h3>
+                <p style="font-size:.95rem;line-height:1.8;">
+                    全社員を「AI使い」へ引き上げる。現場で回るまで伴走し、AIが当たり前の組織文化を醸成します。
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- SECTION 4: BEFORE / AFTER -->
+<!-- ======================================================= -->
+<section id="transform" class="section-padding relative overflow-hidden">
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <div class="reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="f-en text-[10px] font-700 tracking-[.5em] uppercase" style="color:var(--blue);">03 / Transformation</span>
+                <div style="width:3rem;height:1px;background:rgba(0,69,122,.1);"></div>
+            </div>
+            <h2 style="font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.25;margin-bottom:4rem;font-weight:900;">
+                「AIを<span style="color:rgba(59,59,59,.25);">使う</span>会社」から<br><span class="text-gradient">「AIと働く会社」</span>へ
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <!-- BEFORE -->
+            <div class="glass reveal reveal-d1" style="padding:2.5rem;background:rgba(200,200,200,.2);border-color:rgba(0,0,0,.04);">
+                <div class="flex items-center justify-between mb-8">
+                    <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,0,0,.04);display:flex;align-items:center;justify-content:center;">
+                        <svg viewBox="0 0 24 24" style="width:24px;height:24px;color:rgba(0,0,0,.15);" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                    </div>
+                    <span class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:rgba(0,0,0,.15);">Before</span>
+                </div>
+                <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;color:rgba(59,59,59,.35);">AIを「使う」会社</h3>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:1rem;">
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.35);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.1);flex-shrink:0;margin-top:.6rem;"></span>
+                        AIはチャットツール止まり
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.35);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.1);flex-shrink:0;margin-top:.6rem;"></span>
+                        個人の使い方に依存、組織に広がらない
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.35);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.1);flex-shrink:0;margin-top:.6rem;"></span>
+                        作業が多少早くなる程度
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.35);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.1);flex-shrink:0;margin-top:.6rem;"></span>
+                        業績・意思決定に変化なし
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.35);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.1);flex-shrink:0;margin-top:.6rem;"></span>
+                        「導入しました」で終わっている
+                    </li>
+                </ul>
+            </div>
+
+            <!-- AFTER -->
+            <div class="glass reveal reveal-d2" style="padding:2.5rem;position:relative;overflow:hidden;border-color:rgba(72,168,225,.15);">
+                <!-- Gradient top bar -->
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);"></div>
+                <div class="flex items-center justify-between mb-8">
+                    <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(0,69,122,.08),rgba(72,168,225,.08));display:flex;align-items:center;justify-content:center;">
+                        <svg viewBox="0 0 24 24" style="width:24px;height:24px;" fill="none">
+                            <circle cx="8" cy="8" r="3" fill="url(#afterG)" opacity=".35"/>
+                            <circle cx="16" cy="8" r="3" fill="url(#afterG)" opacity=".35"/>
+                            <circle cx="12" cy="15" r="3" fill="url(#afterG)" opacity=".35"/>
+                            <line x1="8" y1="8" x2="16" y2="8" stroke="url(#afterG)" stroke-width="1" opacity=".25"/>
+                            <line x1="8" y1="8" x2="12" y2="15" stroke="url(#afterG)" stroke-width="1" opacity=".25"/>
+                            <line x1="16" y1="8" x2="12" y2="15" stroke="url(#afterG)" stroke-width="1" opacity=".25"/>
+                            <defs><linearGradient id="afterG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#48A8E1"/></linearGradient></defs>
+                        </svg>
+                    </div>
+                    <span class="f-en text-[10px] font-700 tracking-[.3em] uppercase text-gradient">After</span>
+                </div>
+                <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;" class="text-gradient">AIと「働く」会社</h3>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:1rem;">
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.7);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:var(--gradient);flex-shrink:0;margin-top:.6rem;"></span>
+                        AIが業務フローに組み込まれている
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.7);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:var(--gradient);flex-shrink:0;margin-top:.6rem;"></span>
+                        全社員がAIを使いこなしている
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.7);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:var(--gradient);flex-shrink:0;margin-top:.6rem;"></span>
+                        意思決定がデータドリブンに進化
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.7);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:var(--gradient);flex-shrink:0;margin-top:.6rem;"></span>
+                        売上・利益に直結する成果
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:rgba(59,59,59,.7);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:var(--gradient);flex-shrink:0;margin-top:.6rem;"></span>
+                        AIが「当たり前」の組織文化
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- SECTION 5: CASE STUDIES -->
+<!-- ======================================================= -->
+<section id="cases" class="section-dark section-padding">
+    <div class="container mx-auto max-w-6xl relative z-10">
+        <div class="reveal text-center" style="margin-bottom:5rem;">
+            <div class="flex items-center justify-center gap-4 mb-8">
+                <div style="width:2rem;height:1px;background:rgba(255,255,255,.15);"></div>
+                <span class="f-en text-[10px] font-700 tracking-[.5em] uppercase" style="color:var(--teal);">04 / Results</span>
+                <div style="width:2rem;height:1px;background:rgba(255,255,255,.15);"></div>
+            </div>
+            <h2 style="font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.25;font-weight:900;">
+                数字が、<span class="text-gradient">すべてを語る。</span>
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Case 1: EC -->
+            <div class="glass-dark reveal reveal-d1" style="padding:2.5rem;position:relative;overflow:hidden;transition:all .5s cubic-bezier(.22,1,.36,1);">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);border-radius:20px 20px 0 0;"></div>
+                <div class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:var(--teal);margin-bottom:1.5rem;">EC企業</div>
+                <h3 style="font-size:1rem;font-weight:700;margin-bottom:.75rem;line-height:1.4;">CS部門が"売上部門"に変わった</h3>
+                <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem;">
+                    <div>
+                        <div class="counter-number" data-target="150">0<span style="font-size:1.5rem;">%</span></div>
+                        <p style="font-size:.8rem;margin-top:.25rem;">売上前年比</p>
+                    </div>
+                    <div style="display:flex;gap:1.5rem;">
+                        <div>
+                            <div class="f-en text-gradient" style="font-size:1.25rem;font-weight:900;">70<span style="font-size:.8rem;">%</span></div>
+                            <p style="font-size:.7rem;">会議時間削減</p>
+                        </div>
+                        <div>
+                            <div class="f-en text-gradient" style="font-size:1.25rem;font-weight:900;">8 &rarr; 2<span style="font-size:.8rem;">人</span></div>
+                            <p style="font-size:.7rem;">スタッフ集約</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 2: Consulting -->
+            <div class="glass-dark reveal reveal-d2" style="padding:2.5rem;position:relative;overflow:hidden;transition:all .5s cubic-bezier(.22,1,.36,1);">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);border-radius:20px 20px 0 0;"></div>
+                <div class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:var(--teal);margin-bottom:1.5rem;">コンサル会社</div>
+                <h3 style="font-size:1rem;font-weight:700;margin-bottom:.75rem;line-height:1.4;">事務作業を消し、売上時間を創出</h3>
+                <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem;">
+                    <div>
+                        <div class="counter-number" data-target="5">0<span style="font-size:1rem;">~</span>10<span style="font-size:1.5rem;">分</span></div>
+                        <p style="font-size:.8rem;margin-top:.25rem;">数時間かかっていた作業が</p>
+                    </div>
+                    <div style="display:flex;gap:1.5rem;">
+                        <div>
+                            <div class="f-en text-gradient" style="font-size:1.25rem;font-weight:900;">Zero</div>
+                            <p style="font-size:.7rem;">ヒューマンエラー</p>
+                        </div>
+                        <div>
+                            <div class="f-en text-gradient" style="font-size:1.25rem;font-weight:900;">1~2割<span style="font-size:.8rem;">UP</span></div>
+                            <p style="font-size:.7rem;">売上向上</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 3: Clinic -->
+            <div class="glass-dark reveal reveal-d3" style="padding:2.5rem;position:relative;overflow:hidden;transition:all .5s cubic-bezier(.22,1,.36,1);">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);border-radius:20px 20px 0 0;"></div>
+                <div class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:var(--teal);margin-bottom:1.5rem;">自由診療クリニック</div>
+                <h3 style="font-size:1rem;font-weight:700;margin-bottom:.75rem;line-height:1.4;">売れる構造を構築</h3>
+                <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem;">
+                    <div>
+                        <div class="counter-number" data-target="40">0<span style="font-size:1.5rem;">%</span><span style="font-size:1rem;font-weight:300;">強</span></div>
+                        <p style="font-size:.8rem;margin-top:.25rem;">成約率（25%から向上）</p>
+                    </div>
+                    <div>
+                        <div class="f-en text-gradient" style="font-size:1.25rem;font-weight:900;">35<span style="font-size:.8rem;">%前後</span></div>
+                        <p style="font-size:.7rem;">新人でも3ヶ月目から達成</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 4: Day Service -->
+            <div class="glass-dark reveal reveal-d1" style="padding:2.5rem;position:relative;overflow:hidden;transition:all .5s cubic-bezier(.22,1,.36,1);">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);border-radius:20px 20px 0 0;"></div>
+                <div class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:var(--teal);margin-bottom:1.5rem;">放課後等デイサービス</div>
+                <h3 style="font-size:1rem;font-weight:700;margin-bottom:.75rem;line-height:1.4;">業務と満足度を同時に向上</h3>
+                <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem;">
+                    <div>
+                        <div class="counter-number" data-target="95">0<span style="font-size:1.5rem;">%</span></div>
+                        <p style="font-size:.8rem;margin-top:.25rem;">保護者満足度（80%から向上）</p>
+                    </div>
+                    <div>
+                        <div class="f-en text-gradient" style="font-size:1.25rem;font-weight:900;">大幅短縮</div>
+                        <p style="font-size:.7rem;">書類作成時間</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 5: Recruitment -->
+            <div class="glass-dark reveal reveal-d2" style="padding:2.5rem;position:relative;overflow:hidden;transition:all .5s cubic-bezier(.22,1,.36,1);">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);border-radius:20px 20px 0 0;"></div>
+                <div class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:var(--teal);margin-bottom:1.5rem;">採用業務</div>
+                <h3 style="font-size:1rem;font-weight:700;margin-bottom:.75rem;line-height:1.4;">"選べない地獄"からの脱却</h3>
+                <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem;">
+                    <div>
+                        <div class="counter-number">Zero</div>
+                        <p style="font-size:.8rem;margin-top:.25rem;">書類精読の工数</p>
+                    </div>
+                    <div>
+                        <div class="f-en text-gradient" style="font-size:1.25rem;font-weight:900;">30<span style="font-size:.8rem;">分</span></div>
+                        <p style="font-size:.7rem;">面接時間を最適化</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 6: Juku -->
+            <div class="glass-dark reveal reveal-d3" style="padding:2.5rem;position:relative;overflow:hidden;transition:all .5s cubic-bezier(.22,1,.36,1);">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);border-radius:20px 20px 0 0;"></div>
+                <div class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:var(--teal);margin-bottom:1.5rem;">中学受験塾</div>
+                <h3 style="font-size:1rem;font-weight:700;margin-bottom:.75rem;line-height:1.4;">"想い"を拡張。一人一人に本気で向き合える塾へ</h3>
+                <div style="margin-top:1.5rem;">
+                    <div class="glass-dark" style="padding:1.2rem;border-radius:12px;">
+                        <p style="font-size:.9rem;line-height:1.7;">
+                            AIが事務・分析を担い、<strong style="color:var(--teal);font-weight:700;">講師が生徒と向き合う時間</strong>を最大化。想いをテクノロジーで拡張。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- SECTION 6: HOW IT WORKS (Vertical Timeline) -->
+<!-- ======================================================= -->
+<section id="process" class="section-padding relative overflow-hidden">
+    <div class="container mx-auto max-w-4xl relative z-10">
+        <div class="reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="f-en text-[10px] font-700 tracking-[.5em] uppercase" style="color:var(--blue);">05 / Process</span>
+                <div style="width:3rem;height:1px;background:rgba(0,69,122,.1);"></div>
+            </div>
+            <h2 style="font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.25;margin-bottom:5rem;font-weight:900;">
+                <span class="text-gradient">AIKOMON</span>の進め方
+            </h2>
+        </div>
+
+        <div style="position:relative;">
+            <!-- Timeline vertical line -->
+            <div class="timeline-line"></div>
+
+            <!-- Step 1 -->
+            <div class="reveal reveal-d1" style="position:relative;padding-left:4rem;padding-bottom:4rem;">
+                <div class="timeline-dot"></div>
+                <div class="glass" style="padding:2rem;">
+                    <div class="f-en" style="display:inline-flex;align-items:center;justify-content:center;width:3rem;height:3rem;border-radius:50%;background:var(--gradient);color:#fff;font-weight:900;font-size:1rem;margin-bottom:1rem;">01</div>
+                    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:.75rem;">現状診断</h3>
+                    <p style="font-size:.95rem;line-height:1.8;">
+                        業務フロー・課題の棚卸し。御社の現状を徹底的にヒアリングし、AI化すべきポイントを特定します。
+                    </p>
+                    <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid rgba(0,0,0,.04);">
+                        <span class="f-en text-[9px] font-600 tracking-[.2em] uppercase" style="color:rgba(0,69,122,.3);">Assessment & Discovery</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="reveal reveal-d2" style="position:relative;padding-left:4rem;padding-bottom:4rem;">
+                <div class="timeline-dot"></div>
+                <div class="glass" style="padding:2rem;">
+                    <div class="f-en" style="display:inline-flex;align-items:center;justify-content:center;width:3rem;height:3rem;border-radius:50%;background:var(--gradient);color:#fff;font-weight:900;font-size:1rem;margin-bottom:1rem;">02</div>
+                    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:.75rem;">設計・実装</h3>
+                    <p style="font-size:.95rem;line-height:1.8;">
+                        AI業務フローの設計と開発。経営課題に直結するAIソリューションを、具体的に実装していきます。
+                    </p>
+                    <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid rgba(0,0,0,.04);">
+                        <span class="f-en text-[9px] font-600 tracking-[.2em] uppercase" style="color:rgba(0,69,122,.3);">Design & Implementation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="reveal reveal-d3" style="position:relative;padding-left:4rem;padding-bottom:0;">
+                <div class="timeline-dot"></div>
+                <div class="glass" style="padding:2rem;">
+                    <div class="f-en" style="display:inline-flex;align-items:center;justify-content:center;width:3rem;height:3rem;border-radius:50%;background:var(--gradient);color:#fff;font-weight:900;font-size:1rem;margin-bottom:1rem;">03</div>
+                    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:.75rem;">定着・伴走</h3>
+                    <p style="font-size:.95rem;line-height:1.8;">
+                        現場で回るまで伴走。導入して終わりではなく、全社員が使いこなせるまで徹底サポートします。
+                    </p>
+                    <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid rgba(0,0,0,.04);">
+                        <span class="f-en text-[9px] font-600 tracking-[.2em] uppercase" style="color:rgba(0,69,122,.3);">Adoption & Growth</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- SECTION 7: DIFFERENTIATORS -->
+<!-- ======================================================= -->
+<section id="diff" class="section-dark section-padding">
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <div class="reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="f-en text-[10px] font-700 tracking-[.5em] uppercase" style="color:var(--teal);">06 / Difference</span>
+                <div style="width:3rem;height:1px;background:rgba(255,255,255,.15);"></div>
+            </div>
+            <h2 style="font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.25;margin-bottom:4rem;font-weight:900;">
+                一般的なコンサルとの<span class="text-gradient">違い</span>
+            </h2>
+        </div>
+
+        <div class="reveal glass-dark" style="overflow-x:auto;border-radius:20px;">
+            <table class="comp-table" style="width:100%;min-width:580px;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:rgba(255,255,255,.04);">
+                        <th class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:rgba(255,255,255,.25);width:30%;"></th>
+                        <th class="f-en text-[10px] font-700 tracking-[.3em] uppercase" style="color:rgba(255,255,255,.3);width:35%;">一般的なAIコンサル</th>
+                        <th class="f-en text-[10px] font-700 tracking-[.3em] uppercase text-gradient" style="width:35%;">AIKOMON</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-size:.9rem;font-weight:700;color:rgba(255,255,255,.5);">スタンス</td>
+                        <td style="font-size:.9rem;color:rgba(255,255,255,.3);">提案して終わり</td>
+                        <td style="font-size:.9rem;color:#fff;font-weight:500;">実装・定着まで責任を持つ</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:.9rem;font-weight:700;color:rgba(255,255,255,.5);">関わり方</td>
+                        <td style="font-size:.9rem;color:rgba(255,255,255,.3);">外部アドバイザー</td>
+                        <td style="font-size:.9rem;color:#fff;font-weight:500;">社外AI責任者として参画</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:.9rem;font-weight:700;color:rgba(255,255,255,.5);">範囲</td>
+                        <td style="font-size:.9rem;color:rgba(255,255,255,.3);">ツール導入支援</td>
+                        <td style="font-size:.9rem;color:#fff;font-weight:500;">設計→実装→定着の一気通貫</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:.9rem;font-weight:700;color:rgba(255,255,255,.5);">成果指標</td>
+                        <td style="font-size:.9rem;color:rgba(255,255,255,.3);">導入件数・利用率</td>
+                        <td style="font-size:.9rem;color:#fff;font-weight:500;">経営KPI（売上・利益・効率）</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:.9rem;font-weight:700;color:rgba(255,255,255,.5);">社員の変化</td>
+                        <td style="font-size:.9rem;color:rgba(255,255,255,.3);">一部の推進者のみ</td>
+                        <td style="font-size:.9rem;color:#fff;font-weight:500;">全社員を「AI使い」に</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:.9rem;font-weight:700;color:rgba(255,255,255,.5);">責任</td>
+                        <td style="font-size:.9rem;color:rgba(255,255,255,.3);">成果は自社責任</td>
+                        <td style="font-size:.9rem;color:#fff;font-weight:500;">経営課題のAI達成に実行責任を持つ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- SECTION 8: FINAL CTA -->
+<!-- ======================================================= -->
+<section id="cta" class="section-dark section-padding" style="position:relative;overflow:hidden;">
+    <!-- Giant background text -->
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden;">
+        <span class="f-en" style="font-size:clamp(100px,18vw,260px);font-weight:900;letter-spacing:-.03em;line-height:1;white-space:nowrap;background:linear-gradient(135deg,rgba(72,168,225,.06),rgba(0,203,175,.04));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">AIKOMON</span>
+    </div>
+
+    <div class="container mx-auto max-w-3xl text-center relative z-10">
+        <div class="reveal">
+            <div class="flex items-center justify-center gap-4 mb-8">
+                <div style="width:2rem;height:1px;background:rgba(255,255,255,.15);"></div>
+                <span class="f-en text-[10px] font-700 tracking-[.5em] uppercase" style="color:var(--teal);">Contact</span>
+                <div style="width:2rem;height:1px;background:rgba(255,255,255,.15);"></div>
+            </div>
+            <h2 style="font-size:clamp(1.4rem,3.5vw,2.5rem);line-height:1.5;margin-bottom:1.5rem;font-weight:900;">
+                まずは、御社の<br>「<span class="text-gradient">仕組み化</span>」の可能性を<br>話しませんか?
+            </h2>
+            <p style="font-size:1rem;max-width:480px;margin:0 auto 3rem;line-height:1.9;">
+                無料相談では、御社の現状をヒアリングし、AIで何が変わりうるかを具体的にお伝えします。売り込みは一切ありません。
+            </p>
+            <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;">
+                <a href="contact.html?service=aikomon" class="cta-btn-white" style="font-size:1.1rem;padding:1.1rem 3.5rem;">
+                    無料で相談する
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+                </a>
+            </div>
+            <p class="f-en" style="font-size:.7rem;margin-top:1.5rem;letter-spacing:.15em;color:rgba(255,255,255,.2);">
+                Online Available / Reply within 1 business day
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- FOOTER (Dark) -->
+<!-- ======================================================= -->
+<footer class="site-footer" style="padding:5rem 2rem 3rem;position:relative;">
+    <!-- 3D objects in footer -->
+    <svg class="absolute hidden md:block" style="top:10%;right:8%;width:240px;opacity:.15;" viewBox="0 0 240 100" fill="none">
+        <defs><linearGradient id="ftT" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs>
+        <rect x="0" y="35" width="240" height="20" rx="10" fill="url(#ftT)" transform="rotate(-18 120 45)"/>
+    </svg>
+    <svg class="absolute hidden md:block" style="bottom:10%;left:-2%;width:200px;opacity:.1;" viewBox="0 0 200 200" fill="none">
+        <path d="M200,100 A100,100 0 0,0 100,0" stroke="url(#ftT)" stroke-width="28" fill="none" stroke-linecap="round"/>
+    </svg>
+    <svg class="absolute hidden md:block" style="bottom:20%;right:15%;width:60px;opacity:.08;animation:spin 20s linear infinite;" viewBox="0 0 60 60" fill="none">
+        <circle cx="30" cy="30" r="22" stroke="#48A8E1" stroke-width="1.5"/><circle cx="30" cy="8" r="2.5" fill="#00cbaf" opacity=".5"/>
+    </svg>
+
+    <div class="container mx-auto max-w-6xl relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16" style="margin-bottom:4rem;">
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <a href="index.html"><img src="img/logo.webp" alt="with-AI" class="h-10 w-auto self-start" style="filter:brightness(0) invert(1);opacity:.6;"></a>
+                <p class="f-en" style="font-size:.7rem;letter-spacing:.15em;line-height:2;color:rgba(255,255,255,.2);text-transform:uppercase;">
+                    Next Era Intelligence Partner<br>Aligning Human and Intelligence.
+                </p>
+                <div style="display:flex;gap:.75rem;margin-top:.5rem;">
+                    <div style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;" class="f-en" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='transparent'">X</div>
+                    <div style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;" class="f-en" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='transparent'">In</div>
+                </div>
+            </div>
+            <div class="lg:col-start-7 lg:col-span-6 grid grid-cols-2 md:grid-cols-3 gap-12">
+                <div style="display:flex;flex-direction:column;gap:1.5rem;">
+                    <h4 class="f-en" style="font-size:.65rem;font-weight:800;letter-spacing:.4em;text-transform:uppercase;color:var(--sky);">Explore</h4>
+                    <div style="display:flex;flex-direction:column;gap:1rem;">
+                        <a href="index.html" class="footer-link">Home</a>
+                        <a href="stance.html" class="footer-link">Stance</a>
+                        <a href="service.html" class="footer-link">Service</a>
+                        <a href="members.html" class="footer-link">Members</a>
+                        <a href="blog/" class="footer-link">Blog</a>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:1.5rem;">
+                    <h4 class="f-en" style="font-size:.65rem;font-weight:800;letter-spacing:.4em;text-transform:uppercase;color:var(--sky);">Information</h4>
+                    <div style="display:flex;flex-direction:column;gap:1rem;">
+                        <a href="company.html" class="footer-link">Company</a>
+                        <a href="contact.html" class="footer-link">Contact</a>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:1.5rem;">
+                    <h4 class="f-en" style="font-size:.65rem;font-weight:800;letter-spacing:.4em;text-transform:uppercase;color:var(--sky);">Legal</h4>
+                    <div style="display:flex;flex-direction:column;gap:1rem;">
+                        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1.5rem;align-items:center;padding-top:2rem;border-top:1px solid rgba(255,255,255,.04);">
+            <div style="display:flex;gap:1.5rem;align-items:center;">
+                <div style="width:8rem;height:1px;background:rgba(255,255,255,.06);position:relative;overflow:hidden;border-radius:2px;">
+                    <div id="progress-bar" style="position:absolute;inset:0;background:var(--gradient);transform-origin:left;transform:scaleX(0);"></div>
+                </div>
+                <span class="f-en text-[9px] font-900 tracking-[.4em] uppercase text-gradient">NEXT ERA</span>
+            </div>
+            <div class="f-en" style="font-size:.6rem;font-weight:600;color:rgba(255,255,255,.12);letter-spacing:.15em;text-transform:uppercase;">&copy; 2026 WITH-AI Inc. ALL RIGHTS RESERVED.</div>
+        </div>
+    </div>
+</footer>
+
+<!-- STICKY MOBILE CTA -->
+<div id="sticky-cta">
+    <a href="contact.html?service=aikomon" class="cta-btn" style="width:100%;justify-content:center;padding:.9rem;font-size:.9rem;">
+        無料相談する
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// --- HERO ENTRANCE ---
+window.addEventListener('load', () => {
+    const tl = gsap.timeline();
+    tl.to('#hero-content', { opacity: 1, y: 0, duration: 2, ease: 'power3.out', delay: .3 })
+      .to('#main-header', { className: '+=visible', duration: 0 }, '-=1.5');
+
+    if (document.getElementById('hero-illust')) {
+        gsap.to('#hero-illust img', {
+            y: -15,
+            duration: 3,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true
+        });
+    }
+});
+
+// --- SCROLL PROGRESS ---
+window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    document.getElementById('scroll-progress').style.width = (pct * 100) + '%';
+
+    // Header state
+    const h = document.getElementById('main-header');
+    if (window.scrollY > 100) {
+        h.classList.add('visible', 'scrolled');
+    } else {
+        h.classList.remove('scrolled');
+        if (window.scrollY < 50) h.classList.remove('visible');
+    }
+
+    // Progress bar in footer
+    const pb = document.getElementById('progress-bar');
+    if (pb) pb.style.transform = 'scaleX(' + pct + ')';
+
+    // Sticky CTA
+    const sc = document.getElementById('sticky-cta');
+    if (sc) {
+        if (window.scrollY > 600) sc.classList.add('visible');
+        else sc.classList.remove('visible');
+    }
+});
+
+// --- REVEAL OBSERVER ---
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// --- PARALLAX ON ORBS + 3D OBJECTS ---
+gsap.to('#orb-sky', {
+    y: -150, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1 }
+});
+gsap.to('#orb-teal', {
+    y: 120, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1 }
+});
+gsap.to('#orb-purple', {
+    y: -80, x: -40, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1 }
+});
+gsap.to('#orb-pink', {
+    y: 100, x: 30, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1 }
+});
+
+// Parallax on 3D layer
+gsap.to('#three-d-layer', {
+    y: -60, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 2 }
+});
+
+// --- COUNTER ANIMATION ---
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.dataset.counted) {
+            entry.target.dataset.counted = 'true';
+            const target = parseInt(entry.target.dataset.target);
+            if (!target) return;
+            const duration = 2000;
+            const start = performance.now();
+            const el = entry.target;
+
+            function update(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(target * eased);
+                // Preserve suffix HTML
+                const suffix = el.innerHTML.replace(/^\d+/, '');
+                el.innerHTML = current + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+    });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter-number[data-target]').forEach(el => counterObserver.observe(el));
+
+// --- MOBILE MENU ---
+function toggleMobileMenu() {
+    const menu = document.getElementById('mob-menu');
+    const ham = document.getElementById('ham');
+    menu.classList.toggle('open');
+    ham.classList.toggle('active');
+}
+
+// Close mobile menu on link click
+document.querySelectorAll('#mob-menu a').forEach(a => {
+    a.addEventListener('click', () => {
+        document.getElementById('mob-menu').classList.remove('open');
+        document.getElementById('ham').classList.remove('active');
+    });
+});
+
+// --- GSAP SECTION REVEAL ANIMATIONS ---
+gsap.utils.toArray('.glass, .glass-dark').forEach(card => {
+    gsap.from(card, {
+        scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' },
+        scale: .96,
+        duration: .8,
+        ease: 'power2.out'
+    });
+});
+</script>
+</body>
+</html>

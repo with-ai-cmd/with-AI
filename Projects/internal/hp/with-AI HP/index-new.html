@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4T5HCY4Y"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JJ4T5HCY4Y');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>with-AI株式会社 | AI導入・DX推進の伴走パートナー</title>
+    <meta name="description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。">
+    <meta name="keywords" content="with-AI, AI導入, AIコンサルティング, AI人材育成, DX推進, システム開発, AI SHINE, AIエージェント, AIKOMON">
+    <link rel="canonical" href="https://with-ai.jp/">
+    <link rel="icon" href="img/favicon.ico" sizes="any">
+    <meta property="og:type" content="website"><meta property="og:url" content="https://with-ai.jp/"><meta property="og:title" content="with-AI株式会社 | AI導入・DX推進の伴走パートナー"><meta property="og:description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。"><meta property="og:image" content="https://with-ai.jp/img/img-1.webp"><meta property="og:site_name" content="with-AI inc">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="with-AI株式会社 | AI導入・DX推進の伴走パートナー"><meta name="twitter:description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"with-AI株式会社","alternateName":"with-AI inc","url":"https://with-ai.jp/","logo":"https://with-ai.jp/img/logo.webp","contactPoint":{"@type":"ContactPoint","contactType":"customer service","areaServed":"JP","availableLanguage":"Japanese"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"with-AI株式会社","url":"https://with-ai.jp/","description":"AI導入コンサルティング、DX人材育成、システム開発を通じて企業の持続的な進化を支えるパートナー"}</script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --blue-dark: #0A3B8E;
+            --blue-light: #48A8E1;
+            --gradient: linear-gradient(135deg, #0A3B8E 0%, #48A8E1 100%);
+            --ink: #0B1222;
+            --muted: #6B7A99;
+            --pearl: #F2F4F8;
+            --snow: #FAFBFD;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Zen Kaku Gothic New', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: var(--font-body); background:#fff; color:var(--ink); overflow-x:hidden; -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+        ::selection { background:var(--blue-light); color:#fff; }
+        .font-display { font-family:var(--font-display); }
+        .font-mono { font-family:var(--font-mono); }
+
+        .text-gradient { background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .bg-gradient-custom { background:var(--gradient); }
+
+        /* Grain */
+        body::after { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.012'/%3E%3C/svg%3E"); pointer-events:none; z-index:9998; }
+
+        /* Custom cursor */
+        .cursor-dot { position:fixed; width:8px; height:8px; border-radius:50%; background:var(--gradient); pointer-events:none; z-index:10000; transition:transform 0.15s ease; mix-blend-mode:difference; }
+        .cursor-ring { position:fixed; width:36px; height:36px; border-radius:50%; border:1px solid rgba(10,59,142,0.2); pointer-events:none; z-index:9999; transition:all 0.3s cubic-bezier(0.22,1,0.36,1); }
+        .cursor-ring.hover { width:56px; height:56px; border-color:var(--blue-light); background:rgba(72,168,225,0.04); }
+
+        /* Loader */
+        #loader { position:fixed; inset:0; background:#fff; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+        .loader-bar { width:120px; height:2px; background:var(--pearl); border-radius:2px; overflow:hidden; }
+        .loader-bar-fill { width:0; height:100%; background:var(--gradient); border-radius:2px; }
+        .loader-text { font-family:var(--font-display); font-size:0.6rem; font-weight:700; letter-spacing:0.8em; text-transform:uppercase; color:var(--blue-dark); opacity:0; margin-top:1.5rem; }
+
+        /* Reveal */
+        .reveal { opacity:0; transform:translateY(40px); transition:all 1.2s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.active { opacity:1; transform:translateY(0); }
+        .reveal-delay-1 { transition-delay:0.1s; }
+        .reveal-delay-2 { transition-delay:0.2s; }
+        .reveal-delay-3 { transition-delay:0.25s; }
+        #hero-content { opacity:0; transform:translateY(60px); }
+
+        /* Hero canvas */
+        #bg-canvas { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:0.4; z-index:0; }
+
+        /* Divider */
+        .glow-line { height:1px; background:linear-gradient(90deg, transparent, rgba(72,168,225,0.2), transparent); }
+
+        /* Section label */
+        .section-label { font-family:var(--font-mono); font-size:0.65rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; color:var(--blue-dark); opacity:0.5; }
+
+        /* Business cards - elevated */
+        .biz-card {
+            position:relative; overflow:hidden; background:#fff;
+            border:1px solid rgba(0,0,0,0.04); border-radius:16px;
+            transition:all 0.7s cubic-bezier(0.22,1,0.36,1);
+            text-decoration:none; color:inherit; display:block;
+        }
+        .biz-card:hover { transform:translateY(-10px); box-shadow:0 32px 80px rgba(10,59,142,0.08); border-color:rgba(72,168,225,0.15); }
+        .biz-img { width:100%; aspect-ratio:4/3; object-fit:cover; transition:transform 1.2s cubic-bezier(0.22,1,0.36,1), filter 0.6s ease; filter:saturate(0.8); }
+        .biz-card:hover .biz-img { transform:scale(1.08); filter:saturate(1.1); }
+        .biz-body { padding:2rem 2rem 2.5rem; }
+        .biz-num { font-family:var(--font-display); font-weight:800; font-size:2.5rem; color:var(--pearl); line-height:1; margin-bottom:0.5rem; }
+        .biz-tag { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--blue-dark); opacity:0.6; margin-bottom:0.75rem; display:block; }
+        .biz-title { font-family:var(--font-display); font-size:1.5rem; font-weight:700; margin-bottom:0.75rem; }
+        .biz-desc { font-size:0.8rem; color:var(--muted); font-weight:300; line-height:1.7; }
+        .biz-arrow { position:absolute; bottom:1.5rem; right:1.5rem; width:36px; height:36px; border-radius:50%; border:1px solid rgba(0,0,0,0.06); display:flex; align-items:center; justify-content:center; transition:all 0.5s ease; }
+        .biz-card:hover .biz-arrow { background:var(--gradient); color:#fff; border-color:transparent; }
+
+        /* Blog card */
+        .blog-card {
+            background:#fff; border:1px solid rgba(0,0,0,0.04); border-radius:16px;
+            padding:2rem; position:relative; overflow:hidden;
+            transition:all 0.6s cubic-bezier(0.22,1,0.36,1);
+            text-decoration:none; color:inherit; display:flex; flex-direction:column; justify-content:space-between; min-height:260px;
+        }
+        .blog-card::after { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--gradient); transition:width 0.6s ease; }
+        .blog-card:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(10,59,142,0.05); border-color:rgba(72,168,225,0.15); }
+        .blog-card:hover::after { width:100%; }
+
+        /* Profile card */
+        .profile-card {
+            background:var(--snow); border:1px solid rgba(0,0,0,0.04); border-radius:20px;
+            padding:2.5rem; min-height:380px; display:flex; flex-direction:column; justify-content:space-between;
+            transition:all 0.6s cubic-bezier(0.22,1,0.36,1); position:relative; text-decoration:none; color:inherit;
+        }
+        .profile-card:hover { transform:translateY(-8px); background:#fff; box-shadow:0 30px 80px rgba(10,59,142,0.06); border-color:rgba(72,168,225,0.1); }
+        .profile-btn { position:absolute; bottom:1.5rem; right:1.5rem; width:40px; height:40px; background:var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; transition:all 0.4s ease; }
+        .profile-card:hover .profile-btn { background:var(--gradient); transform:scale(1.1); }
+
+        .footer-link { font-size:11px; font-weight:500; letter-spacing:0.05em; color:var(--muted); transition:all 0.3s; }
+        .footer-link:hover { color:var(--blue-dark); transform:translateX(4px); }
+
+        /* Scroll progress */
+        #scroll-progress { position:fixed; top:0; left:0; height:2px; background:var(--gradient); z-index:100; transform-origin:left; transform:scaleX(0); }
+
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    </style>
+</head>
+<body>
+
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block" id="cursor-dot"></div>
+    <div class="cursor-ring hidden md:block" id="cursor-ring"></div>
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="loader-bar"><div class="loader-bar-fill" id="loader-fill"></div></div>
+        <div id="loader-text" class="loader-text">with-AI</div>
+    </div>
+
+    <!-- Header -->
+    <nav id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-black/[0.04] p-5 md:px-12 flex justify-between items-center -translate-y-full transition-transform duration-700">
+        <a href="index.html"><img src="img/logo.webp" alt="with-AI" class="h-6 md:h-8 grayscale hover:grayscale-0 transition-all"></a>
+        <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 z-50" onclick="toggleMenu()">
+            <span class="menu-line w-6 h-[1.5px] bg-current transition-all duration-300"></span>
+            <span class="menu-line w-6 h-[1.5px] bg-current transition-all duration-300"></span>
+            <span class="menu-line w-4 h-[1.5px] bg-current transition-all duration-300"></span>
+        </button>
+        <div class="hidden md:flex gap-8 items-center font-mono text-[10px] font-medium tracking-widest uppercase text-[#6B7A99]">
+            <a href="stance.html" class="hover:text-[#0A3B8E] transition-colors">Stance</a>
+            <a href="service.html" class="hover:text-[#0A3B8E] transition-colors">Service</a>
+            <a href="blog/" class="hover:text-[#0A3B8E] transition-colors">Blog</a>
+            <a href="company.html" class="hover:text-[#0A3B8E] transition-colors">Company</a>
+            <a href="members.html" class="hover:text-[#0A3B8E] transition-colors">Members</a>
+            <a href="contact.html" class="hover:text-[#0A3B8E] transition-colors font-bold text-[#0A3B8E]">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center gap-8 translate-x-full transition-transform duration-500 ease-in-out md:hidden">
+        <a href="index.html" class="text-lg font-light tracking-[0.5em] uppercase text-[#6B7A99] hover:text-[#0A3B8E] transition-colors">Home</a>
+        <a href="stance.html" class="text-lg font-light tracking-[0.5em] uppercase text-[#6B7A99] hover:text-[#0A3B8E] transition-colors">Stance</a>
+        <a href="service.html" class="text-lg font-light tracking-[0.5em] uppercase text-[#6B7A99] hover:text-[#0A3B8E] transition-colors">Service</a>
+        <a href="blog/" class="text-lg font-light tracking-[0.5em] uppercase text-[#6B7A99] hover:text-[#0A3B8E] transition-colors">Blog</a>
+        <a href="company.html" class="text-lg font-light tracking-[0.5em] uppercase text-[#6B7A99] hover:text-[#0A3B8E] transition-colors">Company</a>
+        <a href="members.html" class="text-lg font-light tracking-[0.5em] uppercase text-[#6B7A99] hover:text-[#0A3B8E] transition-colors">Members</a>
+        <a href="contact.html" class="text-lg font-bold tracking-[0.5em] uppercase text-[#0A3B8E] border-b-2 border-[#0A3B8E] pb-2">Contact</a>
+    </div>
+
+    <!-- ========== HERO ========== -->
+    <section class="min-h-screen flex items-center px-8 md:px-16 lg:px-24 relative overflow-hidden">
+        <canvas id="bg-canvas"></canvas>
+        <!-- Soft ambient -->
+        <div class="absolute w-[800px] h-[800px] rounded-full top-[-30%] right-[-20%] opacity-[0.04]" style="background:radial-gradient(circle,#48A8E1,transparent 70%)"></div>
+        <div class="absolute w-[500px] h-[500px] rounded-full bottom-[-10%] left-[-10%] opacity-[0.03]" style="background:radial-gradient(circle,#0A3B8E,transparent 70%)"></div>
+
+        <div id="hero-content" class="z-20 max-w-4xl">
+            <div class="mb-8">
+                <span class="font-mono text-[0.6rem] font-medium tracking-[0.4em] uppercase text-[#0A3B8E]/40">Next Era Intelligence Partner</span>
+            </div>
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl xl:text-[7rem] font-800 tracking-tight leading-[1.02] mb-8">
+                <span class="text-gradient" id="hero-line-1">Step into the</span><br>
+                <span class="text-gradient" id="hero-line-2">Next Era</span><br>
+                <span class="text-[#0A3B8E]/15 font-display" id="hero-line-3">with AI</span>
+            </h1>
+            <p class="text-sm md:text-base text-[#6B7A99] font-light max-w-md leading-relaxed mb-12">
+                with-AIとともに、次の時代へ駆け上がる。<br>
+                AI導入・DX推進の伴走パートナー。
+            </p>
+            <a href="stance.html" class="inline-flex items-center gap-3 bg-gradient-custom text-white px-8 py-3.5 rounded-full font-medium text-sm tracking-wide hover:shadow-[0_12px_40px_rgba(10,59,142,0.2)] hover:-translate-y-1 transition-all relative overflow-hidden group">
+                <span>Our Stance</span>
+                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+            </a>
+        </div>
+
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20">
+            <span class="font-mono text-[7px] tracking-[0.5em] uppercase text-[#6B7A99]/25">Scroll</span>
+            <div class="w-[1px] h-14 bg-gradient-to-b from-transparent via-[#48A8E1]/15 to-transparent"></div>
+        </div>
+    </section>
+
+    <div class="glow-line mx-8 md:mx-24"></div>
+
+    <!-- ========== ABOUT ========== -->
+    <section class="py-32 md:py-44 px-8 md:px-16 lg:px-24 bg-[#FAFBFD] relative overflow-hidden">
+        <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center max-w-6xl">
+            <div class="reveal">
+                <span class="section-label">01 &mdash; Who We Are</span>
+                <h2 class="font-display text-3xl md:text-5xl lg:text-6xl font-800 tracking-tight leading-tight mt-6 mb-10 text-gradient">未来を創る<br>「インテリジェンス」へ</h2>
+                <div class="space-y-6 text-[#6B7A99] text-sm md:text-base leading-relaxed max-w-lg font-light">
+                    <p>テクノロジーのあり方が大きく変わりつつある今、求められているのは、組織の価値観やフェーズに寄り添い、確かな進化を支える知能のかたちです。</p>
+                    <p>with-AIが導くデータサイエンスの洞察、実装するためのアーキテクチャ。私たちは、持続的な成長に欠かせないパートナーとして挑戦しています。</p>
+                </div>
+                <a href="stance.html" class="mt-10 inline-flex items-center gap-3 text-sm font-medium text-[#0A3B8E] hover:gap-5 transition-all group">
+                    <span class="font-mono text-[10px] tracking-[0.3em] uppercase">Read Our Stance</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+                </a>
+            </div>
+            <div class="reveal reveal-delay-2 flex justify-center">
+                <div class="relative w-72 h-72 md:w-80 md:h-80" style="animation:float 6s ease-in-out infinite">
+                    <svg viewBox="0 0 300 300" class="w-full h-full" fill="none">
+                        <circle cx="150" cy="150" r="140" stroke="url(#aboutGrad)" stroke-width="0.5" opacity="0.12"/>
+                        <circle cx="150" cy="150" r="110" stroke="url(#aboutGrad)" stroke-width="0.3" opacity="0.06" stroke-dasharray="4 8"/>
+                        <circle cx="150" cy="150" r="80" stroke="url(#aboutGrad)" stroke-width="0.3" opacity="0.08" stroke-dasharray="2 6"/>
+                        <circle cx="150" cy="150" r="40" fill="url(#aboutGrad)" opacity="0.06"/>
+                        <circle cx="150" cy="150" r="6" fill="url(#aboutGrad)" opacity="0.5"/>
+                        <!-- Orbiting dots -->
+                        <circle cx="150" cy="10" r="4" fill="#48A8E1" opacity="0.5"><animateTransform attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" dur="12s" repeatCount="indefinite"/></circle>
+                        <circle cx="40" cy="150" r="3" fill="#0A3B8E" opacity="0.3"><animateTransform attributeName="transform" type="rotate" from="0 150 150" to="-360 150 150" dur="18s" repeatCount="indefinite"/></circle>
+                        <defs><linearGradient id="aboutGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0A3B8E"/><stop offset="100%" stop-color="#48A8E1"/></linearGradient></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line mx-8 md:mx-24"></div>
+
+    <!-- ========== BUSINESS ========== -->
+    <section class="py-32 md:py-44 px-8 md:px-16 lg:px-24 relative overflow-hidden">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex items-center justify-between mb-16 reveal">
+                <div>
+                    <span class="section-label">02 &mdash; Business</span>
+                    <h2 class="font-display text-3xl md:text-5xl font-800 tracking-tight mt-4 text-gradient">Strategic Portfolio</h2>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
+                <a href="aikomon.html" class="biz-card">
+                    <img src="img/img-3.webp" alt="AIKOMON" class="biz-img">
+                    <div class="biz-body">
+                        <div class="biz-num">01</div>
+                        <span class="biz-tag">Advisory</span>
+                        <h3 class="biz-title">AIKOMON</h3>
+                        <p class="biz-desc">経営と現場の間に立ち、本質的な仕組みを整える伴走型支援。</p>
+                    </div>
+                    <div class="biz-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="service.html" class="biz-card">
+                    <img src="img/img-4.webp" alt="with-AI Plus" class="biz-img">
+                    <div class="biz-body">
+                        <div class="biz-num">02</div>
+                        <span class="biz-tag">Learning</span>
+                        <h3 class="biz-title">with-AI Plus</h3>
+                        <p class="biz-desc">実務ベースでAIを習得。現場で即座に成果を出すスキルを提供。</p>
+                    </div>
+                    <div class="biz-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="aishine.html" class="biz-card">
+                    <img src="img/img-6.webp" alt="AI SHINE" class="biz-img">
+                    <div class="biz-body">
+                        <div class="biz-num">03</div>
+                        <span class="biz-tag">AI Agent</span>
+                        <h3 class="biz-title">AI SHINE</h3>
+                        <p class="biz-desc">社長専属のAIエージェントチームを構築し、企業の未来を輝かせる。</p>
+                    </div>
+                    <div class="biz-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="service.html" class="biz-card">
+                    <img src="img/img-5.webp" alt="System Design" class="biz-img">
+                    <div class="biz-body">
+                        <div class="biz-num">04</div>
+                        <span class="biz-tag">Systems</span>
+                        <h3 class="biz-title">System Design</h3>
+                        <p class="biz-desc">AIを仕組みとして定着させる。最適なアーキテクチャを実装。</p>
+                    </div>
+                    <div class="biz-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="service.html" class="biz-card">
+                    <img src="img/img-1.webp" alt="Inspire Recruit" class="biz-img">
+                    <div class="biz-body">
+                        <div class="biz-num">05</div>
+                        <span class="biz-tag">Recruit</span>
+                        <h3 class="biz-title">Inspire Recruit</h3>
+                        <p class="biz-desc">価値観から始まる採用イベント。本質的なマッチングを実現。</p>
+                    </div>
+                    <div class="biz-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="service.html" class="biz-card">
+                    <img src="img/img-2.webp" alt="経営者会" class="biz-img">
+                    <div class="biz-body">
+                        <div class="biz-num">06</div>
+                        <span class="biz-tag">Community</span>
+                        <h3 class="biz-title">経営者会</h3>
+                        <p class="biz-desc">リーダーのための対話と学びの場。新たな可能性を共に拓く。</p>
+                    </div>
+                    <div class="biz-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line mx-8 md:mx-24"></div>
+
+    <!-- ========== BLOG ========== -->
+    <section class="py-32 md:py-44 px-8 md:px-16 lg:px-24 bg-[#FAFBFD] relative overflow-hidden">
+        <div class="container mx-auto max-w-6xl">
+            <div class="reveal mb-16">
+                <span class="section-label">03 &mdash; Blog</span>
+                <h2 class="font-display text-3xl md:text-5xl font-800 tracking-tight mt-4 text-gradient">Latest Articles</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
+                <a href="blog/ai-agent-evolution-2026.html" class="blog-card">
+                    <div>
+                        <div class="flex justify-between items-center mb-5">
+                            <span class="font-mono text-[9px] font-medium tracking-[0.15em] uppercase text-[#0A3B8E]/50">AI Trends</span>
+                            <span class="font-mono text-[10px] text-[#6B7A99]/40">2026.03.27</span>
+                        </div>
+                        <h3 class="text-base font-bold text-[#0B1222] leading-snug">AIエージェント最新動向 2026 - 自律型AIが変えるビジネスの未来</h3>
+                    </div>
+                    <div class="flex justify-end pt-4 opacity-20"><svg class="w-5 h-5 text-[#0A3B8E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="blog/ai-subsidy-2026-guide.html" class="blog-card">
+                    <div>
+                        <div class="flex justify-between items-center mb-5">
+                            <span class="font-mono text-[9px] font-medium tracking-[0.15em] uppercase text-[#0A3B8E]/50">AI x 補助金</span>
+                            <span class="font-mono text-[10px] text-[#6B7A99]/40">2026.03.25</span>
+                        </div>
+                        <h3 class="text-base font-bold text-[#0B1222] leading-snug">デジタル化・AI導入補助金 2026 完全ガイド</h3>
+                    </div>
+                    <div class="flex justify-end pt-4 opacity-20"><svg class="w-5 h-5 text-[#0A3B8E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="blog/claude-code-guide.html" class="blog-card">
+                    <div>
+                        <div class="flex justify-between items-center mb-5">
+                            <span class="font-mono text-[9px] font-medium tracking-[0.15em] uppercase text-[#0A3B8E]/50">AI Tools</span>
+                            <span class="font-mono text-[10px] text-[#6B7A99]/40">2026.03.23</span>
+                        </div>
+                        <h3 class="text-base font-bold text-[#0B1222] leading-snug">Claude Codeとは？ AIコーディングツールの革命</h3>
+                    </div>
+                    <div class="flex justify-end pt-4 opacity-20"><svg class="w-5 h-5 text-[#0A3B8E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+            </div>
+            <div class="mt-14 text-center reveal">
+                <a href="blog/" class="font-mono text-[10px] font-medium tracking-[0.3em] uppercase text-[#0A3B8E] border-b border-[#0A3B8E]/15 pb-2 hover:border-[#0A3B8E] transition-all">View All Articles</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line mx-8 md:mx-24"></div>
+
+    <!-- ========== COMPANY ========== -->
+    <section class="py-32 md:py-44 px-8 md:px-16 lg:px-24 relative overflow-hidden">
+        <div class="container mx-auto max-w-6xl">
+            <div class="reveal mb-16">
+                <span class="section-label">04 &mdash; Company</span>
+                <h2 class="font-display text-3xl md:text-5xl font-800 tracking-tight mt-4 text-gradient">Company Profile</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+                <a href="company.html" class="profile-card group">
+                    <h3 class="font-display text-xl font-700 mb-4">会社概要</h3>
+                    <div class="flex-grow flex items-center justify-center"><svg class="w-14 h-14 text-[#0A3B8E]/15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-width="1"/></svg></div>
+                    <div class="profile-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="members.html" class="profile-card group" style="background:linear-gradient(135deg,#E8F0FE,#F0F6FF)">
+                    <h3 class="font-display text-xl font-700 mb-4">代表挨拶・メンバー</h3>
+                    <div class="flex-grow flex items-center justify-center"><svg class="w-14 h-14 text-[#0A3B8E]/15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="1"/></svg></div>
+                    <div class="profile-btn" style="background:var(--blue-dark)"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+                <a href="contact.html" class="profile-card group">
+                    <h3 class="font-display text-xl font-700 mb-4">お問い合わせ</h3>
+                    <div class="flex-grow flex items-center justify-center"><svg class="w-14 h-14 text-[#0A3B8E]/15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-width="1"/></svg></div>
+                    <div class="profile-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white pt-32 pb-12 px-8 md:px-24 relative overflow-hidden border-t border-black/[0.04]">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-24">
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    <a href="index.html"><img src="img/logo.webp" alt="with-AI" class="h-10 w-auto self-start"></a>
+                    <p class="text-[#6B7A99]/40 text-xs leading-loose font-light">Next Era Intelligence Partner<br>Aligning Human and Intelligence.</p>
+                </div>
+                <div class="lg:col-start-7 lg:col-span-6 grid grid-cols-2 md:grid-cols-3 gap-16 text-[10px] font-medium uppercase">
+                    <div class="flex flex-col gap-6">
+                        <h4 class="font-mono text-[#0A3B8E]/40 tracking-[0.3em]">Explore</h4>
+                        <div class="flex flex-col gap-4 normal-case">
+                            <a href="index.html" class="footer-link">Home</a><a href="stance.html" class="footer-link">Stance</a><a href="service.html" class="footer-link">Service</a><a href="members.html" class="footer-link">Members</a><a href="blog/" class="footer-link">Blog</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-6">
+                        <h4 class="font-mono text-[#0A3B8E]/40 tracking-[0.3em]">Info</h4>
+                        <div class="flex flex-col gap-4 normal-case">
+                            <a href="company.html" class="footer-link">Company</a><a href="news.html" class="footer-link">News</a><a href="contact.html" class="footer-link">Contact</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-6">
+                        <h4 class="font-mono text-[#0A3B8E]/40 tracking-[0.3em]">Legal</h4>
+                        <div class="flex flex-col gap-4 normal-case"><a href="privacy.html" class="footer-link">Privacy Policy</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 pt-10 border-t border-black/[0.04]">
+                <span class="font-display text-[10px] font-800 tracking-[0.4em] uppercase text-gradient">NEXT ERA</span>
+                <div class="font-mono text-[10px] text-[#6B7A99]/25 tracking-widest uppercase">&copy; 2026 WITH-AI Inc.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // Custom cursor
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        if (dot && ring) {
+            document.addEventListener('mousemove', e => {
+                dot.style.left = e.clientX - 4 + 'px'; dot.style.top = e.clientY - 4 + 'px';
+                ring.style.left = e.clientX - 18 + 'px'; ring.style.top = e.clientY - 18 + 'px';
+            });
+            document.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('mouseenter', () => { ring.classList.add('hover'); dot.style.transform = 'scale(1.5)'; });
+                el.addEventListener('mouseleave', () => { ring.classList.remove('hover'); dot.style.transform = 'scale(1)'; });
+            });
+        }
+
+        // Particles
+        function initBgParticles() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, dots = [];
+            function resize() { w = canvas.width = canvas.parentElement.offsetWidth; h = canvas.height = canvas.parentElement.offsetHeight; }
+            window.addEventListener('resize', resize); resize();
+            class P {
+                constructor() { this.reset(); }
+                reset() { this.x=Math.random()*w; this.y=Math.random()*h; this.size=Math.random()*1.2+0.3; this.vx=(Math.random()-0.5)*0.2; this.vy=(Math.random()-0.5)*0.2; this.alpha=Math.random()*0.15+0.02; }
+                update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>w||this.y<0||this.y>h) this.reset(); }
+                draw() { ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle=`rgba(72,168,225,${this.alpha})`; ctx.fill(); }
+            }
+            for(let i=0;i<80;i++) dots.push(new P());
+            function animate() {
+                ctx.clearRect(0,0,w,h);
+                dots.forEach(d=>{d.update();d.draw();});
+                for(let i=0;i<dots.length;i++) for(let j=i+1;j<dots.length;j++) {
+                    const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+                    if(dist<130) { ctx.beginPath(); ctx.moveTo(dots[i].x,dots[i].y); ctx.lineTo(dots[j].x,dots[j].y); ctx.strokeStyle=`rgba(72,168,225,${0.02*(1-dist/130)})`; ctx.lineWidth=0.4; ctx.stroke(); }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Loader
+        function initLoader() {
+            const tl = gsap.timeline();
+            document.body.style.overflow = 'hidden';
+            tl.to("#loader-fill", { width: "100%", duration: 1.2, ease: "power2.inOut" })
+              .to("#loader-text", { opacity: 1, y: 0, duration: 0.6 }, "-=0.6")
+              .to("#loader", { opacity: 0, duration: 0.6, ease: "power4.inOut", delay: 0.3 })
+              .set("#loader", { display: "none" })
+              .to("#hero-content", { opacity: 1, y: 0, duration: 1.8, ease: "power3.out" }, "-=0.3")
+              .set("body", { overflow: "auto" })
+              .to("#main-header", { translateY: 0, duration: 0.8, ease: "power2.out" }, "-=1");
+        }
+
+        // Reveal
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Scroll
+        window.addEventListener('scroll', () => {
+            const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            document.getElementById('scroll-progress').style.transform = `scaleX(${pct})`;
+            const header = document.getElementById('main-header');
+            if (header) header.style.transform = window.scrollY > 100 ? 'translateY(0)' : 'translateY(-100%)';
+        });
+
+        // Mobile menu
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const lines = document.querySelectorAll('.menu-line');
+            menu.classList.toggle('translate-x-full'); menu.classList.toggle('translate-x-0');
+            if (menu.classList.contains('translate-x-0')) { lines[0].style.transform='rotate(45deg) translate(4px,4px)'; lines[1].style.opacity='0'; lines[2].style.transform='rotate(-45deg) translate(3px,-3px)'; lines[2].style.width='1.5rem'; }
+            else { lines[0].style.transform=''; lines[1].style.opacity='1'; lines[2].style.transform=''; lines[2].style.width='1rem'; }
+        }
+
+        window.addEventListener('load', () => { initLoader(); initBgParticles(); });
+    </script>
+</body>
+</html>

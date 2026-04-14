@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オンラインセミナー — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo">with-AI <span>PORTAL</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="../training/" class="nl">教材</a>
+      <a href="../news/" class="nl">NEWS</a>
+      <a href="../guide/" class="nl">ガイド</a>
+      <a href="../webinar/" class="nl active">セミナー</a>
+    </div>
+    <button class="hamburger" id="ham">☰</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <a href="../" class="back-link">← ホームに戻る</a>
+
+  <div class="page-header">
+    <h1>オンラインセミナー</h1>
+    <p>今後のセミナー情報・申込み・アーカイブ</p>
+  </div>
+
+  <div class="section-label">今後のセミナー</div>
+
+  <div class="content-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span class="announce-tag tag-open">UPCOMING</span>
+      <span class="announce-date">日程調整中</span>
+    </div>
+    <h3>Claude Code 活用ワークショップ</h3>
+    <p>導入教材の次のステップ。CLAUDE.mdを使いこなして業務効率を最大化する方法を実践形式で学びます。</p>
+    <p style="margin-top:8px;color:var(--claude);font-size:12px">詳細が決まり次第お知らせします</p>
+  </div>
+
+  <div class="section-label">過去のセミナー</div>
+
+  <div class="content-card faded">
+    <h3>過去のセミナーアーカイブがここに追加されます</h3>
+    <p>開催されたセミナーの録画をいつでもご覧いただけます。</p>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 with-AI Inc. <a href="https://with-ai.jp" target="_blank">with-ai.jp</a> <a href="mailto:info@with-ai.jp">Contact</a></p>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('ham')?.addEventListener('click', () => {
+  document.getElementById('navLinks')?.classList.toggle('open');
+});
+</script>
+</body>
+</html>

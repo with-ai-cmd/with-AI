@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code マスター講座 — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .course-hero { padding: 28px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+    .course-badge { display: inline-block; padding: 2px 10px; border-radius: 100px; background: var(--claude); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 1px; margin-bottom: 10px; }
+    .course-hero h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .course-hero p { font-size: 13px; color: var(--text2); }
+    .course-meta { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: var(--text3); }
+    .ch-item { display: block; padding: 16px 18px; background: var(--card); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 8px; text-decoration: none; color: var(--text); transition: all 0.15s; }
+    .ch-item:hover { border-color: var(--claude); box-shadow: 0 2px 12px rgba(196,135,106,0.08); transform: translateY(-1px); text-decoration: none; }
+    .ch-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
+    .ch-num { display: inline-block; padding: 1px 8px; border-radius: 100px; background: var(--claude); color: #fff; font-size: 10px; font-weight: 600; }
+    .ch-arrow { font-size: 12px; color: var(--text3); transition: transform 0.15s; }
+    .ch-item:hover .ch-arrow { transform: translateX(3px); color: var(--claude); }
+    .ch-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .ch-desc { font-size: 12px; color: var(--text2); }
+    .ch-tags { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
+    .ch-tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; background: var(--surface); color: var(--text3); border: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../" class="logo">with-AI <span>PORTAL</span></a>
+    <a href="../" class="back-link" style="margin:0">← 講座一覧に戻る</a>
+  </div>
+</nav>
+
+<div class="page">
+  <a href="../" class="back-link">← 講座一覧に戻る</a>
+
+  <div class="course-hero">
+    <div class="course-badge">COURSE</div>
+    <h1>Claude Code マスター講座</h1>
+    <p>Claude Code を基礎から応用まで体系的に学べる全7章の講座です。</p>
+    <div class="course-meta">
+      <span>全7章</span>
+      <span>対象: 初心者〜中級者</span>
+      <span>非エンジニア向け</span>
+    </div>
+  </div>
+
+  <div class="rooms-label">基礎</div>
+
+  <a href="ch1-setup.html" class="ch-item">
+    <div class="ch-top"><span class="ch-num">第1章</span><span class="ch-arrow">→</span></div>
+    <div class="ch-title">Claude Code 導入ガイド</div>
+    <div class="ch-desc">Mac / Windows 全パターン対応。インストールからログインまで。</div>
+    <div class="ch-tags"><span class="ch-tag">Mac</span><span class="ch-tag">Windows</span><span class="ch-tag">Cursor</span><span class="ch-tag">Terminal</span><span class="ch-tag">WSL</span></div>
+  </a>
+
+  <a href="ch2-commands.html" class="ch-item">
+    <div class="ch-top"><span class="ch-num">第2章</span><span class="ch-arrow">→</span></div>
+    <div class="ch-title">基本コマンド</div>
+    <div class="ch-desc">ターミナル操作、キーボード操作、スラッシュコマンド、権限管理、復旧方法。</div>
+    <div class="ch-tags"><span class="ch-tag">cd</span><span class="ch-tag">mkdir</span><span class="ch-tag">/help</span><span class="ch-tag">/compact</span><span class="ch-tag">Esc</span></div>
+  </a>
+
+  <a href="ch3-md-files.html" class="ch-item">
+    <div class="ch-top"><span class="ch-num">第3章</span><span class="ch-arrow">→</span></div>
+    <div class="ch-title">.md ファイルを使いこなす</div>
+    <div class="ch-desc">CLAUDE.md の書き方、実例6つ、settings.json、プロジェクトごとの使い分け。</div>
+    <div class="ch-tags"><span class="ch-tag">CLAUDE.md</span><span class="ch-tag">settings.json</span><span class="ch-tag">ルール</span><span class="ch-tag">役割定義</span></div>
+  </a>
+
+  <div class="rooms-label">実践</div>
+
+  <a href="ch4-agents.html" class="ch-item">
+    <div class="ch-top"><span class="ch-num">第4章</span><span class="ch-arrow">→</span></div>
+    <div class="ch-title">エージェントの作り方</div>
+    <div class="ch-desc">CLAUDE.md + フォルダ = エージェント。設計パターン、実務事例6つ。</div>
+    <div class="ch-tags"><span class="ch-tag">ハンズオン</span><span class="ch-tag">設計パターン</span><span class="ch-tag">営業メール</span><span class="ch-tag">議事録</span><span class="ch-tag">SNS</span></div>
+  </a>
+
+  <a href="ch5-practical.html" class="ch-item">
+    <div class="ch-top"><span class="ch-num">第5章</span><span class="ch-arrow">→</span></div>
+    <div class="ch-title">実務活用テクニック</div>
+    <div class="ch-desc">プロンプトの書き方、ファイル操作、Git連携、よくある失敗と対処法。</div>
+    <div class="ch-tags"><span class="ch-tag">プロンプト</span><span class="ch-tag">ファイル操作</span><span class="ch-tag">Git</span><span class="ch-tag">効率化</span></div>
+  </a>
+
+  <div class="rooms-label">応用</div>
+
+  <a href="ch6-api.html" class="ch-item">
+    <div class="ch-top"><span class="ch-num">第6章</span><span class="ch-arrow">→</span></div>
+    <div class="ch-title">API連携</div>
+    <div class="ch-desc">Anthropic API、MCPサーバー、Notion・Gmail・Slack・Calendar連携。</div>
+    <div class="ch-tags"><span class="ch-tag">API</span><span class="ch-tag">MCP</span><span class="ch-tag">Notion</span><span class="ch-tag">Gmail</span><span class="ch-tag">Slack</span></div>
+  </a>
+
+  <a href="ch7-team.html" class="ch-item">
+    <div class="ch-top"><span class="ch-num">第7章</span><span class="ch-arrow">→</span></div>
+    <div class="ch-title">チーム運用・応用</div>
+    <div class="ch-desc">チームルール設計、カスタムコマンド、セキュリティポリシー、ベストプラクティス。</div>
+    <div class="ch-tags"><span class="ch-tag">チーム共有</span><span class="ch-tag">カスタムコマンド</span><span class="ch-tag">セキュリティ</span></div>
+  </a>
+
+  <div class="footer">
+    <p>with-AI PORTAL — © 2026 with-AI Inc.</p>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章: 基本コマンド — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../shared/doc-theme.css">
+</head>
+<body>
+
+<button class="sb-toggle" id="sbToggle">☰ 目次</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <a href="./" class="sb-back"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg> 教材一覧に戻る</a>
+      <div class="sb-title">第2章</div>
+      <div class="sb-subtitle">基本コマンド</div>
+    </div>
+    <nav class="sb-nav">
+      <a href="#terminal-basics" class="sb-link">ターミナル基礎</a>
+      <a href="#cmd-cd" class="sb-link">cd — 移動する</a>
+      <a href="#cmd-mkdir" class="sb-link">mkdir — フォルダ作成</a>
+      <a href="#cmd-ls" class="sb-link">ls / dir — 一覧表示</a>
+      <a href="#cmd-other" class="sb-link">その他のコマンド</a>
+      <a href="#keyboard" class="sb-link">キーボード操作</a>
+      <a href="#slash" class="sb-link">スラッシュコマンド</a>
+      <a href="#permissions" class="sb-link">権限管理</a>
+      <a href="#recovery" class="sb-link">再起動・復旧</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-label">第2章</div>
+        <h1>基本コマンド</h1>
+        <p>ターミナル操作、スラッシュコマンド、権限管理、トラブル復旧まで。</p>
+      </div>
+
+      <!-- ====== ターミナル基礎 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="terminal-basics"></span>
+        <h2>ターミナル基礎</h2>
+        <p>ターミナルとは、コンピュータと<strong>文字で会話する</strong>ための画面です。ボタンをクリックする代わりに、文字を入力して操作します。</p>
+        <p>画面には「プロンプト」と呼ばれる記号が表示されます。これは「入力してください」という合図です。</p>
+        <table>
+          <tr><th>環境</th><th>プロンプト記号</th></tr>
+          <tr><td>Mac / Linux (zsh / bash)</td><td><code>$</code> または <code>%</code></td></tr>
+          <tr><td>Windows (cmd)</td><td><code>&gt;</code></td></tr>
+          <tr><td>Windows (PowerShell)</td><td><code>PS&gt;</code></td></tr>
+        </table>
+        <div class="box box-tip"><span class="box-icon"></span>プロンプト記号は入力する必要はありません。コマンドだけを入力してください。</div>
+        <p>基本的な流れは次の通りです。</p>
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div class="step-body"><p>プロンプトが表示される</p></div></div>
+          <div class="step"><span class="step-n">2</span><div class="step-body"><p>コマンドを入力する</p></div></div>
+          <div class="step"><span class="step-n">3</span><div class="step-body"><p><kbd>Enter</kbd> を押す</p></div></div>
+          <div class="step"><span class="step-n">4</span><div class="step-body"><p>結果が表示される</p></div></div>
+        </div>
+      </div>
+
+      <!-- ====== cd ====== -->
+      <div class="section">
+        <span class="section-anchor" id="cmd-cd"></span>
+        <h2>cd -- 移動する</h2>
+        <p><code>cd</code> は「change directory」の略で、フォルダを移動するコマンドです。ファイルを操作する前に、目的のフォルダに移動する必要があります。</p>
+
+        <h3>デスクトップに移動</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>cd Desktop</pre></div>
+        <p>現在いる場所の中にある「Desktop」フォルダに移動します。</p>
+
+        <h3>1つ上のフォルダに戻る</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>cd ..</pre></div>
+        <p><code>..</code> は「1つ上の階層」を意味します。間違ったフォルダに入ったときに使います。</p>
+
+        <h3>ホームフォルダに戻る</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>cd ~</pre></div>
+        <p><code>~</code>（チルダ）は「ホームフォルダ」を意味します。どこにいても一発で戻れます。</p>
+
+        <div class="box box-info"><span class="box-icon"></span><code>cd</code> は最もよく使うコマンドです。迷ったらまず <code>cd ~</code> でホームに戻りましょう。</div>
+      </div>
+
+      <!-- ====== mkdir ====== -->
+      <div class="section">
+        <span class="section-anchor" id="cmd-mkdir"></span>
+        <h2>mkdir -- フォルダ作成</h2>
+        <p><code>mkdir</code> は「make directory」の略で、新しいフォルダを作成するコマンドです。</p>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>mkdir my-project</pre></div>
+        <p>現在いるフォルダの中に「my-project」という名前のフォルダが作られます。</p>
+        <div class="box box-tip"><span class="box-icon"></span>フォルダ名にスペースを入れないのがコツです。代わりにハイフン <code>-</code> を使いましょう。</div>
+
+        <h3>作成して移動する（よくある操作）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># フォルダを作って、その中に移動</span>
+mkdir my-project
+cd my-project</pre></div>
+      </div>
+
+      <!-- ====== ls / dir ====== -->
+      <div class="section">
+        <span class="section-anchor" id="cmd-ls"></span>
+        <h2>ls / dir -- 一覧表示</h2>
+        <p>今いるフォルダの中身を一覧表示するコマンドです。OS によってコマンドが異なります。</p>
+
+        <h3>Mac / Linux</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>ls</pre></div>
+        <p>ファイルとフォルダの名前が表示されます。</p>
+
+        <h3>Windows（cmd / PowerShell）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>dir</pre></div>
+
+        <h3>詳細表示（Mac）</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>ls -la</pre></div>
+        <p>隠しファイル（<code>.</code> で始まるファイル）を含め、サイズや更新日時も表示します。<code>CLAUDE.md</code> や <code>.claude</code> フォルダの確認に便利です。</p>
+
+        <div class="card-row">
+          <div class="box box-ok"><span class="box-icon"></span><strong>Mac:</strong> <code>ls</code> でファイル一覧</div>
+          <div class="box box-ok"><span class="box-icon"></span><strong>Windows:</strong> <code>dir</code> でファイル一覧</div>
+        </div>
+      </div>
+
+      <!-- ====== その他のコマンド ====== -->
+      <div class="section">
+        <span class="section-anchor" id="cmd-other"></span>
+        <h2>その他のコマンド</h2>
+
+        <h3>今いる場所を確認する</h3>
+        <div class="card-row">
+          <div class="card card-l"><h4>Mac / Linux</h4><p><code>pwd</code>（print working directory）</p></div>
+          <div class="card card-l"><h4>Windows</h4><p><code>cd</code>（引数なしで現在地を表示）</p></div>
+        </div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># Mac</span>
+pwd</pre></div>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># Windows（引数なし）</span>
+cd</pre></div>
+        <p>「自分が今どこにいるか分からない」と思ったらすぐに実行しましょう。</p>
+
+        <h3>画面をきれいにする</h3>
+        <div class="card-row">
+          <div class="card card-l"><h4>Mac / Linux</h4><p><code>clear</code></p></div>
+          <div class="card card-l"><h4>Windows</h4><p><code>cls</code></p></div>
+        </div>
+        <p>画面がいっぱいになったら実行すると、見やすくなります。</p>
+      </div>
+
+      <!-- ====== キーボード操作 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="keyboard"></span>
+        <h2>キーボード操作</h2>
+        <p>ターミナルや Claude Code を使うときによく使うキー操作です。</p>
+
+        <div class="card-row">
+          <div class="card"><h4><kbd>Enter</kbd></h4><p>コマンドを実行する / メッセージを送信する</p></div>
+          <div class="card"><h4><kbd>Esc</kbd></h4><p>Claude Code で複数行入力モードを切り替える</p></div>
+          <div class="card"><h4><kbd>↑</kbd></h4><p>前に実行したコマンドを呼び出す（履歴）</p></div>
+          <div class="card"><h4><kbd>Ctrl</kbd> + <kbd>C</kbd></h4><p>実行中の処理を中断する（困ったらこれ）</p></div>
+          <div class="card"><h4><kbd>Cmd</kbd> / <kbd>Ctrl</kbd> + <kbd>`</kbd></h4><p>Cursor でターミナルを開く / 閉じる</p></div>
+          <div class="card"><h4><kbd>Tab</kbd></h4><p>ファイル名やフォルダ名を自動補完する</p></div>
+        </div>
+        <div class="box box-tip"><span class="box-icon"></span><kbd>Tab</kbd> キーは最も便利なキーです。フォルダ名の最初の数文字を入力して <kbd>Tab</kbd> を押すと、残りを自動で補完してくれます。</div>
+      </div>
+
+      <!-- ====== スラッシュコマンド ====== -->
+      <div class="section">
+        <span class="section-anchor" id="slash"></span>
+        <h2>スラッシュコマンド</h2>
+        <p>Claude Code の中で使える特別なコマンドです。通常のターミナルコマンドとは異なり、Claude Code が起動している状態で使います。</p>
+
+        <h3>/help</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>/help</pre></div>
+        <p>使い方のヘルプを表示します。困ったらまずこれを実行してください。</p>
+
+        <h3>/compact</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>/compact</pre></div>
+        <p>会話の履歴を圧縮します。長い会話をしていて動作が遅くなったときに有効です。</p>
+
+        <h3>/status</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>/status</pre></div>
+        <p>現在のログイン状態やアカウント情報を確認できます。</p>
+
+        <h3>/login</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>/login</pre></div>
+        <p>認証が切れたときに再ログインできます。ブラウザが開きます。</p>
+
+        <h3>/clear</h3>
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>/clear</pre></div>
+        <p>会話をリセットして最初からやり直します。Claude の返答がおかしくなったときに便利です。</p>
+
+        <div class="box box-info"><span class="box-icon"></span>スラッシュコマンドは Claude Code が起動中（プロンプトが <code>&gt;</code> のとき）にのみ使えます。通常のターミナルでは動きません。</div>
+      </div>
+
+      <!-- ====== 権限管理 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="permissions"></span>
+        <h2>権限管理</h2>
+        <p>Claude Code がファイルを編集したりコマンドを実行するとき、許可を求めてきます。3つの選択肢があります。</p>
+
+        <div class="card-row">
+          <div class="card card-l"><h4>Allow once</h4><p>今回だけ許可する。毎回確認が出ます。慎重に進めたいときに。</p></div>
+          <div class="card card-l"><h4>Always allow</h4><p>今後同じ操作は自動で許可する。信頼できる操作に。</p></div>
+        </div>
+        <div class="card-row">
+          <div class="card card-l"><h4>Deny</h4><p>拒否する。意図しない操作を止めたいときに。</p></div>
+          <div class="card card-l"><h4>/permissions</h4><p>現在の権限設定を確認・変更できます。</p></div>
+        </div>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre>/permissions</pre></div>
+        <p>過去に許可した内容の一覧を確認できます。</p>
+
+        <div class="box box-warn"><span class="box-icon"></span>よく分からない操作は「Allow once」を選びましょう。慣れてきたら「Always allow」に切り替えると効率的です。</div>
+      </div>
+
+      <!-- ====== 再起動・復旧 ====== -->
+      <div class="section">
+        <span class="section-anchor" id="recovery"></span>
+        <h2>再起動・復旧</h2>
+        <p>Claude Code が固まったり、おかしな動作をしたときの対処法です。軽い順に試してください。</p>
+
+        <div class="steps">
+          <div class="step"><span class="step-n sn-g">1</span><div class="step-body"><p><strong><kbd>Ctrl</kbd> + <kbd>C</kbd> で中断 → <code>claude</code> で再起動</strong></p><p class="sub">処理が止まらないとき。最も軽い対処法です。</p></div></div>
+          <div class="step"><span class="step-n sn-b">2</span><div class="step-body"><p><strong><code>/clear</code> で会話をリセット</strong></p><p class="sub">返答がおかしい、話が噛み合わないとき。会話履歴がクリアされます。</p></div></div>
+          <div class="step"><span class="step-n sn-b">3</span><div class="step-body"><p><strong><code>claude doctor</code> で自動診断</strong></p><p class="sub">原因が分からないとき。問題を自動で検出して教えてくれます。</p></div></div>
+          <div class="step"><span class="step-n sn-r">4</span><div class="step-body"><p><strong>Cursor を完全に再起動</strong></p><p class="sub">上記で解決しないとき。Cursor を閉じて開き直してください。</p></div></div>
+        </div>
+
+        <div class="code-wrap"><button class="copy-btn">Copy</button><pre><span class="c-cmt"># レベル1: 中断して再起動</span>
+<span class="c-cmt"># Ctrl+C を押してから:</span>
+claude
+
+<span class="c-cmt"># レベル3: 自動診断</span>
+claude doctor</pre></div>
+
+        <div class="box box-tip"><span class="box-icon"></span>ほとんどの問題はレベル1（<kbd>Ctrl</kbd>+<kbd>C</kbd> → <code>claude</code>）で解決します。</div>
+      </div>
+
+      <!-- Chapter nav -->
+      <div class="chapter-nav">
+        <a href="ch1-setup.html">&larr; 第1章: 導入ガイド</a>
+        <a href="ch3-md-files.html">第3章: .md ファイル &rarr;</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/doc-utils.js"></script>
+</body>
+</html>

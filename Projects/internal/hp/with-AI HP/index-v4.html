@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4T5HCY4Y"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JJ4T5HCY4Y');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>with-AI株式会社 | AI導入・DX推進の伴走パートナー</title>
+    <meta name="description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。">
+    <link rel="canonical" href="https://with-ai.jp/">
+    <link rel="icon" href="img/favicon.ico" sizes="any">
+    <meta property="og:type" content="website"><meta property="og:url" content="https://with-ai.jp/"><meta property="og:title" content="with-AI株式会社 | AI導入・DX推進の伴走パートナー"><meta property="og:description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。"><meta property="og:image" content="https://with-ai.jp/img/img-1.webp"><meta property="og:site_name" content="with-AI inc">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"with-AI株式会社","url":"https://with-ai.jp/","logo":"https://with-ai.jp/img/logo-full.png"}</script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@100;300;400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root{--blue:#00457A;--sky:#48A8E1;--cyan:#00b9ff;--teal:#00cbaf;--green:#5dc806;--yellow:#e9c02b;--pink:#FFDCE6;--lav:#E8E0FF;--bg:#FBFBFD;--text:#3B3B3B;--gradient:linear-gradient(135deg,#00457A,#48A8E1);--en:'Albert Sans',sans-serif;--jp:'Zen Kaku Gothic New',sans-serif;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:var(--jp);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+        ::selection{background:var(--sky);color:#fff;}
+        .f-en{font-family:var(--en);}
+        .text-gradient{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+        /* Shining text animation */
+        .text-shine-anim{
+            background:linear-gradient(
+                90deg,
+                #00457A 0%,
+                #48A8E1 30%,
+                #00457A 45%,
+                #48A8E1 55%,
+                #fff 58%,
+                #48A8E1 61%,
+                #00457A 75%,
+                #48A8E1 100%
+            );
+            background-size:300% 100%;
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text;
+            animation:text-shine 8s ease-in-out infinite;
+        }
+        @keyframes text-shine{
+            0%{background-position:100% 0}
+            100%{background-position:-100% 0}
+        }
+
+        /* --- HERO NAV (right-side vertical) --- */
+        .hero-nav{
+            font-family:var(--en);font-size:14px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+            color:rgba(0,69,122,.25);text-decoration:none;position:relative;
+            padding:.3rem 0;transition:all .4s cubic-bezier(.22,1,.36,1);
+        }
+        .hero-nav::after{
+            content:'';position:absolute;bottom:0;right:0;width:0;height:2px;
+            background:var(--gradient);transition:width .4s cubic-bezier(.22,1,.36,1);
+        }
+        .hero-nav:hover{color:var(--blue);text-shadow:0 0 20px rgba(72,168,225,.3);transform:translateX(-4px);}
+        .hero-nav:hover::after{width:100%;}
+        .hero-nav.active{color:var(--blue);font-weight:800;}
+        .hero-nav.active::after{width:100%;}
+        /* Staggered pulse glow on load */
+        .hero-nav{animation:nav-glow 3s ease-in-out infinite;}
+        .hero-nav:nth-child(1){animation-delay:0s;}
+        .hero-nav:nth-child(2){animation-delay:.4s;}
+        .hero-nav:nth-child(3){animation-delay:.8s;}
+        .hero-nav:nth-child(4){animation-delay:1.2s;}
+        .hero-nav:nth-child(5){animation-delay:1.6s;}
+        .hero-nav:nth-child(6){animation-delay:2s;}
+        @keyframes nav-glow{
+            0%,100%{text-shadow:none;color:rgba(0,69,122,.25);}
+            50%{text-shadow:0 0 12px rgba(72,168,225,.25);color:rgba(0,69,122,.45);}
+        }
+        .hero-nav:hover{animation:none;}
+        .hero-nav.active{animation:none;}
+        .hero-nav-cta{
+            margin-top:.5rem;padding:.5rem 1.2rem;border-radius:8px;
+            border:1.5px solid rgba(0,69,122,.15);font-size:12px;
+            transition:all .4s ease;
+        }
+        .hero-nav-cta:hover{background:var(--blue);color:#fff;border-color:var(--blue);text-shadow:none;transform:translateX(0);box-shadow:0 8px 24px rgba(0,69,122,.2);}
+        .hero-nav-cta::after{display:none;}
+
+        /* --- HERO CHIPS --- */
+        .hero-chip{
+            display:inline-flex;align-items:center;gap:.5rem;
+            padding:.6rem 1rem;border-radius:12px;
+            background:rgba(255,255,255,.7);backdrop-filter:blur(8px);
+            border:1px solid rgba(0,0,0,.04);
+            font-family:var(--en);font-size:12px;font-weight:700;letter-spacing:.04em;
+            color:var(--chip-color,var(--blue));text-decoration:none;
+            transition:all .4s cubic-bezier(.22,1,.36,1);
+        }
+        .hero-chip:hover{
+            transform:translateY(-3px);
+            box-shadow:0 12px 32px rgba(0,69,122,.08);
+            border-color:var(--chip-color,var(--blue));
+            background:#fff;
+        }
+        .hero-chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+        .hero-chip-sub{font-size:10px;font-weight:400;opacity:.45;margin-left:.2rem;}
+
+        /* --- HORIZONTAL SCROLL --- */
+        #hscroll-inner{width:fit-content;will-change:transform;}
+        .hs-panel{width:100vw;height:100vh;flex-shrink:0;overflow:hidden;}
+        .hs-dot{width:8px;height:8px;border-radius:50%;background:rgba(0,69,122,.12);cursor:pointer;transition:all .3s;}
+        .hs-dot.active{background:var(--blue);transform:scale(1.4);}
+
+        /* --- LOADER --- */
+        #loader{position:fixed;inset:0;background:var(--blue);z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+        .loader-line{position:absolute;height:2px;background:linear-gradient(90deg,transparent,var(--sky),var(--teal),transparent);width:120%;left:-10%;animation:loader-scan 1s ease-in-out infinite alternate;}
+        @keyframes loader-scan{0%{top:20%}100%{top:80%}}
+        .loader-logo{position:relative;z-index:2;opacity:0;}
+
+        /* --- ORBITS --- */
+        .orbit-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+        .orbit{position:absolute;border-radius:50%;}
+        .orb-1{width:min(95vw,850px);height:min(95vw,850px);background:conic-gradient(from 0deg,transparent 0%,#00457A 12%,#48A8E1 28%,#00b9ff 35%,transparent 48%,transparent 52%,#00b9ff 65%,#48A8E1 72%,#00457A 88%,transparent 100%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 9px) calc(100% - 1px),transparent 100%);mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 9px) calc(100% - 1px),transparent 100%);animation:spin 12s linear infinite;opacity:0.3;}
+        .orb-2{width:min(75vw,660px);height:min(75vw,660px);background:conic-gradient(from 120deg,transparent 0%,#48A8E1 10%,#00cbaf 22%,transparent 38%,transparent 55%,#00cbaf 72%,#48A8E1 88%,transparent 100%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px) calc(100% - 1px),transparent 100%);mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px) calc(100% - 1px),transparent 100%);animation:spin 18s linear infinite reverse;opacity:0.22;}
+        .orb-3{width:min(56vw,490px);height:min(56vw,490px);background:conic-gradient(from 240deg,transparent 0%,#00457A 8%,#48A8E1 20%,transparent 35%,transparent 70%,#48A8E1 85%,transparent 100%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px) calc(100% - 1px),transparent 100%);mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px) calc(100% - 1px),transparent 100%);animation:spin 25s linear infinite;opacity:0.15;}
+        .orb-4{width:min(38vw,330px);height:min(38vw,330px);border:1.5px dashed rgba(72,168,225,0.08);animation:spin 30s linear infinite reverse;}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* --- CONFETTI --- */
+        .cf{position:absolute;pointer-events:none;z-index:5;}
+        .cf-dot{border-radius:50%;}
+        .cf-sq{border-radius:3px;transform:rotate(var(--r,0deg));}
+        @keyframes cf-f{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-18px) rotate(calc(var(--r,0deg) + 12deg))}}
+        @keyframes blink{0%,100%{opacity:var(--o,1)}50%{opacity:0.05}}
+        @keyframes pulse-scale{0%,100%{transform:scale(1) rotate(var(--r,0deg))}50%{transform:scale(1.3) rotate(var(--r,0deg))}}
+
+        /* --- MARQUEE --- */
+        .marquee{overflow:hidden;white-space:nowrap;padding:1.8rem 0;}
+        .marquee-inner{display:inline-flex;animation:mq 20s linear infinite;}
+        @keyframes mq{to{transform:translateX(-50%)}}
+        .mq-item{font-family:var(--en);font-size:clamp(1.2rem,2.5vw,2rem);font-weight:800;letter-spacing:0.02em;padding:0 2rem;flex-shrink:0;color:inherit;}
+        .mq-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);margin:0 1.5rem;vertical-align:middle;opacity:0.5;}
+
+        /* --- WAVE --- */
+        .wave{width:100%;line-height:0;overflow:hidden;}
+        .wave svg{display:block;width:100%;height:auto;}
+
+        /* --- REVEAL --- */
+        .reveal{opacity:0;transform:translateY(50px);transition:all 1.2s cubic-bezier(0.16,1,0.3,1);}
+        .reveal.active{opacity:1;transform:translateY(0);}
+        .r1{transition-delay:.1s}.r2{transition-delay:.2s}.r3{transition-delay:.3s}.r4{transition-delay:.4s}.r5{transition-delay:.5s}
+        #hero-content{opacity:0;transform:translateY(50px);}
+
+        /* --- SEC HEADER --- */
+        .sec-num{font-family:var(--en);font-weight:900;font-size:clamp(5rem,12vw,9rem);line-height:1;color:rgba(0,69,122,0.03);letter-spacing:-0.04em;pointer-events:none;}
+        .sec-en{font-family:var(--en);font-weight:900;font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-0.02em;line-height:1.1;}
+        .sec-jp{font-size:0.85rem;font-weight:500;color:var(--blue);letter-spacing:0.1em;margin-top:0.5rem;}
+
+        /* --- SVC CARD --- */
+        .svc{display:block;text-decoration:none;color:inherit;border-radius:28px;padding:2.5rem;position:relative;overflow:hidden;transition:all .6s cubic-bezier(.22,1,.36,1);}
+        .svc:hover{transform:translateY(-10px);box-shadow:0 30px 80px rgba(0,69,122,0.1);}
+        .svc-ico{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--en);font-weight:900;font-size:1.1rem;margin-bottom:1.5rem;}
+        .svc-tag{font-family:var(--en);font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);opacity:.45;margin-bottom:.5rem;display:block;}
+        .svc-t{font-family:var(--en);font-size:1.6rem;font-weight:800;margin-bottom:.75rem;letter-spacing:-.01em;}
+        .svc-d{font-size:.82rem;opacity:.5;font-weight:400;line-height:1.8;}
+        .svc-arrow{position:absolute;bottom:1.5rem;right:1.5rem;width:40px;height:40px;border-radius:50%;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;transition:all .4s;}
+        .svc:hover .svc-arrow{background:var(--gradient);color:#fff;border-color:transparent;transform:rotate(-45deg);}
+
+        .bg1{background:linear-gradient(135deg,#E8F4FF,#F0F8FF);}
+        .bg2{background:linear-gradient(135deg,#E0FFF8,#F0FFFB);}
+        .bg3{background:linear-gradient(135deg,#FFF8E0,#FFFDF0);}
+        .bg4{background:linear-gradient(135deg,#F0E8FF,#F8F0FF);}
+        .bg5{background:linear-gradient(135deg,#FFE8EC,#FFF0F3);}
+        .bg6{background:linear-gradient(135deg,#E8FFE8,#F0FFF0);}
+
+        /* --- BLOG --- */
+        .blog{display:block;text-decoration:none;color:inherit;background:#fff;border-radius:24px;padding:2rem;border:1px solid rgba(0,0,0,.04);transition:all .5s cubic-bezier(.22,1,.36,1);}
+        .blog:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,69,122,.06);}
+        .blog-tag{font-family:var(--en);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:4px 12px;border-radius:20px;display:inline-block;}
+
+        /* --- PROFILE --- */
+        .pf{background:#fff;border-radius:28px;padding:2.5rem;min-height:300px;display:flex;flex-direction:column;justify-content:space-between;transition:all .6s cubic-bezier(.22,1,.36,1);text-decoration:none;color:inherit;border:1px solid rgba(0,0,0,.04);position:relative;}
+        .pf:hover{transform:translateY(-10px);box-shadow:0 30px 80px rgba(0,69,122,.06);}
+        .pf-btn{position:absolute;bottom:1.5rem;right:1.5rem;width:44px;height:44px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:all .4s;}
+        .pf:hover .pf-btn{background:var(--teal);transform:scale(1.1);}
+
+        /* --- CTA BUTTONS --- */
+        .btn-g{display:inline-flex;align-items:center;gap:.75rem;background:var(--gradient);color:#fff;padding:1.1rem 2.8rem;border-radius:60px;font-family:var(--en);font-weight:700;font-size:.9rem;letter-spacing:.04em;transition:all .4s;text-decoration:none;position:relative;overflow:hidden;}
+        .btn-g::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .6s;}
+        .btn-g:hover::after{transform:translateX(100%);}
+        .btn-g:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,69,122,.25);}
+        .btn-o{display:inline-flex;align-items:center;gap:.75rem;background:transparent;color:var(--blue);padding:1rem 2.5rem;border-radius:60px;font-family:var(--en);font-weight:700;font-size:.85rem;letter-spacing:.04em;border:2px solid var(--blue);transition:all .4s;text-decoration:none;}
+        .btn-o:hover{background:var(--blue);color:#fff;transform:translateY(-3px);}
+
+        /* --- DARK SECTION --- */
+        .sec-dark{background:var(--blue);color:#fff;position:relative;overflow:hidden;}
+        .sec-dark::before{content:'';position:absolute;inset:0;background:linear-gradient(rgba(72,168,225,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(72,168,225,.03) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+
+        /* --- FOOTER --- */
+        .ft-link{font-size:.8rem;font-weight:400;color:rgba(255,255,255,.3);transition:all .3s;}
+        .ft-link:hover{color:#fff;transform:translateX(4px);}
+
+        /* --- SCROLL BAR --- */
+        #scroll-bar{position:fixed;top:0;left:0;height:3px;background:var(--gradient);z-index:100;transform-origin:left;transform:scaleX(0);}
+
+        /* --- FLOAT --- */
+        @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    </style>
+</head>
+<body>
+
+    <div id="scroll-bar"></div>
+
+    <!-- LOADER: scanning line on dark blue -->
+    <div id="loader">
+        <div class="loader-line"></div>
+        <img src="img/logo-full.png" alt="with-AI" class="loader-logo h-12 md:h-16 brightness-[10]">
+    </div>
+
+    <!-- HEADER (appears on scroll, clean white/transparent) -->
+    <nav id="hdr" class="fixed top-0 left-0 w-full z-50 -translate-y-full transition-transform duration-700 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
+        <div class="flex justify-between items-center py-3.5 px-6 md:px-12">
+            <a href="index.html"><img src="img/logo-full.png" alt="with-AI" class="h-6 md:h-7"></a>
+            <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 z-50" onclick="toggleMenu()">
+                <span class="ml w-6 h-[1.5px] bg-[#3B3B3B] transition-all duration-300"></span>
+                <span class="ml w-6 h-[1.5px] bg-[#3B3B3B] transition-all duration-300"></span>
+                <span class="ml w-4 h-[1.5px] bg-[#3B3B3B] transition-all duration-300"></span>
+            </button>
+            <div class="hidden md:flex gap-8 items-center f-en text-[11px] font-600 tracking-wider uppercase" style="color:rgba(0,0,0,.35);">
+                <a href="stance.html" class="hover:text-[#00457A] transition-colors">Stance</a>
+                <a href="service.html" class="hover:text-[#00457A] transition-colors">Service</a>
+                <a href="blog/" class="hover:text-[#00457A] transition-colors">Blog</a>
+                <a href="company.html" class="hover:text-[#00457A] transition-colors">Company</a>
+                <a href="contact.html" class="btn-g !py-2 !px-5 !text-[10px] !rounded-full">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div id="mob-menu" class="fixed inset-0 bg-[#00457A] z-40 flex flex-col items-center justify-center gap-6 translate-x-full transition-transform duration-500 md:hidden">
+        <a href="index.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Home</a>
+        <a href="stance.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Stance</a>
+        <a href="service.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Service</a>
+        <a href="blog/" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Blog</a>
+        <a href="company.html" class="f-en text-2xl font-300 tracking-[.3em] uppercase text-white/30 hover:text-white transition-colors">Company</a>
+        <a href="contact.html" class="btn-g mt-4 !bg-white !text-[#00457A]">Contact Us</a>
+    </div>
+
+    <!-- ===== FULL HORIZONTAL SCROLL WRAPPER ===== -->
+    <div id="hscroll-wrap" class="relative" style="background:#EDEDF0;background-image:linear-gradient(rgba(0,69,122,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,69,122,.03) 1px,transparent 1px);background-size:60px 60px;">
+
+        <!-- Parallax background objects (shared across all panels) -->
+        <svg id="par-tube1" class="absolute hidden md:block" style="top:15%;left:10%;width:300px;height:160px;z-index:1;opacity:.4;" viewBox="0 0 300 160" fill="none"><defs><linearGradient id="pt1g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs><rect x="0" y="50" width="300" height="30" rx="15" fill="url(#pt1g)" transform="rotate(-15 150 65)"/></svg>
+        <svg id="par-arc1" class="absolute hidden md:block" style="top:40%;right:-5%;width:350px;height:350px;z-index:1;opacity:.25;" viewBox="0 0 350 350" fill="none"><defs><linearGradient id="pa1g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs><path d="M350,175 A175,175 0 0,0 175,0" stroke="url(#pa1g)" stroke-width="45" fill="none" stroke-linecap="round"/></svg>
+        <svg id="par-ring1" class="absolute hidden md:block" style="bottom:20%;left:5%;width:120px;height:120px;z-index:1;opacity:.15;" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="50" stroke="#48A8E1" stroke-width="2"/><circle cx="60" cy="60" r="35" stroke="#00cbaf" stroke-width="1" stroke-dasharray="4 6"/></svg>
+        <div id="par-sq1" class="absolute hidden md:block w-5 h-5 rounded cf-sq" style="background:var(--teal);top:25%;right:20%;opacity:.15;z-index:1;--r:20deg;"></div>
+        <div id="par-sq2" class="absolute hidden md:block w-4 h-4 rounded cf-sq" style="background:var(--blue);bottom:30%;left:25%;opacity:.1;z-index:1;--r:35deg;"></div>
+        <div id="par-dot1" class="absolute hidden md:block w-3 h-3 rounded-full" style="background:var(--teal);top:60%;left:15%;opacity:.3;z-index:1;"></div>
+
+        <!-- Horizontal scroll inner -->
+        <div id="hscroll-inner" class="flex">
+
+        <!-- PANEL 0: HERO -->
+        <div class="hs-panel relative overflow-hidden flex items-center justify-center">
+
+        <!-- === ANIMATED 3D OBJECTS (hidden on mobile) === -->
+
+        <!-- Large tube diagonal top -->
+        <svg class="absolute hidden md:block" style="top:6%;left:28%;width:380px;height:200px;z-index:3;animation:fl 5s ease-in-out infinite;" viewBox="0 0 380 200" fill="none">
+            <defs><linearGradient id="tube1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="50%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs>
+            <rect x="0" y="70" width="380" height="36" rx="18" fill="url(#tube1)" transform="rotate(-28 190 88)" opacity=".65"/>
+            <ellipse cx="12" cy="88" rx="18" ry="20" fill="#00cbaf" transform="rotate(-28 190 88)" opacity=".55"/>
+            <ellipse cx="368" cy="88" rx="18" ry="20" fill="#00457A" transform="rotate(-28 190 88)" opacity=".35"/>
+        </svg>
+
+        <!-- Second tube, opposite angle -->
+        <svg class="absolute hidden md:block" style="top:35%;right:5%;width:300px;height:160px;z-index:3;animation:fl 6s ease-in-out 1.5s infinite;" viewBox="0 0 300 160" fill="none">
+            <defs><linearGradient id="tube2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#00cbaf"/><stop offset="100%" stop-color="#48A8E1"/></linearGradient></defs>
+            <rect x="0" y="55" width="300" height="28" rx="14" fill="url(#tube2)" transform="rotate(20 150 69)" opacity=".5"/>
+            <ellipse cx="8" cy="69" rx="14" ry="16" fill="#48A8E1" transform="rotate(20 150 69)" opacity=".45"/>
+        </svg>
+
+        <!-- Vertical bar through center -->
+        <svg class="absolute hidden md:block" style="top:0;left:36%;width:50px;height:100vh;z-index:2;" viewBox="0 0 50 800" fill="none">
+            <defs><linearGradient id="vbar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#48A8E1" stop-opacity="0"/><stop offset="25%" stop-color="#48A8E1" stop-opacity=".12"/><stop offset="50%" stop-color="#00457A" stop-opacity=".15"/><stop offset="75%" stop-color="#00cbaf" stop-opacity=".08"/><stop offset="100%" stop-color="#00cbaf" stop-opacity="0"/></linearGradient></defs>
+            <rect x="15" y="0" width="20" height="800" fill="url(#vbar)"/>
+        </svg>
+
+        <!-- Large arc right -->
+        <svg class="absolute hidden md:block" style="bottom:5%;right:-6%;width:420px;height:420px;z-index:3;animation:fl 7s ease-in-out .8s infinite;" viewBox="0 0 420 420" fill="none">
+            <defs><linearGradient id="arc1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00457A"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs>
+            <path d="M420,210 A210,210 0 0,0 210,0" stroke="url(#arc1)" stroke-width="55" fill="none" opacity=".45" stroke-linecap="round"/>
+            <path d="M385,210 A175,175 0 0,0 210,35" stroke="#48A8E1" stroke-width="30" fill="none" opacity=".15" stroke-linecap="round"/>
+            <circle cx="210" cy="0" r="8" fill="#00cbaf" opacity=".6"><animate attributeName="opacity" values=".6;.2;.6" dur="2s" repeatCount="indefinite"/></circle>
+        </svg>
+
+        <!-- Semi-circle top right -->
+        <svg class="absolute hidden md:block" style="top:-3%;right:8%;width:200px;height:100px;z-index:3;animation:fl 5.5s ease-in-out 2s infinite;" viewBox="0 0 200 100" fill="none">
+            <defs><linearGradient id="semi1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs>
+            <path d="M10,100 A90,90 0 0,1 190,100" stroke="url(#semi1)" stroke-width="30" fill="none" opacity=".35" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Curved band left -->
+        <svg class="absolute hidden md:block" style="bottom:15%;left:-4%;width:320px;height:160px;z-index:3;animation:fl 6.5s ease-in-out .3s infinite;" viewBox="0 0 320 160" fill="none">
+            <defs><linearGradient id="band1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00cbaf"/></linearGradient></defs>
+            <path d="M10,140 Q160,-20 310,90" stroke="url(#band1)" stroke-width="45" fill="none" opacity=".35" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Small floating sphere -->
+        <svg class="absolute hidden md:block" style="top:45%;left:8%;width:60px;height:60px;z-index:5;animation:fl 3s ease-in-out infinite;" viewBox="0 0 60 60" fill="none">
+            <defs><radialGradient id="sph1" cx="35%" cy="35%"><stop offset="0%" stop-color="#48A8E1"/><stop offset="100%" stop-color="#00457A"/></radialGradient></defs>
+            <circle cx="30" cy="30" r="22" fill="url(#sph1)" opacity=".5"/>
+            <circle cx="24" cy="24" r="6" fill="#fff" opacity=".3"/>
+        </svg>
+
+        <!-- Another sphere -->
+        <svg class="absolute hidden md:block" style="top:18%;right:15%;width:40px;height:40px;z-index:5;animation:fl 4s ease-in-out 1s infinite;" viewBox="0 0 40 40" fill="none">
+            <defs><radialGradient id="sph2" cx="35%" cy="35%"><stop offset="0%" stop-color="#00cbaf"/><stop offset="100%" stop-color="#00457A"/></radialGradient></defs>
+            <circle cx="20" cy="20" r="16" fill="url(#sph2)" opacity=".45"/>
+            <circle cx="15" cy="15" r="4" fill="#fff" opacity=".25"/>
+        </svg>
+
+        <!-- Blinking squares -->
+        <div class="cf cf-sq" style="width:30px;height:30px;background:rgba(0,69,122,.08);top:5%;left:34%;--r:0deg;z-index:4;animation:blink 3s ease-in-out infinite;"></div>
+        <div class="cf cf-sq" style="width:22px;height:22px;background:rgba(0,203,175,.15);top:16%;left:41%;--r:45deg;z-index:4;animation:blink 2.5s ease-in-out .5s infinite;"></div>
+        <div class="cf cf-sq" style="width:16px;height:16px;border:2px solid rgba(72,168,225,.2);top:20%;right:16%;--r:0deg;z-index:4;background:transparent;animation:blink 4s ease-in-out 1s infinite;"></div>
+        <div class="cf cf-sq" style="width:12px;height:12px;border:2px solid rgba(72,168,225,.12);top:10%;right:26%;--r:15deg;z-index:4;background:transparent;animation:blink 3.5s ease-in-out .3s infinite;"></div>
+        <div class="cf cf-sq" style="width:26px;height:26px;background:rgba(0,69,122,.05);bottom:6%;left:22%;--r:10deg;z-index:4;animation:blink 2.8s ease-in-out .8s infinite;"></div>
+        <div class="cf cf-sq" style="width:18px;height:18px;background:var(--teal);bottom:20%;left:36%;--r:0deg;z-index:4;opacity:.12;animation:blink 3.2s ease-in-out 1.2s infinite;"></div>
+        <div class="cf cf-sq" style="width:20px;height:20px;background:rgba(72,168,225,.1);top:55%;right:12%;--r:30deg;z-index:4;animation:blink 2.5s ease-in-out .7s infinite;"></div>
+        <div class="cf cf-sq" style="width:14px;height:14px;background:rgba(0,203,175,.12);top:70%;left:15%;--r:20deg;z-index:4;animation:blink 3s ease-in-out 1.5s infinite;"></div>
+        <div class="cf cf-sq" style="width:24px;height:24px;border:2px solid rgba(0,69,122,.06);bottom:35%;right:25%;--r:5deg;z-index:4;background:transparent;animation:blink 4s ease-in-out .2s infinite;"></div>
+
+        <!-- Blinking dots -->
+        <div class="cf cf-dot" style="width:14px;height:14px;background:var(--teal);top:13%;left:47%;z-index:5;animation:blink 2s ease-in-out infinite;"></div>
+        <div class="cf cf-dot" style="width:10px;height:10px;background:var(--teal);bottom:28%;right:28%;z-index:5;animation:blink 2.5s ease-in-out .4s infinite;"></div>
+        <div class="cf cf-dot" style="width:8px;height:8px;background:var(--cyan);top:60%;left:50%;z-index:5;animation:blink 1.8s ease-in-out .6s infinite;"></div>
+        <div class="cf cf-dot" style="width:12px;height:12px;background:var(--sky);top:8%;left:58%;z-index:5;animation:blink 3s ease-in-out 1s infinite;"></div>
+        <div class="cf cf-dot" style="width:6px;height:6px;background:var(--teal);bottom:12%;right:40%;z-index:5;animation:blink 2.2s ease-in-out .9s infinite;"></div>
+
+        <!-- 3-block cluster -->
+        <svg class="absolute hidden md:block" style="top:22%;left:39%;width:70px;height:35px;z-index:5;" viewBox="0 0 70 35" fill="none">
+            <rect x="0" y="5" width="18" height="18" rx="2" fill="#00457A" opacity=".18"><animate attributeName="opacity" values=".18;.06;.18" dur="2.5s" repeatCount="indefinite"/></rect>
+            <rect x="24" y="5" width="18" height="18" rx="2" fill="#00cbaf" opacity=".22"><animate attributeName="opacity" values=".22;.08;.22" dur="2s" begin=".3s" repeatCount="indefinite"/></rect>
+            <rect x="48" y="5" width="18" height="18" rx="2" fill="#48A8E1" opacity=".15"><animate attributeName="opacity" values=".15;.04;.15" dur="3s" begin=".6s" repeatCount="indefinite"/></rect>
+        </svg>
+
+        <!-- Small ring -->
+        <svg class="absolute hidden md:block" style="bottom:25%;right:8%;width:80px;height:80px;z-index:4;animation:spin 10s linear infinite;" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="30" stroke="#48A8E1" stroke-width="1.5" opacity=".12"/>
+            <circle cx="40" cy="40" r="22" stroke="#00cbaf" stroke-width="1" opacity=".08" stroke-dasharray="4 6"/>
+            <circle cx="40" cy="10" r="3" fill="#00cbaf" opacity=".4"/>
+        </svg>
+
+        <!-- HERO-EMBEDDED NAV (right side, vertical) -->
+        <div class="absolute top-10 right-10 md:right-16 z-30 hidden md:flex flex-col items-end gap-5">
+            <a href="index.html" class="hero-nav active">Home</a>
+            <a href="stance.html" class="hero-nav">Stance</a>
+            <a href="service.html" class="hero-nav">Service</a>
+            <a href="blog/" class="hero-nav">Blog</a>
+            <a href="company.html" class="hero-nav">Company</a>
+            <a href="contact.html" class="hero-nav hero-nav-cta">Contact</a>
+        </div>
+
+        <!-- HERO LOGO (top left) -->
+        <a href="index.html" class="absolute top-8 left-8 md:left-14 z-30">
+            <img src="img/logo-full.png" alt="with-AI" class="h-7 md:h-9" style="filter:drop-shadow(0 2px 10px rgba(0,69,122,.06));">
+        </a>
+
+        <!-- ISOMETRIC ILLUSTRATIONS (with-AI colors) -->
+        <!-- PC -->
+        <img src="img/iso-1.svg" alt="" class="absolute hidden md:block" style="width:200px;top:8%;right:16%;z-index:6;animation:fl 6s ease-in-out infinite;opacity:.9;filter:drop-shadow(0 10px 30px rgba(0,69,122,.12));">
+        <img src="img/iso-2.svg" alt="" class="absolute hidden md:block" style="width:170px;bottom:12%;left:4%;z-index:6;animation:fl 5s ease-in-out 1s infinite;opacity:.85;filter:drop-shadow(0 10px 30px rgba(0,69,122,.1));">
+        <img src="img/iso-3.svg" alt="" class="absolute hidden md:block" style="width:140px;top:50%;right:5%;z-index:6;animation:fl 7s ease-in-out .5s infinite;opacity:.8;filter:drop-shadow(0 8px 24px rgba(0,69,122,.08));">
+        <!-- SP: corners around centered text -->
+        <img src="img/iso-1.svg" alt="" class="absolute md:hidden" style="width:90px;top:6%;right:3%;z-index:6;animation:fl 6s ease-in-out infinite;opacity:.6;filter:drop-shadow(0 6px 16px rgba(0,69,122,.1));">
+        <img src="img/iso-3.svg" alt="" class="absolute md:hidden" style="width:70px;top:8%;left:3%;z-index:6;animation:fl 5s ease-in-out .8s infinite;opacity:.5;filter:drop-shadow(0 6px 16px rgba(0,69,122,.08));">
+        <img src="img/iso-2.svg" alt="" class="absolute md:hidden" style="width:80px;bottom:10%;right:5%;z-index:6;animation:fl 7s ease-in-out .5s infinite;opacity:.55;filter:drop-shadow(0 6px 16px rgba(0,69,122,.08));">
+
+        <!-- HERO TEXT -->
+        <div id="hero-content" class="relative z-10 px-6 md:px-16 lg:px-20 w-full max-w-[1400px] mx-auto text-center md:text-left">
+            <h1 class="f-en font-900 tracking-tight text-shine-anim" style="font-size:clamp(2.8rem,11vw,10rem);line-height:.92;">
+                <span class="block">Step into</span>
+                <span class="block md:ml-[15%]">the Next</span>
+                <span class="block md:ml-[8%]">Era.</span>
+            </h1>
+            <!-- Subtitle -->
+            <div class="mt-5 md:mt-[-3.5rem] md:ml-[40%] lg:ml-[35%]">
+                <p class="text-[13px] md:text-base font-400 leading-relaxed mx-auto md:mx-0" style="color:rgba(59,59,59,.5);max-width:280px;">
+                    AIテクノロジーを用いた<br>伴走型支援で、<br>ビジネスは次のレベルへ。
+                </p>
+            </div>
+            <!-- Feature chips -->
+            <div class="mt-6 md:mt-8 flex flex-wrap justify-center md:justify-start gap-2 md:gap-3 md:ml-[8%]">
+                <a href="aikomon.html" class="hero-chip" style="--chip-color:#00457A;">
+                    <span class="hero-chip-dot" style="background:#00457A;"></span>
+                    AIKOMON
+                    <span class="hero-chip-sub">伴走支援</span>
+                </a>
+                <a href="aishine.html" class="hero-chip" style="--chip-color:#00cbaf;">
+                    <span class="hero-chip-dot" style="background:#00cbaf;"></span>
+                    AI SHINE
+                    <span class="hero-chip-sub">エージェント構築</span>
+                </a>
+                <a href="service.html" class="hero-chip" style="--chip-color:#48A8E1;">
+                    <span class="hero-chip-dot" style="background:#48A8E1;"></span>
+                    System Design
+                    <span class="hero-chip-sub">開発</span>
+                </a>
+                <a href="service.html" class="hero-chip" style="--chip-color:#00b9ff;">
+                    <span class="hero-chip-dot" style="background:#00b9ff;"></span>
+                    with-AI Plus
+                    <span class="hero-chip-sub">教育</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom right: Scroll -->
+        <div class="absolute bottom-6 right-8 md:right-14 z-20 flex items-center gap-3">
+            <span class="f-en text-[10px] font-600 tracking-[.2em] uppercase" style="color:rgba(59,59,59,.3);">Scroll</span>
+            <div class="w-8 h-8 rounded-full border-2 border-[#3B3B3B]/15 flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-[#3B3B3B]/30"></div></div>
+        </div>
+        </div><!-- /PANEL 0: HERO -->
+
+            <!-- PANEL 1: ABOUT -->
+            <div class="hs-panel flex items-center justify-center px-8 md:px-20 relative">
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="f-en text-[.6rem] font-600 tracking-[.3em] uppercase mb-4" style="color:var(--teal);">01 &mdash; About</div>
+                        <h2 class="sec-en text-gradient mb-8">Who We Are</h2>
+                        <div class="space-y-5 text-sm leading-[2] font-300" style="color:rgba(59,59,59,.55);">
+                            <p>テクノロジーのあり方が大きく変わりつつある今、求められているのは、組織の価値観やフェーズに寄り添い、確かな進化を支える知能のかたちです。</p>
+                            <p>with-AIが導くデータサイエンスの洞察、実装するためのアーキテクチャ。私たちは、持続的な成長に欠かせないパートナーとして挑戦しています。</p>
+                        </div>
+                        <a href="stance.html" class="mt-6 inline-flex items-center gap-2 f-en text-[.7rem] font-700 tracking-[.15em] uppercase text-[#00457A] hover:gap-4 transition-all">
+                            Read our stance <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+                        </a>
+                    </div>
+                    <div class="flex justify-center">
+                        <img src="img/iso-2.svg" alt="" style="width:260px;animation:fl 6s ease-in-out infinite;filter:drop-shadow(0 10px 30px rgba(0,69,122,.1));">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 2: SERVICES -->
+            <div class="hs-panel flex items-center px-8 md:px-20 relative">
+                <div class="w-full max-w-5xl mx-auto">
+                    <div class="mb-10">
+                        <div class="f-en text-[.6rem] font-600 tracking-[.3em] uppercase mb-4" style="color:var(--teal);">02 &mdash; Services</div>
+                        <h2 class="sec-en text-gradient">Our Services</h2>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <a href="aikomon.html" class="svc bg1"><div class="svc-ico" style="background:var(--blue);">01</div><span class="svc-tag">Advisory</span><h3 class="svc-t text-base">AIKOMON</h3><p class="svc-d text-xs">伴走型支援</p><div class="svc-arrow"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="2"/></svg></div></a>
+                        <a href="service.html" class="svc bg2"><div class="svc-ico" style="background:var(--teal);">02</div><span class="svc-tag">Learning</span><h3 class="svc-t text-base">with-AI Plus</h3><p class="svc-d text-xs">AI教育</p><div class="svc-arrow"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="2"/></svg></div></a>
+                        <a href="aishine.html" class="svc bg3"><div class="svc-ico" style="background:var(--yellow);">03</div><span class="svc-tag">AI Agent</span><h3 class="svc-t text-base">AI SHINE</h3><p class="svc-d text-xs">エージェント構築</p><div class="svc-arrow"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="2"/></svg></div></a>
+                        <a href="service.html" class="svc bg4"><div class="svc-ico" style="background:#5884f1;">04</div><span class="svc-tag">Engineering</span><h3 class="svc-t text-base">System Design</h3><p class="svc-d text-xs">開発</p><div class="svc-arrow"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="2"/></svg></div></a>
+                        <a href="service.html" class="svc bg5"><div class="svc-ico" style="background:#ff7eb3;">05</div><span class="svc-tag">Recruit</span><h3 class="svc-t text-base">Inspire Recruit</h3><p class="svc-d text-xs">採用</p><div class="svc-arrow"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="2"/></svg></div></a>
+                        <a href="service.html" class="svc bg6"><div class="svc-ico" style="background:var(--green);">06</div><span class="svc-tag">Community</span><h3 class="svc-t text-base">経営者会</h3><p class="svc-d text-xs">コミュニティ</p><div class="svc-arrow"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="2"/></svg></div></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 3: BLOG -->
+            <div class="hs-panel flex items-center px-8 md:px-20 relative">
+                <div class="w-full max-w-4xl mx-auto">
+                    <div class="flex items-end justify-between mb-10">
+                        <div>
+                            <div class="f-en text-[.6rem] font-600 tracking-[.3em] uppercase mb-4" style="color:var(--teal);">03 &mdash; Blog</div>
+                            <h2 class="sec-en text-gradient">Latest Articles</h2>
+                        </div>
+                        <a href="blog/" class="f-en text-[.7rem] font-700 tracking-[.15em] uppercase text-[#00457A] flex items-center gap-2 hover:gap-4 transition-all">View All <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <a href="blog/ai-agent-evolution-2026.html" class="blog"><div class="flex justify-between items-center mb-5"><span class="blog-tag" style="background:rgba(0,185,255,.08);color:var(--cyan);">AI Trends</span><span class="f-en text-[10px]" style="color:rgba(59,59,59,.2);">2026.03.27</span></div><h3 class="text-sm font-700 leading-relaxed">AIエージェント最新動向 2026</h3></a>
+                        <a href="blog/ai-subsidy-2026-guide.html" class="blog"><div class="flex justify-between items-center mb-5"><span class="blog-tag" style="background:rgba(0,203,175,.08);color:var(--teal);">AI x 補助金</span><span class="f-en text-[10px]" style="color:rgba(59,59,59,.2);">2026.03.25</span></div><h3 class="text-sm font-700 leading-relaxed">AI導入補助金 2026 完全ガイド</h3></a>
+                        <a href="blog/claude-code-guide.html" class="blog"><div class="flex justify-between items-center mb-5"><span class="blog-tag" style="background:rgba(233,192,43,.1);color:var(--yellow);">AI Tools</span><span class="f-en text-[10px]" style="color:rgba(59,59,59,.2);">2026.03.23</span></div><h3 class="text-sm font-700 leading-relaxed">Claude Codeとは？</h3></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 4: COMPANY -->
+            <div class="hs-panel flex items-center px-8 md:px-20 relative">
+                <div class="w-full max-w-4xl mx-auto">
+                    <div class="mb-10">
+                        <div class="f-en text-[.6rem] font-600 tracking-[.3em] uppercase mb-4" style="color:var(--teal);">04 &mdash; Company</div>
+                        <h2 class="sec-en text-gradient">Company</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <a href="company.html" class="pf group"><h3 class="f-en text-lg font-800">会社概要</h3><div class="flex-grow flex items-center justify-center"><div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:rgba(0,69,122,.04);"><svg class="w-7 h-7" style="color:var(--blue);opacity:.25;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-width="1.5"/></svg></div></div><div class="pf-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div></a>
+                        <a href="members.html" class="pf group" style="background:linear-gradient(135deg,#E8F4FF,#F0F8FF);border:none;"><h3 class="f-en text-lg font-800">代表挨拶・メンバー</h3><div class="flex-grow flex items-center justify-center"><div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:rgba(0,69,122,.06);"><svg class="w-7 h-7" style="color:var(--blue);opacity:.25;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="1.5"/></svg></div></div><div class="pf-btn" style="background:var(--teal);"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div></a>
+                        <a href="contact.html" class="pf group"><h3 class="f-en text-lg font-800">お問い合わせ</h3><div class="flex-grow flex items-center justify-center"><div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:rgba(0,69,122,.04);"><svg class="w-7 h-7" style="color:var(--blue);opacity:.25;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-width="1.5"/></svg></div></div><div class="pf-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg></div></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 5: CTA -->
+            <div class="hs-panel flex items-center justify-center relative" style="background:linear-gradient(135deg,#00457A,#1a5cb5);">
+                <div class="absolute inset-0" style="background-image:linear-gradient(rgba(72,168,225,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(72,168,225,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;"></div>
+                <div class="max-w-3xl mx-auto text-center relative z-10 px-8">
+                    <h2 class="f-en font-900 text-3xl md:text-5xl lg:text-6xl leading-tight mb-6 text-white">
+                        Ready for the<br><span style="background:linear-gradient(135deg,#48A8E1,#00cbaf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Next Era?</span>
+                    </h2>
+                    <p class="text-sm text-white/35 font-300 mb-10 max-w-md mx-auto leading-relaxed">まずは御社の課題をお聞かせください。<br>AIで何が変わりうるかを、具体的にお伝えします。</p>
+                    <a href="contact.html" class="inline-flex items-center gap-3 bg-white text-[#00457A] px-10 py-4 rounded-full f-en font-800 text-sm tracking-wide hover:shadow-[0_12px_40px_rgba(255,255,255,.2)] hover:-translate-y-2 transition-all">
+                        無料で相談する <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2"/></svg>
+                    </a>
+                </div>
+            </div>
+
+        </div><!-- /hscroll-inner -->
+
+        <!-- Progress dots (fixed) -->
+        <div id="hs-dots" class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3" style="display:none;">
+            <div class="hs-dot active" data-i="0"></div>
+            <div class="hs-dot" data-i="1"></div>
+            <div class="hs-dot" data-i="2"></div>
+            <div class="hs-dot" data-i="3"></div>
+            <div class="hs-dot" data-i="4"></div>
+            <div class="hs-dot" data-i="5"></div>
+        </div>
+    </div><!-- /hscroll-wrap -->
+
+    <!-- FOOTER -->
+    <footer style="background:#002E52;" class="pt-20 pb-10 px-8 md:px-24">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-16">
+                <div class="lg:col-span-4 flex flex-col gap-5"><a href="index.html"><img src="img/logo-full.png" alt="with-AI" class="h-9 w-auto brightness-[10]"></a><p class="text-white/12 text-xs leading-loose font-300">Next Era Intelligence Partner<br>Aligning Human and Intelligence.</p></div>
+                <div class="lg:col-start-7 lg:col-span-6 grid grid-cols-3 gap-10">
+                    <div class="flex flex-col gap-4"><h4 class="f-en text-[9px] font-700 tracking-[.25em] uppercase text-white/12">Explore</h4><div class="flex flex-col gap-3"><a href="index.html" class="ft-link">Home</a><a href="stance.html" class="ft-link">Stance</a><a href="service.html" class="ft-link">Service</a><a href="blog/" class="ft-link">Blog</a></div></div>
+                    <div class="flex flex-col gap-4"><h4 class="f-en text-[9px] font-700 tracking-[.25em] uppercase text-white/12">Info</h4><div class="flex flex-col gap-3"><a href="company.html" class="ft-link">Company</a><a href="members.html" class="ft-link">Members</a><a href="contact.html" class="ft-link">Contact</a></div></div>
+                    <div class="flex flex-col gap-4"><h4 class="f-en text-[9px] font-700 tracking-[.25em] uppercase text-white/12">Legal</h4><div class="flex flex-col gap-3"><a href="privacy.html" class="ft-link">Privacy Policy</a></div></div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/[0.05]">
+                <span class="f-en text-[10px] font-900 tracking-[.4em] uppercase text-gradient">Next Era</span>
+                <span class="f-en text-[9px] text-white/8 tracking-widest">&copy; 2026 WITH-AI INC.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- LOADER ---
+        function initLoader(){
+            document.body.style.overflow='hidden';
+            // Init horizontal scroll first (needs DOM ready)
+            initHorizontalScroll();
+            gsap.timeline()
+                .to(".loader-logo",{opacity:1,duration:.6,ease:"power2.out"})
+                .to(".loader-line",{opacity:0,duration:.3},"+=.6")
+                .to("#loader",{yPercent:-100,duration:.7,ease:"power3.inOut",delay:.2})
+                .set("#loader",{display:"none"})
+                .to("#hero-content",{opacity:1,y:0,duration:1.4,ease:"power3.out"})
+                .set("body",{overflow:"auto"});
+        }
+
+        // --- HORIZONTAL SCROLL ---
+        function initHorizontalScroll(){
+            const wrap=document.getElementById('hscroll-wrap');
+            const inner=document.getElementById('hscroll-inner');
+            const panels=document.querySelectorAll('.hs-panel');
+            const dots=document.getElementById('hs-dots');
+            const allDots=document.querySelectorAll('.hs-dot');
+
+            if(!wrap||!inner||panels.length===0||window.innerWidth<768) return;
+
+            // Show dots
+            if(dots)dots.style.display='flex';
+
+            const totalScroll=(panels.length-1)*window.innerWidth;
+
+            // Pin wrapper & scroll inner horizontally
+            const hsTl=gsap.to(inner,{
+                x:()=>-totalScroll,
+                ease:"none",
+                scrollTrigger:{
+                    trigger:wrap,
+                    pin:true,
+                    scrub:1,
+                    end:()=>"+="+(totalScroll),
+                    onUpdate:self=>{
+                        // Update dots
+                        const idx=Math.round(self.progress*(panels.length-1));
+                        allDots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+                    }
+                }
+            });
+
+            // Parallax background objects
+            gsap.to("#par-tube1",{x:300,rotation:25,scrollTrigger:{trigger:wrap,scrub:2,start:"top top",end:()=>"+="+(totalScroll)}});
+            gsap.to("#par-arc1",{x:-400,y:100,rotation:-15,scrollTrigger:{trigger:wrap,scrub:2,start:"top top",end:()=>"+="+(totalScroll)}});
+            gsap.to("#par-ring1",{x:500,y:-80,rotation:180,scale:1.5,scrollTrigger:{trigger:wrap,scrub:3,start:"top top",end:()=>"+="+(totalScroll)}});
+            gsap.to("#par-sq1",{x:-200,y:150,rotation:90,scrollTrigger:{trigger:wrap,scrub:2,start:"top top",end:()=>"+="+(totalScroll)}});
+            gsap.to("#par-sq2",{x:300,y:-100,rotation:-60,scrollTrigger:{trigger:wrap,scrub:2.5,start:"top top",end:()=>"+="+(totalScroll)}});
+            gsap.to("#par-dot1",{x:400,y:50,scrollTrigger:{trigger:wrap,scrub:1.5,start:"top top",end:()=>"+="+(totalScroll)}});
+
+            // Dot click navigation
+            allDots.forEach(d=>{
+                d.addEventListener('click',()=>{
+                    const i=parseInt(d.dataset.i);
+                    const target=wrap.offsetTop+(totalScroll/(panels.length-1))*i;
+                    gsap.to(window,{scrollTo:target,duration:1,ease:"power3.inOut"});
+                });
+            });
+        }
+
+        // --- HEADER on scroll ---
+        window.addEventListener('scroll',()=>{
+            const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
+            document.getElementById('scroll-bar').style.transform=`scaleX(${p})`;
+            const h=document.getElementById('hdr');
+            // Show header after scrolling past first panel (hero)
+            if(h)h.style.transform=window.scrollY>window.innerHeight*0.5?'translateY(0)':'translateY(-100%)';
+        });
+
+        // --- REVEAL ---
+        const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('active');});},{threshold:.08});
+        document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+        // --- MOBILE MENU ---
+        function toggleMenu(){
+            const m=document.getElementById('mob-menu'),l=document.querySelectorAll('.ml');
+            m.classList.toggle('translate-x-full');m.classList.toggle('translate-x-0');
+            if(m.classList.contains('translate-x-0')){l[0].style.transform='rotate(45deg) translate(4px,4px)';l[1].style.opacity='0';l[2].style.transform='rotate(-45deg) translate(3px,-3px)';l[2].style.width='1.5rem';}
+            else{l[0].style.transform='';l[1].style.opacity='1';l[2].style.transform='';l[2].style.width='1rem';}
+        }
+
+        window.addEventListener('load',initLoader);
+    </script>
+</body>
+</html>

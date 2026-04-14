@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI NEWS — with-AI PORTAL</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .news-card-link { color: inherit; text-decoration: none; display: block; }
+    .news-card-link:hover { text-decoration: none; }
+    .news-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .news-source { font-size: 10px; color: var(--text3); }
+    .tag-action { background: #FEF2F2; color: var(--red); }
+    .what-box {
+      margin-top: 10px; padding: 10px 14px;
+      background: var(--claude-bg); border-radius: 6px;
+      font-size: 12px; color: var(--text); line-height: 1.6;
+    }
+    .what-label {
+      font-size: 10px; font-weight: 700; color: var(--claude);
+      letter-spacing: 0.5px; margin-bottom: 4px;
+    }
+    .content-card { transition: all 0.15s; }
+    .content-card:hover { border-color: var(--claude); transform: translateY(-1px); box-shadow: 0 2px 12px rgba(196,135,106,0.08); }
+    .content-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.5; }
+    .content-card .summary { font-size: 12px; color: var(--text2); margin: 0; line-height: 1.7; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo">with-AI <span>PORTAL</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="../training/" class="nl">教材</a>
+      <a href="../news/" class="nl active">NEWS</a>
+      <a href="../guide/" class="nl">ガイド</a>
+      <a href="../webinar/" class="nl">セミナー</a>
+    </div>
+    <button class="hamburger" id="ham">☰</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <a href="../" class="back-link">← ホームに戻る</a>
+
+  <div class="page-header">
+    <h1>AI NEWS</h1>
+    <p>最新AIニュースと、それで何ができるようになったかをお届けします</p>
+  </div>
+
+  <div class="rooms-label">2026.04.14 更新</div>
+
+  <!-- 1 -->
+  <div class="content-card">
+    <a href="articles/2026-04-13-claude-office-integration/" class="news-card-link">
+      <div class="news-meta">
+        <span class="announce-tag tag-action">ACTION</span>
+        <span class="announce-date">2026.04.13</span>
+      </div>
+      <h3>Claude が Microsoft Office 全製品に対応</h3>
+      <p class="summary">Word・Excel・PowerPointの中からClaudeを直接呼び出せるようになった。文書の要約・リライト、データ分析の提案、スライドの構成案作成がOfficeから離れずに完結する。</p>
+      <div class="what-box">
+        <div class="what-label">何ができる？</div>
+        Officeアドインを追加するだけ。Word上で文章を選択→Claudeに指示、が可能に。
+      </div>
+      <div class="news-source">OpenPR · ▶ 記事を読む</div>
+    </a>
+  </div>
+
+  <!-- 2 -->
+  <div class="content-card">
+    <a href="https://openai.com/news/" target="_blank" rel="noopener" class="news-card-link">
+      <div class="news-meta">
+        <span class="announce-tag tag-new">NEW</span>
+        <span class="announce-date">2026.04.10</span>
+      </div>
+      <h3>OpenAI、GPT-5.4 リリース — 自律的なマルチステップ作業が可能に</h3>
+      <p class="summary">100万トークンの長文対応に加え、ソフトウェア環境をまたいだ自律的なワークフロー実行が可能に。デスクトップ作業の自動化テストで人間の正答率を上回った。</p>
+      <div class="what-box">
+        <div class="what-label">何ができる？</div>
+        ChatGPT Pro/Plusプランで利用可能。複数ツールをまたぐ作業（調査→整理→レポート作成）を一つの指示で任せられる。
+      </div>
+      <div class="news-source">OpenAI</div>
+    </a>
+  </div>
+
+  <!-- 3 -->
+  <div class="content-card">
+    <a href="https://tech-insider.org/google-gemini-750-million-users-march-2026-updates/" target="_blank" rel="noopener" class="news-card-link">
+      <div class="news-meta">
+        <span class="announce-tag tag-new">NEW</span>
+        <span class="announce-date">2026.04.11</span>
+      </div>
+      <h3>Google Gemini 3.1 Pro — 16ベンチマーク中13で最高スコア</h3>
+      <p class="summary">Gemini 3.1 Proがほぼ全ベンチマークで首位。特にARC-AGI-2（推論力テスト）で前世代の2倍超のスコア。Google系サービスとの連携が最大の強み。</p>
+      <div class="what-box">
+        <div class="what-label">何ができる？</div>
+        Googleアプリ内でGeminiを使う場面（Gmail要約、Docs執筆支援、Meet議事録）の精度が大幅に向上。Pixel端末では音声指示でアプリ操作も可能に。
+      </div>
+      <div class="news-source">Tech Insider</div>
+    </a>
+  </div>
+
+  <!-- 4 -->
+  <div class="content-card">
+    <a href="articles/2026-04-07-claude-mythos-security/" class="news-card-link">
+      <div class="news-meta">
+        <span class="announce-tag tag-new">NEW</span>
+        <span class="announce-date">2026.04.07</span>
+      </div>
+      <h3>Anthropic がセキュリティ特化モデル「Claude Mythos」を発表</h3>
+      <p class="summary">コードの脆弱性を自動で検出・修正提案できるモデルが登場。通常のClaudeでは見逃すセキュリティ問題を専門的に発見できる。</p>
+      <div class="what-box">
+        <div class="what-label">何ができる？</div>
+        自社のコードベースをMythosに通すと、SQLインジェクションやXSSなどの脆弱性を洗い出せる。セキュリティ監査の工数を大幅に削減。
+      </div>
+      <div class="news-source">Anthropic · ▶ 記事を読む</div>
+    </a>
+  </div>
+
+  <!-- 5 -->
+  <div class="content-card">
+    <a href="https://spectrum.ieee.org/state-of-ai-index-2026" target="_blank" rel="noopener" class="news-card-link">
+      <div class="news-meta">
+        <span class="announce-tag tag-open">TREND</span>
+        <span class="announce-date">2026.04.13</span>
+      </div>
+      <h3>Stanford AI Index 2026 — AI導入企業の格差が鮮明に</h3>
+      <p class="summary">AI導入効果の75%を上位20%の企業が獲得。差が出るのは「AI活用の深さ」で、単純なチャット利用だけの企業と業務フロー全体にAIを組み込んだ企業で成果が二極化。</p>
+      <div class="what-box">
+        <div class="what-label">何ができる？</div>
+        自社のAI活用が「チャットで聞くだけ」に留まっていないか見直すきっかけに。業務プロセスへの組み込み（自動化・意思決定支援）が成果を分ける。
+      </div>
+      <div class="news-source">IEEE Spectrum</div>
+    </a>
+  </div>
+
+  <!-- 6 -->
+  <div class="content-card">
+    <a href="https://blog.mean.ceo/new-ai-model-releases-news-april-2026/" target="_blank" rel="noopener" class="news-card-link">
+      <div class="news-meta">
+        <span class="announce-tag tag-open">TREND</span>
+        <span class="announce-date">2026.04.09</span>
+      </div>
+      <h3>Google、Gemma 4 をオープンソース公開 — Apache 2.0 で自由に利用可能</h3>
+      <p class="summary">推論力とエージェント型ワークフローに特化したオープンモデル。Apache 2.0ライセンスで商用利用も自由。自社サーバーで動かせるのが最大の強み。</p>
+      <div class="what-box">
+        <div class="what-label">何ができる？</div>
+        API費用をかけずに社内でAIを運用したい場合の選択肢。顧客データを外部に送らずにAI処理が可能。ただしGPU環境が必要。
+      </div>
+      <div class="news-source">Mean CEO Blog</div>
+    </a>
+  </div>
+
+  <!-- 7 -->
+  <div class="content-card">
+    <a href="https://www.cnbc.com/2026/04/08/meta-debuts-first-major-ai-model-since-14-billion-deal-to-bring-in-alexandr-wang.html" target="_blank" rel="noopener" class="news-card-link">
+      <div class="news-meta">
+        <span class="announce-tag tag-open">TREND</span>
+        <span class="announce-date">2026.04.08</span>
+      </div>
+      <h3>Meta が新AIモデルを発表 — エンタープライズ市場へ本格参入</h3>
+      <p class="summary">Scale AI創業者のAlexandr Wang氏を迎えて開発した新モデル。オープンソースのLlamaとは別路線で、企業向けの高精度・高セキュリティモデルとして展開。</p>
+      <div class="what-box">
+        <div class="what-label">何ができる？</div>
+        エンタープライズ向けの選択肢が増えた。自社データを外部に出さずにAIを使いたい企業はチェックの価値あり。
+      </div>
+      <div class="news-source">CNBC</div>
+    </a>
+  </div>
+
+  <!-- 8 -->
+  <div class="content-card">
+    <a href="https://www.cnbc.com/2026/04/10/coreweave-anthropic-claude-ai-deal.html" target="_blank" rel="noopener" class="news-card-link">
+      <div class="news-meta">
+        <span class="announce-date">2026.04.10</span>
+      </div>
+      <h3>CoreWeave が Anthropic のインフラ基盤に — Claude の応答速度向上へ</h3>
+      <p class="summary">AnthropicがCoreWeaveと複数年のGPUインフラ契約を締結。Claude利用者が増えてもレスポンス低下を防ぐ体制が整った。</p>
+      <div class="what-box">
+        <div class="what-label">何ができる？</div>
+        直接のアクションは不要。Claudeのピーク時間帯の遅延が改善される見込み。
+      </div>
+      <div class="news-source">CNBC</div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 with-AI Inc. <a href="https://with-ai.jp" target="_blank">with-ai.jp</a> <a href="mailto:info@with-ai.jp">Contact</a></p>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('ham')?.addEventListener('click', () => {
+  document.getElementById('navLinks')?.classList.toggle('open');
+});
+</script>
+</body>
+</html>

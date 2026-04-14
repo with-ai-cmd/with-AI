@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4T5HCY4Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JJ4T5HCY4Y');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO -->
+    <title>with-AI株式会社 | AI導入・DX推進の伴走パートナー</title>
+    <meta name="description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。">
+    <meta name="keywords" content="with-AI, AI導入, AIコンサルティング, AI人材育成, DX推進, システム開発, AI SHINE, AIエージェント, AIKOMON">
+    <link rel="canonical" href="https://with-ai.jp/">
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/favicon.ico" sizes="any">
+
+    <!-- OGP -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://with-ai.jp/">
+    <meta property="og:title" content="with-AI株式会社 | AI導入・DX推進の伴走パートナー">
+    <meta property="og:description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。">
+    <meta property="og:image" content="https://with-ai.jp/img/img-1.webp">
+    <meta property="og:site_name" content="with-AI inc">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="with-AI株式会社 | AI導入・DX推進の伴走パートナー">
+    <meta name="twitter:description" content="with-AI株式会社は、AI導入コンサルティング（AIKOMON）、AIエージェント構築（AI SHINE）、DX人材育成、システム開発を通じて、企業の持続的な進化を支えるパートナーです。">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "with-AI株式会社",
+      "alternateName": "with-AI inc",
+      "url": "https://with-ai.jp/",
+      "logo": "https://with-ai.jp/img/logo.webp",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "areaServed": "JP",
+        "availableLanguage": "Japanese"
+      }
+    }
+    </script>
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+JP:wght@300;400;700&family=JetBrains+Mono:wght@300;500&display=swap');
+
+        :root {
+            --blue-dark: #0A3B8E;
+            --blue-light: #48A8E1;
+            --gradient: linear-gradient(135deg, #0A3B8E 0%, #48A8E1 100%);
+            --tech-font: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            background-color: #fff;
+            color: #121212;
+        }
+
+        .text-gradient {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-gradient-custom {
+            background: var(--gradient);
+        }
+
+        /* --- LOADER STYLES --- */
+        #loader {
+            position: fixed; inset: 0; background: #fff; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; overflow: hidden;
+        }
+        .loader-text {
+            position: relative; z-index: 20; font-size: clamp(1rem, 4vw, 1.5rem);
+            font-weight: 300; letter-spacing: 0.6em; text-transform: uppercase;
+            color: var(--blue-dark); opacity: 0; transform: translateY(20px);
+            white-space: nowrap; text-align: center;
+        }
+        .gathering-box {
+            position: absolute; width: 12px; height: 12px; background: var(--gradient); 
+            opacity: 0; border-radius: 2px; z-index: 10;
+        }
+
+        /* --- BACKGROUND PARTICLE CANVAS --- */
+        #bg-canvas {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            pointer-events: none; opacity: 0.5; z-index: 0;
+        }
+
+        /* --- REVEAL ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* HERO CONTENT FLOAT UP STATE */
+        #hero-content { opacity: 0; transform: translateY(80px); }
+
+        @keyframes rotate-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-rotate-slow { animation: rotate-slow 140s linear infinite; }
+
+        /* --- LINE ANIMATIONS --- */
+        .hero-horizontal-line {
+            position: absolute; width: 100vw; height: 1px; background: rgba(0,0,0,0.05); z-index: 0; top: 50%; overflow: hidden;
+        }
+        .hero-horizontal-line::after {
+            content: ""; position: absolute; top: 0; height: 100%; width: 30%;
+            background: linear-gradient(90deg, transparent, var(--blue-light), transparent);
+            animation: line-shimmer-horizontal 4s linear infinite;
+        }
+        @keyframes line-shimmer-horizontal { 0% { left: -100%; } 100% { left: 100%; } }
+
+        .flow-line { position: relative; overflow: hidden; }
+        .flow-line::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+            background: var(--gradient); animation: flow-down 2.5s infinite linear;
+        }
+        @keyframes flow-down { 0% { transform: translateY(-100%); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(100%); opacity: 0; } }
+
+        .line-light-effect::after {
+            content: ""; position: absolute; top: 0; height: 100%; width: 40%;
+            background: linear-gradient(90deg, transparent, rgba(72,168,225,0.3), transparent);
+            animation: line-light 3s linear infinite;
+        }
+        @keyframes line-light { 0% { left: -100%; } 100% { left: 100%; } }
+
+        /* --- BUSINESS CARDS --- */
+        .business-card {
+            position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: #f9f9f9;
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); text-decoration: none; color: inherit;
+            display: block; border: 1px solid rgba(0,0,0,0.03);
+        }
+        .business-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(10, 59, 142, 0.08); }
+        .card-bg {
+            position: absolute; inset: 0; background-size: cover; background-position: center;
+            transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1); opacity: 0.85;
+        }
+        .business-card:hover .card-bg { transform: scale(1.1); opacity: 1; }
+        .card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.98) 95%);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem;
+        }
+        .card-number { font-size: 0.8rem; font-weight: 900; letter-spacing: 0.2em; margin-bottom: 0.5rem; }
+        .card-arrow {
+            position: absolute; bottom: 2rem; right: 2rem; width: 40px; height: 40px;
+            border: 1px solid rgba(0,0,0,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease; z-index: 1;
+        }
+        .business-card:hover .card-arrow { background: var(--gradient); color: #fff; border-color: transparent; transform: translateX(5px); }
+
+        /* --- NEWS CARDS --- */
+        .news-card {
+            background: #fff; border: 1px solid rgba(0,0,0,0.05); padding: 2.5rem;
+            position: relative; transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex; flex-direction: column; justify-content: space-between; min-height: 280px;
+            text-decoration: none; color: inherit; opacity: 0; transform: translateY(20px);
+        }
+        .news-card.is-active { opacity: 1; transform: translateY(0); }
+        .news-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gradient); transition: width 0.6s ease;
+        }
+        .news-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(10, 59, 142, 0.05); border-color: var(--blue-light); }
+        .news-card:hover::after { width: 100%; }
+
+        .category-bullet { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+
+        /* --- PROFILE CARDS --- */
+        .profile-card {
+            background: #EEF3FA; border-radius: 12px; padding: 2.5rem; min-height: 440px; display: flex; flex-direction: column; justify-content: space-between;
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); position: relative; text-decoration: none; color: inherit;
+        }
+        .profile-card:hover { transform: translateY(-8px); background: #fff; box-shadow: 0 30px 60px rgba(10, 59, 142, 0.08); }
+        .profile-btn {
+            position: absolute; bottom: 2rem; right: 2rem; width: 44px; height: 44px; background: #050505; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: #fff; transition: all 0.4s ease;
+        }
+        .profile-card:hover .profile-btn { background: var(--gradient); transform: scale(1.1); }
+
+        .tech-circle {
+            width: 400px; height: 400px; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle, rgba(72,168,225,0.08) 0%, transparent 70%);
+        }
+        .tech-core {
+            width: 200px; height: 200px; background: #FFFFFF; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 40px rgba(10,59,142,0.1); position: relative; z-index: 10;
+        }
+
+        .footer-link { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: #666; transition: all 0.3s; }
+        .footer-link:hover { color: var(--blue-dark); transform: translateX(4px); }
+    </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "with-AI株式会社",
+  "url": "https://with-ai.jp/",
+  "description": "AI導入コンサルティング、DX人材育成、システム開発を通じて企業の持続的な進化を支えるパートナー"
+}
+</script>
+</head>
+<body class="bg-white text-[#121212]">
+
+    <!-- 0. LOADER OVERLAY -->
+    <div id="loader">
+        <div id="box-container"></div>
+        <div id="ready-text" class="loader-text">Are you ready?</div>
+        <div id="era-text" class="loader-text" style="display: none;">Step into the Next Era</div>
+    </div>
+
+    <!-- 1. DYNAMIC HEADER -->
+    <nav id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-black/5 p-5 md:px-12 flex justify-between items-center -translate-y-full transition-transform duration-700">
+        <div class="flex items-center gap-4">
+            <a href="index.html">
+                <img src="img/logo.webp" alt="with-AI" class="h-6 md:h-8 grayscale hover:grayscale-0 transition-all cursor-pointer">
+            </a>
+        </div>
+        <div id="section-label" class="absolute left-1/2 -translate-x-1/2 hidden md:block text-[9px] font-black tracking-[0.8em] text-[#0A3B8E] uppercase">HOME</div>
+        <!-- Mobile hamburger button -->
+        <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 z-50" onclick="toggleMenu()">
+            <span class="menu-line w-6 h-[1.5px] bg-current transition-all duration-300"></span>
+            <span class="menu-line w-6 h-[1.5px] bg-current transition-all duration-300"></span>
+            <span class="menu-line w-4 h-[1.5px] bg-current transition-all duration-300"></span>
+        </button>
+        <!-- Desktop nav -->
+        <div class="hidden md:flex gap-8 items-center text-[10px] font-bold tracking-widest uppercase">
+            <a href="stance.html" class="hover:text-blue-600 transition-colors">Stance</a>
+            <a href="service.html" class="hover:text-blue-600 transition-colors">Service</a>
+            <a href="news.html" class="hover:text-blue-600 transition-colors">News</a>
+            <a href="blog/" class="hover:text-blue-600 transition-colors">Blog</a>
+            <a href="company.html" class="hover:text-blue-600 transition-colors">Company</a>
+            <a href="members.html" class="hover:text-blue-600 transition-colors">Members</a>
+            <a href="contact.html" class="hover:text-blue-600 transition-colors font-black">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center gap-8 translate-x-full transition-transform duration-500 ease-in-out md:hidden">
+        <a href="index.html" class="text-lg font-light tracking-[0.5em] uppercase text-blue-900 hover:text-blue-600 transition-colors">Home</a>
+        <a href="stance.html" class="text-lg font-light tracking-[0.5em] uppercase text-blue-900 hover:text-blue-600 transition-colors">Stance</a>
+        <a href="service.html" class="text-lg font-light tracking-[0.5em] uppercase text-blue-900 hover:text-blue-600 transition-colors">Service</a>
+        <a href="news.html" class="text-lg font-light tracking-[0.5em] uppercase text-blue-900 hover:text-blue-600 transition-colors">News</a>
+        <a href="blog/" class="text-lg font-light tracking-[0.5em] uppercase text-blue-900 hover:text-blue-600 transition-colors">Blog</a>
+        <a href="company.html" class="text-lg font-light tracking-[0.5em] uppercase text-blue-900 hover:text-blue-600 transition-colors">Company</a>
+        <a href="members.html" class="text-lg font-light tracking-[0.5em] uppercase text-blue-900 hover:text-blue-600 transition-colors">Members</a>
+        <a href="contact.html" class="text-lg font-bold tracking-[0.5em] uppercase text-blue-900 hover:text-blue-600 transition-colors border-b-2 border-blue-900 pb-2">Contact</a>
+    </div>
+
+    <!-- 2. HERO SECTION -->
+    <section class="min-h-screen flex flex-col justify-center items-center px-12 relative overflow-hidden bg-white">
+        <!-- Background Particle Canvas -->
+        <canvas id="bg-canvas"></canvas>
+        <div class="hero-horizontal-line"></div>
+        
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <svg viewBox="0 0 200 200" class="w-[700px] h-[700px] md:w-[900px] md:h-[900px] opacity-[0.25] animate-rotate-slow">
+                <defs><linearGradient id="globeGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--blue-dark)" /><stop offset="100%" style="stop-color:var(--blue-light)" /></linearGradient></defs>
+                <circle cx="100" cy="100" r="95" fill="none" stroke="url(#globeGrad)" stroke-width="0.1" stroke-dasharray="1 5" />
+                <ellipse cx="100" cy="100" rx="95" ry="30" fill="none" stroke="url(#globeGrad)" stroke-width="0.1" stroke-dasharray="1 5" transform="rotate(30 100 100)" />
+                <ellipse cx="100" cy="100" rx="95" ry="30" fill="none" stroke="url(#globeGrad)" stroke-width="0.1" stroke-dasharray="1 5" transform="rotate(60 100 100)" />
+                <ellipse cx="100" cy="100" rx="95" ry="30" fill="none" stroke="url(#globeGrad)" stroke-width="0.1" stroke-dasharray="1 5" transform="rotate(90 100 100)" />
+                <ellipse cx="100" cy="100" rx="95" ry="30" fill="none" stroke="url(#globeGrad)" stroke-width="0.1" stroke-dasharray="1 5" transform="rotate(120 100 100)" />
+                <ellipse cx="100" cy="100" rx="95" ry="30" fill="none" stroke="url(#globeGrad)" stroke-width="0.1" stroke-dasharray="1 5" transform="rotate(150 100 100)" />
+            </svg>
+        </div>
+
+        <!-- HERO CONTENT (Cleaned up the lines as requested) -->
+        <div id="hero-content" class="z-20 text-center">
+            <h1 class="text-xl md:text-3xl font-light uppercase tracking-[0.5em] leading-relaxed mb-10">
+                Step into the <span class="font-bold text-gradient">Next Era</span><br>
+                <span class="mt-4 block font-bold text-gradient">with AI</span>
+            </h1>
+            <p class="text-[9px] tracking-[0.8em] uppercase opacity-50 font-black text-[#0A3B8E]">
+                with-AIとともに、次の時代へ駆け上がる。
+            </p>
+        </div>
+
+        <div class="absolute bottom-12 flex flex-col items-center gap-4">
+            <span class="text-[8px] font-bold tracking-[0.6em] uppercase italic opacity-40 text-gradient">Intelligent Future</span>
+            <div class="w-[1.5px] h-16 bg-black/[0.05] rounded-full flow-line"></div>
+        </div>
+    </section>
+
+    <!-- 3. ABOUT SECTION -->
+    <section id="about" class="min-h-screen flex items-center px-8 md:px-32 bg-[#FBFDFF] relative overflow-hidden py-32">
+        <div class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+            <div class="lg:col-span-6 reveal">
+                <div class="flex items-center gap-4 mb-10"><span class="text-[10px] font-bold tracking-[0.6em] text-[#0A3B8E] uppercase">01 / WHO WE ARE</span><div class="w-16 h-[1px] bg-[#0A3B8E]/10"></div></div>
+                <h2 class="text-3xl md:text-5xl font-medium tracking-tight leading-tight mb-10 text-gradient">未来を創る<br />「インテリジェンス」へ</h2>
+                <div class="space-y-8 text-black/50 text-base md:text-lg leading-relaxed max-w-xl mb-14 font-light">
+                    <p>テクノロジーのあり方が大きく変わりつつある今、求められているのは、組織の価値観やフェーズに寄り添い、確かな進化を支える知能のかたちです。</p>
+                    <p>with-AIが導くデータサイエンスの洞察、実装するためのアーキテクチャ。私たちは、持続的な成長に欠かせないパートナーとして挑戦しています。</p>
+                </div>
+                <a href="stance.html" class="btn-pill inline-flex items-center justify-between w-64 pl-10 pr-2 py-2 rounded-full shadow-sm group">
+                    <span class="text-[10px] font-bold tracking-[0.4em] uppercase group-hover:text-blue-600 transition-colors">OUR STANCE</span>
+                    <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                </a>
+            </div>
+            <div class="lg:col-span-6 flex justify-center lg:justify-end reveal">
+                <div class="tech-circle">
+                    <div class="tech-core"><svg class="w-14 h-14 text-[#48A8E1]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 0 002-2H7a2 0 00-2 2v10a2 0 002 2zM9 9h6v6H9V9z" stroke-width="1"></path></svg></div>
+                    <div class="absolute inset-0 animate-spin" style="animation-duration: 15s;"><div class="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-gradient-custom shadow-[0_0_15px_#48A8E1]"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. BUSINESS SECTION (FULL 6 CARDS) -->
+    <section id="business" class="min-h-screen flex flex-col justify-center px-8 md:px-32 bg-white relative py-32 overflow-hidden">
+        <div class="container mx-auto relative z-10">
+            <div class="flex items-center justify-between mb-20 reveal">
+                <div class="flex items-center gap-6"><span class="text-[10px] font-bold tracking-[0.8em] text-[#0A3B8E] uppercase">02 / BUSINESS</span><div class="h-[1px] w-24 bg-[#0A3B8E]/10"></div></div>
+                <h2 class="text-sm font-black tracking-widest text-[#0A3B8E]/30 uppercase hidden md:block italic">Strategic Portfolio</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+                <a href="service.html" class="business-card">
+                    <div class="card-bg" style="background-image: url(img/img-3.webp);"></div>
+                    <div class="card-overlay">
+                        <span class="card-number text-gradient">[01]</span>
+                        <span class="text-[10px] font-bold tracking-[0.3em] text-[#0A3B8E] mb-2 uppercase">Advisory</span>
+                        <h3 class="text-2xl font-bold mb-4 tracking-tighter">AIKOMON</h3>
+                        <p class="text-black/50 text-xs leading-relaxed font-medium mb-12">経営と現場の間に立ち、本質的な仕組みを整える伴走型支援を提供します。</p>
+                        <div class="card-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                    </div>
+                </a>
+                <a href="service.html" class="business-card">
+                    <div class="card-bg" style="background-image: url(img/img-4.webp);"></div>
+                    <div class="card-overlay">
+                        <span class="card-number text-gradient">[02]</span>
+                        <span class="text-[10px] font-bold tracking-[0.3em] text-[#0A3B8E] mb-2 uppercase">Learning</span>
+                        <h3 class="text-2xl font-bold mb-4 tracking-tighter">with-AI Plus</h3>
+                        <p class="text-black/50 text-xs leading-relaxed font-medium mb-12">実務ベースでAIを習得。現場で即座に成果を出すためのスキルを提供します。</p>
+                        <div class="card-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                    </div>
+                </a>
+                <a href="service.html" class="business-card">
+                    <div class="card-bg" style="background-image: url(img/img-5.webp);"></div>
+                    <div class="card-overlay">
+                        <span class="card-number text-gradient">[03]</span>
+                        <span class="text-[10px] font-bold tracking-[0.3em] text-[#0A3B8E] mb-2 uppercase">Systems</span>
+                        <h3 class="text-2xl font-bold mb-4 tracking-tighter">System Design</h3>
+                        <p class="text-black/50 text-xs leading-relaxed font-medium mb-12">AIを仕組みとして定着させる。最適なアーキテクチャを実装します。</p>
+                        <div class="card-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                    </div>
+                </a>
+                <a href="service.html" class="business-card">
+                    <div class="card-bg" style="background-image: url(img/img-1.webp);"></div>
+                    <div class="card-overlay">
+                        <span class="card-number text-gradient">[04]</span>
+                        <span class="text-[10px] font-bold tracking-[0.3em] text-[#0A3B8E] mb-2 uppercase">Recruit</span>
+                        <h3 class="text-2xl font-bold mb-4 tracking-tighter">Inspire Recruit</h3>
+                        <p class="text-black/50 text-xs leading-relaxed font-medium mb-12">価値観から始まる採用イベント。企業と学生の本質的なマッチングを実現。</p>
+                        <div class="card-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                    </div>
+                </a>
+                <a href="aishine.html" class="business-card">
+                    <div class="card-bg" style="background-image: url(img/img-6.webp);"></div>
+                    <div class="card-overlay">
+                        <span class="card-number text-gradient">[05]</span>
+                        <span class="text-[10px] font-bold tracking-[0.3em] text-[#0A3B8E] mb-2 uppercase">AI Agent</span>
+                        <h3 class="text-2xl font-bold mb-4 tracking-tighter">AI SHINE</h3>
+                        <p class="text-black/50 text-xs leading-relaxed font-medium mb-12">社長専属のAIエージェントチームを構築。業務を自動化し、企業の未来を輝かせます。</p>
+                        <div class="card-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                    </div>
+                </a>
+                <a href="service.html" class="business-card">
+                    <div class="card-bg" style="background-image: url(img/img-2.webp);"></div>
+                    <div class="card-overlay">
+                        <span class="card-number text-gradient">[06]</span>
+                        <span class="text-[10px] font-bold tracking-[0.3em] text-[#0A3B8E] mb-2 uppercase">Community</span>
+                        <h3 class="text-2xl font-bold mb-4 tracking-tighter">経営者会</h3>
+                        <p class="text-black/50 text-xs leading-relaxed font-medium mb-12">リーダーのための対話と学びの場。新たな可能性を共に拓きます。</p>
+                        <div class="card-arrow"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. BLOG SECTION -->
+    <section id="blog" class="py-32 bg-[#FBFDFF] relative overflow-hidden">
+        <div class="ambient-dot" style="top: 20%; left: 10%;"></div>
+        <div class="container mx-auto px-8 md:px-32 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-20 reveal">
+                <div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="text-[10px] font-bold tracking-[0.6em] text-[#0A3B8E] uppercase">03</span>
+                        <div class="w-12 h-[1px] bg-[#0A3B8E]/10"></div>
+                    </div>
+                    <h2 class="text-4xl font-bold tracking-widest uppercase text-gradient">Blog</h2>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
+                <a href="blog/ai-agent-evolution-2026.html" class="news-card is-active">
+                    <div><div class="flex justify-between items-center mb-6"><div class="text-[9px] font-bold flex items-center text-[#666]"><span class="category-bullet bg-blue-900"></span> AI Trends</div><span class="text-[10px] text-[#999] font-mono">2026.03.27</span></div>
+                    <h3 class="text-base font-bold text-[#333] leading-snug">AIエージェント最新動向 2026 - 自律型AIが変えるビジネスの未来</h3></div>
+                    <div class="flex justify-end pt-6 opacity-30"><svg class="w-5 h-5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                </a>
+                <a href="blog/ai-subsidy-2026-guide.html" class="news-card is-active">
+                    <div><div class="flex justify-between items-center mb-6"><div class="text-[9px] font-bold flex items-center text-[#666]"><span class="category-bullet bg-blue-900"></span> AI x 補助金</div><span class="text-[10px] text-[#999] font-mono">2026.03.25</span></div>
+                    <h3 class="text-base font-bold text-[#333] leading-snug">デジタル化・AI導入補助金 2026 完全ガイド</h3></div>
+                    <div class="flex justify-end pt-6 opacity-30"><svg class="w-5 h-5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                </a>
+                <a href="blog/claude-code-guide.html" class="news-card is-active">
+                    <div><div class="flex justify-between items-center mb-6"><div class="text-[9px] font-bold flex items-center text-[#666]"><span class="category-bullet bg-blue-900"></span> AI Tools</div><span class="text-[10px] text-[#999] font-mono">2026.03.23</span></div>
+                    <h3 class="text-base font-bold text-[#333] leading-snug">Claude Codeとは？ AIコーディングツールの革命</h3></div>
+                    <div class="flex justify-end pt-6 opacity-30"><svg class="w-5 h-5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                </a>
+            </div>
+            <div class="mt-20 text-center reveal">
+                <a href="blog/" class="text-[10px] font-black tracking-[0.4em] uppercase text-blue-900 border-b border-blue-900/20 pb-2 hover:border-blue-900 transition-all">View All Articles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. COMPANY PROFILE SECTION -->
+    <section id="company" class="min-h-screen flex flex-col justify-center px-8 md:px-32 bg-white relative py-32 overflow-hidden">
+        <div class="container mx-auto relative z-10">
+            <div class="flex items-center gap-6 mb-20 reveal">
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-bold tracking-[0.6em] text-[#0A3B8E] uppercase mb-4">04</span>
+                    <h2 class="text-3xl font-medium tracking-widest text-[#0A3B8E] uppercase">Company Profile</h2>
+                </div>
+                <div class="h-[1px] flex-grow bg-black/[0.03]"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+                <a href="company.html" class="profile-card group">
+                    <h3 class="text-xl font-bold tracking-tight mb-8">会社概要</h3>
+                    <div class="profile-visual relative flex items-center justify-center h-24"><svg class="w-16 h-16 text-blue-800/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg></div>
+                    <div class="profile-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                </a>
+                <a href="members.html" class="profile-card group" style="background: #E8F0FE;">
+                    <h3 class="text-xl font-bold tracking-tight mb-8">代表挨拶・メンバー</h3>
+                    <div class="profile-visual relative flex items-center justify-center h-24"><svg class="w-16 h-16 text-blue-800/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                    <div class="profile-btn" style="background: var(--blue-dark);"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                </a>
+                <a href="contact.html" class="profile-card group">
+                    <h3 class="text-xl font-bold tracking-tight mb-8">お問い合わせ</h3>
+                    <div class="profile-visual relative flex items-center justify-center h-24"><svg class="w-16 h-16 text-blue-800/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 0 012-2h14a2 0 012 2v8a2 0 01-2 2h-5l-5 5v-5z"></path></svg></div>
+                    <div class="profile-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5"></path></svg></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. GLOBAL FOOTER -->
+    <footer class="bg-white pt-32 pb-12 px-8 md:px-32 relative overflow-hidden border-t border-black/[0.03]">
+        <div class="absolute top-0 left-0 w-full h-[2px] bg-black/[0.03]"><div class="h-full bg-gradient-custom w-1/4 absolute line-light-effect opacity-50"></div></div>
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-32 text-[10px] font-bold uppercase italic">
+                <div class="lg:col-span-4 flex flex-col gap-8">
+                    <a href="index.html"><img src="img/logo.webp" alt="with-AI" class="h-10 w-auto self-start"></a>
+                    <p class="text-[#999] tracking-widest font-normal not-italic uppercase leading-loose">Next Era Intelligence Partner<br>Aligning Human and Intelligence.</p>
+                    <div class="flex gap-4 mt-4 not-italic">
+                        <div class="w-11 h-11 rounded-full border border-black/5 flex items-center justify-center text-xs italic font-bold hover:bg-black hover:text-white transition-all cursor-pointer">X</div>
+                        <div class="w-11 h-11 rounded-full border border-black/5 flex items-center justify-center text-xs italic font-bold hover:bg-black hover:text-white transition-all cursor-pointer">In</div>
+                    </div>
+                </div>
+                <div class="lg:col-start-7 lg:col-span-6 grid grid-cols-2 md:grid-cols-3 gap-16">
+                    <div class="flex flex-col gap-8">
+                        <h4 class="text-blue-900 tracking-[0.4em]">Explore</h4>
+                        <div class="flex flex-col gap-6 font-normal">
+                            <a href="index.html" class="footer-link">Home</a>
+                            <a href="stance.html" class="footer-link">Stance</a>
+                            <a href="service.html" class="footer-link">Service</a>
+                            <a href="members.html" class="footer-link">Members</a>
+                            <a href="blog/" class="footer-link">Blog</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-8">
+                        <h4 class="text-blue-900 tracking-[0.4em]">Information</h4>
+                        <div class="flex flex-col gap-6 font-normal">
+                            <a href="company.html" class="footer-link">Company</a>
+                            <a href="news.html" class="footer-link">News</a>
+                            <a href="contact.html" class="footer-link">Contact</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-8">
+                        <h4 class="text-blue-900 tracking-[0.4em]">Legal</h4>
+                        <div class="flex flex-col gap-6 font-normal"><a href="privacy.html" class="footer-link">Privacy Policy</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-12 pt-12 border-t border-black/[0.03]">
+                <div class="flex gap-10 items-center"><div class="w-48 h-[1px] bg-black/5 relative overflow-hidden rounded-full"><div id="progress-bar" class="absolute inset-0 bg-gradient-custom origin-left scale-x-0"></div></div><span class="text-[10px] font-black tracking-[0.4em] uppercase text-gradient">NEXT ERA</span></div>
+                <div class="text-[10px] font-bold text-[#CCC] tracking-widest uppercase">&copy; 2026 WITH-AI Inc. ALL RIGHTS RESERVED.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSbeBIsybSmGk71yNz4YiF-Ltcmh9Ng3ugzgAtJkmM9YUVxpFhwpbWjk03rK111Be97OlbX5401yCbW/pub?gid=1354360728&single=true&output=csv";
+
+        // --- BACKGROUND DOTS DYNAMICS ---
+        function initBgParticles() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, dots = [];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * w; this.y = Math.random() * h;
+                    this.size = Math.random() * 2 + 0.8;
+                    this.vx = (Math.random() - 0.5) * 0.7; this.vy = (Math.random() - 0.5) * 0.7;
+                    this.alpha = Math.random() * 0.4 + 0.1;
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy;
+                    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+                }
+                draw() {
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(72, 168, 225, ${this.alpha})`; ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 180; i++) dots.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                dots.forEach(d => { d.update(); d.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Blog articles are now statically rendered in the HTML
+
+        function initLoader() {
+            const container = document.getElementById('box-container');
+            const dotCount = 200; 
+            for (let i = 0; i < dotCount; i++) {
+                const box = document.createElement('div'); box.className = 'gathering-box';
+                const angle = Math.random() * Math.PI * 2; 
+                const dist = 1200 + Math.random() * 1200;
+                box.style.left = `calc(50% + ${Math.cos(angle) * dist}px)`; box.style.top = `calc(50% + ${Math.sin(angle) * dist}px)`;
+                box.style.transform = `rotate(${Math.random() * 360}deg)`; container.appendChild(box);
+            }
+
+            const tl = gsap.timeline();
+            document.body.style.overflow = 'hidden';
+
+            tl.to("#ready-text", { opacity: 1, y: 0, duration: 1.2 })
+              .to("#ready-text", { opacity: 0, duration: 0.6, delay: 1.0 })
+              .set("#ready-text", { display: "none" })
+              .set("#era-text", { display: "block" })
+              // 強力な集結
+              .to(".gathering-box", { 
+                left: "50%", top: "50%", xPercent: -50, yPercent: -50, 
+                opacity: 0.4, scale: 0.2, stagger: 0.008, duration: 3.8, ease: "power4.out" 
+              }, "-=0.2")
+              .to("#era-text", { opacity: 1, y: 0, duration: 1.8, ease: "power4.out" }, "-=2.5")
+              // 中央到着前にフェードアウト（テキストに被らないように）
+              .to(".gathering-box", { opacity: 0, scale: 0, duration: 0.6, ease: "power2.in" }, "-=0.8")
+              .to("#loader", { opacity: 0, duration: 1.8, ease: "power4.inOut", delay: 0.6 })
+              .set("#loader", { display: "none" })
+              // Heroコンテンツの浮き上がり（優雅なスピード）
+              .to("#hero-content", { opacity: 1, y: 0, duration: 3.2, ease: "power3.out" }, "-=1.2")
+              .set("body", { overflow: "auto" })
+              .to("#main-header", { translateY: 0, duration: 1.2, ease: "power2.out" }, "-=2.0");
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        window.addEventListener('load', () => { 
+            initLoader(); 
+            initBgParticles();
+            // Blog articles are statically rendered 
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            const header = document.getElementById('main-header');
+            if (header) header.style.transform = window.scrollY > 100 ? 'translateY(0)' : 'translateY(-100%)';
+            document.getElementById('progress-bar').style.transform = `scaleX(${scrollPercent})`;
+        });
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const lines = document.querySelectorAll('.menu-line');
+            menu.classList.toggle('translate-x-full');
+            menu.classList.toggle('translate-x-0');
+            if (menu.classList.contains('translate-x-0')) {
+                lines[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
+                lines[1].style.opacity = '0';
+                lines[2].style.transform = 'rotate(-45deg) translate(3px, -3px)';
+                lines[2].style.width = '1.5rem';
+            } else {
+                lines[0].style.transform = '';
+                lines[1].style.opacity = '1';
+                lines[2].style.transform = '';
+                lines[2].style.width = '1rem';
+            }
+        }
+    </script>
+</body>
+</html>

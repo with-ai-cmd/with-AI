@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code × Cursor 導入ガイド（Windows）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e12;
+    --card: #16161d;
+    --border: #2a2a38;
+    --accent: #f97316;
+    --accent2: #fb923c;
+    --text: #e4e4eb;
+    --muted: #8888a0;
+    --success: #34d399;
+    --code-bg: #1e1e2a;
+    --copy-hover: #f59e0b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 64px;
+    animation: fadeUp 0.8s ease-out;
+  }
+
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .header h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900;
+    line-height: 1.3;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 15px;
+    margin-top: 16px;
+    line-height: 1.7;
+  }
+
+  /* Steps */
+  .step {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 32px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease-out both;
+    transition: border-color 0.3s;
+  }
+
+  .step:hover {
+    border-color: var(--accent);
+  }
+
+  .step:nth-child(2) { animation-delay: 0.1s; }
+  .step:nth-child(3) { animation-delay: 0.2s; }
+  .step:nth-child(4) { animation-delay: 0.3s; }
+  .step:nth-child(5) { animation-delay: 0.4s; }
+
+  /* Connector line */
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    width: 2px;
+    height: 28px;
+    background: linear-gradient(to bottom, var(--border), transparent);
+  }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000;
+    font-weight: 900;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .step h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+
+  .step p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  /* Code block */
+  .code-block {
+    position: relative;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    padding-right: 60px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--success);
+    overflow-x: auto;
+    white-space: nowrap;
+    user-select: all;
+    line-height: 1.6;
+  }
+
+  .code-block .comment {
+    color: var(--muted);
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(249, 115, 22, 0.08);
+  }
+
+  .copy-btn.copied {
+    border-color: var(--success);
+    color: var(--success);
+    background: rgba(52, 211, 153, 0.08);
+  }
+
+  .copy-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Tip box */
+  .tip {
+    background: rgba(249, 115, 22, 0.06);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--accent2);
+    line-height: 1.7;
+  }
+
+  .tip strong {
+    color: var(--accent);
+  }
+
+  /* Warning box */
+  .warning {
+    background: rgba(239, 68, 68, 0.06);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: #fca5a5;
+    line-height: 1.7;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    margin-top: 8px;
+  }
+
+  .checklist li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 2px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .checklist li.checked::before {
+    background: var(--success);
+    border-color: var(--success);
+  }
+
+  .checklist li.checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    width: 8px;
+    height: 5px;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+    transform: rotate(-45deg);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    animation: fadeUp 0.8s ease-out 0.5s both;
+  }
+
+  /* Screenshot hint */
+  .screenshot-area {
+    background: var(--code-bg);
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 32px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 16px;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Print-friendly */
+  @media print {
+    body { background: #fff; color: #000; }
+    body::before { display: none; }
+    .step { border-color: #ddd; background: #fafafa; }
+    .code-block { background: #f0f0f0; color: #000; }
+    .copy-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="badge">Windows / Cursor</div>
+    <h1>Claude Code 導入ガイド</h1>
+    <p>管理者権限不要・PowerShell不要。<br>3ステップで完了します。</p>
+  </div>
+
+  <!-- STEP 0 -->
+  <div class="step">
+    <div class="step-number">0</div>
+    <h2>事前準備（まだの人だけ）</h2>
+    <p>以下2つがインストール済みか確認してください。</p>
+    <ul class="checklist">
+      <li onclick="this.classList.toggle('checked')">
+        <strong>Node.js（v18以上）</strong> — <a href="https://nodejs.org/" style="color:var(--accent);">nodejs.org</a> から LTS をインストール
+      </li>
+      <li onclick="this.classList.toggle('checked')">
+        <strong>Git for Windows</strong> — <a href="https://gitforwindows.org/" style="color:var(--accent);">gitforwindows.org</a> からインストール
+      </li>
+    </ul>
+    <div class="tip">
+      <strong>確認方法:</strong> ターミナルで <code>node -v</code> と打って v18以上が表示されればOK
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="step-number">1</div>
+    <h2>Cursor のターミナルを Git Bash に切り替え</h2>
+    <p>Cursor を開き、上部メニューから：</p>
+    <ul class="checklist">
+      <li onclick="this.classList.toggle('checked')">
+        <strong>Terminal</strong> → <strong>New Terminal</strong> を開く
+      </li>
+      <li onclick="this.classList.toggle('checked')">
+        ターミナル右上の <strong>「∨」ドロップダウン</strong> → <strong>Git Bash</strong> を選択
+      </li>
+    </ul>
+    <div class="screenshot-area">
+      ターミナル右上の「+」の横にある「∨」をクリック → 「Git Bash」を選ぶ
+    </div>
+    <div class="warning">
+      <strong>cmd や PowerShell のままだと失敗する場合があります。</strong><br>必ず Git Bash に切り替えてください。
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="step-number">2</div>
+    <h2>このコマンドを実行するだけ</h2>
+    <p>Git Bash のターミナルに以下をコピペして Enter：</p>
+    <div class="code-block" id="main-cmd">
+      npx -y @anthropic-ai/claude-code
+      <button class="copy-btn" onclick="copyCode('npx -y @anthropic-ai/claude-code', this)" title="コピー">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="tip">
+      <strong>ポイント:</strong> <code>-y</code> を付けることで確認プロンプトをスキップ。インストール不要で即実行されます。
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="step-number">3</div>
+    <h2>認証してスタート</h2>
+    <p>初回実行時にブラウザが開き、Anthropic アカウントでログインを求められます。</p>
+    <ul class="checklist">
+      <li onclick="this.classList.toggle('checked')">ブラウザでログイン / サインアップ</li>
+      <li onclick="this.classList.toggle('checked')">認証完了後、ターミナルに戻る</li>
+      <li onclick="this.classList.toggle('checked')">Claude Code が使えるようになる</li>
+    </ul>
+    <div class="tip">
+      <strong>次回以降:</strong> 同じコマンド <code>npx -y @anthropic-ai/claude-code</code> で即起動できます。
+    </div>
+  </div>
+
+  <!-- Troubleshoot -->
+  <div class="step">
+    <div class="step-number">?</div>
+    <h2>うまくいかない場合</h2>
+    <p>以下を順番に確認してください。</p>
+
+    <p style="color:#fff; font-weight:700; margin-top:12px; margin-bottom:8px;">Node.js が認識されない</p>
+    <div class="code-block" id="check-node">
+      node -v
+      <button class="copy-btn" onclick="copyCode('node -v', this)" title="コピー">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
+    </div>
+    <p style="margin-top:8px;">→ 何も出ない場合は Node.js を再インストールし、<strong>Cursor を再起動</strong></p>
+
+    <p style="color:#fff; font-weight:700; margin-top:20px; margin-bottom:8px;">npm のキャッシュをクリア</p>
+    <div class="code-block" id="clear-cache">
+      npm cache clean --force
+      <button class="copy-btn" onclick="copyCode('npm cache clean --force', this)" title="コピー">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
+    </div>
+
+    <p style="color:#fff; font-weight:700; margin-top:20px; margin-bottom:8px;">ネットワーク確認</p>
+    <div class="code-block" id="check-net">
+      npm ping
+      <button class="copy-btn" onclick="copyCode('npm ping', this)" title="コピー">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
+    </div>
+    <p style="margin-top:8px;">→ VPN やプロキシを使っている場合はオフにして再試行</p>
+  </div>
+
+  <div class="footer">
+    Claude Code × Cursor セットアップガイド — 2026.04
+  </div>
+
+</div>
+
+<script>
+function copyCode(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
