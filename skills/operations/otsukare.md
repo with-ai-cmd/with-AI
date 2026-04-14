@@ -73,6 +73,73 @@ Gmail MCPが利用可能な場合:
 
 ---
 
+### Phase 1.5: ミーティング記録の自動補完（Notion AIノート連携）
+
+Phase 1完了後、ミーティング記録DBの未補完レコードをNotion AIミーティングノートで自動補完する。
+
+#### 目的
+n8nのZoom Webhook連携でミーティング記録DBに基本情報（タイトル・日時・録画リンク）は自動登録される。
+しかし、Notion AIのビルトインミーティングノートはAPI連携では取得できないため、
+MCP経由でアクセスできるお疲れコマンド実行時に要約・アクションアイテムを自動補完する。
+
+#### 手順
+
+##### 1. 今日のミーティング記録（未補完）を取得
+ミーティング記録DB（`326d725a-9f17-81a0-9792-e2fab4587f07`）から、今日の日付で「要約」が空のレコードを取得する。
+
+```bash
+curl -s -X POST "https://api.notion.com/v1/databases/326d725a9f1781a09792e2fab4587f07/query" \
+  -H "Authorization: Bearer $NOTION_API_TOKEN" \
+  -H "Notion-Version: 2022-06-28" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "filter": {
+      "and": [
+        {"property": "日時", "date": {"equals": "【今日の日付 YYYY-MM-DD】"}},
+        {"property": "要約", "rich_text": {"is_empty": true}}
+      ]
+    }
+  }'
+```
+
+##### 2. Notion AIミーティングノートを取得
+Notion MCP の `query-meeting-notes` ツールで今日のミーティングノートを一括取得する。
+- `meeting_date` パラメータに今日の日付を指定
+
+##### 3. マッチング＆補完
+各ミーティング記録に対して、以下のロジックでNotionAIノートをマッチさせる：
+- **タイトルの部分一致**（Zoom topicとNotion AIノートのタイトルを比較）
+- **日時の近接性**（作成時刻が±3時間以内）
+- マッチしたら、Notion AIノートの内容を `fetch` ツールで取得
+
+##### 4. 要約・アクション抽出＆更新
+マッチしたNotionAIノートから以下を抽出してミーティング記録DBを更新する：
+
+**抽出対象：**
+- `### アクションアイテム` セクション → 「ネクストアクション」プロパティに格納
+- 見出し＋箇条書き部分（文字起こし本文を除く） → 「要約」プロパティに格納
+- Notion AIノートのURL → 「メモ」プロパティに追記
+
+**更新：**
+```bash
+curl -s -X PATCH "https://api.notion.com/v1/pages/【ページID】" \
+  -H "Authorization: Bearer $NOTION_API_TOKEN" \
+  -H "Notion-Version: 2022-06-28" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "properties": {
+      "要約": {"rich_text": [{"text": {"content": "【抽出した要約】"}}]},
+      "ネクストアクション": {"rich_text": [{"text": {"content": "【抽出したアクションアイテム】"}}]}
+    }
+  }'
+```
+
+##### 5. 補完がない場合
+- 今日のミーティング記録が全て補完済み、またはNotionAIノートがない場合はスキップ
+- エラーが発生してもPhase 2に進む
+
+---
+
 ### Phase 2: 未完了タスクの引き継ぎ処理
 
 Phase 1完了後、未完了タスクについて以下を実行:
@@ -212,8 +279,17 @@ curl -s -X POST "https://api.notion.com/v1/pages" \
   - HH:MM ○○株式会社
   - HH:MM 社内MTG
 
+📝 ミーティング記録 自動補完（N件）
+  - ○○打ち合わせ → 要約・アクション反映済み
+  - △△ミーティング → Notion AIノート見つからず（手動確認）
+
 📧 メール（送信N件 / 未返信M件）
   - 【要対応】送信者: 件名
+
+🤖 AIチームの判断待ち（未回答リマインド）
+  - 朝のブリーフィングで提示した判断待ちのうち、未回答のものをリマインド
+  - 回答済みなら「全部回答済み！」
+  - 未回答があれば「明日の朝また聞くね」
 
 📌 明日の優先事項
   1. ○○○

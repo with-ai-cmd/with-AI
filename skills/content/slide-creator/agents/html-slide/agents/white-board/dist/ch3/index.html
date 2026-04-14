@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3章 プロンプト — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--board:#F7F6F3;--board-edge:#E8E6E1;--surface:#FFF;--ink-black:#1A1A1A;--ink-blue:#1565C0;--ink-red:#C62828;--ink-green:#2E7D32;--sticky-b:#E8F0FE;--sticky-b-edge:#C4D8F2;--sticky-g:#E6F4EA;--sticky-g-edge:#B7DFC3;--sticky-p:#FCE4EC;--sticky-p-edge:#F0B8C8;--sticky-y:#FFF8DC;--sticky-y-edge:#F0E6B8;--tray-dark:#B8B0A3}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--board);font-family:'Zen Maru Gothic',sans-serif;color:var(--ink-black);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px}
+.back{position:absolute;top:16px;left:16px;font-size:.85rem;color:var(--tray-dark);text-decoration:none;background:var(--surface);padding:4px 14px;border-radius:100px;border:1px solid var(--board-edge);transition:all .2s}
+.back:hover{color:var(--ink-blue);border-color:var(--ink-blue)}
+.hero{text-align:center;margin-bottom:40px}
+.hero-chip{display:inline-block;font-size:.75rem;font-weight:700;color:var(--ink-blue);background:var(--sticky-b);padding:4px 16px;border-radius:100px;border:1.5px solid var(--sticky-b-edge);margin-bottom:12px}
+.hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.3}
+.hero h1 .hl{color:var(--ink-blue)}
+.hero p{color:var(--tray-dark);margin-top:8px;font-size:1rem}
+.sections{display:flex;flex-direction:column;gap:32px;width:min(800px,100%)}
+.section-header{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.section-num{font-family:'Caveat',cursive;font-size:1.8rem;font-weight:700;color:var(--ink-blue);opacity:.5}
+.section-name{font-size:1.2rem;font-weight:900}
+.lesson-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.lesson-card{background:var(--surface);border:1.5px solid var(--board-edge);border-radius:10px;padding:18px 20px;text-decoration:none;color:inherit;transition:all .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;overflow:hidden}
+.lesson-card:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 6px 20px rgba(0,0,0,.08);border-color:var(--ink-blue)}
+.lesson-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
+.lesson-card.blue::before{background:var(--ink-blue)}.lesson-card.red::before{background:var(--ink-red)}.lesson-card.green::before{background:var(--ink-green)}
+.lesson-id{font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;color:var(--ink-blue)}
+.lesson-name{font-size:1rem;font-weight:700;margin:4px 0}
+.lesson-desc{font-size:.8rem;color:#888;line-height:1.5}
+.lesson-meta{display:flex;gap:8px;margin-top:8px}
+.lesson-tag{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:100px}
+.tag-basic{background:var(--sticky-b);color:var(--ink-blue)}
+.tag-practice{background:var(--sticky-g);color:var(--ink-green)}
+.tag-slides{background:var(--sticky-y);color:#8D6E00}
+.footer{margin-top:48px;font-size:.75rem;color:var(--tray-dark);text-align:center}
+@media(max-width:480px){body{padding:24px 12px}.back{top:10px;left:10px;font-size:.78rem}}
+</style>
+</head>
+<body>
+
+<a href="../" class="back">← 全章一覧</a>
+
+<div class="hero">
+  <div class="hero-chip">White-Board Slide</div>
+  <h1>第3章 <span class="hl">プロンプト</span></h1>
+  <p>全10レッスンのインタラクティブHTMLスライド教材</p>
+</div>
+
+<div class="sections">
+
+  <div>
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-name">プロンプトの基礎</span>
+    </div>
+    <div class="lesson-grid">
+      <a href="1-1.html" class="lesson-card blue">
+        <div class="lesson-id">1-1</div>
+        <div class="lesson-name">プロンプトとは</div>
+        <div class="lesson-desc">AIへの指示文の定義、構成要素、Google検索との違い</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-basic">基礎</span><span class="lesson-tag tag-slides">20 slides</span></div>
+      </a>
+      <a href="1-2.html" class="lesson-card blue">
+        <div class="lesson-id">1-2</div>
+        <div class="lesson-name">プロンプトエンジニアリングとは</div>
+        <div class="lesson-desc">設計→検証→改善のサイクル、7つの基本原則</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-basic">基礎</span><span class="lesson-tag tag-slides">18 slides</span></div>
+      </a>
+      <a href="1-3.html" class="lesson-card blue">
+        <div class="lesson-id">1-3</div>
+        <div class="lesson-name">良いプロンプトと悪いプロンプト</div>
+        <div class="lesson-desc">10組のBefore/After実例、RTFフレームワーク</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-basic">基礎</span><span class="lesson-tag tag-slides">20 slides</span></div>
+      </a>
+      <a href="1-4.html" class="lesson-card blue">
+        <div class="lesson-id">1-4</div>
+        <div class="lesson-name">プロンプト作成のコツ</div>
+        <div class="lesson-desc">記号と書式で構造化、HITL（人間参加型）の実践</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-basic">基礎</span><span class="lesson-tag tag-slides">20 slides</span></div>
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-name">さまざまなプロンプト手法</span>
+    </div>
+    <div class="lesson-grid">
+      <a href="2-1.html" class="lesson-card red">
+        <div class="lesson-id">2-1</div>
+        <div class="lesson-name">基本的なプロンプト手法</div>
+        <div class="lesson-desc">Zero-Shot、Few-Shot、ロール、構造化の4手法</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">20 slides</span></div>
+      </a>
+      <a href="2-2.html" class="lesson-card red">
+        <div class="lesson-id">2-2</div>
+        <div class="lesson-name">推論力・精度を引き上げるプロンプト手法</div>
+        <div class="lesson-desc">プロンプト連鎖、CoT、ReAct、メタプロンプティング</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">20 slides</span></div>
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-name">プロンプト設計フレームワーク</span>
+    </div>
+    <div class="lesson-grid">
+      <a href="3-1.html" class="lesson-card green">
+        <div class="lesson-id">3-1</div>
+        <div class="lesson-name">前提条件を決める、ペルソナの設定</div>
+        <div class="lesson-desc">8+1の公式、前提条件の4要素、ペルソナの3レベル</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">18 slides</span></div>
+      </a>
+      <a href="3-2.html" class="lesson-card green">
+        <div class="lesson-id">3-2</div>
+        <div class="lesson-name">参考情報を与える、単語を改善する</div>
+        <div class="lesson-desc">区切り記号の活用、動詞・形容詞の選び方</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">18 slides</span></div>
+      </a>
+      <a href="3-3.html" class="lesson-card green">
+        <div class="lesson-id">3-3</div>
+        <div class="lesson-name">出力形式を決める</div>
+        <div class="lesson-desc">文章形式、表・JSON・Markdown、テンプレート活用</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">18 slides</span></div>
+      </a>
+      <a href="3-4.html" class="lesson-card green">
+        <div class="lesson-id">3-4</div>
+        <div class="lesson-name">スタイルとトーン、追加指示</div>
+        <div class="lesson-desc">文体×トーンの組み合わせ、8+1の公式の総まとめ</div>
+        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">18 slides</span></div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  White-Board Slide Design System — with-AI, Inc.<br>
+  矢印キー / スワイプで操作 ・ プロンプト例はCopyボタンでコピー可能
+</div>
+
+</body>
+</html>

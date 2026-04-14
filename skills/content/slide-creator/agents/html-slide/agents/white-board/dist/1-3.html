@@ -47,13 +47,13 @@
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
   --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
 
-  /* Type scale */
-  --fs-hero: clamp(2.2rem, 5vw, 3.2rem);
-  --fs-title: clamp(1.4rem, 3vw, 1.9rem);
-  --fs-sub: clamp(1rem, 2vw, 1.2rem);
-  --fs-body: clamp(0.88rem, 1.5vw, 1rem);
-  --fs-sm: clamp(0.78rem, 1.2vw, 0.88rem);
-  --fs-xs: clamp(0.68rem, 1vw, 0.78rem);
+  /* Type scale (+3pt bump) */
+  --fs-hero: clamp(2.4rem, 5vw, 3.4rem);
+  --fs-title: clamp(1.6rem, 3vw, 2.1rem);
+  --fs-sub: clamp(1.2rem, 2.2vw, 1.4rem);
+  --fs-body: clamp(1.08rem, 1.8vw, 1.2rem);
+  --fs-sm: clamp(0.98rem, 1.5vw, 1.08rem);
+  --fs-xs: clamp(0.88rem, 1.2vw, 0.98rem);
 }
 
 /* ---- Reset ---- */
@@ -64,21 +64,23 @@ body {
   font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
   color: var(--ink-black);
   overflow: hidden;
-  height: 100vh;
+  height: var(--vh, 100vh);
   display: flex;
   flex-direction: column;
-}
 
 /* ============================================================
-   WHITEBOARD FRAME
+   WHITEBOARD FRAME — The physical board illusion
    ============================================================ */
 .board-frame {
   flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   padding: 16px 20px 8px;
   position: relative;
+  /* Subtle grid pattern like real whiteboard */
   background:
     radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
     linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
@@ -86,6 +88,8 @@ body {
     var(--board);
   background-size: 100%, 40px 40px, 40px 40px, 100%;
 }
+
+/* Light reflection on board */
 .board-frame::before {
   content: '';
   position: absolute;
@@ -94,6 +98,8 @@ body {
   pointer-events: none;
   z-index: 0;
 }
+
+/* Marker tray at bottom */
 .marker-tray {
   position: absolute;
   bottom: 0;
@@ -106,6 +112,8 @@ body {
   box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
   z-index: 1;
 }
+
+/* Progress bar — integrated into tray */
 .progress-track {
   position: absolute;
   bottom: 0;
@@ -122,12 +130,12 @@ body {
 }
 
 /* ============================================================
-   SLIDE
+   SLIDE — Each "page" on the whiteboard
    ============================================================ */
 .slide {
   position: absolute;
   width: min(940px, 92vw);
-  height: min(540px, 78vh);
+  height: min(540px, 100%);
   background: var(--surface);
   border-radius: 4px;
   box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
@@ -138,17 +146,21 @@ body {
   background-image:
     radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
+
 .slide.active {
   display: flex;
   animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
 @keyframes slideIn {
   from { opacity: 0; transform: translateY(8px) scale(0.995); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ---- Header chip ---- */
+/* ---- Header chip (chapter label) ---- */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -171,7 +183,7 @@ body {
   bottom: 12px;
   right: 18px;
   font-family: 'Caveat', cursive;
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--tray-dark);
 }
@@ -187,7 +199,7 @@ body {
   display: inline-block;
 }
 
-/* Marker underline stroke */
+/* Marker underline stroke — animated */
 .marker-line {
   display: block;
   height: 5px;
@@ -195,6 +207,7 @@ body {
   border-radius: 3px;
   margin-bottom: 14px;
   transform: rotate(-0.3deg);
+  /* Rough marker edge */
   mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
   mask-size: 100% 100%;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
@@ -216,7 +229,7 @@ body {
 .col.w40 { flex:0.8; }
 
 /* ============================================================
-   TYPOGRAPHY
+   TYPOGRAPHY — Hand-written warmth
    ============================================================ */
 .body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
 .sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
@@ -227,7 +240,7 @@ body {
 .accent { font-family:'Caveat',cursive; font-weight:700; }
 
 /* ============================================================
-   BULLET LIST
+   BULLET LIST — Marker dots
    ============================================================ */
 .bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
 .bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
@@ -241,37 +254,41 @@ body {
 .bl.red li::before { background:var(--ink-red); }
 .bl.check li::before {
   content:'✓'; background:none; opacity:1;
-  color:var(--ink-green); font-size:1rem; font-weight:900;
+  color:var(--ink-green); font-size:1.2rem; font-weight:900;
   top:3px; left:0; width:auto; height:auto;
 }
 .bl.num { counter-reset:n; }
 .bl.num li { padding-left:30px; counter-increment:n; }
 .bl.num li::before {
   content:counter(n); background:var(--ink-blue); color:#fff;
-  font-size:0.65rem; font-weight:700; text-align:center;
+  font-size:0.85rem; font-weight:700; text-align:center;
   width:18px; height:18px; line-height:18px; top:5px; left:0;
   border-radius: 50%; opacity:1;
 }
 
 /* ============================================================
-   STICKY NOTE
+   STICKY NOTE — Realistic paper
    ============================================================ */
 .sticky {
   position: relative;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border-radius: 1px;
   font-size: var(--fs-sm);
-  line-height: 1.65;
+  line-height: 1.5;
   box-shadow: var(--shadow-sticky);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+
+/* Paper texture overlay */
 .sticky::after {
   content:''; position:absolute; inset:0;
   background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
   pointer-events:none;
   border-radius: inherit;
 }
+
+/* Tape strip at top */
 .sticky::before {
   content:''; position:absolute;
   top:-7px; left:50%; transform:translateX(-50%);
@@ -280,14 +297,20 @@ body {
   border-radius: 1px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
+
+/* Color variants */
 .sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
 .sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
 .sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
 .sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
+/* Rotation variants */
 .sticky.t1 { transform:rotate(-1.5deg); }
 .sticky.t2 { transform:rotate(1deg); }
 .sticky.t3 { transform:rotate(-0.8deg); }
 .sticky.t4 { transform:rotate(1.3deg); }
+
+/* Sticky entrance animation */
 .slide.active .sticky {
   animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
@@ -298,21 +321,22 @@ body {
 @keyframes stickyPop {
   from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
 }
+
 .sticky-label {
-  font-size:0.65rem; font-weight:700; color:var(--ink-blue);
+  font-size:0.85rem; font-weight:700; color:var(--ink-blue);
   text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
 }
 
 /* ============================================================
-   PROMPT BLOCK
+   PROMPT BLOCK — Code on sticky note
    ============================================================ */
 .prompt {
   position:relative;
-  padding: 28px 16px 14px;
+  padding: 22px 14px 10px;
   border-radius: 1px;
   font-family: 'Source Code Pro', monospace;
-  font-size: 0.8rem;
-  line-height: 1.65;
+  font-size: 1.0rem;
+  line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
   box-shadow: var(--shadow-sticky);
@@ -321,6 +345,7 @@ body {
 .prompt.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
 .prompt.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
 .prompt.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
 .prompt::before {
   content:''; position:absolute;
   top:-7px; left:50%; transform:translateX(-50%);
@@ -328,18 +353,20 @@ body {
   background: rgba(200,200,180,0.35);
   border-radius: 1px;
 }
+
 .prompt-tag {
   position:absolute; top:6px; left:10px;
   font-family:'Zen Maru Gothic',sans-serif;
-  font-size:0.58rem; font-weight:700;
+  font-size:0.78rem; font-weight:700;
   color:var(--ink-blue); letter-spacing:0.06em;
   text-transform:uppercase;
 }
+
 .copy-btn {
   position:absolute; top:5px; right:8px;
   background:rgba(255,255,255,0.6); backdrop-filter:blur(4px);
   border:1px solid rgba(0,0,0,0.08); border-radius:4px;
-  padding:2px 10px; font-size:0.6rem;
+  padding:2px 10px; font-size:0.8rem;
   font-family:'Zen Maru Gothic',sans-serif;
   cursor:pointer; color:#888; transition:all 0.2s;
 }
@@ -364,12 +391,12 @@ body {
 .vs-side.good .vs-label { color:var(--ink-green); }
 .vs-mid {
   display:flex; align-items:center; justify-content:center;
-  font-family:'Caveat',cursive; font-size:1.6rem;
+  font-family:'Caveat',cursive; font-size:1.8rem;
   color:var(--tray-dark); font-weight:700;
 }
 
 /* ============================================================
-   TABLE
+   TABLE — Whiteboard-style
    ============================================================ */
 .wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
 .wb-tbl th {
@@ -416,12 +443,12 @@ body {
 .flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
 .flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
 .flow-arr {
-  font-family:'Caveat',cursive; font-size:1.4rem;
+  font-family:'Caveat',cursive; font-size:1.6rem;
   color:var(--ink-blue); font-weight:700; padding:0 6px;
 }
 
 /* ============================================================
-   CONCLUSION BAR
+   CONCLUSION BAR — Bottom insight
    ============================================================ */
 .conclusion {
   margin-top:auto;
@@ -435,13 +462,13 @@ body {
 .conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
 
 /* ============================================================
-   ILLUSTRATION
+   ILLUSTRATION (SVG)
    ============================================================ */
 .illust { display:flex; align-items:center; justify-content:center; }
 .illust svg { max-width:100%; max-height:100%; }
 
 /* ============================================================
-   COVER SLIDE
+   COVER SLIDE — Special
    ============================================================ */
 .slide.cover {
   align-items:center; justify-content:center; text-align:center;
@@ -466,33 +493,21 @@ body {
 .cover-doodles svg { width:100%; height:100%; }
 
 /* ============================================================
-   HOME LINK
-   ============================================================ */
-.home-link {
-  position:absolute; top:14px; right:18px;
-  font-size:var(--fs-xs); color:var(--ink-blue);
-  text-decoration:none; font-weight:700;
-  background:var(--sticky-b); padding:3px 12px;
-  border-radius:100px; border:1.5px solid var(--sticky-b-edge);
-  z-index:10; transition:all 0.2s;
-}
-.home-link:hover { background:var(--ink-blue); color:#fff; }
-
-/* ============================================================
-   NAVIGATION
+   NAVIGATION — Tactile, minimal
    ============================================================ */
 .nav {
   display:flex; align-items:center; justify-content:center;
   gap:12px; padding:10px 16px;
   background:var(--nav-bg); backdrop-filter:blur(10px);
   border-top:1px solid var(--board-edge);
+  flex-shrink:0;
 }
 .nav-btn {
   display:inline-flex; align-items:center; gap:5px;
   background:var(--surface); border:1.5px solid var(--board-edge);
   border-radius:100px; padding:7px 20px;
   font-family:'Zen Maru Gothic',sans-serif;
-  font-size:0.82rem; font-weight:700;
+  font-size:1.02rem; font-weight:700;
   color:var(--ink-black); cursor:pointer;
   transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: var(--shadow-sm);
@@ -513,7 +528,7 @@ body {
 
 .nav-count {
   font-family:'Caveat',cursive; font-weight:700;
-  font-size:1.05rem; color:var(--tray-dark);
+  font-size:1.25rem; color:var(--tray-dark);
   min-width:55px; text-align:center;
 }
 
@@ -521,14 +536,27 @@ body {
    RESPONSIVE
    ============================================================ */
 @media(max-width:768px){
-  .slide{padding:20px 24px}
+  body{height:var(--vh,100vh);overflow:hidden}
+  .board-frame{flex:1;min-height:0;overflow:hidden;padding:8px 6px 4px}
+  .slide{position:absolute;width:100%;height:100%;padding:20px 22px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .content{overflow:visible}
+  .slide.cover{padding-top:48px}
+  .cover .chip{top:12px;left:14px;font-size:.78rem;padding:2px 10px}
+  .cover-title{font-size:1.6rem}
+  .cover-sub{font-size:.95rem}
+  .cover-doodles{opacity:.3}
   .cards.c3{grid-template-columns:repeat(2,1fr)}
   .vs,.row{flex-direction:column}
-  .nav{gap:8px;padding:8px 10px}
-  .nav-btn{padding:6px 14px;font-size:.78rem}
+  .nav{flex-shrink:0;gap:6px;padding:10px;z-index:10}
+  .nav-btn{padding:6px 14px;font-size:.92rem}
+  .nav-dots{display:none}
+  .marker-tray{display:none}
 }
 @media(max-width:480px){
-  .slide{padding:14px 16px;border-radius:0}
+  .slide{padding:16px 14px;border-radius:0}
+  .slide.cover{padding-top:42px}
+  .cover-title{font-size:1.4rem}
+  .board-frame{padding:4px 2px 2px}
   .cards.c2,.cards.c3{grid-template-columns:1fr}
 }
 </style>
@@ -1073,15 +1101,22 @@ HTTPエラー時のリトライ処理（最大3回）を含めて。</div>
 </nav>
 
 <script>
+// Fix mobile viewport height (address bar対策)
+function setVH(){document.documentElement.style.setProperty('--vh',window.innerHeight+'px')}
+setVH();
+window.addEventListener('resize',setVH);
+
 const S=document.querySelectorAll('.slide'),T=S.length;
-let cur=0;
+var cur=0;
+// Build dots
 const nd=document.getElementById('nd');
 for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
 
 function go(i){
   if(i<0||i>=T||i===cur)return;
-  S[cur].classList.remove('active');S[cur].style.display='none';
+  S[cur].classList.remove('active');
   cur=i;
+  S[cur].style.display='';
   S[cur].classList.add('active');
   upd();
 }
@@ -1093,14 +1128,17 @@ function upd(){
   document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
 }
 
+// Keyboard
 document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
   if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
 });
+// Touch
 let tx=0;
 document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
 document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
 
+// Copy
 function cp(b){
   const c=b.closest('.prompt').cloneNode(true);
   c.querySelector('.copy-btn')?.remove();

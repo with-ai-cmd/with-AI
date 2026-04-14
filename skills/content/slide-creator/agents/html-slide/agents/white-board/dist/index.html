@@ -3,138 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>第3章 プロンプト — White-Board Slide</title>
+<title>生成AIトレーニング — White-Board Slide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--board:#F7F6F3;--board-edge:#E8E6E1;--surface:#FFF;--ink-black:#1A1A1A;--ink-blue:#1565C0;--ink-red:#C62828;--ink-green:#2E7D32;--sticky-b:#E8F0FE;--sticky-b-edge:#C4D8F2;--sticky-g:#E6F4EA;--sticky-g-edge:#B7DFC3;--sticky-p:#FCE4EC;--sticky-p-edge:#F0B8C8;--sticky-y:#FFF8DC;--sticky-y-edge:#F0E6B8;--tray-dark:#B8B0A3}
+:root{--board:#F7F6F3;--board-edge:#E8E6E1;--surface:#FFF;--ink-black:#1A1A1A;--ink-blue:#1565C0;--ink-red:#C62828;--ink-green:#2E7D32;--ink-orange:#E65100;--sticky-b:#E8F0FE;--sticky-b-edge:#C4D8F2;--sticky-g:#E6F4EA;--sticky-g-edge:#B7DFC3;--sticky-p:#FCE4EC;--sticky-p-edge:#F0B8C8;--sticky-y:#FFF8DC;--sticky-y-edge:#F0E6B8;--tray-dark:#B8B0A3}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--board);font-family:'Zen Maru Gothic',sans-serif;color:var(--ink-black);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px}
-.hero{text-align:center;margin-bottom:40px}
+.hero{text-align:center;margin-bottom:48px}
 .hero-chip{display:inline-block;font-size:.75rem;font-weight:700;color:var(--ink-blue);background:var(--sticky-b);padding:4px 16px;border-radius:100px;border:1.5px solid var(--sticky-b-edge);margin-bottom:12px}
 .hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.3}
 .hero h1 .hl{color:var(--ink-blue)}
 .hero p{color:var(--tray-dark);margin-top:8px;font-size:1rem}
-.sections{display:flex;flex-direction:column;gap:32px;width:min(800px,100%)}
-.section-header{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
-.section-num{font-family:'Caveat',cursive;font-size:1.8rem;font-weight:700;color:var(--ink-blue);opacity:.5}
-.section-name{font-size:1.2rem;font-weight:900}
-.lesson-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-.lesson-card{background:var(--surface);border:1.5px solid var(--board-edge);border-radius:10px;padding:18px 20px;text-decoration:none;color:inherit;transition:all .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;overflow:hidden}
-.lesson-card:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 6px 20px rgba(0,0,0,.08);border-color:var(--ink-blue)}
-.lesson-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
-.lesson-card.blue::before{background:var(--ink-blue)}.lesson-card.red::before{background:var(--ink-red)}.lesson-card.green::before{background:var(--ink-green)}
-.lesson-id{font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;color:var(--ink-blue)}
-.lesson-name{font-size:1rem;font-weight:700;margin:4px 0}
-.lesson-desc{font-size:.8rem;color:#888;line-height:1.5}
-.lesson-meta{display:flex;gap:8px;margin-top:8px}
-.lesson-tag{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:100px}
-.tag-basic{background:var(--sticky-b);color:var(--ink-blue)}
-.tag-practice{background:var(--sticky-g);color:var(--ink-green)}
-.tag-slides{background:var(--sticky-y);color:#8D6E00}
-.footer{margin-top:48px;font-size:.75rem;color:var(--tray-dark);text-align:center}
+.chapters{display:flex;flex-direction:column;gap:20px;width:min(800px,100%)}
+.chapter-card{background:var(--surface);border:1.5px solid var(--board-edge);border-radius:12px;padding:24px 28px;text-decoration:none;color:inherit;transition:all .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;overflow:hidden;display:flex;align-items:center;gap:20px}
+.chapter-card:hover{transform:translateY(-3px) scale(1.005);box-shadow:0 6px 20px rgba(0,0,0,.08);border-color:var(--ink-blue)}
+.chapter-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;border-radius:12px 0 0 12px}
+.chapter-card.blue::before{background:var(--ink-blue)}
+.chapter-card.red::before{background:var(--ink-red)}
+.chapter-card.green::before{background:var(--ink-green)}
+.chapter-card.orange::before{background:var(--ink-orange)}
+.chapter-card.gray::before{background:var(--board-edge)}
+.ch-num{font-family:'Caveat',cursive;font-size:2.2rem;font-weight:700;color:var(--ink-blue);opacity:.5;min-width:50px;text-align:center;flex-shrink:0}
+.chapter-card.red .ch-num{color:var(--ink-red)}
+.chapter-card.green .ch-num{color:var(--ink-green)}
+.chapter-card.orange .ch-num{color:var(--ink-orange)}
+.chapter-card.gray .ch-num{color:var(--tray-dark)}
+.ch-info{flex:1}
+.ch-title{font-size:1.15rem;font-weight:900;margin-bottom:4px}
+.ch-desc{font-size:.85rem;color:#888;line-height:1.5}
+.ch-meta{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.ch-tag{font-size:.65rem;font-weight:700;padding:2px 10px;border-radius:100px}
+.tag-ready{background:var(--sticky-g);color:var(--ink-green)}
+.tag-soon{background:var(--sticky-y);color:#8D6E00}
+.tag-count{background:var(--sticky-b);color:var(--ink-blue)}
+.ch-arrow{font-size:1.2rem;color:var(--board-edge);flex-shrink:0;transition:color .2s}
+.chapter-card:hover .ch-arrow{color:var(--ink-blue)}
+.chapter-card.gray{opacity:.6;pointer-events:none}
+.footer{margin-top:48px;font-size:.75rem;color:var(--tray-dark);text-align:center;line-height:1.8}
+@media(max-width:480px){
+  body{padding:24px 12px}
+  .chapter-card{padding:18px 16px;gap:14px}
+  .ch-num{font-size:1.6rem;min-width:36px}
+  .ch-title{font-size:1.05rem}
+}
 </style>
 </head>
 <body>
 
 <div class="hero">
   <div class="hero-chip">White-Board Slide</div>
-  <h1>第3章 <span class="hl">プロンプト</span></h1>
-  <p>全10レッスンのインタラクティブHTMLスライド教材</p>
+  <h1>生成AI<span class="hl">トレーニング</span></h1>
+  <p>インタラクティブHTMLスライド教材</p>
 </div>
 
-<div class="sections">
+<div class="chapters">
 
-  <!-- Section 1 -->
-  <div>
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <span class="section-name">プロンプトの基礎</span>
+  <a href="ch1/" class="chapter-card gray">
+    <div class="ch-num">1</div>
+    <div class="ch-info">
+      <div class="ch-title">AIの基礎知識</div>
+      <div class="ch-desc">AIの定義、機械学習の仕組み、深層学習の基本</div>
+      <div class="ch-meta"><span class="ch-tag tag-soon">準備中</span></div>
     </div>
-    <div class="lesson-grid">
-      <a href="1-1.html" class="lesson-card blue">
-        <div class="lesson-id">1-1</div>
-        <div class="lesson-name">プロンプトとは</div>
-        <div class="lesson-desc">AIへの指示文の定義、構成要素、Google検索との違い</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-basic">基礎</span><span class="lesson-tag tag-slides">20 slides</span></div>
-      </a>
-      <a href="1-2.html" class="lesson-card blue">
-        <div class="lesson-id">1-2</div>
-        <div class="lesson-name">プロンプトエンジニアリングとは</div>
-        <div class="lesson-desc">設計→検証→改善のサイクル、7つの基本原則</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-basic">基礎</span><span class="lesson-tag tag-slides">18 slides</span></div>
-      </a>
-      <a href="1-3.html" class="lesson-card blue">
-        <div class="lesson-id">1-3</div>
-        <div class="lesson-name">良いプロンプトと悪いプロンプト</div>
-        <div class="lesson-desc">10組のBefore/After実例、RTFフレームワーク</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-basic">基礎</span><span class="lesson-tag tag-slides">20 slides</span></div>
-      </a>
-      <a href="1-4.html" class="lesson-card blue">
-        <div class="lesson-id">1-4</div>
-        <div class="lesson-name">プロンプト作成のコツ</div>
-        <div class="lesson-desc">記号と書式で構造化、HITL（人間参加型）の実践</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-basic">基礎</span><span class="lesson-tag tag-slides">20 slides</span></div>
-      </a>
-    </div>
-  </div>
+    <div class="ch-arrow">›</div>
+  </a>
 
-  <!-- Section 2 -->
-  <div>
-    <div class="section-header">
-      <span class="section-num">02</span>
-      <span class="section-name">さまざまなプロンプト手法</span>
+  <a href="ch2/" class="chapter-card gray">
+    <div class="ch-num">2</div>
+    <div class="ch-info">
+      <div class="ch-title">生成AIの基礎知識</div>
+      <div class="ch-desc">生成AIの仕組み、LLM、マルチモーダル、主要サービス</div>
+      <div class="ch-meta"><span class="ch-tag tag-soon">準備中</span></div>
     </div>
-    <div class="lesson-grid">
-      <a href="2-1.html" class="lesson-card red">
-        <div class="lesson-id">2-1</div>
-        <div class="lesson-name">基本的なプロンプト手法</div>
-        <div class="lesson-desc">Zero-Shot、Few-Shot、ロール、構造化の4手法</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">20 slides</span></div>
-      </a>
-      <a href="2-2.html" class="lesson-card red">
-        <div class="lesson-id">2-2</div>
-        <div class="lesson-name">推論力・精度を引き上げるプロンプト手法</div>
-        <div class="lesson-desc">プロンプト連鎖、CoT、ReAct、メタプロンプティング</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">20 slides</span></div>
-      </a>
-    </div>
-  </div>
+    <div class="ch-arrow">›</div>
+  </a>
 
-  <!-- Section 3 -->
-  <div>
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <span class="section-name">プロンプト設計フレームワーク</span>
+  <a href="ch3/" class="chapter-card green">
+    <div class="ch-num">3</div>
+    <div class="ch-info">
+      <div class="ch-title">プロンプト</div>
+      <div class="ch-desc">プロンプトの基礎、手法、設計フレームワーク</div>
+      <div class="ch-meta">
+        <span class="ch-tag tag-ready">公開中</span>
+        <span class="ch-tag tag-count">10レッスン</span>
+      </div>
     </div>
-    <div class="lesson-grid">
-      <a href="3-1.html" class="lesson-card green">
-        <div class="lesson-id">3-1</div>
-        <div class="lesson-name">前提条件を決める、ペルソナの設定</div>
-        <div class="lesson-desc">8+1の公式、前提条件の4要素、ペルソナの3レベル</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">18 slides</span></div>
-      </a>
-      <a href="3-2.html" class="lesson-card green">
-        <div class="lesson-id">3-2</div>
-        <div class="lesson-name">参考情報を与える、単語を改善する</div>
-        <div class="lesson-desc">区切り記号の活用、動詞・形容詞の選び方</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">18 slides</span></div>
-      </a>
-      <a href="3-3.html" class="lesson-card green">
-        <div class="lesson-id">3-3</div>
-        <div class="lesson-name">出力形式を決める</div>
-        <div class="lesson-desc">文章形式、表・JSON・Markdown、テンプレート活用</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">18 slides</span></div>
-      </a>
-      <a href="3-4.html" class="lesson-card green">
-        <div class="lesson-id">3-4</div>
-        <div class="lesson-name">スタイルとトーン、追加指示</div>
-        <div class="lesson-desc">文体×トーンの組み合わせ、8+1の公式の総まとめ</div>
-        <div class="lesson-meta"><span class="lesson-tag tag-practice">実践</span><span class="lesson-tag tag-slides">18 slides</span></div>
-      </a>
+    <div class="ch-arrow">›</div>
+  </a>
+
+  <a href="ch4/" class="chapter-card gray">
+    <div class="ch-num">4</div>
+    <div class="ch-info">
+      <div class="ch-title">生成AIの活用</div>
+      <div class="ch-desc">業務活用、自動化、ワークフロー設計</div>
+      <div class="ch-meta"><span class="ch-tag tag-soon">準備中</span></div>
     </div>
-  </div>
+    <div class="ch-arrow">›</div>
+  </a>
+
+  <a href="ch5/" class="chapter-card gray">
+    <div class="ch-num">5</div>
+    <div class="ch-info">
+      <div class="ch-title">生成AIのリスクと対策</div>
+      <div class="ch-desc">ハルシネーション、著作権、セキュリティ、ガイドライン</div>
+      <div class="ch-meta"><span class="ch-tag tag-soon">準備中</span></div>
+    </div>
+    <div class="ch-arrow">›</div>
+  </a>
 
 </div>
 
