@@ -3,6 +3,7 @@
 *.env
 credentials/
 ga4-service-account.json
+**/settings.local.json
 
 # OS files
 .DS_Store
