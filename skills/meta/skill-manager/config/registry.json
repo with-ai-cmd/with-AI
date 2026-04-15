@@ -443,6 +443,21 @@
       "registered_at": "2026-04-03",
       "last_updated": "2026-04-03"
     },
+    "revenue-engine": {
+      "skill_file": "marketing/revenue-engine/SKILL.md",
+      "skill_dir": "{{WITHAI_ROOT}}/skills/marketing/revenue-engine/",
+      "category": "marketing",
+      "sub_agents": ["content-strategist", "keyword-researcher", "article-generator", "affiliate-linker", "rakuten-room-curator", "publisher", "sns-promoter", "revenue-tracker"],
+      "dependencies": {
+        "env_vars": ["NOTION_API_TOKEN"],
+        "apis": ["notion", "google-analytics", "gmail"],
+        "skills": ["marketing-engine", "x-autopilot", "threads-autopilot"],
+        "files": []
+      },
+      "health": { "status": "unknown", "last_check": null, "issues": [] },
+      "registered_at": "2026-04-08",
+      "last_updated": "2026-04-08"
+    },
     "gen-ai": {
       "skill_file": "content/gen-ai.md",
       "skill_dir": "{{WITHAI_ROOT}}/skills/content/gen-ai-master/",
@@ -510,7 +525,7 @@
     "crm": ["contact-add", "contact-show", "contact-list", "contact-convert", "client-follow", "contract-manage"],
     "finance": ["invoice-generate", "invoice-batch", "receipt-add", "receipt-list", "receipt-summary", "sales-summary"],
     "documents": ["proposal-generate", "contract-generate", "intro-generate", "estimate-generate", "pptx"],
-    "marketing": ["marketing-engine", "sns-draft"],
+    "marketing": ["marketing-engine", "sns-draft", "revenue-engine"],
     "content": ["gen-ai", "slide-creator"],
     "client-project": ["polepole"],
     "meta": ["skill-creator", "skill-manager"]

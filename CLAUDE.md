@@ -49,7 +49,7 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 ### 「CCO」「顧客管理」「パイプライン」「ヘルススコア」「360」
 → `skills/meta/cco.md` を読み込み、CCO 顧客管理モードを起動する。
 
-### 「CLO」「法務」「契約書作成」「NDA」「リスク分析」「コンプライアンス」
+### 「CLO」「法務」「契約書作成」「NDA」「リスク分析」「コンプライアンス」「登記」「役員変更」
 → `skills/meta/clo.md` を読み込み、CLO 法務モードを起動する。
 
 ### 「秘書」「secretary」
@@ -97,6 +97,7 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 | documents | pptx.md | パワポ作成 |
 | marketing | marketing-engine/ | マーケレポート、SEO分析、ブログ作成 |
 | marketing | sns-draft.md | SNS投稿下書き |
+| marketing | revenue-engine/ | アフィリエイト収益エンジン、記事生成、楽天ROOM、収益レポート |
 | content | gen-ai-master/ | 教材作成、カリキュラム |
 | content | slide-creator/ | スライド作成 |
 | meta | skill-creator/ | スキル作成 |
@@ -104,7 +105,7 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 | meta | caio.md | CAIO、AI責任者、戦略 |
 | meta | cfo.md | CFO、財務、売上、請求状況 |
 | meta | cco.md | CCO、顧客管理、パイプライン、ヘルススコア |
-| meta | clo.md | CLO、法務、契約書作成、NDA、リスク分析 |
+| meta | clo.md | CLO、法務、契約書作成、NDA、リスク分析、登記、役員変更 |
 | meta | secretary.md | 秘書、何でも指示を受けてルーティング |
 | **anthropic** | **Anthropic公式スキル（全ロール共通）** | |
 | anthropic | pdf/ | PDF作成・編集・結合・分割・OCR・フォーム入力 |

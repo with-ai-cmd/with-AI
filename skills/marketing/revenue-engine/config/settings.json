@@ -1,0 +1,82 @@
+{
+  "affiliate": {
+    "amazon": {
+      "tracking_id": "withai22-22",
+      "api_access_key": "",
+      "api_secret_key": "",
+      "partner_tag": ""
+    },
+    "rakuten": {
+      "affiliate_id": "YOUR_RAKUTEN_AFFILIATE_ID",
+      "application_id": "",
+      "application_secret": ""
+    },
+    "rakuten_room": {
+      "account_url": "https://room.rakuten.co.jp/YOUR_ROOM_ID",
+      "daily_post_limit": 3
+    }
+  },
+  "site": {
+    "domain": "https://with-ai.jp",
+    "affiliate_blog_dir": "blog/affiliate/",
+    "server": {
+      "host": "sv16719.xserver.jp",
+      "user": "withai",
+      "ssh_key": "~/Downloads/withai.key",
+      "port": 10022,
+      "document_root": "~/with-ai.jp/public_html/"
+    },
+    "local_hp_path": "/Users/kaitomain/Desktop/with-AI HP/"
+  },
+  "target_genres": [
+    {
+      "genre": "AI・テック",
+      "keywords_seed": ["AIツール", "ChatGPT", "生成AI", "AI副業"],
+      "priority": "high",
+      "reason": "with-AIのブランドと親和性が高い"
+    },
+    {
+      "genre": "ガジェット",
+      "keywords_seed": ["ワイヤレスイヤホン", "モバイルバッテリー", "ノートPC", "スマートウォッチ"],
+      "priority": "high",
+      "reason": "高単価・Amazon報酬率がよい"
+    },
+    {
+      "genre": "ビジネス・仕事効率化",
+      "keywords_seed": ["デスク周り", "リモートワーク", "ビジネス書", "時短グッズ"],
+      "priority": "medium",
+      "reason": "with-AIの読者層とマッチ"
+    },
+    {
+      "genre": "生活・暮らし",
+      "keywords_seed": ["時短家電", "便利グッズ", "掃除", "収納"],
+      "priority": "medium",
+      "reason": "楽天ROOMとの相性がよい"
+    }
+  ],
+  "content": {
+    "articles_per_month": 8,
+    "words_per_article": "3000-5000",
+    "author": "勝又 海斗",
+    "company": "with-AI株式会社"
+  },
+  "revenue_targets": {
+    "monthly_total": 50000,
+    "amazon": 20000,
+    "rakuten": 15000,
+    "rakuten_room": 15000
+  },
+  "notifications": {
+    "email": "katsumata.k@with-ai.jp",
+    "notion_db": "収益レポート"
+  },
+  "sns": {
+    "x_posts_per_week": 5,
+    "threads_posts_per_week": 3,
+    "best_posting_times": ["12:00", "19:00", "21:00"]
+  },
+  "approval": {
+    "require_before_publish": true,
+    "batch_approval_allowed": true
+  }
+}
