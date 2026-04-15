@@ -27,10 +27,24 @@
     "company": "with-AI株式会社"
   },
   "seo": {
-    "target_keywords": [
-      "AI導入", "AIコンサルティング", "DX推進", "AI人材育成",
-      "営業支援AI", "AI研修", "業務効率化 AI", "AI導入 費用",
-      "AI導入 中小企業", "AI導入 失敗", "DX 中小企業"
+    "target_keywords_priority": [
+      "AIエージェント 導入",
+      "AI導入 失敗",
+      "AI導入 補助金 2026",
+      "AI研修 法人",
+      "AI活用 営業",
+      "AI導入支援 会社"
+    ],
+    "target_keywords_secondary": [
+      "AI導入 費用",
+      "AI導入 中小企業",
+      "ChatGPT 業務活用",
+      "AI人材育成",
+      "AIコンサル 比較",
+      "AI導入 事例"
+    ],
+    "target_keywords_brand": [
+      "with-AI", "AIKOMON", "AI SHINE", "勝又海斗"
     ]
   }
 }

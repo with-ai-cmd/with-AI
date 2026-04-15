@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2-2. 推論力・精度を引き上げるプロンプト手法 — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WHITE-BOARD SLIDE — Design System
+   Concept: "A brilliant teacher's whiteboard session"
+   Real marker strokes, tactile sticky notes, chalk-dust warmth
+   ============================================================ */
+:root {
+  /* Board & Surface */
+  --board: #F7F6F3;
+  --board-edge: #E8E6E1;
+  --surface: #FFFFFF;
+  --tray: #D4CDC2;
+  --tray-dark: #B8B0A3;
+
+  /* Marker Palette — saturated, confident */
+  --ink-black: #1A1A1A;
+  --ink-blue: #1565C0;
+  --ink-blue-light: #42A5F5;
+  --ink-red: #C62828;
+  --ink-red-light: #EF5350;
+  --ink-green: #2E7D32;
+  --ink-green-light: #66BB6A;
+  --ink-orange: #E65100;
+
+  /* Sticky Note colors — muted, paper-like */
+  --sticky-y: #FFF8DC;
+  --sticky-y-edge: #F0E6B8;
+  --sticky-b: #E8F0FE;
+  --sticky-b-edge: #C4D8F2;
+  --sticky-g: #E6F4EA;
+  --sticky-g-edge: #B7DFC3;
+  --sticky-p: #FCE4EC;
+  --sticky-p-edge: #F0B8C8;
+
+  /* UI */
+  --nav-bg: rgba(255,255,255,0.92);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
+
+  /* Type scale (+3pt bump) */
+  --fs-hero: clamp(2.4rem, 5vw, 3.4rem);
+  --fs-title: clamp(1.6rem, 3vw, 2.1rem);
+  --fs-sub: clamp(1.2rem, 2.2vw, 1.4rem);
+  --fs-body: clamp(1.08rem, 1.8vw, 1.2rem);
+  --fs-sm: clamp(0.98rem, 1.5vw, 1.08rem);
+  --fs-xs: clamp(0.88rem, 1.2vw, 0.98rem);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--board);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
+  color: var(--ink-black);
+  overflow: hidden;
+  height: var(--vh, 100vh);
+  display: flex;
+  flex-direction: column;
+
+/* ============================================================
+   WHITEBOARD FRAME — The physical board illusion
+   ============================================================ */
+.board-frame {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 16px 20px 8px;
+  position: relative;
+  /* Subtle grid pattern like real whiteboard */
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+    linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    var(--board);
+  background-size: 100%, 40px 40px, 40px 40px, 100%;
+}
+
+/* Light reflection on board */
+.board-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Marker tray at bottom */
+.marker-tray {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80%);
+  height: 6px;
+  background: linear-gradient(to bottom, var(--tray), var(--tray-dark));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+
+/* Progress bar — integrated into tray */
+.progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.05);
+  z-index: 2;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink-blue);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   SLIDE — Each "page" on the whiteboard
+   ============================================================ */
+.slide {
+  position: absolute;
+  width: min(940px, 92vw);
+  height: min(540px, 100%);
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
+  padding: 30px 40px;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slide.active {
+  display: flex;
+  animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---- Header chip (chapter label) ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-blue);
+  background: var(--sticky-b);
+  padding: 3px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--sticky-b-edge);
+  width: fit-content;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Page number ---- */
+.pg {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--tray-dark);
+}
+
+/* ---- Slide title ---- */
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 900;
+  line-height: 1.35;
+  color: var(--ink-black);
+  margin-bottom: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Marker underline stroke — animated */
+.marker-line {
+  display: block;
+  height: 5px;
+  width: 0;
+  border-radius: 3px;
+  margin-bottom: 14px;
+  transform: rotate(-0.3deg);
+  /* Rough marker edge */
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+.marker-line.red { background: var(--ink-red); }
+.marker-line.blue { background: var(--ink-blue); }
+.marker-line.green { background: var(--ink-green); }
+.slide.active .marker-line {
+  animation: drawLine 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { width: 80px; } }
+
+/* ---- Content area ---- */
+.content { flex:1; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.row { display:flex; gap:20px; flex:1; }
+.col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.col.w60 { flex:1.5; }
+.col.w40 { flex:0.8; }
+
+/* ============================================================
+   TYPOGRAPHY — Hand-written warmth
+   ============================================================ */
+.body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
+.sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
+.sm { font-size:var(--fs-sm); color:#666; line-height:1.6; }
+.xs { font-size:var(--fs-xs); color:#999; }
+.kw { color:var(--ink-red); font-weight:700; }
+.kw-blue { color:var(--ink-blue); font-weight:700; }
+.accent { font-family:'Caveat',cursive; font-weight:700; }
+
+/* ============================================================
+   BULLET LIST — Marker dots
+   ============================================================ */
+.bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
+.bl li::before {
+  content:''; position:absolute; left:2px; top:8px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--ink-blue);
+  opacity: 0.7;
+}
+.bl.green li::before { background:var(--ink-green); }
+.bl.red li::before { background:var(--ink-red); }
+.bl.check li::before {
+  content:'✓'; background:none; opacity:1;
+  color:var(--ink-green); font-size:1.2rem; font-weight:900;
+  top:3px; left:0; width:auto; height:auto;
+}
+.bl.num { counter-reset:n; }
+.bl.num li { padding-left:30px; counter-increment:n; }
+.bl.num li::before {
+  content:counter(n); background:var(--ink-blue); color:#fff;
+  font-size:0.85rem; font-weight:700; text-align:center;
+  width:18px; height:18px; line-height:18px; top:5px; left:0;
+  border-radius: 50%; opacity:1;
+}
+
+/* ============================================================
+   STICKY NOTE — Realistic paper
+   ============================================================ */
+.sticky {
+  position: relative;
+  padding: 12px 14px;
+  border-radius: 1px;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+
+/* Paper texture overlay */
+.sticky::after {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+  pointer-events:none;
+  border-radius: inherit;
+}
+
+/* Tape strip at top */
+.sticky::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* Color variants */
+.sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
+/* Rotation variants */
+.sticky.t1 { transform:rotate(-1.5deg); }
+.sticky.t2 { transform:rotate(1deg); }
+.sticky.t3 { transform:rotate(-0.8deg); }
+.sticky.t4 { transform:rotate(1.3deg); }
+
+/* Sticky entrance animation */
+.slide.active .sticky {
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slide.active .sticky:nth-child(1) { animation-delay: 0.15s; }
+.slide.active .sticky:nth-child(2) { animation-delay: 0.25s; }
+.slide.active .sticky:nth-child(3) { animation-delay: 0.35s; }
+.slide.active .sticky:nth-child(4) { animation-delay: 0.45s; }
+@keyframes stickyPop {
+  from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
+}
+
+.sticky-label {
+  font-size:0.85rem; font-weight:700; color:var(--ink-blue);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
+}
+
+/* ============================================================
+   PROMPT BLOCK — Code on sticky note
+   ============================================================ */
+.prompt {
+  position:relative;
+  padding: 22px 14px 10px;
+  border-radius: 1px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 1.0rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: var(--shadow-sticky);
+}
+.prompt.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.prompt.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.prompt.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.prompt.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
+.prompt::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+}
+
+.prompt-tag {
+  position:absolute; top:6px; left:10px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.78rem; font-weight:700;
+  color:var(--ink-blue); letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+
+.copy-btn {
+  position:absolute; top:5px; right:8px;
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(4px);
+  border:1px solid rgba(0,0,0,0.08); border-radius:4px;
+  padding:2px 10px; font-size:0.8rem;
+  font-family:'Zen Maru Gothic',sans-serif;
+  cursor:pointer; color:#888; transition:all 0.2s;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.95); color:var(--ink-black); }
+.copy-btn.ok { color:var(--ink-green); border-color:var(--ink-green-light); }
+
+/* ============================================================
+   COMPARISON LAYOUT
+   ============================================================ */
+.vs { display:flex; gap:16px; flex:1; }
+.vs-side { flex:1; display:flex; flex-direction:column; gap:8px; padding:14px; border-radius:8px; }
+.vs-side.bad {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(198,40,40,0.015) 10px, rgba(198,40,40,0.015) 20px);
+  border:1.5px dashed rgba(198,40,40,0.2);
+}
+.vs-side.good {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(46,125,50,0.015) 10px, rgba(46,125,50,0.015) 20px);
+  border:1.5px solid rgba(46,125,50,0.2);
+}
+.vs-label { font-size:var(--fs-sub); font-weight:900; }
+.vs-side.bad .vs-label { color:var(--ink-red); }
+.vs-side.good .vs-label { color:var(--ink-green); }
+.vs-mid {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat',cursive; font-size:1.8rem;
+  color:var(--tray-dark); font-weight:700;
+}
+
+/* ============================================================
+   TABLE — Whiteboard-style
+   ============================================================ */
+.wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+.wb-tbl th {
+  text-align:left; padding:8px 12px;
+  font-weight:700; color:var(--ink-blue);
+  border-bottom:2.5px solid var(--ink-blue);
+  font-size:var(--fs-sm);
+}
+.wb-tbl td {
+  padding:7px 12px;
+  border-bottom:1px solid var(--board-edge);
+}
+.wb-tbl tr:last-child td { border-bottom:none; }
+.wb-tbl tr:hover td { background:rgba(21,101,192,0.02); }
+
+/* ============================================================
+   CARD GRID
+   ============================================================ */
+.cards { display:grid; gap:10px; flex:1; }
+.cards.c2 { grid-template-columns:repeat(2,1fr); }
+.cards.c3 { grid-template-columns:repeat(3,1fr); }
+.card {
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:8px; padding:12px 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card-title { font-weight:700; color:var(--ink-blue); font-size:var(--fs-body); margin-bottom:3px; }
+.card-body { font-size:var(--fs-sm); color:#555; line-height:1.55; }
+
+/* ============================================================
+   FLOW STEPS
+   ============================================================ */
+.flow { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.flow-step {
+  padding:10px 18px; border-radius:10px; text-align:center;
+  font-size:var(--fs-sm); font-weight:700;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.flow-step:hover { transform:scale(1.05); }
+.flow-step.fb { background:var(--sticky-b); border:1px solid var(--sticky-b-edge); }
+.flow-step.fg { background:var(--sticky-g); border:1px solid var(--sticky-g-edge); }
+.flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
+.flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
+.flow-arr {
+  font-family:'Caveat',cursive; font-size:1.6rem;
+  color:var(--ink-blue); font-weight:700; padding:0 6px;
+}
+
+/* ============================================================
+   CONCLUSION BAR — Bottom insight
+   ============================================================ */
+.conclusion {
+  margin-top:auto;
+  padding:9px 16px;
+  font-size:var(--fs-sm); font-weight:700;
+  color:var(--ink-blue);
+  border-left:3px solid var(--ink-blue);
+  background: linear-gradient(90deg, rgba(21,101,192,0.04), transparent);
+  border-radius:0 6px 6px 0;
+}
+.conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
+
+/* ============================================================
+   ILLUSTRATION (SVG)
+   ============================================================ */
+.illust { display:flex; align-items:center; justify-content:center; }
+.illust svg { max-width:100%; max-height:100%; }
+
+/* ============================================================
+   COVER SLIDE — Special
+   ============================================================ */
+.slide.cover {
+  align-items:center; justify-content:center; text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.02) 0%, transparent 70%),
+    var(--surface);
+}
+.cover .chip { position:absolute; top:18px; left:24px; }
+.cover-title {
+  font-size: var(--fs-hero);
+  font-weight: 900;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+.cover-title .hl { color:var(--ink-blue); }
+.cover-sub {
+  font-size:var(--fs-sub); color:var(--tray-dark);
+  margin-top:8px; z-index:2; position:relative;
+}
+.cover-doodles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.cover-doodles svg { width:100%; height:100%; }
+
+/* ============================================================
+   NAVIGATION — Tactile, minimal
+   ============================================================ */
+.nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:10px 16px;
+  background:var(--nav-bg); backdrop-filter:blur(10px);
+  border-top:1px solid var(--board-edge);
+  flex-shrink:0;
+}
+.nav-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:100px; padding:7px 20px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:1.02rem; font-weight:700;
+  color:var(--ink-black); cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { background:var(--ink-blue); color:#fff; border-color:var(--ink-blue); transform:scale(1.05); }
+.nav-btn:active { transform:scale(0.97); }
+.nav-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
+.nav-btn:disabled:hover { background:var(--surface); color:var(--ink-black); border-color:var(--board-edge); }
+
+.nav-dots { display:flex; gap:5px; align-items:center; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--board-edge); border:none;
+  cursor:pointer; transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot.on { background:var(--ink-blue); width:20px; border-radius:3px; }
+.dot:hover { background:var(--ink-blue-light); }
+
+.nav-count {
+  font-family:'Caveat',cursive; font-weight:700;
+  font-size:1.25rem; color:var(--tray-dark);
+  min-width:55px; text-align:center;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:768px){
+  body{height:var(--vh,100vh);overflow:hidden}
+  .board-frame{flex:1;min-height:0;overflow:hidden;padding:8px 6px 4px}
+  .slide{position:absolute;width:100%;height:100%;padding:20px 22px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .content{overflow:visible}
+  .slide.cover{padding-top:48px}
+  .cover .chip{top:12px;left:14px;font-size:.78rem;padding:2px 10px}
+  .cover-title{font-size:1.6rem}
+  .cover-sub{font-size:.95rem}
+  .cover-doodles{opacity:.3}
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+  .vs,.row{flex-direction:column}
+  .nav{flex-shrink:0;gap:6px;padding:10px;z-index:10}
+  .nav-btn{padding:6px 14px;font-size:.92rem}
+  .nav-dots{display:none}
+  .marker-tray{display:none}
+}
+@media(max-width:480px){
+  .slide{padding:16px 14px;border-radius:0}
+  .slide.cover{padding-top:42px}
+  .cover-title{font-size:1.4rem}
+  .board-frame{padding:4px 2px 2px}
+  .cards.c2,.cards.c3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Board Frame -->
+<div class="board-frame">
+  <a href="index.html" class="home-link">目次に戻る</a>
+  <div class="marker-tray"></div>
+  <div class="progress-track"><div class="progress-fill" id="pf" style="width:5%"></div></div>
+
+<!-- ===== 1: COVER ===== -->
+<div class="slide cover active" data-s="1">
+  <div class="chip">3章 プロンプト</div>
+  <div class="cover-doodles">
+    <svg viewBox="0 0 940 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity=".10"><rect x="55" y="50" width="80" height="55" rx="12" stroke="#1565C0" stroke-width="2.5"/><circle cx="75" cy="78" r="4" fill="#1565C0"/><circle cx="95" cy="78" r="4" fill="#1565C0"/><circle cx="115" cy="78" r="4" fill="#1565C0"/></g>
+      <g opacity=".08" transform="translate(800,45)"><ellipse cx="30" cy="28" rx="22" ry="26" stroke="#C62828" stroke-width="2.5"/><line x1="20" y1="55" x2="40" y2="55" stroke="#C62828" stroke-width="2.5"/></g>
+      <g opacity=".07" transform="translate(55,400)"><rect width="90" height="55" rx="6" stroke="#2E7D32" stroke-width="2.5"/><rect x="8" y="8" width="12" height="9" rx="2" stroke="#2E7D32" stroke-width="1.5"/><rect x="24" y="8" width="12" height="9" rx="2" stroke="#2E7D32" stroke-width="1.5"/></g>
+      <g opacity=".08" transform="translate(815,395)"><rect x="6" y="0" width="40" height="32" rx="6" stroke="#1565C0" stroke-width="2.5"/><circle cx="20" cy="12" r="3.5" stroke="#1565C0" stroke-width="2"/><circle cx="36" cy="12" r="3.5" stroke="#1565C0" stroke-width="2"/><path d="M20 24 Q28 29 36 24" stroke="#1565C0" stroke-width="2" fill="none"/></g>
+      <text x="175" y="155" font-size="16" fill="#C62828" opacity=".08">&#9733;</text>
+      <text x="755" y="165" font-size="13" fill="#2E7D32" opacity=".08">&#9733;</text>
+    </svg>
+  </div>
+  <div class="cover-title">2-2. <span class="hl">推論力・精度を引き上げる</span><br>プロンプト手法</div>
+  <div class="cover-sub">第3章 プロンプト ― 2. さまざまなプロンプト手法</div>
+  <div class="pg">1/20</div>
+</div>
+
+<!-- ===== 2: GOAL ===== -->
+<div class="slide" data-s="2">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">このチャプターのゴール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <ul class="bl">
+      <li>基本手法の限界と、<strong>高度な手法が解決する課題</strong>を理解する</li>
+      <li><strong>プロンプト連鎖</strong>で大きなタスクを分割処理できるようになる</li>
+      <li><strong>Chain-of-Thought（CoT）</strong>でAIの推論精度を上げる方法を学ぶ</li>
+      <li><strong>ReAct</strong>の「考える + 行動する」サイクルを理解する</li>
+      <li><strong>メタプロンプティング</strong>でプロンプト自体を改善できるようになる</li>
+    </ul>
+    <div class="conclusion">AIの「考える力」と「行動する力」を引き出す4つの高度なプロンプト手法を学ぶ</div>
+  </div>
+  <div class="pg">2/20</div>
+</div>
+
+<!-- ===== 3: 基本 vs 高度 ===== -->
+<div class="slide" data-s="3">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">基本手法の限界と高度な手法</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">Zero-ShotやFew-Shotは<span class="kw">1回のやりとりで完結する手法</span>。複雑なタスクには限界がある。</div>
+    <table class="wb-tbl" style="margin-top:6px">
+      <thead><tr><th>手法</th><th>ひとことで言うと</th><th>解決する課題</th></tr></thead>
+      <tbody>
+        <tr><td><span class="kw">プロンプト連鎖</span></td><td>作業を工程に分けて一つずつ</td><td>大きなタスクの分割処理</td></tr>
+        <tr><td><span class="kw">思考の連鎖（CoT）</span></td><td>途中の考え方も書いて</td><td>推論ミスの防止</td></tr>
+        <tr><td><span class="kw">ReAct</span></td><td>考えて、調べて、また考えて</td><td>外部情報を使った問題解決</td></tr>
+        <tr><td><span class="kw">メタプロンプティング</span></td><td>良い質問の仕方を教えて</td><td>プロンプト自体の改善</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">基本手法を「発展」させ、AIの推論力と行動力を最大化する</div>
+  </div>
+  <div class="pg">3/20</div>
+</div>
+
+<!-- ===== 4: プロンプト連鎖 定義 ===== -->
+<div class="slide" data-s="4">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプト連鎖（Prompt Chaining）</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="body">複雑なタスクを<span class="kw">複数の小さなステップに分割</span>し、前のステップの出力を次のステップの入力に渡す手法。</div>
+        <div class="sticky y t1">
+          <div class="sticky-label">たとえ話</div>
+          「カレーを作って」と一度に頼むのではなく、野菜を切る → 肉を炒める → 煮込む → 仕上げ と一工程ずつ確認しながら進める。
+        </div>
+      </div>
+      <div class="col w40">
+        <div class="sticky b t2">
+          <div class="sticky-label">核心</div>
+          各工程で「いい感じかな？」と<strong>確認しながら進める</strong>ので、最終的な品質が安定する。
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">4/20</div>
+</div>
+
+<!-- ===== 5: プロンプト連鎖 ブログ記事例 ===== -->
+<div class="slide" data-s="5">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプト連鎖 ― ブログ記事作成の例</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="flow" style="margin:6px 0">
+      <div class="flow-step fb">Step1<br><span style="font-weight:400;font-size:0.72rem">テーマ分析</span></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step fg">Step2<br><span style="font-weight:400;font-size:0.72rem">構成作成</span></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step fy">Step3<br><span style="font-weight:400;font-size:0.72rem">本文執筆</span></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step fp">Step4<br><span style="font-weight:400;font-size:0.72rem">推敲</span></div>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <div class="col">
+        <div class="prompt b" style="transform:rotate(-.3deg);font-size:.72rem">
+          <span class="prompt-tag">Step 1</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+「リモートワークの生産性向上」というテーマについて、
+読者が知りたい5つのサブトピックを挙げてください。</div>
+      </div>
+      <div class="col">
+        <div class="prompt g" style="transform:rotate(.3deg);font-size:.72rem">
+          <span class="prompt-tag">Step 2</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下の5つのサブトピックを使って、2000字のブログ記事の
+アウトラインを作成してください。
+[ステップ1の出力を貼り付け]</div>
+      </div>
+    </div>
+    <div class="conclusion">各ステップの出力を次の入力に使う ― これがプロンプト連鎖の核心</div>
+  </div>
+  <div class="pg">5/20</div>
+</div>
+
+<!-- ===== 6: プロンプト連鎖 適用場面 ===== -->
+<div class="slide" data-s="6">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプト連鎖が向いている場面</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">長文コンテンツ作成</div><div class="card-body">レポート、企画書、記事を設計→執筆→推敲で段階的に</div></div>
+      <div class="card"><div class="card-title">プログラミング</div><div class="card-body">設計 → 実装 → テスト → 修正のワークフロー</div></div>
+      <div class="card"><div class="card-title">翻訳ワークフロー</div><div class="card-body">直訳 → 意訳 → 校正で品質を段階的に向上</div></div>
+      <div class="card"><div class="card-title">データ分析</div><div class="card-body">データ取得 → 前処理 → 分析 → まとめ</div></div>
+    </div>
+    <div class="row" style="margin-top:auto">
+      <div class="col">
+        <div class="sticky p t1">
+          <div class="sticky-label">注意</div>
+          ステップを細かくしすぎない。最初のステップが曖昧だと後すべてに影響する。
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky g t3">
+          <div class="sticky-label">2025年の動向</div>
+          LangChainやCrewAIがプロンプト連鎖を自動化。仕組みの理解が大切。
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">6/20</div>
+</div>
+
+<!-- ===== 7: CoT 定義 ===== -->
+<div class="slide" data-s="7">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">思考の連鎖（Chain-of-Thought / CoT）</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">AIに最終回答を直接出させるのではなく、<span class="kw">思考のプロセスを段階的に示させる</span>ことで正確な回答を導く手法。</div>
+    <div class="sticky y t2" style="margin-top:8px">
+      <div class="sticky-label">たとえ話</div>
+      算数のテストで先生が言う「答えだけでなく、<strong>途中の計算式も書きなさい</strong>」。途中式を書くことでミスに気づきやすくなり、論理的に考える習慣がつく。CoTはまさにこれと同じ。
+    </div>
+    <div class="conclusion">「ステップバイステップで考えてください」― この一言が推論精度を大きく向上させる</div>
+  </div>
+  <div class="pg">7/20</div>
+</div>
+
+<!-- ===== 8: CoT 計算問題例 ===== -->
+<div class="slide" data-s="8">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">通常プロンプト vs CoTプロンプト</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">通常（答えだけ）</div>
+        <div class="prompt p" style="transform:rotate(-.3deg);font-size:.72rem"><span class="prompt-tag">Prompt</span>
+太郎は1200円持っています。350円の
+ノートを2冊と、180円のペンを3本
+買いました。おつりはいくら？</div>
+        <div class="sm">→「-40円です」とだけ返る。なぜそうなったか不明。</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">CoT（考え方も見せる）</div>
+        <div class="prompt g" style="transform:rotate(.3deg);font-size:.72rem"><span class="prompt-tag">CoT Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+太郎は1200円持っています。350円の
+ノートを2冊と、180円のペンを3本
+買いました。おつりはいくらですか？
+ステップバイステップで考えてください。</div>
+        <div class="sm">→ 途中計算が見える。どこで間違えたかすぐ分かる。</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">8/20</div>
+</div>
+
+<!-- ===== 9: Zero-Shot CoT vs Few-Shot CoT ===== -->
+<div class="slide" data-s="9">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">Zero-Shot CoT vs Few-Shot CoT</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky b t1">
+          <div class="sticky-label">Zero-Shot CoT</div>
+          「<strong>ステップバイステップで考えてください</strong>」と一言添えるだけ。これだけで推論精度が大きく向上。<span class="kw">「魔法のフレーズ」</span>と呼ばれる。
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky g t2">
+          <div class="sticky-label">Few-Shot CoT</div>
+          思考過程の<strong>お手本を示してから</strong>本題を解かせる。特定の推論パターンを求めるときに高い精度を発揮。
+        </div>
+      </div>
+    </div>
+    <table class="wb-tbl" style="margin-top:auto">
+      <thead><tr><th>比較</th><th>Zero-Shot CoT</th><th>Few-Shot CoT</th></tr></thead>
+      <tbody>
+        <tr><td>手軽さ</td><td>非常に簡単</td><td>お手本の準備が必要</td></tr>
+        <tr><td>精度</td><td>中程度</td><td>より高い</td></tr>
+        <tr><td>向いている場面</td><td>汎用的な推論</td><td>特定の推論パターン</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pg">9/20</div>
+</div>
+
+<!-- ===== 10: 推論モデルの登場 ===== -->
+<div class="slide" data-s="10">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">最新：推論モデルの登場</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">2025年以降、<span class="kw">CoTがモデル内部に組み込まれた「推論モデル」</span>が登場。ユーザーが指示しなくても自動的に内部で推論を行う。</div>
+    <div class="cards c3" style="margin-top:8px">
+      <div class="card"><div class="card-title">OpenAI o1/o3</div><div class="card-body">内部で段階的推論を自動実行する推論特化モデル</div></div>
+      <div class="card"><div class="card-title">Claude 拡張思考</div><div class="card-body">Extended Thinkingで深い推論を可視化して実行</div></div>
+      <div class="card"><div class="card-title">なぜ学ぶ？</div><div class="card-body">CoTの仕組みを理解すれば、推論モデルが「なぜそう考えたか」を読み解ける</div></div>
+    </div>
+    <div class="conclusion">CoTは推論モデルの基盤技術。仕組みの理解が的確な活用につながる</div>
+  </div>
+  <div class="pg">10/20</div>
+</div>
+
+<!-- ===== 11: ReAct 定義 ===== -->
+<div class="slide" data-s="11">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">ReAct（Reasoning + Acting）</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">AIが<span class="kw">推論（Reasoning）と行動（Acting）を交互に繰り返す</span>ことで、外部情報を取得しながら問題を解決する手法。</div>
+    <div class="sticky y t2" style="margin-top:8px">
+      <div class="sticky-label">探偵のたとえ</div>
+      推論：「犯人は左利きかも」→ 行動：筆跡を調べる → 観察：「容疑者Aは右利きだった」→ 推論：「容疑者Bを調べよう」→ 行動：アリバイ確認... この<strong>「考える → 調べる → 結果を見る → また考える」のループ</strong>がReAct。
+    </div>
+    <div class="conclusion">CoTは「考えるだけ」。ReActは「考えて行動もする」。外部ツールを使うかどうかが決定的な違い</div>
+  </div>
+  <div class="pg">11/20</div>
+</div>
+
+<!-- ===== 12: ReAct vs CoT ===== -->
+<div class="slide" data-s="12">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">CoT vs ReAct ― 決定的な違い</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad" style="border-color:rgba(21,101,192,0.2);border-style:solid;background:repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(21,101,192,0.015) 10px, rgba(21,101,192,0.015) 20px)">
+        <div class="vs-label" style="color:var(--ink-blue)">CoT（思考の連鎖）</div>
+        <ul class="bl" style="font-size:var(--fs-sm)">
+          <li>考える（推論する）だけ</li>
+          <li>外部情報は使えない（頭の中だけ）</li>
+          <li>テストで途中式を書くイメージ</li>
+        </ul>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">ReAct</div>
+        <ul class="bl" style="font-size:var(--fs-sm)">
+          <li>考える + <strong>行動もする</strong></li>
+          <li>外部ツールを使える（検索、計算等）</li>
+          <li>探偵が聞き込みをするイメージ</li>
+        </ul>
+      </div>
+    </div>
+    <div class="conclusion">CoTは頭の中で推論するテスト問題、ReActは図書館で調べながら解くレポート課題</div>
+  </div>
+  <div class="pg">12/20</div>
+</div>
+
+<!-- ===== 13: ReAct 旅行プラン例 ===== -->
+<div class="slide" data-s="13">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">ReAct ― 旅行プラン作成の動き</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="prompt b" style="transform:rotate(.2deg);font-size:.72rem">
+      <span class="prompt-tag">ReActの動作例</span>
+質問：来月の3連休に大阪旅行を計画中。予算5万円でプランを教えて。
+
+Thought 1：まず来月の3連休がいつか確認が必要。
+Action 1：[カレンダー検索] 来月の3連休の日程
+Observation 1：7月19日(土)〜21日(月・祝)
+
+Thought 2：7月下旬は暑い。交通費と宿泊費の目安を調べよう。
+Action 2：[旅行サイト検索] 東京-大阪 新幹線＋ホテル パック
+Observation 2：新幹線往復＋2泊で約32,000円のパックあり。
+
+Thought 3：残り予算は約18,000円。観光とイベントを調べよう。
+→ 最終回答：具体的な3日間のプランを提示</div>
+    <div class="conclusion">AIが自分で「何を調べればいいか」を考え、ツールで情報を集め、結果をもとに再度考える</div>
+  </div>
+  <div class="pg">13/20</div>
+</div>
+
+<!-- ===== 14: ReAct と AIエージェント ===== -->
+<div class="slide" data-s="14">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">ReAct = AIエージェントの中核技術</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body"><span class="kw">ReActは、今話題の「AIエージェント」の中核的な仕組み</span>。自律的にタスクを計画・実行するAIシステムの基盤。</div>
+    <div class="cards c3" style="margin-top:6px">
+      <div class="card"><div class="card-title">Claude Code</div><div class="card-body">Anthropic開発。コード生成・修正を自律的に実行するAIエージェント</div></div>
+      <div class="card"><div class="card-title">Devin / Codex Agent</div><div class="card-body">ソフトウェア開発の全工程を自律的に処理するAIエージェント</div></div>
+      <div class="card"><div class="card-title">MCP（Model Context Protocol）</div><div class="card-body">AIがアクセスできるツールの接続を標準化。ReActの「行動」の幅が飛躍的に拡大</div></div>
+    </div>
+    <div class="sticky p t1" style="margin-top:auto">
+      <div class="sticky-label">注意点</div>
+      ツールの品質に結果が左右される／適切な終了条件がないと調べ続ける／重要な判断は人間が確認すべき
+    </div>
+  </div>
+  <div class="pg">14/20</div>
+</div>
+
+<!-- ===== 15: メタプロンプティング 定義 ===== -->
+<div class="slide" data-s="15">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">メタプロンプティング</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body"><span class="kw">プロンプトを生成するためのプロンプト</span>を使う手法。「良い質問の仕方がわからない」ときにAI自身に「最適な質問文を作って」と頼む。</div>
+    <div class="prompt b" style="transform:rotate(.3deg);margin-top:8px">
+      <span class="prompt-tag">メタプロンプト例</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+私はプログラミング初心者です。Pythonでデータ分析を学びたいです。
+
+この学習に最適なプロンプトを作成してください。
+初心者が段階的に学べる構成で、実践的なコード例を含めてください。</div>
+    <div class="conclusion">AIが「最適なプロンプト」を生成 → そのプロンプトを使えば高品質な回答が得られる</div>
+  </div>
+  <div class="pg">15/20</div>
+</div>
+
+<!-- ===== 16: メタプロンプティング 改善・設計 ===== -->
+<div class="slide" data-s="16">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">メタプロンプティングの活用パターン</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="cards c3">
+      <div class="card"><div class="card-title">プロンプト生成</div><div class="card-body">「Pythonデータ分析を学ぶための最適なプロンプトを作って」→ 構造化された学習プロンプトを自動生成</div></div>
+      <div class="card"><div class="card-title">プロンプト改善</div><div class="card-body">「マーケティング戦略を考えて」→ 問題点を指摘し、対象・予算・期間を含む改善版を提案</div></div>
+      <div class="card"><div class="card-title">システムプロンプト設計</div><div class="card-body">「中学生の英語チューターの役割設定を作って」→ 性格・教え方・禁止事項を含む設計書を生成</div></div>
+    </div>
+    <div class="sticky g t2" style="margin-top:auto">
+      <div class="sticky-label">ポイント</div>
+      メタプロンプティングは「プロンプトの書き方がわからない」<strong>初心者にこそ有効</strong>。AIに相談しながらプロンプトを磨いていける。
+    </div>
+  </div>
+  <div class="pg">16/20</div>
+</div>
+
+<!-- ===== 17: 4つの手法の関係 ===== -->
+<div class="slide" data-s="17">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">4つの手法の全体像と使い分け</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="flow" style="margin:8px 0">
+      <div class="flow-step fb">基本手法<br><span style="font-weight:400;font-size:0.68rem">Zero-Shot / Few-Shot / ロール / 構造化</span></div>
+      <div class="flow-arr">→ 発展</div>
+      <div class="flow-step fp">高度な手法<br><span style="font-weight:400;font-size:0.68rem">連鎖 / CoT / ReAct / メタ</span></div>
+    </div>
+    <table class="wb-tbl" style="margin-top:8px">
+      <thead><tr><th>こんなとき</th><th>最適な手法</th></tr></thead>
+      <tbody>
+        <tr><td>長い文章を段階的に作りたい</td><td><span class="kw">プロンプト連鎖</span></td></tr>
+        <tr><td>計算問題や論理的な推論をさせたい</td><td><span class="kw">CoT</span></td></tr>
+        <tr><td>最新情報を調べながら答えさせたい</td><td><span class="kw">ReAct</span></td></tr>
+        <tr><td>そもそもどう聞けばいいかわからない</td><td><span class="kw">メタプロンプティング</span></td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">実務ではメタ→連鎖→各ステップでCoT→情報収集にReAct と組み合わせて使う</div>
+  </div>
+  <div class="pg">17/20</div>
+</div>
+
+<!-- ===== 18: よくある誤解 ===== -->
+<div class="slide" data-s="18">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">よくある誤解</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="col" style="gap:8px">
+      <div class="sticky p t2"><div class="sticky-label">誤解 1</div>「<strong>CoTを使えばどんな問題でも正解</strong>」→ 途中の推論がもっともらしくても結論が間違うことがある。「流暢な嘘」に注意</div>
+      <div class="sticky p t3"><div class="sticky-label">誤解 2</div>「<strong>ReActとCoTは同じもの</strong>」→ CoTは「考えるだけ」、ReActは「考えて行動もする」。外部ツールの有無が決定的な違い</div>
+      <div class="sticky p t4"><div class="sticky-label">誤解 3</div>「<strong>プロンプト連鎖は手間がかかるだけ</strong>」→ 各ステップで品質チェックでき、最終品質は大幅向上。「急がば回れ」</div>
+      <div class="sticky p t1"><div class="sticky-label">誤解 4</div>「<strong>メタプロンプティングで作ったプロンプトはそのまま使える</strong>」→ AI生成プロンプトも完璧ではない。必ず確認・修正してから使う</div>
+    </div>
+  </div>
+  <div class="pg">18/20</div>
+</div>
+
+<!-- ===== 19: まとめ ===== -->
+<div class="slide" data-s="19">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">まとめ</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <ul class="bl check">
+      <li><strong>プロンプト連鎖</strong>：大きなタスクを工程に分割し、段階的に品質を向上</li>
+      <li><strong>CoT（思考の連鎖）</strong>：「ステップバイステップで」で推論精度が大幅アップ</li>
+      <li><strong>ReAct</strong>：「考える + 行動する」のサイクルでAIエージェントの基盤技術</li>
+      <li><strong>メタプロンプティング</strong>：プロンプト自体をAIに作ってもらう・改善してもらう</li>
+      <li>基本手法（2-1）と高度手法（2-2）を<strong>組み合わせて最大効果</strong></li>
+      <li>2025年現在、これらの手法は<strong>AIエージェント技術の基盤</strong>になっている</li>
+    </ul>
+    <div class="conclusion green" style="margin-top:auto">基本 + 高度の手法を理解すれば、AIを「賢い道具」から「頼れるパートナー」に変えられる</div>
+  </div>
+  <div class="pg">19/20</div>
+</div>
+
+<!-- ===== 20: 用語集 ===== -->
+<div class="slide" data-s="20">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">プロンプト連鎖 (Prompt Chaining)</div><div class="card-body">前の出力を次の入力に渡し、タスクを段階的に処理する手法</div></div>
+      <div class="card"><div class="card-title">CoT (Chain-of-Thought)</div><div class="card-body">AIに思考プロセスを段階的に示させ、推論精度を上げる手法</div></div>
+      <div class="card"><div class="card-title">ReAct (Reasoning + Acting)</div><div class="card-body">推論と行動を交互に繰り返し、外部情報を活用して問題解決する手法</div></div>
+      <div class="card"><div class="card-title">メタプロンプティング</div><div class="card-body">プロンプト自体を生成・改善するためのプロンプトを使う手法</div></div>
+      <div class="card"><div class="card-title">AIエージェント</div><div class="card-body">自律的にタスクを計画・実行するAIシステム。ReActが中核技術</div></div>
+      <div class="card"><div class="card-title">MCP (Model Context Protocol)</div><div class="card-body">AIがアクセスするツールの接続を標準化するプロトコル</div></div>
+      <div class="card"><div class="card-title">推論モデル</div><div class="card-body">CoTが内部に組み込まれたモデル（o1/o3、Claude拡張思考等）</div></div>
+      <div class="card"><div class="card-title">DSPy</div><div class="card-body">Stanford大学発のプロンプト自動最適化フレームワーク</div></div>
+    </div>
+  </div>
+  <div class="pg">20/20</div>
+</div>
+
+</div><!-- /board-frame -->
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="pb" onclick="go(cur-1)" disabled>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1.5L3.5 6L8 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="nd"></div>
+  <span class="nav-count" id="nc">1 / 20</span>
+  <button class="nav-btn" id="nb" onclick="go(cur+1)">
+    次へ<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 1.5L8.5 6L4 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+// Fix mobile viewport height (address bar対策)
+function setVH(){document.documentElement.style.setProperty('--vh',window.innerHeight+'px')}
+setVH();
+window.addEventListener('resize',setVH);
+
+const S=document.querySelectorAll('.slide'),T=S.length;
+var cur=0;
+// Build dots
+const nd=document.getElementById('nd');
+for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
+
+function go(i){
+  if(i<0||i>=T||i===cur)return;
+  S[cur].classList.remove('active');
+  cur=i;
+  S[cur].style.display='';
+  S[cur].classList.add('active');
+  upd();
+}
+function upd(){
+  document.getElementById('nc').textContent=`${cur+1} / ${T}`;
+  document.getElementById('pf').style.width=`${((cur+1)/T)*100}%`;
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===T-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+});
+// Touch
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+
+// Copy
+function cp(b){
+  const c=b.closest('.prompt').cloneNode(true);
+  c.querySelector('.copy-btn')?.remove();
+  c.querySelector('.prompt-tag')?.remove();
+  navigator.clipboard.writeText(c.textContent.trim()).then(()=>{
+    b.textContent='Copied!';b.classList.add('ok');
+    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1500);
+  });
+}
+upd();
+</script>
+</body>
+</html>

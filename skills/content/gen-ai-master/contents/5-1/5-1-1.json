@@ -1,0 +1,180 @@
+{
+  "_meta": {
+    "lesson": "5-1-1",
+    "chapter": 5,
+    "chapter_title": "ChatGPT",
+    "section": "5-1",
+    "section_title": "入門",
+    "title": "ChatGPTとは・登録方法",
+    "level": "基礎",
+    "design": "chatgpt-ui",
+    "last_checked": "2026-04-10",
+    "sources": [
+      "https://help.openai.com/en/articles/6783457-what-is-chatgpt",
+      "https://help.openai.com/en/articles/7039783-how-can-i-access-chatgpt"
+    ]
+  },
+  "updateable": {
+    "models": {
+      "current_flagship": "GPT-4o",
+      "reasoning": "o3",
+      "lightweight": "GPT-4o mini",
+      "description_flagship": "高速・マルチモーダル（テキスト+画像+音声）",
+      "description_reasoning": "高度な推論（数学・科学・コーディング）",
+      "description_lightweight": "軽量・高速・コスパ重視"
+    },
+    "plans": {
+      "free": {
+        "name": "Free",
+        "model": "GPT-4o mini（制限あり）",
+        "price": "無料"
+      },
+      "plus": {
+        "name": "Plus",
+        "model": "GPT-4o / o3",
+        "price": "月額$20"
+      },
+      "pro": {
+        "name": "Pro",
+        "model": "全モデル無制限",
+        "price": "月額$200"
+      }
+    },
+    "registration": {
+      "url": "https://chatgpt.com",
+      "display": "chatgpt.com",
+      "requirements": "メール or Google/Apple/Microsoftアカウント"
+    },
+    "features": [
+      "テキスト生成（メール、レポート、企画書）",
+      "要約（長い文書を短くまとめる）",
+      "翻訳（多言語間の翻訳）",
+      "質疑応答（知識に基づいた回答）",
+      "コード生成（プログラムの作成・デバッグ）",
+      "画像生成（DALL·E 3による画像作成）",
+      "Web検索（リアルタイムの情報取得）"
+    ],
+    "release_date": "2022年11月",
+    "milestone": "2ヶ月で1億ユーザー突破"
+  },
+  "static": {
+    "company": "OpenAI",
+    "company_origin": "米国",
+    "philosophy": "AIの恩恵を全人類に届ける",
+    "core_strength": "先駆者としてのエコシステム。ユーザー数世界最大。情報が最も豊富。",
+    "target_user": "初めてAIを使う人。何でも試したい人。困ったときに情報を探しやすい。",
+    "analogy": "レストランに例えると、メニューが無限にあるレストラン。注文すればAIシェフがその場で作ってくれる。"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "title": "ChatGPTとは・登録方法",
+      "subtitle": "第5章 ChatGPT ― 入門"
+    },
+    {
+      "type": "goal",
+      "goals": [
+        "ChatGPTとは何かがわかる",
+        "アカウントを登録できる",
+        "画面の基本的な見方がわかる",
+        "最初のチャットを送れる"
+      ],
+      "conclusion": "このレッスンが終わったら、実際にChatGPTを使い始められます。"
+    },
+    {
+      "type": "chat",
+      "user_message": "ChatGPTって、そもそも何？",
+      "ai_response": {
+        "intro": "**ChatGPT**は、米{company}社が開発した**対話型の生成AI**サービスです。",
+        "body": "人間と自然な会話ができるのが最大の特徴で、テキストで質問や指示を入力すると、AIが文章で回答します。",
+        "analogy": "{analogy}",
+        "fact": "{release_date}にリリースされ、{milestone}。2026年現在、世界で数億人が利用しています。"
+      }
+    },
+    {
+      "type": "chat",
+      "user_message": "具体的にどんなことができるの？",
+      "ai_response": {
+        "intro": "ChatGPTでできることは大きく分けて**{features_count}つ**あります：",
+        "list": "{features}",
+        "note": "特に2025〜2026年にかけて、高度な機能が次々と追加されています。詳しくは5-6で学びます。"
+      }
+    },
+    {
+      "type": "chat",
+      "user_message": "どうやって始めるの？",
+      "ai_response": {
+        "intro": "**3ステップで始められます**：",
+        "steps": [
+          "{registration.url} にアクセス",
+          "「Sign up」→ {registration.requirements}で登録",
+          "チャット画面が表示されたら、下の入力欄にメッセージを入力して送信"
+        ],
+        "link": {
+          "url": "{registration.url}",
+          "display": "{registration.display}",
+          "label": "ChatGPTを開く"
+        }
+      }
+    },
+    {
+      "type": "chat",
+      "user_message": "無料で使えるの？",
+      "ai_response": {
+        "intro": "はい、**無料で始められます**。",
+        "body": "無料プランでも基本的な会話・文章作成・要約は十分に使えます。",
+        "note": "プランの詳細は5-2-3で学びます。まずは無料で触ってみましょう。"
+      }
+    },
+    {
+      "type": "chat_with_highlight",
+      "user_message": "画面の基本的な見方を教えて",
+      "ai_response": {
+        "intro": "ChatGPTの画面は3つのエリアで構成されています：",
+        "points": [
+          "上部の**モデル選択** — 使用するモデルを切り替えられます",
+          "中央の**チャットエリア** — 会話のやり取りが表示されます",
+          "下部の**入力欄** — ここにプロンプトを入力します"
+        ]
+      },
+      "highlights": [
+        {"target": "model-selector", "label": "ここでモデルを切り替え"},
+        {"target": "input-bar", "label": "ここにプロンプトを入力"}
+      ]
+    },
+    {
+      "type": "chat",
+      "user_message": "最初に何を聞けばいい？",
+      "ai_response": {
+        "intro": "まずはこんなプロンプトを試してみましょう：",
+        "prompt_example": {
+          "text": "今日の天気に合った服装を3パターン提案してください。場所は東京で、30代ビジネスパーソンです。",
+          "copyable": true
+        },
+        "note": "具体的に書くほど、期待通りの回答が返ってきます。プロンプトの書き方は3章で学んだ通りです。"
+      }
+    },
+    {
+      "type": "summary",
+      "points": [
+        "**ChatGPT**はOpenAIが開発した対話型生成AIサービス",
+        "テキスト生成・要約・翻訳・コード・画像生成など**{features_count}つの主要機能**",
+        "**無料で始められる**。{registration.display}から登録",
+        "画面は**モデル選択・チャットエリア・入力欄**の3構成",
+        "まずは触ってみるのが一番の学び方"
+      ],
+      "next": "次は → 5-1-2. 画面の見方と基本操作"
+    },
+    {
+      "type": "glossary",
+      "terms": [
+        {"term": "ChatGPT", "definition": "{company}社が開発した対話型生成AIサービス。自然言語で質問・指示するとAIが回答する。"},
+        {"term": "LLM", "definition": "Large Language Model（大規模言語モデル）。大量のテキストを学習し、人間のような文章を生成できるAIの頭脳部分。"},
+        {"term": "プロンプト", "definition": "ChatGPTに入力する指示文や質問。具体的に書くほど良い回答が得られる。"},
+        {"term": "マルチモーダル", "definition": "テキスト・画像・音声など複数の種類のデータを同時に扱えるAIの能力。"},
+        {"term": "{models.current_flagship}", "definition": "{models.description_flagship}。ChatGPTの主力モデル。"},
+        {"term": "DALL·E", "definition": "ChatGPTに内蔵された画像生成AI。テキストで指示すると画像を生成してくれる。"}
+      ]
+    }
+  ]
+}

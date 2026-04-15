@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5-1-1. ChatGPT入門 — ChatGPT-UI Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #212121;
+  --sidebar-bg: #171717;
+  --surface: #2F2F2F;
+  --text: #ECECEC;
+  --text-secondary: #B4B4B4;
+  --text-muted: #8E8E8E;
+  --accent: #10A37F;
+  --border: rgba(255,255,255,0.08);
+  --input-bg: #303030;
+  --input-border: #424242;
+  --code-bg: #0D0D0D;
+  --code-header: #262626;
+  --user-bubble: #303030;
+  --slide-w: 960px;
+  --slide-h: 540px;
+  --sidebar-w: 200px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:#0D0D0D;font-family:'Inter','Noto Sans JP',system-ui,sans-serif;color:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
+
+/* --- Slide --- */
+.slide-wrapper{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+.progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--accent);transition:width .4s;z-index:100}
+.slide{position:absolute;width:var(--slide-w);height:var(--slide-h);max-width:95vw;max-height:90vh;background:var(--bg);border-radius:12px;display:none;flex-direction:row;opacity:0;transform:translateX(30px);transition:opacity .3s,transform .3s;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6)}
+.slide.active{display:flex;opacity:1;transform:translateX(0)}
+.slide.exit-left{display:flex;opacity:0;transform:translateX(-30px)}
+
+/* --- Sidebar --- */
+.sb{width:var(--sidebar-w);background:var(--sidebar-bg);display:flex;flex-direction:column;padding:10px 8px;flex-shrink:0;border-right:1px solid var(--border)}
+.sb-top{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;margin-bottom:6px}
+.sb-top-title{font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:6px}
+.sb-new{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);cursor:default}
+.sb-new svg{width:16px;height:16px;stroke:var(--text-muted);fill:none;stroke-width:2}
+.sb-search{background:var(--surface);border:none;border-radius:10px;padding:7px 10px;font-size:.75rem;color:var(--text-secondary);width:100%;margin-bottom:10px;outline:none;font-family:inherit}
+.sb-label{font-size:.65rem;font-weight:500;color:var(--text-muted);padding:6px 10px 3px;letter-spacing:.03em}
+.sb-item{padding:7px 10px;border-radius:8px;font-size:.78rem;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:default;margin-bottom:1px;display:flex;align-items:center;gap:6px}
+.sb-item.active{background:var(--surface);color:var(--text)}
+.sb-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0}
+.sb-bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:8px}
+.sb-user{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;font-size:.78rem;color:var(--text-secondary)}
+.sb-user-avatar{width:24px;height:24px;border-radius:50%;background:#5E35B1;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#FFF}
+
+/* --- Main --- */
+.gpt-main{flex:1;display:flex;flex-direction:column;min-width:0}
+
+/* Top bar: model selector */
+.topbar{padding:8px 16px;display:flex;align-items:center;flex-shrink:0}
+.model-sel{display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:10px;font-size:.82rem;font-weight:500;color:var(--text);cursor:default;transition:background .15s}
+.model-sel:hover{background:var(--surface)}
+.model-sel svg{width:14px;height:14px;stroke:var(--text-muted);fill:none;stroke-width:2}
+
+/* Chat */
+.chat{flex:1;overflow-y:auto;padding:12px 40px;display:flex;flex-direction:column;gap:20px}
+.chat::-webkit-scrollbar{width:4px}
+.chat::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
+
+/* --- Messages --- */
+.m{display:flex;gap:10px;animation:mIn .3s ease both}
+.m.u{justify-content:flex-end}
+
+@keyframes mIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* User msg: right-aligned bubble, NO avatar shown */
+.m.u .bubble{background:var(--user-bubble);padding:10px 16px;border-radius:20px;font-size:.88rem;line-height:1.6;max-width:75%}
+
+/* AI msg: left with icon, NO bubble bg */
+.m.a{gap:10px}
+.ai-icon{width:28px;height:28px;border-radius:50%;background:var(--sidebar-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.ai-icon svg{width:18px;height:18px}
+
+.ai-body{max-width:90%;font-size:.88rem;line-height:1.7}
+.ai-body strong{font-weight:600;color:#FFF}
+.ai-body .kw{color:var(--accent);font-weight:600}
+.ai-body ul,.ai-body ol{margin:6px 0 6px 18px;display:flex;flex-direction:column;gap:4px}
+.ai-body li{font-size:.86rem;line-height:1.6}
+
+/* AI response actions */
+.ai-actions{display:flex;gap:4px;margin-top:6px}
+.ai-act{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:default;transition:background .15s}
+.ai-act:hover{background:var(--surface)}
+.ai-act svg{width:16px;height:16px;stroke:var(--text-muted);fill:none;stroke-width:1.8}
+
+/* --- Code block --- */
+.codeblock{background:var(--code-bg);border-radius:10px;margin:8px 0;overflow:hidden;border:1px solid var(--border)}
+.codeblock-head{background:var(--code-header);padding:6px 12px;display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--text-muted)}
+.codeblock-head .copy-btn{background:none;border:none;color:var(--text-muted);font-size:.72rem;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:inherit;transition:color .2s}
+.codeblock-head .copy-btn:hover{color:var(--text)}
+.codeblock-head .copy-btn.copied{color:var(--accent)}
+.codeblock-body{padding:12px 14px;font-family:'Source Code Pro',monospace;font-size:.8rem;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+
+/* --- Input bar --- */
+.input-wrap{padding:4px 40px 14px}
+.input-box{background:var(--input-bg);border:1px solid var(--input-border);border-radius:24px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:8px;transition:border-color .2s}
+.input-box:hover{border-color:#555}
+.input-icons{display:flex;gap:2px}
+.input-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:default}
+.input-icon svg{width:18px;height:18px;stroke:var(--text-muted);fill:none;stroke-width:1.8}
+.input-text{flex:1;font-size:.86rem;color:var(--text-muted);font-family:inherit}
+.send-btn{width:32px;height:32px;border-radius:50%;background:var(--text);border:none;display:flex;align-items:center;justify-content:center;cursor:default;opacity:.3}
+.send-btn svg{width:16px;height:16px;stroke:var(--sidebar-bg);fill:none;stroke-width:2.5}
+.input-hint{text-align:center;font-size:.62rem;color:#555;margin-top:3px}
+
+/* --- Welcome (cover) --- */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px}
+.welcome-icon{width:40px;height:40px;border-radius:50%;background:var(--sidebar-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.welcome-icon svg{width:24px;height:24px}
+.welcome-title{font-size:1.5rem;font-weight:600;text-align:center}
+.welcome-sub{font-size:.85rem;color:var(--text-muted);text-align:center}
+.welcome-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.welcome-chip{background:transparent;border:1px solid var(--border);border-radius:16px;padding:9px 18px;font-size:.8rem;color:var(--text-secondary);cursor:default;transition:border-color .2s}
+.welcome-chip:hover{border-color:var(--accent);color:var(--text)}
+
+/* --- Comparison table --- */
+.cmp-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.78rem}
+.cmp-table th{background:var(--surface);padding:7px 10px;text-align:left;font-weight:600;color:var(--accent);border-bottom:1px solid var(--border)}
+.cmp-table td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.cmp-table tr:last-child td{border-bottom:none}
+
+/* --- Glossary --- */
+.gloss-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:6px 0}
+.gloss-card{background:var(--surface);border-radius:10px;padding:10px 14px;border:1px solid var(--border)}
+.gloss-card .gt{font-weight:600;color:var(--accent);font-size:.82rem;margin-bottom:2px}
+.gloss-card .gd{font-size:.74rem;color:var(--text-muted);line-height:1.5}
+
+/* --- Red highlight annotation --- */
+.ui-hl{position:relative;z-index:10}
+.ui-hl::after{content:'';position:absolute;inset:-4px;border:2.5px solid #EF4444;border-radius:inherit;pointer-events:none;z-index:11;animation:hlPulse 2s ease-in-out infinite;box-shadow:0 0 10px rgba(239,68,68,.25)}
+.ui-hl[data-label]::before{content:attr(data-label);position:absolute;top:-24px;left:50%;transform:translateX(-50%);background:#EF4444;color:#FFF;font-size:.62rem;font-weight:600;padding:2px 10px;border-radius:4px;white-space:nowrap;z-index:12;font-family:'Noto Sans JP',sans-serif}
+@keyframes hlPulse{0%,100%{border-color:#EF4444;box-shadow:0 0 8px rgba(239,68,68,.2)}50%{border-color:#F87171;box-shadow:0 0 14px rgba(239,68,68,.35)}}
+
+/* --- Page number --- */
+.pg{position:absolute;bottom:5px;right:12px;font-size:.6rem;color:#444;z-index:2}
+
+/* --- Nav --- */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 20px;background:var(--sidebar-bg);border-top:1px solid var(--border);z-index:50}
+.nav-btn{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 18px;font-family:inherit;font-size:.8rem;font-weight:500;color:var(--text);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.nav-btn:disabled{opacity:.2;cursor:not-allowed}
+.nav-btn:disabled:hover{border-color:var(--border);color:var(--text)}
+.nav-dots{display:flex;gap:5px;align-items:center}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:#3A3A3A;border:none;cursor:pointer;transition:all .2s}
+.nav-dot.active{background:var(--accent);width:18px;border-radius:4px}
+.nav-dot:hover{background:var(--accent);opacity:.5}
+.slide-counter{font-size:.8rem;color:#444;font-weight:500;min-width:45px;text-align:center}
+
+@media(max-width:768px){.sb{display:none}.slide{border-radius:0;max-width:100vw}.chat{padding:12px 16px}.input-wrap{padding:4px 16px 12px}}
+
+/* Animations */
+.slide.active .chat .m{animation:mIn .3s ease both}
+.slide.active .chat .m:nth-child(2){animation-delay:.06s}
+.slide.active .chat .m:nth-child(3){animation-delay:.12s}
+.slide.active .chat .m:nth-child(4){animation-delay:.18s}
+.slide.active .chat .m:nth-child(5){animation-delay:.24s}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar" style="width:9%"></div>
+<div class="slide-wrapper" id="slideWrapper">
+
+<!-- ===== OpenAI sparkle SVG (reusable) ===== -->
+<svg style="display:none">
+  <symbol id="sparkle" viewBox="0 0 24 24"><path d="M12 2C12 2 14.5 8.5 16 10C17.5 11.5 22 12 22 12C22 12 17.5 12.5 16 14C14.5 15.5 12 22 12 22C12 22 9.5 15.5 8 14C6.5 12.5 2 12 2 12C2 12 6.5 11.5 8 10C9.5 8.5 12 2 12 2Z" fill="#ECECEC"/></symbol>
+</svg>
+
+<!-- S1: Welcome -->
+<div class="slide active" data-slide="1">
+  <div class="sb">
+    <div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div>
+    <input class="sb-search" type="text" placeholder="Search chats..." readonly>
+    <div class="sb-label">5章 ChatGPT</div>
+    <div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div>
+    <div class="sb-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>モデルと遷移</div>
+    <div class="sb-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>チャットと連続チャット</div>
+    <div class="sb-bottom"><div class="sb-user"><div class="sb-user-avatar">U</div>User</div></div>
+  </div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="welcome">
+      <div class="welcome-icon"><svg width="24" height="24"><use href="#sparkle"/></svg></div>
+      <div class="welcome-title">5-1-1. ChatGPT入門</div>
+      <div class="welcome-sub">第5章 ChatGPT ― ChatGPT基礎</div>
+      <div class="welcome-chips">
+        <div class="welcome-chip">ChatGPTって何？</div>
+        <div class="welcome-chip">無料で使えるの？</div>
+        <div class="welcome-chip">どんなことができる？</div>
+        <div class="welcome-chip">始め方を教えて</div>
+      </div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">ChatGPTについて質問してみよう...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="input-hint">ChatGPT can make mistakes. Check important info.</div></div>
+    <div class="pg">1/11</div>
+  </div>
+</div>
+
+<!-- S2: Goal -->
+<div class="slide" data-slide="2">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div><div class="sb-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>モデルと遷移</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">このチャプターで何を学ぶの？</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body"><strong>このチャプターのゴール</strong>は以下の4つです：<ul><li><span class="kw">ChatGPTとは何か</span>（定義・特徴）がわかる</li><li><span class="kw">モデルの違い</span>（GPT-4o / o3 など）が理解できる</li><li><span class="kw">チャットの基本操作</span>が身につく</li><li><span class="kw">無料版と有料版の違い</span>が把握できる</li></ul>ここが理解できれば、次の「カスタマイズと設定」にスムーズに進めます。</div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">2/11</div>
+  </div>
+</div>
+
+<!-- S3: What is ChatGPT -->
+<div class="slide" data-slide="3">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">ChatGPTって、そもそも何？</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body"><strong>ChatGPT</strong>は、米<span class="kw">OpenAI社</span>が開発した<span class="kw">対話型の生成AI</span>サービスです。<br><br>人間と自然な会話ができるのが最大の特徴で、テキストで質問や指示を入力すると、AIが文章で回答します。<br><br>レストランに例えると、<strong>メニューが無限にあるレストラン</strong>のようなもの。「こんな料理を作って」とお願いすれば、AIシェフがその場で作ってくれます。<br><br>2022年11月にリリースされ、わずか2ヶ月で<strong>1億ユーザー</strong>を突破。2026年現在、世界で数億人が利用しています。</div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">3/11</div>
+  </div>
+</div>
+
+<!-- S4: What can it do -->
+<div class="slide" data-slide="4">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">具体的にどんなことができるの？</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body">ChatGPTでできることは大きく分けて<strong>7つ</strong>あります：<ol><li><strong>文章の生成・下書き</strong> — メール、レポート、ブログ記事</li><li><strong>要約</strong> — 長い文書を短くまとめる</li><li><strong>翻訳</strong> — 多言語間の翻訳</li><li><strong>質疑応答</strong> — 知識に基づいた回答</li><li><strong>コード生成</strong> — プログラムの作成・デバッグ</li><li><strong>画像の生成・読み取り</strong> — DALL·E 3による画像生成</li><li><strong>Web検索</strong> — リアルタイムの情報取得</li></ol>特に2025〜2026年にかけて、<span class="kw">Deep Research</span>や<span class="kw">Advanced Voice</span>など高度な機能が追加されました。</div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">4/11</div>
+  </div>
+</div>
+
+<!-- S5: Models -->
+<div class="slide" data-slide="5">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">GPT-4oとかo3とか、モデルの違いがよくわからない</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body">主なモデルを整理しますね：
+        <div class="codeblock"><div class="codeblock-head"><span>モデル比較</span><button class="copy-btn" onclick="copyCode(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div><div class="codeblock-body">GPT-4o     → 高速・マルチモーダル（テキスト+画像+音声）
+GPT-4o mini → 軽量・高速・コスパ重視
+o3         → 高度な推論（数学・科学・コーディング）
+o4-mini    → 推論モデルの軽量版</div></div>
+        「<span class="kw">o</span>」が付くモデルは<strong>推論特化型</strong>、「<span class="kw">GPT-4o</span>」は<strong>汎用型</strong>です。<br><br>車で例えると、GPT-4oは万能な<strong>セダン</strong>、o3は難問を解く<strong>F1マシン</strong>。</div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">5/11</div>
+  </div>
+</div>
+
+<!-- S6: Free vs Paid -->
+<div class="slide" data-slide="6">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">無料版と有料版って何が違うの？</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body">主な違いをまとめます：
+        <div class="codeblock"><div class="codeblock-head"><span>プラン比較表</span><button class="copy-btn" onclick="copyCode(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div><div class="codeblock-body">             Free      Plus($20/月)   Pro($200/月)
+GPT-4o       制限あり   ◎             ◎ 無制限
+o3推論       ✕         ◎             ◎ 無制限
+画像生成      制限あり   ◎             ◎
+Deep Research ✕         ◎             ◎
+Advanced Voice制限あり   ◎             ◎
+GPTs作成     ✕         ◎             ◎</div></div>
+        まずは<strong>無料版で試して</strong>みて、使い込むようになったら<span class="kw">Plus</span>がおすすめです。</div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">6/11</div>
+  </div>
+</div>
+
+<!-- S7: How to start -->
+<div class="slide" data-slide="7">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">始め方を教えて</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body"><strong>3ステップで始められます</strong>：<ol><li><span class="kw">chatgpt.com</span> にアクセス</li><li><strong>「Sign up」</strong> → メール or Google/Apple/Microsoftアカウントで登録</li><li>下の入力欄にメッセージを入力して<strong>送信</strong></li></ol>まずはこんなプロンプトを試してみましょう：
+        <div class="codeblock"><div class="codeblock-head"><span>はじめてのプロンプト</span><button class="copy-btn" onclick="copyCode(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div><div class="codeblock-body">今日の天気に合った服装を3パターン提案してください。場所は東京で、30代ビジネスパーソンです。</div></div></div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">7/11</div>
+  </div>
+</div>
+
+<!-- S8: UI Highlight -->
+<div class="slide" data-slide="8">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel ui-hl" data-label="ここでモデルを切り替え" style="border-radius:10px">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">画面の操作方法を教えて</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body">ChatGPTの画面は3つのエリアです：<ol><li>上部の<span class="kw">モデル選択</span> — 使うモデルを切り替え（赤枠 ↑）</li><li>中央の<span class="kw">チャットエリア</span> — 会話のやり取り</li><li>下部の<span class="kw">入力欄</span> — プロンプトを入力（赤枠 ↓）</li></ol>右の<strong>送信ボタン（↑）</strong>を押すか、<strong>Enterキー</strong>で送信できます。</div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box ui-hl" data-label="ここにプロンプトを入力" style="border-radius:24px"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">プロンプトをここに入力...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">8/11</div>
+  </div>
+</div>
+
+<!-- S9: Tips -->
+<div class="slide" data-slide="9">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">ChatGPTを使うときに気をつけることは？</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body"><strong>5つの注意点</strong>を覚えておきましょう：<ol><li><span class="kw">ハルシネーション</span> — AIはもっともらしいウソをつくことがある。重要な情報は必ず<strong>ファクトチェック</strong></li><li><span class="kw">個人情報を入力しない</span> — 氏名・住所・パスワードなどの機密情報は避ける</li><li><span class="kw">著作権に注意</span> — AI生成物をそのまま公開する場合は権利関係を確認</li><li><span class="kw">最新情報の限界</span> — モデルの学習データには期限がある</li><li><span class="kw">回答は出発点</span> — AIの答えは「下書き」。人間が確認・編集して完成</li></ol></div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">9/11</div>
+  </div>
+</div>
+
+<!-- S10: Summary -->
+<div class="slide" data-slide="10">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">今日学んだことをまとめて！</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body"><strong>まとめ</strong> ✅<ul><li>✅ <strong>ChatGPT</strong>はOpenAIが開発した<span class="kw">対話型生成AI</span>サービス</li><li>✅ 文章生成・要約・翻訳・コード・画像生成・Web検索など<strong>7つの主要機能</strong></li><li>✅ モデルは<span class="kw">GPT-4o</span>（汎用）と<span class="kw">o3</span>（推論特化）の2系統</li><li>✅ <strong>無料版でも基本機能は使える</strong>。Plusは月$20</li><li>✅ <strong>3ステップ</strong>で始められる（アクセス→登録→入力）</li><li>✅ ハルシネーション・個人情報・著作権に<strong>注意して使う</strong></li></ul><br>次は <strong>→ 5-1-2. ChatGPTのモデルと遷移</strong> へ！</div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">10/11</div>
+  </div>
+</div>
+
+<!-- S11: Glossary -->
+<div class="slide" data-slide="11">
+  <div class="sb"><div class="sb-top"><span class="sb-top-title"><svg width="18" height="18"><use href="#sparkle"/></svg>ChatGPT</span><div class="sb-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div></div><div class="sb-label">5章 ChatGPT</div><div class="sb-item active"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>ChatGPT入門</div></div>
+  <div class="gpt-main">
+    <div class="topbar"><div class="model-sel">ChatGPT <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="chat">
+      <div class="m u"><div class="bubble">今日出てきた用語をまとめて</div></div>
+      <div class="m a"><div class="ai-icon"><svg width="18" height="18"><use href="#sparkle"/></svg></div><div><div class="ai-body"><strong>用語集</strong>をまとめました：
+        <div class="gloss-grid"><div class="gloss-card"><div class="gt">ChatGPT</div><div class="gd">OpenAI社が開発した対話型生成AIサービス。自然言語で質問・指示するとAIが回答する。</div></div><div class="gloss-card"><div class="gt">GPT-4o</div><div class="gd">テキスト・画像・音声を扱えるマルチモーダル汎用モデル。日常的な用途に最適。</div></div><div class="gloss-card"><div class="gt">o3</div><div class="gd">高度な推論に特化したモデル。数学・科学・複雑な分析に強い。</div></div><div class="gloss-card"><div class="gt">ハルシネーション</div><div class="gd">AIがもっともらしいが事実と異なる情報を生成する現象。ファクトチェックが必要。</div></div><div class="gloss-card"><div class="gt">Deep Research</div><div class="gd">ChatGPTが自律的にWeb検索を繰り返し、詳細な調査レポートを生成する高度機能。</div></div><div class="gloss-card"><div class="gt">プロンプト</div><div class="gd">ChatGPTに入力する指示文や質問。具体的に書くほど良い回答が得られる。</div></div></div></div><div class="ai-actions"><div class="ai-act"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" stroke-linejoin="round"/></svg></div><div class="ai-act"><svg viewBox="0 0 24 24"><path d="M10 15V9a3 3 0 013-3l4 9v11H5.72a2 2 0 01-2-1.7l-1.38-9a2 2 0 012-2.3H10z" stroke-linejoin="round"/></svg></div></div></div></div>
+    </div>
+    <div class="input-wrap"><div class="input-box"><div class="input-icons"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="input-text">Message ChatGPT...</span><div class="send-btn"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+    <div class="pg">11/11</div>
+  </div>
+</div>
+
+</div>
+
+<nav class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>前へ</button>
+  <div class="nav-dots" id="navDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 11</span>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">次へ<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+</nav>
+
+<script>
+const slides=document.querySelectorAll('.slide'),totalSlides=slides.length;let currentSlide=0;
+const dc=document.getElementById('navDots');for(let i=0;i<totalSlides;i++){const d=document.createElement('button');d.className='nav-dot'+(i===0?' active':'');d.onclick=()=>goToSlide(i);dc.appendChild(d)}
+function goToSlide(i){if(i<0||i>=totalSlides||i===currentSlide)return;const o=currentSlide;slides[o].classList.remove('active');slides[o].classList.add('exit-left');currentSlide=i;setTimeout(()=>{slides[o].classList.remove('active','exit-left');slides[o].style.display='none'},50);slides[currentSlide].classList.add('active');updateUI()}
+function nextSlide(){goToSlide(currentSlide+1)}function prevSlide(){goToSlide(currentSlide-1)}
+function updateUI(){document.getElementById('slideCounter').textContent=`${currentSlide+1} / ${totalSlides}`;document.getElementById('progressBar').style.width=`${((currentSlide+1)/totalSlides)*100}%`;document.getElementById('prevBtn').disabled=currentSlide===0;document.getElementById('nextBtn').disabled=currentSlide===totalSlides-1;document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===currentSlide))}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide()}if(e.key==='ArrowLeft'){e.preventDefault();prevSlide()}});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX});document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?nextSlide():prevSlide()}});
+function copyCode(btn){const b=btn.closest('.codeblock');const t=b.querySelector('.codeblock-body').textContent.trim();navigator.clipboard.writeText(t).then(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Copied!';btn.classList.add('copied');setTimeout(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy';btn.classList.remove('copied')},1500)})}
+updateUI();
+</script>
+</body>
+</html>

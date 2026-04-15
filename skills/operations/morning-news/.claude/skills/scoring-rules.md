@@ -10,6 +10,7 @@
 | 「API」が含まれる | +1 |
 | 英語圏の主要メディア（TechCrunch / MIT TR / VentureBeat） | +1 |
 | person-tracker 由来の情報 | +1 |
+| リリースノート / Changelog 由来 | +2 |
 
 ## 重要度判定
 - 合計 6点以上 → importance: 高

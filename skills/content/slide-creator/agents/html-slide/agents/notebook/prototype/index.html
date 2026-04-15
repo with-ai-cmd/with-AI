@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-1. プロンプトとは — Notebook HTML Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Caveat:wght@700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   CSS Variables — Notebook Design System
+   ======================================== */
+:root {
+  /* Main colors */
+  --nb-bg: #F5F0E6;
+  --nb-surface: #FFFFFF;
+  --nb-ink: #2C2C2C;
+  --nb-blue: #2B6CB0;
+  --nb-red: #E53E3E;
+  --nb-rule: #C5D8E8;
+  --nb-margin: #E8A0A0;
+
+  /* Highlighter markers */
+  --nb-hl-yellow: rgba(255,240,70,0.35);
+  --nb-hl-pink: rgba(255,150,180,0.3);
+  --nb-hl-green: rgba(130,220,130,0.3);
+  --nb-hl-blue: rgba(130,190,255,0.25);
+
+  /* Sticky notes */
+  --nb-sticky-yellow: #FFF3B0;
+  --nb-sticky-blue: #D6ECFF;
+  --nb-sticky-pink: #FFD6E0;
+  --nb-sticky-green: #D4F5D4;
+
+  /* UI */
+  --nb-tape: rgba(200,180,140,0.55);
+  --nb-nav-bg: #F0EDE5;
+  --nb-progress: #2B6CB0;
+  --nb-clip: #B0B0B0;
+  --nb-border: #E0DDD5;
+
+  /* Font sizes */
+  --fs-cover-title: 2.8rem;
+  --fs-title: 1.7rem;
+  --fs-subtitle: 1.15rem;
+  --fs-body: 0.95rem;
+  --fs-note: 0.82rem;
+  --fs-prompt: 0.88rem;
+  --fs-page-num: 0.75rem;
+  --fs-header: 0.78rem;
+
+  /* Slide dimensions */
+  --slide-width: 960px;
+  --slide-height: 540px;
+}
+
+/* ========================================
+   Reset & Base
+   ======================================== */
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+
+body {
+  background: var(--nb-bg);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  color: var(--nb-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ========================================
+   Slide Container
+   ======================================== */
+.slide-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--nb-progress);
+  transition: width 0.4s ease;
+  z-index: 100;
+}
+
+.slide {
+  position: absolute;
+  width: var(--slide-width);
+  height: var(--slide-height);
+  max-width: 95vw;
+  max-height: 90vh;
+  background: var(--nb-surface);
+  border-radius: 2px;
+  padding: 32px 48px 32px 72px; /* extra left for margin line + ring holes */
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  overflow: hidden;
+  box-shadow:
+    0 1px 4px rgba(0,0,0,0.06),
+    0 4px 20px rgba(0,0,0,0.04),
+    2px 0 8px rgba(0,0,0,0.02);
+}
+
+.slide.active {
+  display: flex;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide.exit-left {
+  display: flex;
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+/* ========================================
+   Notebook Ruled Lines (horizontal)
+   ======================================== */
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 27px,
+      var(--nb-rule) 27px,
+      var(--nb-rule) 28px
+    );
+  background-position: 0 18px;
+  opacity: 0.45;
+}
+
+/* Margin line (red vertical) */
+.slide::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 58px;
+  width: 1.5px;
+  background: var(--nb-margin);
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ========================================
+   Ring Holes (left edge)
+   ======================================== */
+.ring-holes {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  pointer-events: none;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 30px 0;
+}
+
+.ring-hole {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #D0CCC0;
+  background: var(--nb-bg);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* ========================================
+   Header & Page Number
+   ======================================== */
+.slide-header {
+  font-size: var(--fs-header);
+  color: var(--nb-blue);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.page-number {
+  position: absolute;
+  bottom: 14px;
+  right: 22px;
+  font-size: var(--fs-page-num);
+  color: #AAA;
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  z-index: 1;
+}
+
+/* ========================================
+   Cover Slide
+   ======================================== */
+.slide.cover {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cover .slide-header {
+  position: absolute;
+  top: 18px;
+  left: 76px;
+}
+
+.cover-title {
+  font-size: var(--fs-cover-title);
+  font-weight: 700;
+  color: var(--nb-ink);
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+
+.cover-title .accent {
+  color: var(--nb-blue);
+  position: relative;
+}
+
+/* Yellow marker underline on accent */
+.cover-title .accent::after {
+  content: '';
+  position: absolute;
+  left: -4px; right: -4px;
+  bottom: 2px;
+  height: 14px;
+  background: var(--nb-hl-yellow);
+  z-index: -1;
+  transform: skewX(-2deg);
+  border-radius: 2px;
+}
+
+.cover-subtitle {
+  font-size: var(--fs-subtitle);
+  color: #999;
+  margin-top: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.cover-doodles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cover-doodles svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ========================================
+   Page Title
+   ======================================== */
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 700;
+  color: var(--nb-ink);
+  margin-bottom: 2px;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+}
+
+.title-underline {
+  width: 70px;
+  height: 3px;
+  background: var(--nb-red);
+  border-radius: 2px;
+  margin-bottom: 16px;
+  transform: rotate(-0.3deg);
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================
+   Content Area
+   ======================================== */
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.content-row {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+}
+
+.content-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content-col.wide { flex: 1.5; }
+.content-col.narrow { flex: 0.8; }
+
+/* ========================================
+   Text Styles
+   ======================================== */
+.body-text {
+  font-size: var(--fs-body);
+  line-height: 1.75;
+}
+
+.subtitle {
+  font-size: var(--fs-subtitle);
+  font-weight: 700;
+  color: var(--nb-blue);
+}
+
+.note {
+  font-size: var(--fs-note);
+  color: #999;
+}
+
+.keyword {
+  color: var(--nb-red);
+  font-weight: 700;
+}
+
+/* Highlighter marker effect */
+.marker-yellow {
+  background: var(--nb-hl-yellow);
+  padding: 1px 4px;
+  border-radius: 2px;
+  transform: skewX(-1deg);
+  display: inline;
+}
+
+.marker-pink {
+  background: var(--nb-hl-pink);
+  padding: 1px 4px;
+  border-radius: 2px;
+  display: inline;
+}
+
+.marker-green {
+  background: var(--nb-hl-green);
+  padding: 1px 4px;
+  border-radius: 2px;
+  display: inline;
+}
+
+.marker-blue {
+  background: var(--nb-hl-blue);
+  padding: 1px 4px;
+  border-radius: 2px;
+  display: inline;
+}
+
+/* ========================================
+   Bullet Points
+   ======================================== */
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.bullet-list li {
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  padding-left: 24px;
+  position: relative;
+}
+
+.bullet-list li::before {
+  content: '●';
+  position: absolute;
+  left: 2px;
+  top: 0;
+  color: var(--nb-blue);
+  font-size: 0.55rem;
+  line-height: 1.65;
+}
+
+.bullet-list.red li::before {
+  color: var(--nb-red);
+}
+
+/* Checkbox style */
+.bullet-list.check li {
+  padding-left: 28px;
+}
+
+.bullet-list.check li::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--nb-blue);
+  border-radius: 2px;
+  position: absolute;
+  left: 2px;
+  top: 4px;
+  font-size: 0;
+  background: none;
+}
+
+.bullet-list.check li::after {
+  content: '✓';
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  color: var(--nb-red);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* ========================================
+   Sticky Note
+   ======================================== */
+.sticky {
+  padding: 14px 18px;
+  border-radius: 1px;
+  position: relative;
+  box-shadow: 1px 2px 6px rgba(0,0,0,0.08);
+  font-size: var(--fs-note);
+  line-height: 1.6;
+}
+
+.sticky.yellow { background: var(--nb-sticky-yellow); }
+.sticky.blue { background: var(--nb-sticky-blue); }
+.sticky.pink { background: var(--nb-sticky-pink); }
+.sticky.green { background: var(--nb-sticky-green); }
+
+.sticky.tilt-left { transform: rotate(-1deg); }
+.sticky.tilt-right { transform: rotate(0.8deg); }
+
+/* Masking tape on top */
+.sticky::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 52px;
+  height: 14px;
+  background: var(--nb-tape);
+  border-radius: 1px;
+  z-index: 2;
+}
+
+.sticky-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--nb-blue);
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+}
+
+/* ========================================
+   Prompt / Code Block
+   ======================================== */
+.prompt-block {
+  background: #F8F6F0;
+  border: 1.5px solid #E0DDD5;
+  border-left: 4px solid var(--nb-blue);
+  padding: 14px 18px;
+  padding-top: 26px;
+  border-radius: 3px;
+  position: relative;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--nb-ink);
+}
+
+.prompt-block.red-border {
+  border-left-color: var(--nb-red);
+}
+
+.prompt-block.green-border {
+  border-left-color: #48BB78;
+}
+
+.prompt-block .copy-btn {
+  position: absolute;
+  top: 4px; right: 8px;
+  background: #FFF;
+  border: 1px solid #DDD;
+  border-radius: 4px;
+  padding: 2px 10px;
+  font-size: 0.68rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  cursor: pointer;
+  color: #999;
+  transition: all 0.2s;
+}
+
+.prompt-block .copy-btn:hover {
+  background: var(--nb-sticky-blue);
+  color: var(--nb-blue);
+  border-color: var(--nb-blue);
+}
+
+.prompt-block .copy-btn.copied {
+  color: #48BB78;
+  border-color: #48BB78;
+  background: var(--nb-sticky-green);
+}
+
+.prompt-label {
+  position: absolute;
+  top: 5px; left: 12px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--nb-blue);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.prompt-block.red-border .prompt-label { color: var(--nb-red); }
+.prompt-block.green-border .prompt-label { color: #48BB78; }
+
+/* ========================================
+   Comparison Layout
+   ======================================== */
+.comparison {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+.compare-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 4px;
+}
+
+.compare-side.left {
+  background: rgba(229,62,62,0.03);
+  border-left: 3px solid var(--nb-red);
+}
+
+.compare-side.right {
+  background: rgba(43,108,176,0.03);
+  border-left: 3px solid var(--nb-blue);
+}
+
+.compare-side .compare-label {
+  font-size: var(--fs-subtitle);
+  font-weight: 700;
+}
+
+.compare-side.left .compare-label { color: var(--nb-red); }
+.compare-side.right .compare-label { color: var(--nb-blue); }
+
+.vs-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: #CCC;
+  font-weight: 700;
+}
+
+/* ========================================
+   Card Grid (Glossary)
+   ======================================== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+
+.term-card {
+  background: #FDFCF8;
+  border: 1.5px solid #E8E5DD;
+  border-radius: 4px;
+  padding: 11px 14px;
+  position: relative;
+}
+
+/* Clip decoration on top-right */
+.term-card::after {
+  content: '';
+  position: absolute;
+  top: -3px; right: 14px;
+  width: 14px;
+  height: 20px;
+  border: 2px solid var(--nb-clip);
+  border-radius: 3px 3px 0 0;
+  border-bottom: none;
+  background: none;
+}
+
+.term-card .term-name {
+  font-weight: 700;
+  color: var(--nb-blue);
+  font-size: var(--fs-body);
+  margin-bottom: 3px;
+}
+
+.term-card .term-def {
+  font-size: var(--fs-note);
+  color: #777;
+  line-height: 1.5;
+}
+
+/* ========================================
+   Conclusion Bar
+   ======================================== */
+.conclusion-bar {
+  background: rgba(43,108,176,0.04);
+  border-left: 3px solid var(--nb-blue);
+  padding: 9px 14px;
+  font-size: var(--fs-note);
+  font-weight: 700;
+  color: var(--nb-blue);
+  border-radius: 0 4px 4px 0;
+  margin-top: auto;
+}
+
+/* ========================================
+   Illustration
+   ======================================== */
+.illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.illustration svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* ========================================
+   Decorative: Pen, Tape, Clips
+   ======================================== */
+.deco-pen {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.deco-tape {
+  position: absolute;
+  width: 60px;
+  height: 16px;
+  background: var(--nb-tape);
+  border-radius: 1px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ========================================
+   Navigation
+   ======================================== */
+.nav-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--nb-nav-bg);
+  border-top: 1px solid var(--nb-border);
+  z-index: 50;
+}
+
+.nav-btn {
+  background: var(--nb-surface);
+  border: 1.5px solid #DDD;
+  border-radius: 24px;
+  padding: 8px 22px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--nb-ink);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-btn:hover {
+  background: var(--nb-sticky-blue);
+  color: var(--nb-blue);
+  border-color: var(--nb-blue);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav-btn:disabled:hover {
+  background: var(--nb-surface);
+  color: var(--nb-ink);
+  border-color: #DDD;
+}
+
+.nav-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.nav-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #D0D0D0;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-dot.active {
+  background: var(--nb-blue);
+  width: 20px;
+  border-radius: 4px;
+}
+
+.nav-dot:hover {
+  background: var(--nb-blue);
+  opacity: 0.5;
+}
+
+.slide-counter {
+  font-size: 1rem;
+  color: #BBB;
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 1024px) {
+  .slide { padding: 24px 32px 24px 60px; }
+  :root {
+    --fs-cover-title: 2.2rem;
+    --fs-title: 1.4rem;
+    --fs-subtitle: 1rem;
+    --fs-body: 0.88rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .slide {
+    padding: 16px 20px 16px 48px;
+    border-radius: 0;
+    max-width: 100vw;
+    max-height: 85vh;
+  }
+  :root {
+    --fs-cover-title: 1.7rem;
+    --fs-title: 1.15rem;
+    --fs-subtitle: 0.92rem;
+    --fs-body: 0.82rem;
+  }
+  .card-grid { grid-template-columns: 1fr; }
+  .comparison { flex-direction: column; gap: 12px; }
+  .content-row { flex-direction: column; }
+  .ring-holes { display: none; }
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes penWrite {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.slide.active .slide-title,
+.slide.active .title-underline {
+  animation: penWrite 0.45s ease forwards;
+}
+
+.slide.active .content-area {
+  animation: fadeInUp 0.45s 0.1s ease both;
+}
+
+.slide.active .conclusion-bar {
+  animation: fadeInUp 0.45s 0.2s ease both;
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar" style="width: 10%"></div>
+
+<!-- Slide Wrapper -->
+<div class="slide-wrapper" id="slideWrapper">
+
+  <!-- ==================== Slide 1: Cover ==================== -->
+  <div class="slide cover active" data-slide="1">
+    <!-- Ring holes -->
+    <div class="ring-holes">
+      <div class="ring-hole"></div>
+      <div class="ring-hole"></div>
+      <div class="ring-hole"></div>
+      <div class="ring-hole"></div>
+      <div class="ring-hole"></div>
+      <div class="ring-hole"></div>
+    </div>
+
+    <div class="slide-header" style="position:absolute;top:18px;left:76px;">3章 プロンプト</div>
+
+    <!-- Decorative doodles -->
+    <div class="cover-doodles">
+      <svg viewBox="0 0 960 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Chat bubble -->
+        <g transform="translate(120, 65)" opacity="0.12">
+          <rect x="0" y="0" width="75" height="50" rx="10" stroke="#2B6CB0" stroke-width="2" fill="none"/>
+          <circle cx="18" cy="25" r="3.5" fill="#2B6CB0"/>
+          <circle cx="38" cy="25" r="3.5" fill="#2B6CB0"/>
+          <circle cx="58" cy="25" r="3.5" fill="#2B6CB0"/>
+          <polygon points="12,50 22,50 8,65" fill="none" stroke="#2B6CB0" stroke-width="2"/>
+        </g>
+        <!-- Lightbulb -->
+        <g transform="translate(790, 50)" opacity="0.1">
+          <ellipse cx="35" cy="30" rx="24" ry="28" stroke="#E53E3E" stroke-width="2" fill="none"/>
+          <line x1="26" y1="58" x2="44" y2="58" stroke="#E53E3E" stroke-width="2"/>
+          <line x1="28" y1="64" x2="42" y2="64" stroke="#E53E3E" stroke-width="2"/>
+          <line x1="35" y1="8" x2="35" y2="0" stroke="#E53E3E" stroke-width="1.5"/>
+          <line x1="12" y1="14" x2="6" y2="8" stroke="#E53E3E" stroke-width="1.5"/>
+          <line x1="58" y1="14" x2="64" y2="8" stroke="#E53E3E" stroke-width="1.5"/>
+        </g>
+        <!-- Notebook spiral -->
+        <g transform="translate(780, 410)" opacity="0.08">
+          <rect x="0" y="0" width="80" height="60" rx="4" stroke="#2C2C2C" stroke-width="2" fill="none"/>
+          <line x1="15" y1="0" x2="15" y2="60" stroke="#E8A0A0" stroke-width="1"/>
+          <line x1="0" y1="15" x2="80" y2="15" stroke="#C5D8E8" stroke-width="0.8"/>
+          <line x1="0" y1="30" x2="80" y2="30" stroke="#C5D8E8" stroke-width="0.8"/>
+          <line x1="0" y1="45" x2="80" y2="45" stroke="#C5D8E8" stroke-width="0.8"/>
+        </g>
+        <!-- Stars / marks -->
+        <g opacity="0.1">
+          <text x="200" y="150" font-size="20" fill="#E53E3E" font-family="Caveat, cursive" font-weight="700">★</text>
+          <text x="730" y="175" font-size="16" fill="#2B6CB0" font-family="Caveat, cursive" font-weight="700">★</text>
+          <text x="160" y="400" font-size="14" fill="#2B6CB0" font-family="Caveat, cursive" font-weight="700">✦</text>
+          <text x="820" y="300" font-size="18" fill="#E53E3E" font-family="Caveat, cursive" font-weight="700">!</text>
+        </g>
+        <!-- Pen illustration (bottom-right) -->
+        <g transform="translate(830, 460) rotate(-30)" opacity="0.15">
+          <rect x="0" y="0" width="80" height="10" rx="2" fill="#2B6CB0"/>
+          <polygon points="80,0 95,5 80,10" fill="#2C2C2C"/>
+          <rect x="0" y="0" width="16" height="10" rx="2" fill="#1A4A7A"/>
+          <rect x="68" y="1" width="12" height="8" rx="1" fill="#E8E4D9" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Masking tape top-right corner -->
+    <div class="deco-tape" style="top:12px;right:24px;transform:rotate(35deg);width:55px"></div>
+
+    <div class="cover-title">1-1. <span class="accent">プロンプト</span>とは</div>
+    <div class="cover-subtitle">第3章 プロンプト ― 1. プロンプトの基礎</div>
+    <div class="page-number">1/10</div>
+  </div>
+
+  <!-- ==================== Slide 2: Goal ==================== -->
+  <div class="slide" data-slide="2">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">このチャプターのゴール</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col wide">
+          <ul class="bullet-list">
+            <li><span class="marker-yellow"><strong>プロンプトの定義</strong></span>がわかるようになる。</li>
+            <li><span class="marker-yellow"><strong>プロンプトの構成要素</strong></span>がわかるようになる。</li>
+            <li><span class="marker-pink"><strong>良いプロンプトと悪いプロンプトの違い</strong></span>がわかるようになる。</li>
+            <li><span class="marker-yellow"><strong>プロンプトエンジニアリング</strong></span>の基本概念がわかるようになる。</li>
+          </ul>
+        </div>
+        <div class="content-col narrow illustration">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Mountain with flag -->
+            <polygon points="100,35 35,165 165,165" stroke="#2B6CB0" stroke-width="2" fill="none"/>
+            <path d="M60,165 Q80,128 100,90 Q110,108 130,128 Q140,140 148,165" stroke="#48BB78" stroke-width="1.5" fill="none" stroke-dasharray="4,4"/>
+            <line x1="100" y1="35" x2="100" y2="15" stroke="#E53E3E" stroke-width="2"/>
+            <polygon points="100,15 126,24 100,33" fill="#E53E3E" opacity="0.7"/>
+            <text x="104" y="28" font-size="10" fill="#FFF" font-weight="bold" font-family="Caveat, cursive">Goal</text>
+            <text x="78" y="55" font-size="12" fill="#E53E3E">★</text>
+            <text x="118" y="58" font-size="10" fill="#2B6CB0">★</text>
+          </svg>
+        </div>
+      </div>
+      <div class="conclusion-bar">
+        プロンプトは「AIへの指示書」。正しく書けば、AIはもっと賢く応えてくれる。
+      </div>
+    </div>
+    <div class="page-number">2/10</div>
+  </div>
+
+  <!-- ==================== Slide 3: What is Prompt ==================== -->
+  <div class="slide" data-slide="3">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">プロンプトとは？</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col wide">
+          <div class="body-text">
+            プロンプトとは、<span class="marker-yellow"><span class="keyword">生成AIに入力する指示文</span></span>のことです。
+          </div>
+          <div class="body-text" style="margin-top:4px">
+            レストランの注文に例えると、メニューを見て「カルボナーラをください」と伝えるのがプロンプト。AIはシェフとして、その注文どおりの料理を作ります。
+          </div>
+          <div class="sticky yellow tilt-left" style="margin-top:8px">
+            <div class="sticky-label">ひとことで言うと</div>
+            プロンプト = <strong>AIへの「お願い」や「質問」</strong>をテキストで書いたもの
+          </div>
+        </div>
+        <div class="content-col narrow illustration">
+          <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Person -->
+            <circle cx="60" cy="40" r="18" stroke="#2C2C2C" stroke-width="2" fill="none"/>
+            <line x1="60" y1="58" x2="60" y2="110" stroke="#2C2C2C" stroke-width="2"/>
+            <line x1="60" y1="75" x2="38" y2="95" stroke="#2C2C2C" stroke-width="2"/>
+            <line x1="60" y1="75" x2="88" y2="70" stroke="#2C2C2C" stroke-width="2"/>
+            <!-- Speech bubble -->
+            <rect x="92" y="35" width="92" height="48" rx="10" stroke="#2B6CB0" stroke-width="1.5" fill="rgba(214,236,255,0.3)"/>
+            <polygon points="92,55 82,60 92,65" fill="rgba(214,236,255,0.3)" stroke="#2B6CB0" stroke-width="1.5"/>
+            <text x="107" y="57" font-size="11" fill="#2B6CB0" font-family="Zen Maru Gothic, sans-serif">プロンプト</text>
+            <text x="107" y="73" font-size="9" fill="#999" font-family="Zen Maru Gothic, sans-serif">（指示・質問）</text>
+            <!-- Arrow -->
+            <line x1="138" y1="93" x2="138" y2="122" stroke="#E53E3E" stroke-width="2"/>
+            <polygon points="131,119 138,132 145,119" fill="#E53E3E" opacity="0.7"/>
+            <!-- AI Robot -->
+            <rect x="116" y="138" width="48" height="38" rx="8" stroke="#48BB78" stroke-width="2" fill="none"/>
+            <circle cx="130" cy="153" r="5" stroke="#48BB78" stroke-width="1.5" fill="none"/>
+            <circle cx="150" cy="153" r="5" stroke="#48BB78" stroke-width="1.5" fill="none"/>
+            <path d="M128,166 Q140,173 152,166" stroke="#48BB78" stroke-width="1.5" fill="none"/>
+            <text x="122" y="196" font-size="10" fill="#48BB78" font-family="Zen Maru Gothic, sans-serif">生成AI</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">3/10</div>
+  </div>
+
+  <!-- ==================== Slide 4: Components ==================== -->
+  <div class="slide" data-slide="4">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">プロンプトの構成要素</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col">
+          <div class="sticky blue tilt-right">
+            <div class="sticky-label">1. 指示（Instruction）</div>
+            AIに何をしてほしいかを伝える部分。<br>例：「要約してください」「翻訳して」
+          </div>
+          <div class="sticky green tilt-left">
+            <div class="sticky-label">2. 文脈（Context）</div>
+            背景情報や前提条件。<br>例：「初心者向けに」「ビジネスメールとして」
+          </div>
+        </div>
+        <div class="content-col">
+          <div class="sticky pink tilt-left">
+            <div class="sticky-label">3. 入力データ（Input）</div>
+            処理してほしい対象のテキストやデータ。<br>例：「以下の文章を〜」
+          </div>
+          <div class="sticky yellow tilt-right">
+            <div class="sticky-label">4. 出力形式（Output Format）</div>
+            どんな形で答えてほしいか。<br>例：「箇条書きで」「表形式で」「JSON形式で」
+          </div>
+        </div>
+      </div>
+      <div class="conclusion-bar">
+        この4つを意識するだけで、プロンプトの質が格段に上がる
+      </div>
+    </div>
+    <div class="page-number">4/10</div>
+  </div>
+
+  <!-- ==================== Slide 5: Comparison ==================== -->
+  <div class="slide" data-slide="5">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">良いプロンプト vs 悪いプロンプト</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="comparison">
+        <div class="compare-side left">
+          <div class="compare-label">悪いプロンプト</div>
+          <div class="prompt-block red-border" style="padding-top:26px">
+            <span class="prompt-label">PROMPT</span>
+AIについて教えて</div>
+          <div class="note" style="margin-top:8px">
+            曖昧で範囲が広すぎる。AIは何を答えればいいかわからない。
+          </div>
+        </div>
+        <div class="vs-divider">VS</div>
+        <div class="compare-side right">
+          <div class="compare-label">良いプロンプト</div>
+          <div class="prompt-block" style="padding-top:26px">
+            <span class="prompt-label">PROMPT</span>
+            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+中学生にもわかるように、
+AIの定義を200文字以内で
+説明してください。
+具体例を1つ含めてください。</div>
+          <div class="note" style="margin-top:8px">
+            対象・形式・分量・条件が明確。期待どおりの回答が返る。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">5/10</div>
+  </div>
+
+  <!-- ==================== Slide 6: 5W1H ==================== -->
+  <div class="slide" data-slide="6">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">具体的に書くコツ ― 5W1H</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="body-text" style="margin-bottom:6px">
+        プロンプトに <span class="marker-yellow"><span class="keyword">5W1H</span></span>（誰に・何を・いつ・どこで・なぜ・どのように）を入れると精度が上がります。
+      </div>
+      <div class="content-row" style="gap:14px">
+        <div class="content-col">
+          <div class="prompt-block red-border" style="padding-top:26px">
+            <span class="prompt-label">BEFORE</span>
+メールを書いて</div>
+        </div>
+        <div style="display:flex;align-items:center;font-size:1.4rem;color:var(--nb-blue);font-weight:700">→</div>
+        <div class="content-col">
+          <div class="prompt-block green-border" style="padding-top:26px">
+            <span class="prompt-label">AFTER</span>
+            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+取引先への納期遅延のお詫びメールを、
+丁寧な敬語で300文字以内で
+作成してください。
+相手は部長クラスの方です。</div>
+        </div>
+      </div>
+      <div class="sticky green tilt-right" style="margin-top:auto">
+        <div class="sticky-label">Point</div>
+        「誰に向けて」「何を」「どのように」の3つを入れるだけで回答の質が大きく変わる
+      </div>
+    </div>
+    <div class="page-number">6/10</div>
+  </div>
+
+  <!-- ==================== Slide 7: Role & Context ==================== -->
+  <div class="slide" data-slide="7">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">役割と背景情報を伝える</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col">
+          <div class="subtitle">役割（ロール）を与える</div>
+          <div class="body-text">「〜の専門家として答えて」と指定すると、回答の視点や深さが変わります。</div>
+          <div class="prompt-block" style="margin-top:8px;padding-top:26px">
+            <span class="prompt-label">PROMPT</span>
+            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+あなたは小学校の先生です。
+小学3年生にもわかるように、
+「AI」とは何かを説明してください。</div>
+        </div>
+        <div class="content-col">
+          <div class="subtitle">背景情報（コンテキスト）</div>
+          <div class="body-text">「なぜこの質問をしているか」を伝えると、的外れな回答が減ります。</div>
+          <div class="prompt-block green-border" style="margin-top:8px;padding-top:26px">
+            <span class="prompt-label">PROMPT</span>
+            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+来週の社内会議で、新入社員10名に
+情報セキュリティの基本を説明します。
+15分のプレゼン構成案を作ってください。</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">7/10</div>
+  </div>
+
+  <!-- ==================== Slide 8: Tips ==================== -->
+  <div class="slide" data-slide="8">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">プロンプト作成 7つのコツ</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col">
+          <ul class="bullet-list">
+            <li><span class="marker-yellow"><span class="keyword">具体的に書く</span></span> — 5W1Hを意識</li>
+            <li><span class="marker-yellow"><span class="keyword">出力形式を指定</span></span> — 箇条書き・表形式など</li>
+            <li><span class="marker-pink"><span class="keyword">役割を与える</span></span> — 「〜の専門家として」</li>
+            <li><span class="marker-yellow"><span class="keyword">背景情報を伝える</span></span> — 目的・対象者・場面</li>
+          </ul>
+        </div>
+        <div class="content-col">
+          <ul class="bullet-list red">
+            <li><span class="marker-green"><span class="keyword">条件を設定</span></span> — 文字数・トーン・除外条件</li>
+            <li><span class="marker-green"><span class="keyword">一つずつ指示</span></span> — 複雑なタスクは分割</li>
+            <li><span class="marker-blue"><span class="keyword">例文を示す</span></span> — Few-Shotの考え方</li>
+          </ul>
+          <div class="sticky yellow tilt-left" style="margin-top:auto">
+            <div class="sticky-label">Remember</div>
+            どれも「人に仕事を頼むときの伝え方」と同じ！
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">8/10</div>
+  </div>
+
+  <!-- ==================== Slide 9: Summary ==================== -->
+  <div class="slide" data-slide="9">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">まとめ</div>
+    <div class="title-underline" style="background:var(--nb-blue);width:55px"></div>
+    <div class="content-area">
+      <ul class="bullet-list check">
+        <li><strong>プロンプト</strong>は、生成AIに入力する指示文のこと</li>
+        <li>構成要素は <span class="marker-yellow"><strong>指示・文脈・入力データ・出力形式</strong></span> の4つ</li>
+        <li>具体的に書き、<span class="marker-yellow"><strong>5W1H</strong></span>を意識するだけで精度が大きく向上する</li>
+        <li><strong>役割</strong>と<strong>背景情報</strong>を与えると、回答の質がさらに上がる</li>
+        <li>完璧を求めず、<span class="marker-pink"><strong>AIとの対話を繰り返して改善</strong></span>するのが上達の近道</li>
+      </ul>
+      <div class="conclusion-bar" style="margin-top:auto">
+        次へ → 1-2. プロンプトエンジニアリングとは
+      </div>
+    </div>
+    <div class="page-number">9/10</div>
+  </div>
+
+  <!-- ==================== Slide 10: Glossary ==================== -->
+  <div class="slide" data-slide="10">
+    <div class="ring-holes"><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div><div class="ring-hole"></div></div>
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title">用語集</div>
+    <div class="title-underline" style="background:var(--nb-blue)"></div>
+    <div class="content-area">
+      <div class="card-grid">
+        <div class="term-card">
+          <div class="term-name">プロンプト (Prompt)</div>
+          <div class="term-def">生成AIに入力する指示や質問のテキスト。AIの出力を左右する最も重要な要素。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">プロンプトエンジニアリング</div>
+          <div class="term-def">プロンプトを工夫・最適化してAIから望みどおりの出力を引き出す技術。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">コンテキスト (Context)</div>
+          <div class="term-def">AIへの指示における背景情報や前提条件。対象者・目的・場面など。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">Few-Shot プロンプティング</div>
+          <div class="term-def">AIに1〜数個の例文を示してから回答させる手法。出力の形式や雰囲気を揃えやすい。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">5W1H</div>
+          <div class="term-def">Who/What/When/Where/Why/How。具体的なプロンプトを書くための基本フレームワーク。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">出力形式 (Output Format)</div>
+          <div class="term-def">箇条書き・表形式・JSON等、AIにどんな形で答えてほしいかを指定すること。</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">10/10</div>
+  </div>
+
+</div><!-- /slide-wrapper -->
+
+<!-- Navigation Bar -->
+<nav class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    前へ
+  </button>
+  <div class="nav-dots" id="navDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 10</span>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">
+    次へ
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</nav>
+
+<script>
+/* ========================================
+   Slide Navigation
+   ======================================== */
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let currentSlide = 0;
+
+const dotsContainer = document.getElementById('navDots');
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement('button');
+  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function goToSlide(index) {
+  if (index < 0 || index >= totalSlides || index === currentSlide) return;
+  const oldSlide = currentSlide;
+  slides[oldSlide].classList.remove('active');
+  slides[oldSlide].classList.add('exit-left');
+  currentSlide = index;
+  setTimeout(() => {
+    slides[oldSlide].classList.remove('active', 'exit-left');
+    slides[oldSlide].style.display = 'none';
+  }, 50);
+  slides[currentSlide].classList.add('active');
+  updateUI();
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+function updateUI() {
+  document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+  document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+  document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentSlide);
+  });
+}
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+// Touch
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) nextSlide();
+    else prevSlide();
+  }
+});
+
+/* ========================================
+   Copy to clipboard
+   ======================================== */
+function copyText(btn) {
+  const container = btn.closest('.prompt-block');
+  const clone = container.cloneNode(true);
+  clone.querySelector('.copy-btn')?.remove();
+  clone.querySelector('.prompt-label')?.remove();
+  const text = clone.textContent.trim();
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+updateUI();
+</script>
+</body>
+</html>

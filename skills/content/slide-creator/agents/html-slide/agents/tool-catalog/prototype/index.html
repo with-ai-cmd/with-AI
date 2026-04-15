@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4-1-1. ChatGPT / Gemini / Claude — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WHITE-BOARD SLIDE — Design System
+   Concept: "A brilliant teacher's whiteboard session"
+   Real marker strokes, tactile sticky notes, chalk-dust warmth
+   ============================================================ */
+:root {
+  /* Board & Surface */
+  --board: #F7F6F3;
+  --board-edge: #E8E6E1;
+  --surface: #FFFFFF;
+  --tray: #D4CDC2;
+  --tray-dark: #B8B0A3;
+
+  /* Marker Palette — saturated, confident */
+  --ink-black: #1A1A1A;
+  --ink-blue: #1565C0;
+  --ink-blue-light: #42A5F5;
+  --ink-red: #C62828;
+  --ink-red-light: #EF5350;
+  --ink-green: #2E7D32;
+  --ink-green-light: #66BB6A;
+  --ink-orange: #E65100;
+
+  /* Sticky Note colors — muted, paper-like */
+  --sticky-y: #FFF8DC;
+  --sticky-y-edge: #F0E6B8;
+  --sticky-b: #E8F0FE;
+  --sticky-b-edge: #C4D8F2;
+  --sticky-g: #E6F4EA;
+  --sticky-g-edge: #B7DFC3;
+  --sticky-p: #FCE4EC;
+  --sticky-p-edge: #F0B8C8;
+
+  /* Brand Colors — 3 AI Services */
+  --gpt: #10A37F;
+  --gpt-light: #E6F7F2;
+  --gpt-edge: #B0E0D0;
+  --gem: #4285F4;
+  --gem-light: #E8F0FE;
+  --gem-edge: #BBCFF6;
+  --cld: #C96442;
+  --cld-light: #FCEEE8;
+  --cld-edge: #E8B8A0;
+
+  /* UI */
+  --nav-bg: rgba(255,255,255,0.92);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
+
+  /* Type scale */
+  --fs-hero: clamp(2.2rem, 5vw, 3.2rem);
+  --fs-title: clamp(1.4rem, 3vw, 1.9rem);
+  --fs-sub: clamp(1rem, 2vw, 1.2rem);
+  --fs-body: clamp(0.88rem, 1.5vw, 1rem);
+  --fs-sm: clamp(0.78rem, 1.2vw, 0.88rem);
+  --fs-xs: clamp(0.68rem, 1vw, 0.78rem);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--board);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
+  color: var(--ink-black);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   WHITEBOARD FRAME
+   ============================================================ */
+.board-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 8px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+    linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    var(--board);
+  background-size: 100%, 40px 40px, 40px 40px, 100%;
+}
+
+.board-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.marker-tray {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80%);
+  height: 6px;
+  background: linear-gradient(to bottom, var(--tray), var(--tray-dark));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+
+.progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.05);
+  z-index: 2;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink-blue);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   SLIDE
+   ============================================================ */
+.slide {
+  position: absolute;
+  width: min(940px, 92vw);
+  height: min(540px, 78vh);
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
+  padding: 30px 40px;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+}
+
+.slide.active {
+  display: flex;
+  animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---- Header chip (chapter label) ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-blue);
+  background: var(--sticky-b);
+  padding: 3px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--sticky-b-edge);
+  width: fit-content;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Page number ---- */
+.pg {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tray-dark);
+}
+
+/* ---- Slide title ---- */
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 900;
+  line-height: 1.35;
+  color: var(--ink-black);
+  margin-bottom: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Marker underline stroke — animated */
+.marker-line {
+  display: block;
+  height: 5px;
+  width: 0;
+  border-radius: 3px;
+  margin-bottom: 14px;
+  transform: rotate(-0.3deg);
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+.marker-line.red { background: var(--ink-red); }
+.marker-line.blue { background: var(--ink-blue); }
+.marker-line.green { background: var(--ink-green); }
+.marker-line.gpt { background: var(--gpt); }
+.marker-line.gem { background: var(--gem); }
+.marker-line.cld { background: var(--cld); }
+.slide.active .marker-line {
+  animation: drawLine 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { width: 80px; } }
+
+/* ---- Content area ---- */
+.content { flex:1; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.row { display:flex; gap:20px; flex:1; }
+.col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.col.w60 { flex:1.5; }
+.col.w40 { flex:0.8; }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
+.sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
+.sm { font-size:var(--fs-sm); color:#666; line-height:1.6; }
+.xs { font-size:var(--fs-xs); color:#999; }
+.kw { color:var(--ink-red); font-weight:700; }
+.kw-blue { color:var(--ink-blue); font-weight:700; }
+.kw-gpt { color:var(--gpt); font-weight:700; }
+.kw-gem { color:var(--gem); font-weight:700; }
+.kw-cld { color:var(--cld); font-weight:700; }
+.accent { font-family:'Caveat',cursive; font-weight:700; }
+
+/* ============================================================
+   BULLET LIST
+   ============================================================ */
+.bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
+.bl li::before {
+  content:''; position:absolute; left:2px; top:8px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--ink-blue);
+  opacity: 0.7;
+}
+.bl.green li::before { background:var(--ink-green); }
+.bl.red li::before { background:var(--ink-red); }
+.bl.check li::before {
+  content:'\2713'; background:none; opacity:1;
+  color:var(--ink-green); font-size:1rem; font-weight:900;
+  top:3px; left:0; width:auto; height:auto;
+}
+.bl.num { counter-reset:n; }
+.bl.num li { padding-left:30px; counter-increment:n; }
+.bl.num li::before {
+  content:counter(n); background:var(--ink-blue); color:#fff;
+  font-size:0.65rem; font-weight:700; text-align:center;
+  width:18px; height:18px; line-height:18px; top:5px; left:0;
+  border-radius: 50%; opacity:1;
+}
+
+/* ============================================================
+   STICKY NOTE
+   ============================================================ */
+.sticky {
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 1px;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+
+.sticky::after {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+  pointer-events:none;
+  border-radius: inherit;
+}
+
+.sticky::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* Color variants */
+.sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
+/* Brand-colored stickies */
+.sticky.gpt-s { background:var(--gpt-light); border-bottom:1px solid var(--gpt-edge); }
+.sticky.gem-s { background:var(--gem-light); border-bottom:1px solid var(--gem-edge); }
+.sticky.cld-s { background:var(--cld-light); border-bottom:1px solid var(--cld-edge); }
+
+/* Rotation variants */
+.sticky.t1 { transform:rotate(-1.5deg); }
+.sticky.t2 { transform:rotate(1deg); }
+.sticky.t3 { transform:rotate(-0.8deg); }
+.sticky.t4 { transform:rotate(1.3deg); }
+
+.slide.active .sticky {
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slide.active .sticky:nth-child(1) { animation-delay: 0.15s; }
+.slide.active .sticky:nth-child(2) { animation-delay: 0.25s; }
+.slide.active .sticky:nth-child(3) { animation-delay: 0.35s; }
+.slide.active .sticky:nth-child(4) { animation-delay: 0.45s; }
+.slide.active .sticky:nth-child(5) { animation-delay: 0.55s; }
+@keyframes stickyPop {
+  from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
+}
+
+.sticky-label {
+  font-size:0.65rem; font-weight:700; color:var(--ink-blue);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
+}
+.sticky-label.gpt-l { color:var(--gpt); }
+.sticky-label.gem-l { color:var(--gem); }
+.sticky-label.cld-l { color:var(--cld); }
+
+/* ============================================================
+   TOPIC BADGE — Service indicator (top-right)
+   ============================================================ */
+.topic-badge {
+  position: absolute;
+  top: 18px; right: 20px;
+  padding: 4px 14px;
+  border-radius: 100px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.topic-badge.gpt { background: var(--gpt-light); color: var(--gpt); border: 1.5px solid var(--gpt-edge); }
+.topic-badge.gem { background: var(--gem-light); color: var(--gem); border: 1.5px solid var(--gem-edge); }
+.topic-badge.cld { background: var(--cld-light); color: var(--cld); border: 1.5px solid var(--cld-edge); }
+
+/* ============================================================
+   TOOL CARD — Sticky with brand-colored top border
+   ============================================================ */
+.tool-card {
+  background: var(--surface);
+  border: 1.5px solid var(--board-edge);
+  border-radius: 8px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.tool-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.tool-card.gpt-c { border-top: 3.5px solid var(--gpt); }
+.tool-card.gem-c { border-top: 3.5px solid var(--gem); }
+.tool-card.cld-c { border-top: 3.5px solid var(--cld); }
+.tool-card-title { font-weight: 700; font-size: var(--fs-body); margin-bottom: 3px; display:flex; align-items:center; gap:4px; }
+.tool-card-title.gpt-t { color: var(--gpt); }
+.tool-card-title.gem-t { color: var(--gem); }
+.tool-card-title.cld-t { color: var(--cld); }
+.tool-card-body { font-size: var(--fs-sm); color: #555; line-height: 1.55; }
+
+/* ============================================================
+   KEY BOX — Highlighted insight box with brand accent
+   ============================================================ */
+.key-box {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  border-left: 4px solid var(--ink-blue);
+  background: rgba(21,101,192,0.03);
+}
+.key-box.gpt-k { border-left-color: var(--gpt); background: rgba(16,163,127,0.04); }
+.key-box.gem-k { border-left-color: var(--gem); background: rgba(66,133,244,0.04); }
+.key-box.cld-k { border-left-color: var(--cld); background: rgba(201,100,66,0.04); }
+
+/* ============================================================
+   LINK BUTTON — Registration URLs
+   ============================================================ */
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+  border: none;
+  cursor: pointer;
+}
+.link-btn:hover { transform: scale(1.05); box-shadow: var(--shadow-md); }
+.link-btn.gpt-btn { background: var(--gpt); color: #fff; }
+.link-btn.gem-btn { background: var(--gem); color: #fff; }
+.link-btn.cld-btn { background: var(--cld); color: #fff; }
+
+/* ============================================================
+   MISCONCEPTION ITEM
+   ============================================================ */
+.misc-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  padding: 6px 0;
+}
+.misc-x {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--ink-red);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 900;
+}
+
+/* ============================================================
+   TABLE — Whiteboard-style
+   ============================================================ */
+.wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+.wb-tbl th {
+  text-align:left; padding:8px 12px;
+  font-weight:700; color:var(--ink-blue);
+  border-bottom:2.5px solid var(--ink-blue);
+  font-size:var(--fs-sm);
+}
+.wb-tbl td {
+  padding:7px 12px;
+  border-bottom:1px solid var(--board-edge);
+}
+.wb-tbl tr:last-child td { border-bottom:none; }
+.wb-tbl tr:hover td { background:rgba(21,101,192,0.02); }
+
+/* ============================================================
+   CARD GRID
+   ============================================================ */
+.cards { display:grid; gap:10px; flex:1; }
+.cards.c2 { grid-template-columns:repeat(2,1fr); }
+.cards.c3 { grid-template-columns:repeat(3,1fr); }
+.card {
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:8px; padding:12px 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card-title { font-weight:700; color:var(--ink-blue); font-size:var(--fs-body); margin-bottom:3px; display:flex; align-items:center; gap:4px; }
+.card-body { font-size:var(--fs-sm); color:#555; line-height:1.55; }
+
+/* ============================================================
+   FLOW STEPS
+   ============================================================ */
+.flow { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.flow-step {
+  padding:10px 18px; border-radius:10px; text-align:center;
+  font-size:var(--fs-sm); font-weight:700;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.flow-step:hover { transform:scale(1.05); }
+.flow-step.fb { background:var(--sticky-b); border:1px solid var(--sticky-b-edge); }
+.flow-step.fg { background:var(--sticky-g); border:1px solid var(--sticky-g-edge); }
+.flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
+.flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
+.flow-arr {
+  font-family:'Caveat',cursive; font-size:1.4rem;
+  color:var(--ink-blue); font-weight:700; padding:0 6px;
+}
+
+/* ============================================================
+   CONCLUSION BAR
+   ============================================================ */
+.conclusion {
+  margin-top:auto;
+  padding:9px 16px;
+  font-size:var(--fs-sm); font-weight:700;
+  color:var(--ink-blue);
+  border-left:3px solid var(--ink-blue);
+  background: linear-gradient(90deg, rgba(21,101,192,0.04), transparent);
+  border-radius:0 6px 6px 0;
+}
+.conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
+
+/* ============================================================
+   ILLUSTRATION (SVG)
+   ============================================================ */
+.illust { display:flex; align-items:center; justify-content:center; }
+.illust svg { max-width:100%; max-height:100%; }
+
+/* ============================================================
+   COVER SLIDE — Special
+   ============================================================ */
+.slide.cover {
+  align-items:center; justify-content:center; text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.02) 0%, transparent 70%),
+    var(--surface);
+}
+.cover .chip { position:absolute; top:18px; left:24px; }
+.cover-title {
+  font-size: var(--fs-hero);
+  font-weight: 900;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+.cover-title .hl { color:var(--ink-blue); }
+.cover-sub {
+  font-size:var(--fs-sub); color:var(--tray-dark);
+  margin-top:8px; z-index:2; position:relative;
+}
+.cover-doodles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.cover-doodles svg { width:100%; height:100%; }
+
+/* ---- Three colored dots for cover ---- */
+.cover-dots { display:flex; gap:14px; justify-content:center; margin-top:14px; z-index:2; position:relative; }
+.cover-dot { width:16px; height:16px; border-radius:50%; }
+.cover-dot.gpt-d { background:var(--gpt); }
+.cover-dot.gem-d { background:var(--gem); }
+.cover-dot.cld-d { background:var(--cld); }
+
+/* ============================================================
+   DIAGNOSTIC QUIZ (Slide 13)
+   ============================================================ */
+.quiz-container { flex:1; display:flex; flex-direction:column; gap:10px; }
+.quiz-q { font-size:var(--fs-body); font-weight:700; margin-bottom:4px; }
+.quiz-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.quiz-opt {
+  padding:8px 16px;
+  border:2px solid var(--board-edge);
+  border-radius:100px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:var(--fs-sm);
+  font-weight:700;
+  background:var(--surface);
+  cursor:pointer;
+  transition:all 0.25s;
+  color:var(--ink-black);
+}
+.quiz-opt:hover { border-color:var(--ink-blue); background:var(--sticky-b); }
+.quiz-opt.selected { border-color:var(--ink-blue); background:var(--ink-blue); color:#fff; }
+.quiz-result {
+  display:none;
+  padding:16px;
+  border-radius:10px;
+  text-align:center;
+  font-size:var(--fs-body);
+  font-weight:700;
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.quiz-result.show { display:block; }
+.quiz-result.gpt-r { background:var(--gpt-light); border:2px solid var(--gpt-edge); color:var(--gpt); }
+.quiz-result.gem-r { background:var(--gem-light); border:2px solid var(--gem-edge); color:var(--gem); }
+.quiz-result.cld-r { background:var(--cld-light); border:2px solid var(--cld-edge); color:var(--cld); }
+
+/* ============================================================
+   INFO BOX
+   ============================================================ */
+.info-box {
+  padding:10px 14px;
+  border-radius:8px;
+  background:var(--sticky-b);
+  border:1.5px solid var(--sticky-b-edge);
+  font-size:var(--fs-sm);
+  line-height:1.6;
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:10px 16px;
+  background:var(--nav-bg); backdrop-filter:blur(10px);
+  border-top:1px solid var(--board-edge);
+}
+.nav-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:100px; padding:7px 20px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.82rem; font-weight:700;
+  color:var(--ink-black); cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { background:var(--ink-blue); color:#fff; border-color:var(--ink-blue); transform:scale(1.05); }
+.nav-btn:active { transform:scale(0.97); }
+.nav-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
+.nav-btn:disabled:hover { background:var(--surface); color:var(--ink-black); border-color:var(--board-edge); }
+
+.nav-dots { display:flex; gap:5px; align-items:center; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--board-edge); border:none;
+  cursor:pointer; transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot.on { background:var(--ink-blue); width:20px; border-radius:3px; }
+.dot:hover { background:var(--ink-blue-light); }
+
+.nav-count {
+  font-family:'Caveat',cursive; font-weight:700;
+  font-size:1.05rem; color:var(--tray-dark);
+  min-width:55px; text-align:center;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:768px){
+  .slide{padding:20px 24px}
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+  .row{flex-direction:column}
+  .nav{gap:8px;padding:8px 10px}
+  .nav-btn{padding:6px 14px;font-size:.78rem}
+}
+@media(max-width:480px){
+  .slide{padding:14px 16px;border-radius:0}
+  .cards.c2,.cards.c3{grid-template-columns:1fr}
+}
+
+/* ============================================================
+   SERVICE LOGOS
+   ============================================================ */
+.logo { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+.logo svg { width:100%; height:100%; }
+.logo.sm { width:18px; height:18px; }
+.logo.md { width:24px; height:24px; }
+.logo.lg { width:32px; height:32px; }
+.logo.xl { width:40px; height:40px; }
+.logo.gpt-c { color:var(--gpt); }
+.logo.gem-c { color:var(--gem); }
+.logo.cld-c { color:var(--cld); }
+.logo.white { color:#fff; }
+
+/* Logo with colored circle background */
+.logo-circle {
+  display:inline-flex; align-items:center; justify-content:center;
+  border-radius:50%; flex-shrink:0;
+}
+.logo-circle.sm { width:28px; height:28px; }
+.logo-circle.md { width:36px; height:36px; }
+.logo-circle.lg { width:48px; height:48px; }
+.logo-circle.gpt-bg { background:var(--gpt); color:#fff; }
+.logo-circle.gem-bg { background:var(--gem); color:#fff; }
+.logo-circle.cld-bg { background:var(--cld); color:#fff; }
+.logo-circle svg { width:55%; height:55%; }
+</style>
+</head>
+<body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <!-- ChatGPT / OpenAI sparkle logo -->
+  <symbol id="logo-gpt" viewBox="0 0 24 24">
+    <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" fill="currentColor"/>
+  </symbol>
+
+  <!-- Gemini star/sparkle logo -->
+  <symbol id="logo-gem" viewBox="0 0 24 24">
+    <path d="M12 0C12 0 14.5 7.5 17 10C19.5 12.5 24 12 24 12C24 12 19.5 12.5 17 15C14.5 17.5 12 24 12 24C12 24 9.5 17.5 7 15C4.5 12.5 0 12 0 12C0 12 4.5 11.5 7 9C9.5 6.5 12 0 12 0Z" fill="currentColor"/>
+  </symbol>
+
+  <!-- Claude / Anthropic logo (simplified face/circle with dots) -->
+  <symbol id="logo-cld" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    <circle cx="8.5" cy="13" r="2" fill="currentColor"/>
+    <circle cx="15.5" cy="13" r="2" fill="currentColor"/>
+  </symbol>
+
+  <!-- Copilot logo (simplified) -->
+  <symbol id="logo-copilot" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- Perplexity logo (magnifying glass) -->
+  <symbol id="logo-pplx" viewBox="0 0 24 24">
+    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+    <line x1="15" y1="15" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<!-- Board Frame -->
+<div class="board-frame">
+  <div class="marker-tray"></div>
+  <div class="progress-track"><div class="progress-fill" id="pf" style="width:6.67%"></div></div>
+
+<!-- ===== S1: COVER ===== -->
+<div class="slide cover active" data-s="1">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="cover-doodles">
+    <svg viewBox="0 0 940 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Chat bubble (ChatGPT) -->
+      <g opacity=".12"><rect x="60" y="55" width="80" height="52" rx="14" stroke="#10A37F" stroke-width="2.5"/><circle cx="80" cy="81" r="3" fill="#10A37F"/><circle cx="96" cy="81" r="3" fill="#10A37F"/><circle cx="112" cy="81" r="3" fill="#10A37F"/><path d="M72 107l-10 14" stroke="#10A37F" stroke-width="2.5" stroke-linecap="round"/></g>
+      <!-- Brain / AI icon (Gemini) -->
+      <g opacity=".10" transform="translate(790,40)"><circle cx="30" cy="30" r="24" stroke="#4285F4" stroke-width="2.5"/><path d="M18 30 Q30 14 42 30 Q30 46 18 30Z" stroke="#4285F4" stroke-width="2" fill="none"/><circle cx="30" cy="30" r="6" stroke="#4285F4" stroke-width="2"/><line x1="30" y1="6" x2="30" y2="0" stroke="#4285F4" stroke-width="2"/><line x1="30" y1="54" x2="30" y2="60" stroke="#4285F4" stroke-width="2"/><line x1="6" y1="30" x2="0" y2="30" stroke="#4285F4" stroke-width="2"/><line x1="54" y1="30" x2="60" y2="30" stroke="#4285F4" stroke-width="2"/></g>
+      <!-- Shield / safety (Claude) -->
+      <g opacity=".10" transform="translate(820,400)"><path d="M30 8 L50 18 L50 38 Q50 52 30 62 Q10 52 10 38 L10 18Z" stroke="#C96442" stroke-width="2.5" fill="none"/><path d="M22 34 L28 40 L40 26" stroke="#C96442" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+      <!-- Keyboard -->
+      <g opacity=".08" transform="translate(50,400)"><rect width="100" height="50" rx="6" stroke="#1A1A1A" stroke-width="2"/><rect x="8" y="8" width="12" height="10" rx="2" stroke="#1A1A1A" stroke-width="1.5"/><rect x="24" y="8" width="12" height="10" rx="2" stroke="#1A1A1A" stroke-width="1.5"/><rect x="40" y="8" width="12" height="10" rx="2" stroke="#1A1A1A" stroke-width="1.5"/><rect x="56" y="8" width="12" height="10" rx="2" stroke="#1A1A1A" stroke-width="1.5"/><rect x="72" y="8" width="20" height="10" rx="2" stroke="#1A1A1A" stroke-width="1.5"/><rect x="20" y="30" width="60" height="10" rx="2" stroke="#1A1A1A" stroke-width="1.5"/></g>
+      <!-- Robot face -->
+      <g opacity=".08" transform="translate(400,430)"><rect x="4" y="0" width="52" height="40" rx="10" stroke="#1565C0" stroke-width="2.5"/><circle cx="20" cy="16" r="5" stroke="#1565C0" stroke-width="2"/><circle cx="40" cy="16" r="5" stroke="#1565C0" stroke-width="2"/><path d="M18 30 Q30 36 42 30" stroke="#1565C0" stroke-width="2" fill="none"/><line x1="30" y1="-8" x2="30" y2="0" stroke="#1565C0" stroke-width="2"/><circle cx="30" cy="-11" r="3" stroke="#1565C0" stroke-width="2"/></g>
+      <!-- Sparkles -->
+      <text x="180" y="130" font-size="18" fill="#10A37F" opacity=".10">&#9733;</text>
+      <text x="760" y="170" font-size="14" fill="#4285F4" opacity=".10">&#9733;</text>
+      <text x="140" y="380" font-size="16" fill="#C96442" opacity=".10">&#9733;</text>
+      <text x="700" y="440" font-size="12" fill="#10A37F" opacity=".08">&#9733;</text>
+      <!-- Arrows -->
+      <g opacity=".07"><path d="M200 140 Q210 128 225 135" stroke="#1A1A1A" stroke-width="1.8" fill="none"/><polygon points="223,131 228,137 221,138" fill="#1A1A1A"/></g>
+    </svg>
+  </div>
+  <div class="cover-title">4-1-1. <span class="hl">ChatGPT / Gemini / Claude</span></div>
+  <div class="cover-sub">第4章 生成AIツール ― 1. 主要ツールの紹介</div>
+  <div class="cover-dots">
+    <div class="logo-circle lg gpt-bg"><svg><use href="#logo-gpt"/></svg></div>
+    <div class="logo-circle lg gem-bg"><svg><use href="#logo-gem"/></svg></div>
+    <div class="logo-circle lg cld-bg"><svg><use href="#logo-cld"/></svg></div>
+  </div>
+  <div class="pg">1 / 15</div>
+</div>
+
+<!-- ===== S2: GOAL ===== -->
+<div class="slide" data-s="2">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">このレッスンのゴール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <ul class="bl check">
+      <li><strong>ChatGPT・Gemini・Claude</strong>の3大ツールの特徴を説明できる</li>
+      <li>それぞれの<strong>得意分野と向いている人</strong>がわかる</li>
+      <li>自分に合ったツールを<strong>選んで無料登録</strong>できる</li>
+      <li>「どれが一番いい？」に対して<strong>根拠を持って答えられる</strong></li>
+    </ul>
+    <div class="info-box" style="margin-top:auto">
+      <strong>この先の学習</strong>：第5章ではChatGPT、第6章ではGemini、第7章ではClaudeをそれぞれ深掘りします。このレッスンは「まず全体像をつかむ」ための入門編です。
+    </div>
+  </div>
+  <div class="pg">2 / 15</div>
+</div>
+
+<!-- ===== S3: OVERVIEW ===== -->
+<div class="slide" data-s="3">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">3大AIツール一覧</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="cards c3">
+      <div class="tool-card gpt-c">
+        <div class="tool-card-title gpt-t"><span class="logo sm gpt-c"><svg><use href="#logo-gpt"/></svg></span> ChatGPT</div>
+        <div class="tool-card-body">
+          <strong>開発元：</strong>OpenAI（米国）<br>
+          <strong>リリース：</strong>2022年11月<br>
+          <strong>特徴：</strong>最も利用者が多い。万能型。画像生成・コード実行もOK<br>
+          <strong>無料プラン：</strong>あり
+        </div>
+      </div>
+      <div class="tool-card gem-c">
+        <div class="tool-card-title gem-t"><span class="logo sm gem-c"><svg><use href="#logo-gem"/></svg></span> Gemini</div>
+        <div class="tool-card-body">
+          <strong>開発元：</strong>Google（米国）<br>
+          <strong>リリース：</strong>2023年12月<br>
+          <strong>特徴：</strong>Google連携が最強。Gmail・カレンダー・Docsと統合<br>
+          <strong>無料プラン：</strong>あり
+        </div>
+      </div>
+      <div class="tool-card cld-c">
+        <div class="tool-card-title cld-t"><span class="logo sm cld-c"><svg><use href="#logo-cld"/></svg></span> Claude</div>
+        <div class="tool-card-body">
+          <strong>開発元：</strong>Anthropic（米国）<br>
+          <strong>リリース：</strong>2023年3月<br>
+          <strong>特徴：</strong>安全性重視。長文理解・文章作成が得意。丁寧な回答<br>
+          <strong>無料プラン：</strong>あり
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">3つとも無料で使える。まずは全部試してみるのがおすすめ。</div>
+  </div>
+  <div class="pg">3 / 15</div>
+</div>
+
+<!-- ===== S4: ChatGPT DEEP ===== -->
+<div class="slide" data-s="4">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="topic-badge gpt"><span class="logo sm" style="color:var(--gpt)"><svg><use href="#logo-gpt"/></svg></span> ChatGPT</div>
+  <div class="slide-title">ChatGPTを深掘り</div>
+  <span class="marker-line gpt"></span>
+  <div class="content">
+    <div class="key-box gpt-k">
+      <strong>OpenAIの哲学：</strong>「AIの恩恵を全人類に届ける」<br>
+      先行者として圧倒的なユーザー数を持ち、プラグインやGPTs（カスタムAI）など<span class="kw-gpt">エコシステムが最も充実</span>している。
+    </div>
+    <div class="row" style="margin-top:8px">
+      <div class="col">
+        <div class="sticky gpt-s t1">
+          <div class="sticky-label gpt-l">強み</div>
+          <strong>万能型の総合力</strong><br>
+          ・画像生成（DALL-E）内蔵<br>
+          ・コード実行・データ分析<br>
+          ・Web検索・ファイルアップロード<br>
+          ・GPTsで用途別にカスタマイズ可能
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky gpt-s t2">
+          <div class="sticky-label gpt-l">こんな人向き</div>
+          ・初めてAIを使う人（情報が多い）<br>
+          ・一つのツールで色々やりたい人<br>
+          ・画像生成もAIでやりたい人<br>
+          ・プログラミングを学びたい人
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">4 / 15</div>
+</div>
+
+<!-- ===== S5: Gemini DEEP ===== -->
+<div class="slide" data-s="5">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="topic-badge gem"><span class="logo sm" style="color:var(--gem)"><svg><use href="#logo-gem"/></svg></span> Gemini</div>
+  <div class="slide-title">Geminiを深掘り</div>
+  <span class="marker-line gem"></span>
+  <div class="content">
+    <div class="key-box gem-k">
+      <strong>Googleの哲学：</strong>「世界中の情報を整理してアクセス可能にする」<br>
+      Gmail・カレンダー・ドライブ・Docsなど<span class="kw-gem">日常的に使うGoogleサービスとシームレスに連携</span>するのが最大の武器。
+    </div>
+    <div class="row" style="margin-top:8px">
+      <div class="col">
+        <div class="sticky gem-s t3">
+          <div class="sticky-label gem-l">強み</div>
+          <strong>Google連携力</strong><br>
+          ・Gmailの要約・下書き作成<br>
+          ・Googleドキュメント内で直接利用<br>
+          ・最新のWeb情報をリアルタイム検索<br>
+          ・Gemで目的別カスタムAIを作成
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky gem-s t4">
+          <div class="sticky-label gem-l">こんな人向き</div>
+          ・Gmail / Googleカレンダーを使う人<br>
+          ・Google Workspaceユーザー<br>
+          ・最新情報を調べたい人<br>
+          ・すでにGoogleアカウントを持っている人
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">5 / 15</div>
+</div>
+
+<!-- ===== S6: Claude DEEP ===== -->
+<div class="slide" data-s="6">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="topic-badge cld"><span class="logo sm" style="color:var(--cld)"><svg><use href="#logo-cld"/></svg></span> Claude</div>
+  <div class="slide-title">Claudeを深掘り</div>
+  <span class="marker-line cld"></span>
+  <div class="content">
+    <div class="key-box cld-k">
+      <strong>Anthropicの哲学：</strong>「安全で有益なAIを作る」<br>
+      元OpenAI研究者が設立。<span class="kw-cld">正確さ・安全性・長文処理を重視</span>し、ビジネス文書や深い分析タスクに定評がある。
+    </div>
+    <div class="row" style="margin-top:8px">
+      <div class="col">
+        <div class="sticky cld-s t1">
+          <div class="sticky-label cld-l">強み</div>
+          <strong>正確さと文章力</strong><br>
+          ・長文の読解・要約が最も得意<br>
+          ・ビジネス文書の品質が高い<br>
+          ・指示に忠実で正確な回答<br>
+          ・Artifacts機能で成果物を整理
+        </div>
+      </div>
+      <div class="col">
+        <div class="sticky cld-s t2">
+          <div class="sticky-label cld-l">こんな人向き</div>
+          ・正確さ・品質を重視する人<br>
+          ・長い文書を読み込ませたい人<br>
+          ・ビジネス文書を作成したい人<br>
+          ・AIの安全性が気になる人
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">6 / 15</div>
+</div>
+
+<!-- ===== S7: COMMON CAPABILITIES ===== -->
+<div class="slide" data-s="7">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">3つとも「できること」は同じ</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead>
+        <tr><th style="width:40%">できること</th><th style="text-align:center" class="gpt-th"><span class="logo sm gpt-c"><svg><use href="#logo-gpt"/></svg></span> ChatGPT</th><th style="text-align:center" class="gem-th"><span class="logo sm gem-c"><svg><use href="#logo-gem"/></svg></span> Gemini</th><th style="text-align:center" class="cld-th"><span class="logo sm cld-c"><svg><use href="#logo-cld"/></svg></span> Claude</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>文章作成・メール下書き</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td></tr>
+        <tr><td>質問に回答・調べ物</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td></tr>
+        <tr><td>要約・翻訳</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td></tr>
+        <tr><td>アイデア出し・ブレスト</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td></tr>
+        <tr><td>文章の添削・校正</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td></tr>
+        <tr><td>表・リスト・構成案の作成</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td><td style="text-align:center;color:var(--ink-green)">&#10004;</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">基本的な機能はほぼ同じ。<strong>「差」が出るのは得意分野と連携サービス</strong></div>
+  </div>
+  <div class="pg">7 / 15</div>
+</div>
+
+<!-- ===== S8: REGISTRATION ===== -->
+<div class="slide" data-s="8">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">無料で始めよう（登録リンク）</div>
+  <span class="marker-line green"></span>
+  <div class="content">
+    <div class="cards c3">
+      <div class="tool-card gpt-c" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px">
+        <div class="logo-circle md gpt-bg"><svg><use href="#logo-gpt"/></svg></div>
+        <div class="tool-card-title gpt-t" style="font-size:var(--fs-sub)">ChatGPT</div>
+        <div class="tool-card-body">Googleアカウントまたはメールで登録。すぐに使い始められます。</div>
+        <a href="https://chatgpt.com" target="_blank" class="link-btn gpt-btn">chatgpt.com を開く &#8599;</a>
+      </div>
+      <div class="tool-card gem-c" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px">
+        <div class="logo-circle md gem-bg"><svg><use href="#logo-gem"/></svg></div>
+        <div class="tool-card-title gem-t" style="font-size:var(--fs-sub)">Gemini</div>
+        <div class="tool-card-body">Googleアカウントがあればそのままログイン。追加登録は不要です。</div>
+        <a href="https://gemini.google.com" target="_blank" class="link-btn gem-btn">gemini.google.com を開く &#8599;</a>
+      </div>
+      <div class="tool-card cld-c" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px">
+        <div class="logo-circle md cld-bg"><svg><use href="#logo-cld"/></svg></div>
+        <div class="tool-card-title cld-t" style="font-size:var(--fs-sub)">Claude</div>
+        <div class="tool-card-body">Googleアカウントまたはメールで登録。シンプルな画面で迷いません。</div>
+        <a href="https://claude.ai" target="_blank" class="link-btn cld-btn">claude.ai を開く &#8599;</a>
+      </div>
+    </div>
+    <div class="conclusion green">3つとも5分以内で登録完了。まずは気軽に触ってみよう！</div>
+  </div>
+  <div class="pg">8 / 15</div>
+</div>
+
+<!-- ===== S9: MISCONCEPTIONS ===== -->
+<div class="slide" data-s="9">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">よくある誤解</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="misc-item"><div class="misc-x">&#10005;</div><div>「<strong>ChatGPTが一番頭がいい</strong>」&#8594; ツールによって得意分野が違うだけ。タスクによって最適解は変わる。</div></div>
+      <div class="misc-item"><div class="misc-x">&#10005;</div><div>「<strong>有料じゃないと使えない</strong>」&#8594; 3つとも無料プランで十分実用的。まず無料で試そう。</div></div>
+      <div class="misc-item"><div class="misc-x">&#10005;</div><div>「<strong>1つだけ使えば十分</strong>」&#8594; 目的に応じて使い分けるのがプロの使い方。</div></div>
+      <div class="misc-item"><div class="misc-x">&#10005;</div><div>「<strong>AIの回答は100%正しい</strong>」&#8594; どのツールも間違えることがある。必ず人間が確認を。</div></div>
+      <div class="misc-item"><div class="misc-x">&#10005;</div><div>「<strong>個人情報を入れても大丈夫</strong>」&#8594; 機密情報の入力は避ける。各社のデータポリシーを確認しよう。</div></div>
+    </div>
+    <div class="sticky g t1" style="margin-top:auto">
+      <div class="sticky-label">正解</div>
+      3つとも「道具」。ハサミと包丁のように、用途に応じて使い分けるのが正解。
+    </div>
+  </div>
+  <div class="pg">9 / 15</div>
+</div>
+
+<!-- ===== S10: PERSONA MATCH ===== -->
+<div class="slide" data-s="10">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">あなたに合うのはどれ？</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="cards c3" style="grid-template-columns: repeat(3,1fr); grid-template-rows: auto auto;">
+      <div class="tool-card gpt-c">
+        <div class="tool-card-title gpt-t">初めてAIを使う人</div>
+        <div class="tool-card-body">&#8594; <span class="logo sm gpt-c"><svg><use href="#logo-gpt"/></svg></span> <strong>ChatGPT</strong><br>情報・チュートリアルが最も多い。困ったら検索ですぐ解決策が見つかる</div>
+      </div>
+      <div class="tool-card gem-c">
+        <div class="tool-card-title gem-t">Gmail・Googleカレンダー派</div>
+        <div class="tool-card-body">&#8594; <span class="logo sm gem-c"><svg><use href="#logo-gem"/></svg></span> <strong>Gemini</strong><br>Googleサービスと統合されて日常業務がそのまま効率化</div>
+      </div>
+      <div class="tool-card cld-c">
+        <div class="tool-card-title cld-t">正確さ・文章品質を重視</div>
+        <div class="tool-card-body">&#8594; <span class="logo sm cld-c"><svg><use href="#logo-cld"/></svg></span> <strong>Claude</strong><br>長文の読み込み・ビジネス文書の作成に圧倒的な品質</div>
+      </div>
+      <div class="tool-card" style="border-top:3.5px solid #666">
+        <div class="tool-card-title" style="color:#666">Microsoft 365派</div>
+        <div class="tool-card-body">&#8594; <span class="logo sm" style="color:#666"><svg><use href="#logo-copilot"/></svg></span> <strong>Copilot</strong>（第4章で別途紹介）<br>Word・Excel・TeamsとのAI連携</div>
+      </div>
+      <div class="tool-card" style="border-top:3.5px solid #333">
+        <div class="tool-card-title" style="color:#333">調べ物メインで使いたい</div>
+        <div class="tool-card-body">&#8594; <span class="logo sm" style="color:#333"><svg><use href="#logo-pplx"/></svg></span> <strong>Perplexity</strong>（第4章で別途紹介）<br>出典付きの回答で信頼性重視</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">10 / 15</div>
+</div>
+
+<!-- ===== S11: USAGE MATRIX ===== -->
+<div class="slide" data-s="11">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">用途別おすすめ度</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead>
+        <tr><th style="width:32%">やりたいこと</th><th style="text-align:center;color:var(--gpt)"><span class="logo sm gpt-c"><svg><use href="#logo-gpt"/></svg></span> ChatGPT</th><th style="text-align:center;color:var(--gem)"><span class="logo sm gem-c"><svg><use href="#logo-gem"/></svg></span> Gemini</th><th style="text-align:center;color:var(--cld)"><span class="logo sm cld-c"><svg><use href="#logo-cld"/></svg></span> Claude</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>メール文面の作成</td><td style="text-align:center">&#9711;</td><td style="text-align:center">&#9678;</td><td style="text-align:center">&#9678;</td></tr>
+        <tr><td>画像生成</td><td style="text-align:center">&#9678;</td><td style="text-align:center">&#9711;</td><td style="text-align:center">&#10005;</td></tr>
+        <tr><td>長文の要約・分析</td><td style="text-align:center">&#9711;</td><td style="text-align:center">&#9711;</td><td style="text-align:center">&#9678;</td></tr>
+        <tr><td>最新情報の検索</td><td style="text-align:center">&#9711;</td><td style="text-align:center">&#9678;</td><td style="text-align:center">&#9711;</td></tr>
+        <tr><td>Google連携（Gmail等）</td><td style="text-align:center">&#10005;</td><td style="text-align:center">&#9678;</td><td style="text-align:center">&#10005;</td></tr>
+        <tr><td>プログラミング支援</td><td style="text-align:center">&#9678;</td><td style="text-align:center">&#9711;</td><td style="text-align:center">&#9678;</td></tr>
+        <tr><td>ビジネス文書の作成</td><td style="text-align:center">&#9711;</td><td style="text-align:center">&#9711;</td><td style="text-align:center">&#9678;</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">&#9678;=特に得意　&#9711;=対応可能　&#10005;=非対応または弱い</div>
+  </div>
+  <div class="pg">11 / 15</div>
+</div>
+
+<!-- ===== S12: WHEN TO PAY ===== -->
+<div class="slide" data-s="12">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">有料プランはいつ必要？</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="flow" style="margin:10px 0">
+      <div class="flow-step fg">Step 1<br><span style="font-weight:400;font-size:var(--fs-xs)">無料で全部試す</span></div>
+      <div class="flow-arr">&#8594;</div>
+      <div class="flow-step fb">Step 2<br><span style="font-weight:400;font-size:var(--fs-xs)">お気に入りを見つける</span></div>
+      <div class="flow-arr">&#8594;</div>
+      <div class="flow-step fy">Step 3<br><span style="font-weight:400;font-size:var(--fs-xs)">制限を感じたら課金</span></div>
+    </div>
+    <div class="info-box" style="margin-top:10px">
+      <strong>こんなサインが出たら有料プランを検討：</strong><br>
+      ・1日の利用回数制限に頻繁にひっかかる<br>
+      ・最新モデル（GPT-4o、Gemini Ultra、Claude Opus）を常に使いたい<br>
+      ・ファイルアップロードや長文処理を頻繁にする<br>
+      ・チームで使いたい（法人プランが必要）
+    </div>
+    <div class="conclusion" style="margin-top:auto">無料で十分な人がほとんど。まずは使い込んでから判断しよう。</div>
+  </div>
+  <div class="pg">12 / 15</div>
+</div>
+
+<!-- ===== S13: DIAGNOSTIC QUIZ ===== -->
+<div class="slide" data-s="13">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">診断：あなたにピッタリのAIは？</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="quiz-container" id="quiz">
+      <!-- Q1 -->
+      <div class="quiz-step" data-step="1">
+        <div class="quiz-q">Q1. 仕事で一番使うツールは？</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" data-q="1" data-v="google" onclick="pickQuiz(this)">Google系（Gmail等）</button>
+          <button class="quiz-opt" data-q="1" data-v="ms" onclick="pickQuiz(this)">Microsoft系（Outlook等）</button>
+          <button class="quiz-opt" data-q="1" data-v="other" onclick="pickQuiz(this)">どちらでもない</button>
+        </div>
+      </div>
+      <!-- Q2 -->
+      <div class="quiz-step" data-step="2" style="display:none">
+        <div class="quiz-q">Q2. AIで一番やりたいことは？</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" data-q="2" data-v="write" onclick="pickQuiz(this)">文章作成</button>
+          <button class="quiz-opt" data-q="2" data-v="search" onclick="pickQuiz(this)">調べ物</button>
+          <button class="quiz-opt" data-q="2" data-v="analyze" onclick="pickQuiz(this)">資料分析</button>
+          <button class="quiz-opt" data-q="2" data-v="explore" onclick="pickQuiz(this)">色々試したい</button>
+        </div>
+      </div>
+      <!-- Q3 -->
+      <div class="quiz-step" data-step="3" style="display:none">
+        <div class="quiz-q">Q3. 正確さと速さ、どっちが大事？</div>
+        <div class="quiz-opts">
+          <button class="quiz-opt" data-q="3" data-v="accuracy" onclick="pickQuiz(this)">正確さ</button>
+          <button class="quiz-opt" data-q="3" data-v="speed" onclick="pickQuiz(this)">速さ</button>
+          <button class="quiz-opt" data-q="3" data-v="balance" onclick="pickQuiz(this)">バランス</button>
+        </div>
+      </div>
+      <!-- Result -->
+      <div id="quiz-result" class="quiz-result"></div>
+    </div>
+  </div>
+  <div class="pg">13 / 15</div>
+</div>
+
+<!-- ===== S14: BRIDGE TO CH5-7 ===== -->
+<div class="slide" data-s="14">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">次のステップ：各ツールを深掘り</div>
+  <span class="marker-line green"></span>
+  <div class="content">
+    <div class="cards c3">
+      <div class="tool-card gpt-c" style="display:flex;flex-direction:column;gap:6px">
+        <div class="logo-circle sm gpt-bg"><svg><use href="#logo-gpt"/></svg></div>
+        <div class="tool-card-title gpt-t">第5章：ChatGPT実践</div>
+        <div class="tool-card-body">
+          ・アカウント設定とカスタマイズ<br>
+          ・GPTsの使い方<br>
+          ・画像生成・コード実行<br>
+          ・実務での活用テクニック
+        </div>
+      </div>
+      <div class="tool-card gem-c" style="display:flex;flex-direction:column;gap:6px">
+        <div class="logo-circle sm gem-bg"><svg><use href="#logo-gem"/></svg></div>
+        <div class="tool-card-title gem-t">第6章：Gemini実践</div>
+        <div class="tool-card-body">
+          ・Googleアカウントとの連携<br>
+          ・Gmail / Docs / Sheetsでの活用<br>
+          ・Gemの作り方<br>
+          ・Google Workspaceとの統合
+        </div>
+      </div>
+      <div class="tool-card cld-c" style="display:flex;flex-direction:column;gap:6px">
+        <div class="logo-circle sm cld-bg"><svg><use href="#logo-cld"/></svg></div>
+        <div class="tool-card-title cld-t">第7章：Claude実践</div>
+        <div class="tool-card-body">
+          ・Claudeの操作方法<br>
+          ・Artifactsの活用<br>
+          ・長文処理と分析テクニック<br>
+          ・Projectsでの整理術
+        </div>
+      </div>
+    </div>
+    <div class="conclusion green">このレッスンで全体像をつかんだら、興味があるツールから深掘りしよう！</div>
+  </div>
+  <div class="pg">14 / 15</div>
+</div>
+
+<!-- ===== S15: GLOSSARY ===== -->
+<div class="slide" data-s="15">
+  <div class="chip">4章 生成AIツール</div>
+  <div class="slide-title">用語集</div>
+  <span class="marker-line green"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title"><span class="logo sm gpt-c"><svg><use href="#logo-gpt"/></svg></span> ChatGPT</div><div class="card-body">OpenAI社が開発した対話型AI。2022年11月リリース。最も利用者が多い生成AIサービス</div></div>
+      <div class="card"><div class="card-title"><span class="logo sm gem-c"><svg><use href="#logo-gem"/></svg></span> Gemini</div><div class="card-body">Google社が開発した対話型AI。Googleサービス（Gmail・Docs等）との連携が強み</div></div>
+      <div class="card"><div class="card-title"><span class="logo sm cld-c"><svg><use href="#logo-cld"/></svg></span> Claude</div><div class="card-body">Anthropic社が開発した対話型AI。安全性と正確さを重視。長文処理に強い</div></div>
+      <div class="card"><div class="card-title">GPTs（カスタムGPT）</div><div class="card-body">ChatGPT上で目的別にカスタマイズされたAIアシスタントを作成・利用できる機能</div></div>
+      <div class="card"><div class="card-title">Gem（ジェム）</div><div class="card-body">Gemini上で目的別の指示セットを保存し、繰り返し使えるカスタムAI機能</div></div>
+      <div class="card"><div class="card-title">Artifacts（アーティファクト）</div><div class="card-body">Claude上でAIが生成した成果物（コード・文書等）を別パネルに表示・編集できる機能</div></div>
+    </div>
+  </div>
+  <div class="pg">15 / 15</div>
+</div>
+
+</div><!-- /board-frame -->
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="pb" onclick="go(cur-1)" disabled>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1.5L3.5 6L8 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="nd"></div>
+  <span class="nav-count" id="nc">1 / 15</span>
+  <button class="nav-btn" id="nb" onclick="go(cur+1)">
+    次へ<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 1.5L8.5 6L4 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+const S=document.querySelectorAll('.slide'),T=S.length;
+let cur=0;
+// Build dots
+const nd=document.getElementById('nd');
+for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
+
+function go(i){
+  if(i<0||i>=T||i===cur)return;
+  S[cur].classList.remove('active');S[cur].style.display='none';
+  cur=i;
+  S[cur].classList.add('active');
+  upd();
+}
+function upd(){
+  document.getElementById('nc').textContent=`${cur+1} / ${T}`;
+  document.getElementById('pf').style.width=`${((cur+1)/T)*100}%`;
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===T-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+});
+// Touch
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+
+// ============================================================
+// DIAGNOSTIC QUIZ LOGIC
+// ============================================================
+const quizAnswers = {};
+function pickQuiz(btn) {
+  const q = btn.dataset.q;
+  const v = btn.dataset.v;
+  quizAnswers[q] = v;
+
+  // Mark selected
+  btn.parentElement.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  // Show next question or result after a brief delay
+  setTimeout(() => {
+    const nextStepNum = parseInt(q) + 1;
+    const nextStep = document.querySelector(`.quiz-step[data-step="${nextStepNum}"]`);
+
+    if (nextStep) {
+      nextStep.style.display = 'block';
+      nextStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    if (Object.keys(quizAnswers).length === 3) {
+      showQuizResult();
+    }
+  }, 300);
+}
+
+function showQuizResult() {
+  let scores = { gpt: 0, gem: 0, cld: 0 };
+
+  // Q1: Tools
+  if (quizAnswers['1'] === 'google') scores.gem += 3;
+  else if (quizAnswers['1'] === 'ms') scores.gpt += 1;
+  else { scores.gpt += 1; scores.cld += 1; }
+
+  // Q2: Purpose
+  if (quizAnswers['2'] === 'write') { scores.cld += 3; scores.gpt += 1; }
+  else if (quizAnswers['2'] === 'search') { scores.gem += 3; scores.gpt += 1; }
+  else if (quizAnswers['2'] === 'analyze') { scores.cld += 3; }
+  else { scores.gpt += 3; } // explore
+
+  // Q3: Priority
+  if (quizAnswers['3'] === 'accuracy') { scores.cld += 2; }
+  else if (quizAnswers['3'] === 'speed') { scores.gem += 2; scores.gpt += 1; }
+  else { scores.gpt += 2; } // balance
+
+  // Find winner
+  let winner = 'gpt';
+  if (scores.gem > scores[winner]) winner = 'gem';
+  if (scores.cld > scores[winner]) winner = 'cld';
+
+  const info = {
+    gpt: { name: 'ChatGPT', cls: 'gpt-r', url: 'https://chatgpt.com', btnCls: 'gpt-btn', logo: 'logo-gpt', bgCls: 'gpt-bg', desc: '万能型のChatGPTがおすすめ！幅広い用途に対応でき、情報量も豊富です。' },
+    gem: { name: 'Gemini', cls: 'gem-r', url: 'https://gemini.google.com', btnCls: 'gem-btn', logo: 'logo-gem', bgCls: 'gem-bg', desc: 'Google連携のGeminiがおすすめ！普段のGoogleツールがそのままパワーアップします。' },
+    cld: { name: 'Claude', cls: 'cld-r', url: 'https://claude.ai', btnCls: 'cld-btn', logo: 'logo-cld', bgCls: 'cld-bg', desc: '正確さ重視のClaudeがおすすめ！ビジネス文書や深い分析に最適です。' }
+  };
+
+  const r = info[winner];
+  const el = document.getElementById('quiz-result');
+  el.className = `quiz-result show ${r.cls}`;
+  el.innerHTML = `
+    <div class="logo-circle md ${r.bgCls}" style="margin:0 auto 8px"><svg><use href="#${r.logo}"/></svg></div>
+    <div style="font-size:var(--fs-sub);margin-bottom:6px">あなたには <strong>${r.name}</strong> がおすすめ！</div>
+    <div style="font-size:var(--fs-sm);font-weight:400;color:#555;margin-bottom:10px">${r.desc}</div>
+    <a href="${r.url}" target="_blank" class="link-btn ${r.btnCls}">${r.name} を始める &#8599;</a>
+  `;
+}
+
+upd();
+</script>
+</body>
+</html>

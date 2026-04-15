@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-1. プロンプトとは — Chalk-Board HTML Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Caveat:wght@700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   CSS Variables — Chalk-Board Design System
+   ======================================== */
+:root {
+  /* Main colors (chalk + chalkboard) */
+  --cb-bg: #2B4C3F;
+  --cb-surface: #2D5A4A;
+  --cb-chalk: #E8E4D9;
+  --cb-yellow: #F9E784;
+  --cb-pink: #FF8B94;
+  --cb-blue: #89CFF0;
+
+  /* Sub colors */
+  --cb-border: rgba(232,228,217,0.18);
+  --cb-box-bg: rgba(232,228,217,0.06);
+  --cb-nav-bg: #1E3A30;
+  --cb-progress: #F9E784;
+  --cb-dust: rgba(232,228,217,0.3);
+  --cb-eraser: #8B7355;
+  --cb-eraser-felt: #4A4A4A;
+
+  /* Font sizes */
+  --fs-cover-title: 3rem;
+  --fs-title: 1.8rem;
+  --fs-subtitle: 1.2rem;
+  --fs-body: 1rem;
+  --fs-note: 0.85rem;
+  --fs-prompt: 0.9rem;
+  --fs-page-num: 0.75rem;
+  --fs-header: 0.8rem;
+
+  /* Slide dimensions */
+  --slide-width: 960px;
+  --slide-height: 540px;
+}
+
+/* ========================================
+   Reset & Base
+   ======================================== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--cb-bg);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  color: var(--cb-chalk);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ========================================
+   Chalk Text Effect
+   ======================================== */
+.chalk-text {
+  text-shadow:
+    0 0 3px rgba(232,228,217,0.3),
+    0 0 8px rgba(232,228,217,0.08);
+}
+
+.chalk-title {
+  text-shadow:
+    0 0 5px rgba(232,228,217,0.4),
+    0 0 12px rgba(232,228,217,0.1);
+  letter-spacing: 0.04em;
+}
+
+/* ========================================
+   Chalkboard Texture (CSS only)
+   ======================================== */
+.chalkboard-texture {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.02) 0%, transparent 70%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.015) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 80%, rgba(0,0,0,0.05) 0%, transparent 60%),
+    /* Subtle noise-like dots */
+    radial-gradient(circle at 10% 10%, rgba(255,255,255,0.008) 1px, transparent 1px),
+    radial-gradient(circle at 30% 40%, rgba(255,255,255,0.006) 1px, transparent 1px),
+    radial-gradient(circle at 70% 30%, rgba(255,255,255,0.009) 1px, transparent 1px),
+    radial-gradient(circle at 50% 70%, rgba(255,255,255,0.007) 1px, transparent 1px),
+    radial-gradient(circle at 90% 60%, rgba(255,255,255,0.005) 1px, transparent 1px),
+    var(--cb-surface);
+}
+
+/* ========================================
+   Slide Container
+   ======================================== */
+.slide-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--cb-progress);
+  transition: width 0.4s ease;
+  z-index: 100;
+  box-shadow: 0 0 8px rgba(249,231,132,0.4);
+}
+
+.slide {
+  position: absolute;
+  width: var(--slide-width);
+  height: var(--slide-height);
+  max-width: 95vw;
+  max-height: 90vh;
+  border-radius: 4px;
+  padding: 36px 48px;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  overflow: hidden;
+  /* Chalkboard texture */
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.02) 0%, transparent 70%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.015) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 80%, rgba(0,0,0,0.05) 0%, transparent 60%),
+    var(--cb-surface);
+  /* Subtle inner shadow to mimic chalkboard depth */
+  box-shadow:
+    inset 0 0 60px rgba(0,0,0,0.15),
+    0 4px 30px rgba(0,0,0,0.3);
+}
+
+.slide.active {
+  display: flex;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide.exit-left {
+  display: flex;
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+/* ========================================
+   Chalk Dust Particles (decorative)
+   ======================================== */
+.chalk-dust {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(to top, rgba(232,228,217,0.04) 0%, transparent 100%);
+}
+
+/* ========================================
+   Header & Page Number (common)
+   ======================================== */
+.slide-header {
+  font-size: var(--fs-header);
+  color: var(--cb-yellow);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  text-shadow: 0 0 4px rgba(249,231,132,0.3);
+}
+
+.page-number {
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
+  font-size: var(--fs-page-num);
+  color: rgba(232,228,217,0.4);
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+}
+
+/* ========================================
+   Cover Slide
+   ======================================== */
+.slide.cover {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.cover .slide-header {
+  position: absolute;
+  top: 20px;
+  left: 28px;
+}
+
+.cover-title {
+  font-size: var(--fs-cover-title);
+  font-weight: 700;
+  color: var(--cb-chalk);
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+  text-shadow:
+    0 0 6px rgba(232,228,217,0.4),
+    0 0 15px rgba(232,228,217,0.1);
+  letter-spacing: 0.05em;
+}
+
+.cover-title .accent {
+  color: var(--cb-yellow);
+  text-shadow:
+    0 0 6px rgba(249,231,132,0.5),
+    0 0 15px rgba(249,231,132,0.15);
+}
+
+.cover-doodles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cover-doodles svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cover-subtitle {
+  font-size: var(--fs-subtitle);
+  color: rgba(232,228,217,0.5);
+  margin-top: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Eraser (positioned on cover) */
+.eraser {
+  position: absolute;
+  z-index: 3;
+}
+
+/* ========================================
+   Page Title (content slides)
+   ======================================== */
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 700;
+  color: var(--cb-chalk);
+  margin-bottom: 4px;
+  line-height: 1.3;
+  text-shadow:
+    0 0 5px rgba(232,228,217,0.35),
+    0 0 12px rgba(232,228,217,0.08);
+  letter-spacing: 0.03em;
+}
+
+.title-underline {
+  width: 80px;
+  height: 3px;
+  background: var(--cb-yellow);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  transform: rotate(-0.5deg);
+  box-shadow: 0 0 6px rgba(249,231,132,0.3);
+}
+
+/* ========================================
+   Content Area
+   ======================================== */
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.content-row {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+}
+
+.content-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content-col.wide {
+  flex: 1.5;
+}
+
+.content-col.narrow {
+  flex: 0.8;
+}
+
+/* ========================================
+   Text Styles
+   ======================================== */
+.body-text {
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  text-shadow: 0 0 3px rgba(232,228,217,0.2);
+}
+
+.subtitle {
+  font-size: var(--fs-subtitle);
+  font-weight: 700;
+  color: var(--cb-yellow);
+  text-shadow: 0 0 4px rgba(249,231,132,0.3);
+}
+
+.note {
+  font-size: var(--fs-note);
+  color: rgba(232,228,217,0.55);
+}
+
+.keyword {
+  color: var(--cb-pink);
+  font-weight: 700;
+  text-shadow: 0 0 4px rgba(255,139,148,0.3);
+}
+
+.highlight-circle {
+  display: inline;
+  border: 2px dashed var(--cb-pink);
+  border-radius: 50%;
+  padding: 2px 8px;
+}
+
+/* ========================================
+   Bullet Points
+   ======================================== */
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bullet-list li {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  padding-left: 28px;
+  position: relative;
+  text-shadow: 0 0 3px rgba(232,228,217,0.2);
+}
+
+.bullet-list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 9px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cb-yellow);
+  box-shadow: 0 0 5px rgba(249,231,132,0.3);
+}
+
+.bullet-list.blue li::before {
+  background: var(--cb-blue);
+  box-shadow: 0 0 5px rgba(137,207,240,0.3);
+}
+
+.bullet-list.pink li::before {
+  background: var(--cb-pink);
+  box-shadow: 0 0 5px rgba(255,139,148,0.3);
+}
+
+.bullet-list.check li::before {
+  content: '✓';
+  background: none;
+  color: var(--cb-yellow);
+  font-size: 1.1rem;
+  font-weight: 700;
+  top: 2px;
+  left: 2px;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  text-shadow: 0 0 5px rgba(249,231,132,0.4);
+}
+
+/* ========================================
+   Chalk Box (replaces sticky notes)
+   ======================================== */
+.chalk-box {
+  border: 2px dashed rgba(232,228,217,0.3);
+  background: var(--cb-box-bg);
+  padding: 16px 20px;
+  border-radius: 4px;
+  position: relative;
+  font-size: var(--fs-prompt);
+  line-height: 1.6;
+}
+
+.chalk-box.yellow {
+  border-color: rgba(249,231,132,0.35);
+  background: rgba(249,231,132,0.05);
+}
+
+.chalk-box.blue {
+  border-color: rgba(137,207,240,0.35);
+  background: rgba(137,207,240,0.05);
+}
+
+.chalk-box.pink {
+  border-color: rgba(255,139,148,0.35);
+  background: rgba(255,139,148,0.05);
+}
+
+.chalk-box.tilt-left { transform: rotate(-0.5deg); }
+.chalk-box.tilt-right { transform: rotate(0.5deg); }
+
+.chalk-box-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--cb-yellow);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 3px rgba(249,231,132,0.3);
+}
+
+/* ========================================
+   Prompt / Code Block (chalk frame)
+   ======================================== */
+.prompt-chalk {
+  border: 2px dashed rgba(232,228,217,0.25);
+  background: rgba(232,228,217,0.04);
+  padding: 16px 20px;
+  padding-top: 28px;
+  border-radius: 4px;
+  position: relative;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--cb-chalk);
+  text-shadow: 0 0 2px rgba(232,228,217,0.2);
+}
+
+.prompt-chalk.yellow {
+  border-color: rgba(249,231,132,0.3);
+  background: rgba(249,231,132,0.04);
+}
+
+.prompt-chalk.blue {
+  border-color: rgba(137,207,240,0.3);
+  background: rgba(137,207,240,0.04);
+}
+
+.prompt-chalk.pink {
+  border-color: rgba(255,139,148,0.25);
+  background: rgba(255,139,148,0.04);
+}
+
+.prompt-chalk .copy-btn {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: rgba(232,228,217,0.1);
+  border: 1px solid rgba(232,228,217,0.2);
+  border-radius: 4px;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  cursor: pointer;
+  color: rgba(232,228,217,0.6);
+  transition: all 0.2s;
+}
+
+.prompt-chalk .copy-btn:hover {
+  background: rgba(232,228,217,0.15);
+  color: var(--cb-chalk);
+  border-color: rgba(232,228,217,0.4);
+}
+
+.prompt-chalk .copy-btn.copied {
+  color: var(--cb-yellow);
+  border-color: rgba(249,231,132,0.4);
+}
+
+.prompt-label {
+  position: absolute;
+  top: 5px;
+  left: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--cb-yellow);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 3px rgba(249,231,132,0.3);
+}
+
+/* ========================================
+   Comparison Layout
+   ======================================== */
+.comparison {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+}
+
+.compare-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.compare-side.left {
+  background: rgba(255,139,148,0.05);
+  border-left: 3px solid rgba(255,139,148,0.5);
+}
+
+.compare-side.right {
+  background: rgba(137,207,240,0.05);
+  border-left: 3px solid rgba(137,207,240,0.5);
+}
+
+.compare-side .compare-label {
+  font-size: var(--fs-subtitle);
+  font-weight: 700;
+}
+
+.compare-side.left .compare-label {
+  color: var(--cb-pink);
+  text-shadow: 0 0 4px rgba(255,139,148,0.3);
+}
+
+.compare-side.right .compare-label {
+  color: var(--cb-blue);
+  text-shadow: 0 0 4px rgba(137,207,240,0.3);
+}
+
+.vs-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Caveat', cursive;
+  font-size: 1.5rem;
+  color: rgba(232,228,217,0.3);
+  font-weight: 700;
+}
+
+/* ========================================
+   Card Grid (Glossary)
+   ======================================== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  flex: 1;
+}
+
+.term-card {
+  background: var(--cb-box-bg);
+  border: 1.5px dashed var(--cb-border);
+  border-radius: 4px;
+  padding: 12px 16px;
+}
+
+.term-card .term-name {
+  font-weight: 700;
+  color: var(--cb-yellow);
+  font-size: var(--fs-body);
+  margin-bottom: 4px;
+  text-shadow: 0 0 4px rgba(249,231,132,0.3);
+}
+
+.term-card .term-def {
+  font-size: var(--fs-note);
+  color: rgba(232,228,217,0.7);
+  line-height: 1.5;
+}
+
+/* ========================================
+   SVG Illustrations (inline)
+   ======================================== */
+.illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.illustration svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* ========================================
+   Bottom Conclusion Bar
+   ======================================== */
+.conclusion-bar {
+  background: rgba(249,231,132,0.06);
+  border-left: 3px solid var(--cb-yellow);
+  padding: 10px 16px;
+  font-size: var(--fs-note);
+  font-weight: 700;
+  color: var(--cb-yellow);
+  border-radius: 0 4px 4px 0;
+  margin-top: auto;
+  text-shadow: 0 0 4px rgba(249,231,132,0.2);
+}
+
+/* ========================================
+   Navigation
+   ======================================== */
+.nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--cb-nav-bg);
+  border-top: 1px solid rgba(232,228,217,0.1);
+  z-index: 50;
+}
+
+.nav-btn {
+  background: rgba(232,228,217,0.06);
+  border: 1.5px solid rgba(232,228,217,0.15);
+  border-radius: 24px;
+  padding: 8px 24px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--cb-chalk);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-btn:hover {
+  background: rgba(249,231,132,0.15);
+  color: var(--cb-yellow);
+  border-color: rgba(249,231,132,0.3);
+}
+
+.nav-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.nav-btn:disabled:hover {
+  background: rgba(232,228,217,0.06);
+  color: var(--cb-chalk);
+  border-color: rgba(232,228,217,0.15);
+}
+
+.nav-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(232,228,217,0.2);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-dot.active {
+  background: var(--cb-yellow);
+  width: 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 6px rgba(249,231,132,0.4);
+}
+
+.nav-dot:hover {
+  background: var(--cb-yellow);
+  opacity: 0.6;
+}
+
+.slide-counter {
+  font-size: 1rem;
+  color: rgba(232,228,217,0.4);
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* ========================================
+   Responsive Scale
+   ======================================== */
+@media (max-width: 1024px) {
+  .slide {
+    padding: 24px 32px;
+  }
+  :root {
+    --fs-cover-title: 2.4rem;
+    --fs-title: 1.5rem;
+    --fs-subtitle: 1.05rem;
+    --fs-body: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .slide {
+    padding: 16px 20px;
+    border-radius: 0;
+    max-width: 100vw;
+    max-height: 85vh;
+  }
+  :root {
+    --fs-cover-title: 1.8rem;
+    --fs-title: 1.2rem;
+    --fs-subtitle: 0.95rem;
+    --fs-body: 0.85rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .comparison {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .content-row {
+    flex-direction: column;
+  }
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes chalkWrite {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes dustFloat {
+  0% { opacity: 0; transform: translateY(0) scale(0.5); }
+  50% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-20px) scale(1.2); }
+}
+
+.slide.active .slide-title,
+.slide.active .title-underline {
+  animation: chalkWrite 0.5s ease forwards;
+}
+
+.slide.active .content-area {
+  animation: fadeInUp 0.5s 0.1s ease both;
+}
+
+.slide.active .conclusion-bar {
+  animation: fadeInUp 0.5s 0.2s ease both;
+}
+
+/* ========================================
+   Chalk Dust Particles (animated)
+   ======================================== */
+.dust-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--cb-dust);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar" style="width: 10%"></div>
+
+<!-- Slide Wrapper -->
+<div class="slide-wrapper" id="slideWrapper">
+
+  <!-- ==================== Slide 1: Cover ==================== -->
+  <div class="slide cover active" data-slide="1">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="cover-doodles">
+      <svg viewBox="0 0 960 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Chat bubble top-left (chalk style) -->
+        <g transform="translate(80, 60)" opacity="0.2">
+          <rect x="0" y="0" width="80" height="55" rx="12" stroke="#89CFF0" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+          <circle cx="20" cy="27" r="3" fill="#89CFF0"/>
+          <circle cx="40" cy="27" r="3" fill="#89CFF0"/>
+          <circle cx="60" cy="27" r="3" fill="#89CFF0"/>
+          <polygon points="15,55 25,55 10,70" fill="none" stroke="#89CFF0" stroke-width="2"/>
+        </g>
+        <!-- Lightbulb top-right (chalk) -->
+        <g transform="translate(780, 50)" opacity="0.18">
+          <ellipse cx="40" cy="35" rx="28" ry="32" stroke="#F9E784" stroke-width="2" fill="none"/>
+          <line x1="30" y1="67" x2="50" y2="67" stroke="#F9E784" stroke-width="2"/>
+          <line x1="32" y1="73" x2="48" y2="73" stroke="#F9E784" stroke-width="2"/>
+          <line x1="40" y1="10" x2="40" y2="0" stroke="#F9E784" stroke-width="1.5"/>
+          <line x1="15" y1="18" x2="8" y2="10" stroke="#F9E784" stroke-width="1.5"/>
+          <line x1="65" y1="18" x2="72" y2="10" stroke="#F9E784" stroke-width="1.5"/>
+        </g>
+        <!-- Keyboard bottom-left (chalk) -->
+        <g transform="translate(60, 400)" opacity="0.12">
+          <rect x="0" y="0" width="120" height="70" rx="8" stroke="#E8E4D9" stroke-width="2" fill="none"/>
+          <rect x="10" y="10" width="16" height="12" rx="2" stroke="#E8E4D9" stroke-width="1.2" fill="none"/>
+          <rect x="30" y="10" width="16" height="12" rx="2" stroke="#E8E4D9" stroke-width="1.2" fill="none"/>
+          <rect x="50" y="10" width="16" height="12" rx="2" stroke="#E8E4D9" stroke-width="1.2" fill="none"/>
+          <rect x="70" y="10" width="16" height="12" rx="2" stroke="#E8E4D9" stroke-width="1.2" fill="none"/>
+          <rect x="90" y="10" width="16" height="12" rx="2" stroke="#E8E4D9" stroke-width="1.2" fill="none"/>
+          <rect x="25" y="28" width="70" height="12" rx="2" stroke="#E8E4D9" stroke-width="1.2" fill="none"/>
+        </g>
+        <!-- Stars scattered (chalk) -->
+        <g opacity="0.15">
+          <text x="180" y="160" font-size="22" fill="#FF8B94">★</text>
+          <text x="740" y="180" font-size="16" fill="#F9E784">★</text>
+          <text x="140" y="360" font-size="18" fill="#89CFF0">★</text>
+          <text x="810" y="310" font-size="14" fill="#FF8B94">★</text>
+        </g>
+        <!-- Chalk arrows -->
+        <g opacity="0.1" stroke="#E8E4D9" stroke-width="1.5">
+          <path d="M200,100 Q220,80 240,100" fill="none"/>
+          <polygon points="238,95 245,102 235,104" fill="#E8E4D9"/>
+          <path d="M700,420 Q720,400 740,420" fill="none"/>
+          <polygon points="738,415 745,422 735,424" fill="#E8E4D9"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Eraser SVG - bottom right -->
+    <div class="eraser" style="bottom: 50px; right: 40px;">
+      <svg width="110" height="55" viewBox="0 0 110 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Eraser body (wood) -->
+        <rect x="5" y="5" width="100" height="28" rx="3" fill="#8B7355" stroke="#6B5540" stroke-width="1.5"/>
+        <!-- Wood grain lines -->
+        <line x1="15" y1="12" x2="45" y2="12" stroke="#7A6348" stroke-width="0.8" opacity="0.5"/>
+        <line x1="55" y1="18" x2="85" y2="18" stroke="#7A6348" stroke-width="0.8" opacity="0.5"/>
+        <line x1="20" y1="24" x2="60" y2="24" stroke="#7A6348" stroke-width="0.8" opacity="0.5"/>
+        <!-- Label on eraser -->
+        <text x="55" y="22" text-anchor="middle" font-size="8" fill="#E8E4D9" font-family="Caveat, cursive" opacity="0.7">ERASER</text>
+        <!-- Felt bottom -->
+        <rect x="5" y="33" width="100" height="14" rx="2" fill="#4A4A4A" stroke="#3A3A3A" stroke-width="1"/>
+        <!-- Chalk dust on felt -->
+        <circle cx="20" cy="40" r="1.5" fill="#E8E4D9" opacity="0.3"/>
+        <circle cx="35" cy="38" r="1" fill="#F9E784" opacity="0.25"/>
+        <circle cx="50" cy="41" r="1.2" fill="#E8E4D9" opacity="0.2"/>
+        <circle cx="65" cy="39" r="1" fill="#FF8B94" opacity="0.2"/>
+        <circle cx="80" cy="40" r="1.5" fill="#E8E4D9" opacity="0.25"/>
+        <circle cx="90" cy="38" r="1" fill="#89CFF0" opacity="0.2"/>
+        <!-- Eraser shadow -->
+        <ellipse cx="55" cy="52" rx="45" ry="3" fill="rgba(0,0,0,0.15)"/>
+      </svg>
+    </div>
+
+    <!-- Chalk pieces - bottom left -->
+    <div style="position:absolute;bottom:55px;left:45px;z-index:3;opacity:0.6">
+      <svg width="90" height="30" viewBox="0 0 90 30" fill="none">
+        <!-- White chalk -->
+        <rect x="0" y="8" width="35" height="10" rx="3" fill="#E8E4D9" transform="rotate(-5, 17, 13)" opacity="0.7"/>
+        <!-- Yellow chalk -->
+        <rect x="30" y="12" width="28" height="9" rx="3" fill="#F9E784" transform="rotate(8, 44, 16)" opacity="0.65"/>
+        <!-- Pink chalk -->
+        <rect x="58" y="6" width="25" height="9" rx="3" fill="#FF8B94" transform="rotate(-3, 70, 10)" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <div class="cover-title chalk-title">1-1. <span class="accent">プロンプト</span>とは</div>
+    <div class="cover-subtitle">第3章 プロンプト ― 1. プロンプトの基礎</div>
+    <div class="page-number">1/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 2: Goal ==================== -->
+  <div class="slide" data-slide="2">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">このチャプターのゴール</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col wide">
+          <ul class="bullet-list">
+            <li><strong>プロンプトの定義</strong>がわかるようになる。</li>
+            <li><strong>プロンプトの構成要素</strong>がわかるようになる。</li>
+            <li><strong>良いプロンプトと悪いプロンプトの違い</strong>がわかるようになる。</li>
+            <li><strong>プロンプトエンジニアリング</strong>の基本概念がわかるようになる。</li>
+          </ul>
+        </div>
+        <div class="content-col narrow illustration">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Mountain with flag (chalk style) -->
+            <polygon points="100,30 30,170 170,170" stroke="#89CFF0" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+            <path d="M60,170 Q80,130 100,90 Q110,110 130,130 Q140,140 150,170" stroke="#F9E784" stroke-width="1.5" fill="none" stroke-dasharray="3,3"/>
+            <line x1="100" y1="30" x2="100" y2="10" stroke="#FF8B94" stroke-width="2"/>
+            <polygon points="100,10 128,20 100,30" fill="#FF8B94" opacity="0.6"/>
+            <text x="105" y="24" font-size="10" fill="#E8E4D9" font-weight="bold" font-family="Caveat, cursive">Goal</text>
+            <!-- Small stars -->
+            <text x="75" y="50" font-size="12" fill="#F9E784">★</text>
+            <text x="125" y="55" font-size="10" fill="#89CFF0">★</text>
+          </svg>
+        </div>
+      </div>
+      <div class="conclusion-bar">
+        プロンプトは「AIへの指示書」。正しく書けば、AIはもっと賢く応えてくれる。
+      </div>
+    </div>
+    <div class="page-number">2/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 3: Content — What is Prompt ==================== -->
+  <div class="slide" data-slide="3">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">プロンプトとは？</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col wide">
+          <div class="body-text chalk-text">
+            プロンプトとは、<span class="keyword">生成AIに入力する指示文</span>のことです。
+          </div>
+          <div class="body-text chalk-text" style="margin-top:4px">
+            レストランの注文に例えると、メニューを見て「カルボナーラをください」と伝えるのがプロンプト。AIはシェフとして、その注文どおりの料理を作ります。
+          </div>
+          <div class="chalk-box yellow tilt-left" style="margin-top:8px">
+            <div class="chalk-box-label">ひとことで言うと</div>
+            プロンプト = <strong>AIへの「お願い」や「質問」</strong>をテキストで書いたもの
+          </div>
+        </div>
+        <div class="content-col narrow illustration">
+          <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Person (chalk style) -->
+            <circle cx="60" cy="40" r="18" stroke="#E8E4D9" stroke-width="2" fill="none"/>
+            <line x1="60" y1="58" x2="60" y2="110" stroke="#E8E4D9" stroke-width="2"/>
+            <line x1="60" y1="75" x2="35" y2="95" stroke="#E8E4D9" stroke-width="2"/>
+            <line x1="60" y1="75" x2="90" y2="70" stroke="#E8E4D9" stroke-width="2"/>
+            <!-- Speech bubble -->
+            <rect x="90" y="35" width="95" height="50" rx="10" stroke="#89CFF0" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+            <polygon points="90,55 80,60 90,65" fill="none" stroke="#89CFF0" stroke-width="1.5"/>
+            <text x="105" y="58" font-size="11" fill="#89CFF0" font-family="Zen Maru Gothic, sans-serif">プロンプト</text>
+            <text x="105" y="74" font-size="9" fill="rgba(232,228,217,0.5)" font-family="Zen Maru Gothic, sans-serif">（指示・質問）</text>
+            <!-- Arrow -->
+            <line x1="137" y1="95" x2="137" y2="125" stroke="#FF8B94" stroke-width="2"/>
+            <polygon points="130,122 137,135 144,122" fill="#FF8B94" opacity="0.7"/>
+            <!-- AI Robot -->
+            <rect x="115" y="140" width="50" height="40" rx="8" stroke="#F9E784" stroke-width="2" fill="none"/>
+            <circle cx="130" cy="155" r="5" stroke="#F9E784" stroke-width="1.5" fill="none"/>
+            <circle cx="150" cy="155" r="5" stroke="#F9E784" stroke-width="1.5" fill="none"/>
+            <path d="M128,168 Q140,175 152,168" stroke="#F9E784" stroke-width="1.5" fill="none"/>
+            <text x="122" y="200" font-size="10" fill="#F9E784" font-family="Zen Maru Gothic, sans-serif">生成AI</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">3/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 4: Content — Components ==================== -->
+  <div class="slide" data-slide="4">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">プロンプトの構成要素</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col">
+          <div class="chalk-box blue tilt-right">
+            <div class="chalk-box-label">1. 指示（Instruction）</div>
+            AIに何をしてほしいかを伝える部分。<br>例：「要約してください」「翻訳して」
+          </div>
+          <div class="chalk-box yellow tilt-left">
+            <div class="chalk-box-label">2. 文脈（Context）</div>
+            背景情報や前提条件。<br>例：「初心者向けに」「ビジネスメールとして」
+          </div>
+        </div>
+        <div class="content-col">
+          <div class="chalk-box pink tilt-left">
+            <div class="chalk-box-label">3. 入力データ（Input）</div>
+            処理してほしい対象のテキストやデータ。<br>例：「以下の文章を〜」
+          </div>
+          <div class="chalk-box tilt-right">
+            <div class="chalk-box-label">4. 出力形式（Output Format）</div>
+            どんな形で答えてほしいか。<br>例：「箇条書きで」「表形式で」「JSON形式で」
+          </div>
+        </div>
+      </div>
+      <div class="conclusion-bar">
+        この4つを意識するだけで、プロンプトの質が格段に上がる
+      </div>
+    </div>
+    <div class="page-number">4/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 5: Comparison ==================== -->
+  <div class="slide" data-slide="5">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">良いプロンプト vs 悪いプロンプト</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="comparison">
+        <div class="compare-side left">
+          <div class="compare-label">悪いプロンプト</div>
+          <div class="prompt-chalk pink" style="transform:rotate(-0.5deg)">
+            <span class="prompt-label">PROMPT</span>
+AIについて教えて</div>
+          <div class="note" style="margin-top:8px">
+            曖昧で範囲が広すぎる。AIは何を答えればいいかわからない。
+          </div>
+        </div>
+        <div class="vs-divider">VS</div>
+        <div class="compare-side right">
+          <div class="compare-label">良いプロンプト</div>
+          <div class="prompt-chalk blue" style="transform:rotate(0.5deg)">
+            <span class="prompt-label">PROMPT</span>
+            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+中学生にもわかるように、
+AIの定義を200文字以内で
+説明してください。
+具体例を1つ含めてください。</div>
+          <div class="note" style="margin-top:8px">
+            対象・形式・分量・条件が明確。期待どおりの回答が返る。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">5/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 6: Prompt Example ==================== -->
+  <div class="slide" data-slide="6">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">具体的に書くコツ ― 5W1H</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="body-text chalk-text" style="margin-bottom:8px">
+        プロンプトに <span class="keyword">5W1H</span>（誰に・何を・いつ・どこで・なぜ・どのように）を入れると精度が上がります。
+      </div>
+      <div class="content-row" style="gap:16px">
+        <div class="content-col">
+          <div class="prompt-chalk pink" style="transform:rotate(-0.8deg)">
+            <span class="prompt-label">BEFORE</span>
+メールを書いて</div>
+        </div>
+        <div style="display:flex;align-items:center;font-size:1.5rem;color:var(--cb-yellow);font-weight:700;text-shadow:0 0 5px rgba(249,231,132,0.3)">→</div>
+        <div class="content-col">
+          <div class="prompt-chalk blue" style="transform:rotate(0.5deg)">
+            <span class="prompt-label">AFTER</span>
+            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+取引先への納期遅延のお詫びメールを、
+丁寧な敬語で300文字以内で
+作成してください。
+相手は部長クラスの方です。</div>
+        </div>
+      </div>
+      <div class="chalk-box yellow tilt-right" style="margin-top:auto">
+        <div class="chalk-box-label">Point</div>
+        「誰に向けて」「何を」「どのように」の3つを入れるだけで回答の質が大きく変わる
+      </div>
+    </div>
+    <div class="page-number">6/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 7: Role & Context ==================== -->
+  <div class="slide" data-slide="7">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">役割と背景情報を伝える</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col">
+          <div class="subtitle">役割（ロール）を与える</div>
+          <div class="body-text chalk-text">「〜の専門家として答えて」と指定すると、回答の視点や深さが変わります。</div>
+          <div class="prompt-chalk blue" style="transform:rotate(-0.5deg);margin-top:8px">
+            <span class="prompt-label">PROMPT</span>
+            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+あなたは小学校の先生です。
+小学3年生にもわかるように、
+「AI」とは何かを説明してください。</div>
+        </div>
+        <div class="content-col">
+          <div class="subtitle">背景情報（コンテキスト）</div>
+          <div class="body-text chalk-text">「なぜこの質問をしているか」を伝えると、的外れな回答が減ります。</div>
+          <div class="prompt-chalk yellow" style="transform:rotate(0.8deg);margin-top:8px">
+            <span class="prompt-label">PROMPT</span>
+            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+来週の社内会議で、新入社員10名に
+情報セキュリティの基本を説明します。
+15分のプレゼン構成案を作ってください。</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">7/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 8: Tips Summary ==================== -->
+  <div class="slide" data-slide="8">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">プロンプト作成 7つのコツ</div>
+    <div class="title-underline"></div>
+    <div class="content-area">
+      <div class="content-row">
+        <div class="content-col">
+          <ul class="bullet-list">
+            <li><span class="keyword">具体的に書く</span> — 5W1Hを意識</li>
+            <li><span class="keyword">出力形式を指定</span> — 箇条書き・表形式など</li>
+            <li><span class="keyword">役割を与える</span> — 「〜の専門家として」</li>
+            <li><span class="keyword">背景情報を伝える</span> — 目的・対象者・場面</li>
+          </ul>
+        </div>
+        <div class="content-col">
+          <ul class="bullet-list blue">
+            <li><span class="keyword">条件を設定</span> — 文字数・トーン・除外条件</li>
+            <li><span class="keyword">一つずつ指示</span> — 複雑なタスクは分割</li>
+            <li><span class="keyword">例文を示す</span> — Few-Shotの考え方</li>
+          </ul>
+          <div class="chalk-box yellow tilt-left" style="margin-top:auto">
+            <div class="chalk-box-label">Remember</div>
+            どれも「人に仕事を頼むときの伝え方」と同じ！
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">8/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 9: Summary ==================== -->
+  <div class="slide" data-slide="9">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">まとめ</div>
+    <div class="title-underline" style="background:var(--cb-blue);width:60px;box-shadow:0 0 6px rgba(137,207,240,0.3)"></div>
+    <div class="content-area">
+      <ul class="bullet-list check">
+        <li><strong>プロンプト</strong>は、生成AIに入力する指示文のこと</li>
+        <li>構成要素は <strong>指示・文脈・入力データ・出力形式</strong> の4つ</li>
+        <li>具体的に書き、<strong>5W1H</strong>を意識するだけで精度が大きく向上する</li>
+        <li><strong>役割</strong>と<strong>背景情報</strong>を与えると、回答の質がさらに上がる</li>
+        <li>完璧を求めず、<strong>AIとの対話を繰り返して改善</strong>するのが上達の近道</li>
+      </ul>
+      <div class="conclusion-bar" style="margin-top:auto">
+        次へ → 1-2. プロンプトエンジニアリングとは
+      </div>
+    </div>
+    <div class="page-number">9/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+  <!-- ==================== Slide 10: Glossary ==================== -->
+  <div class="slide" data-slide="10">
+    <div class="slide-header">3章 プロンプト</div>
+    <div class="slide-title chalk-title">用語集</div>
+    <div class="title-underline" style="background:var(--cb-blue);box-shadow:0 0 6px rgba(137,207,240,0.3)"></div>
+    <div class="content-area">
+      <div class="card-grid">
+        <div class="term-card">
+          <div class="term-name">プロンプト (Prompt)</div>
+          <div class="term-def">生成AIに入力する指示や質問のテキスト。AIの出力を左右する最も重要な要素。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">プロンプトエンジニアリング</div>
+          <div class="term-def">プロンプトを工夫・最適化してAIから望みどおりの出力を引き出す技術。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">コンテキスト (Context)</div>
+          <div class="term-def">AIへの指示における背景情報や前提条件。対象者・目的・場面など。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">Few-Shot プロンプティング</div>
+          <div class="term-def">AIに1〜数個の例文を示してから回答させる手法。出力の形式や雰囲気を揃えやすい。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">5W1H</div>
+          <div class="term-def">Who/What/When/Where/Why/How。具体的なプロンプトを書くための基本フレームワーク。</div>
+        </div>
+        <div class="term-card">
+          <div class="term-name">出力形式 (Output Format)</div>
+          <div class="term-def">箇条書き・表形式・JSON等、AIにどんな形で答えてほしいかを指定すること。</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-number">10/10</div>
+    <div class="chalk-dust"></div>
+  </div>
+
+</div><!-- /slide-wrapper -->
+
+<!-- Navigation Bar -->
+<nav class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    前へ
+  </button>
+  <div class="nav-dots" id="navDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 10</span>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">
+    次へ
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</nav>
+
+<script>
+/* ========================================
+   Slide Navigation
+   ======================================== */
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let currentSlide = 0;
+
+// Build dots
+const dotsContainer = document.getElementById('navDots');
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement('button');
+  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function goToSlide(index) {
+  if (index < 0 || index >= totalSlides || index === currentSlide) return;
+
+  const oldSlide = currentSlide;
+  slides[oldSlide].classList.remove('active');
+  slides[oldSlide].classList.add('exit-left');
+
+  currentSlide = index;
+
+  setTimeout(() => {
+    slides[oldSlide].classList.remove('active', 'exit-left');
+    slides[oldSlide].style.display = 'none';
+  }, 50);
+
+  slides[currentSlide].classList.add('active');
+  updateUI();
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+function updateUI() {
+  document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+  document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+  document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentSlide);
+  });
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+// Touch navigation
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) nextSlide();
+    else prevSlide();
+  }
+});
+
+/* ========================================
+   Copy to clipboard
+   ======================================== */
+function copyText(btn) {
+  const container = btn.closest('.prompt-chalk');
+  const clone = container.cloneNode(true);
+  clone.querySelector('.copy-btn')?.remove();
+  clone.querySelector('.prompt-label')?.remove();
+  const text = clone.textContent.trim();
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+// Initialize
+updateUI();
+
+/* ========================================
+   Animated Chalk Dust Particles
+   ======================================== */
+function createDustParticles() {
+  const activeSlide = document.querySelector('.slide.active');
+  if (!activeSlide) return;
+
+  const dustZone = activeSlide.querySelector('.chalk-dust');
+  if (!dustZone) return;
+
+  for (let i = 0; i < 3; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'dust-particle';
+    particle.style.left = (Math.random() * 100) + '%';
+    particle.style.bottom = '0px';
+    particle.style.animation = `dustFloat ${1.5 + Math.random() * 2}s ease forwards`;
+    particle.style.animationDelay = (Math.random() * 0.5) + 's';
+    dustZone.appendChild(particle);
+
+    particle.addEventListener('animationend', () => particle.remove());
+  }
+}
+
+// Spawn dust every few seconds
+setInterval(createDustParticles, 3000);
+createDustParticles();
+</script>
+</body>
+</html>

@@ -23,6 +23,12 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 - サブエージェント: `{{WITHAI_ROOT}}/cco/agents/`（7体）
 - 状態: `{{WITHAI_ROOT}}/cco/state/`（health-scores.json, pipeline.json）
 
+## CTO（最高技術責任者AI）
+技術プロジェクトの推進、API連携、システム構築、インフラ管理を統括。
+- 定義: `{{WITHAI_ROOT}}/cto/CTO.md`
+- エントリポイント: `skills/meta/cto.md`
+- 状態: `{{WITHAI_ROOT}}/cto/state/`
+
 ## CLO（最高法務責任者AI）
 契約書の自動生成・レビュー・台帳管理、法令リサーチ、リスク分析を統括。
 - 定義: `~/Desktop/with-AI/clo/CLO.md`
@@ -49,12 +55,40 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 ### 「CCO」「顧客管理」「パイプライン」「ヘルススコア」「360」
 → `skills/meta/cco.md` を読み込み、CCO 顧客管理モードを起動する。
 
+### 「CTO」「技術」「API連携」「自動化システム」「インフラ」「デプロイ」「設計」「実装」「開発」
+→ `skills/meta/cto.md` を読み込み、CTO 技術モードを起動する。
+
 ### 「CLO」「法務」「契約書作成」「NDA」「リスク分析」「コンプライアンス」「登記」「役員変更」
 → `skills/meta/clo.md` を読み込み、CLO 法務モードを起動する。
 
 ### 「秘書」「secretary」
 → `skills/meta/secretary.md` を読み込み、秘書AIモードを起動する。
 ※ 秘書を明示的に呼ばなくても、曖昧な指示の場合は自動的に秘書が判断してルーティングする。
+
+### 「イーネ」「イーネオランジェ」
+→ 秘書AIが `clients/イーネオランジェ/CLAUDE.md` を読み込み、適切なイーネ専用エージェント（台本/投稿/分析/広告/請求/タスク/マニュアル）にルーティングする。
+
+### 「Web集客」「集客どう」「集客KPI」「集客レビュー」
+→ 秘書AI管轄。`secretary/projects/web-acquisition.md` を読み込み、秘書がCMO/CTOに指示を出してKPIを追跡する。
+
+### 「SEO」「SEO対策」「検索順位」「webマーケ」
+→ `skills/marketing/webmarketing-team.md` を読み込み、Webマーケ部門のSEO対策チームを起動する。
+キーワード分析・技術SEO監査・競合チェック・コンテンツ計画を実行。
+
+### 「技術SEO」「テクニカルSEO」「Core Web Vitals」「構造化データ」
+→ `skills/marketing/technical-seo.md` を読み込み、CMO×CTO合同の技術SEOチームを起動する。
+CMOが課題検出・優先順位付け、CTOが実装・デプロイ、CMOが検証。
+
+### 「HP改修」「HP改善」「サイト改修」「CRO改善」「LP改善」
+→ `skills/marketing/hp-kaizen.md` を読み込み、CMO×CTO合同のHP改修チームを起動する。
+CMOがデータ分析・改修企画、CTOが実装・デプロイ、CMOが効果検証。
+
+### 「ブログ書いて」「記事作成」「SEO記事」「blog書いて」
+→ `skills/marketing/blog-write.md` を読み込み、CMO配下Webマーケチームがブログ記事を執筆する。
+完成後「ブログ公開して」でCTOがデプロイ。
+
+### 「ブログ公開」「ブログアップ」「記事デプロイ」「blog deploy」
+→ `skills/operations/blog-publish.md` を読み込み、CTO管轄でHTML化・一覧更新・Xserverデプロイを実行する。
 
 ### 「おはよう」「おは」「ohayou」「good morning」
 → `skills/operations/ohayou.md` を読み込み、朝の全自動ルーティンを実行する。
@@ -68,6 +102,11 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 
 | カテゴリ | スキル | トリガー例 |
 |---|---|---|
+| marketing | webmarketing-team.md | SEO、SEO対策、検索順位、webマーケ |
+| marketing | technical-seo.md | 技術SEO、テクニカルSEO、Core Web Vitals |
+| marketing | hp-kaizen.md | HP改修、HP改善、CRO改善、LP改善 |
+| marketing | blog-write.md | ブログ書いて、記事作成、SEO記事 |
+| operations | blog-publish.md | ブログ公開、記事デプロイ、blog deploy |
 | operations | ohayou.md | おはよう、おは |
 | operations | morning-news.md | ニュース、朝のニュース |
 | operations | 確認.md | タスク確認、今日のタスク |
@@ -105,6 +144,7 @@ with-AI エコシステム全体の司令塔。戦略・品質・リソース・
 | meta | caio.md | CAIO、AI責任者、戦略 |
 | meta | cfo.md | CFO、財務、売上、請求状況 |
 | meta | cco.md | CCO、顧客管理、パイプライン、ヘルススコア |
+| meta | cto.md | CTO、技術、API連携、自動化、インフラ、設計、実装、開発 |
 | meta | clo.md | CLO、法務、契約書作成、NDA、リスク分析、登記、役員変更 |
 | meta | secretary.md | 秘書、何でも指示を受けてルーティング |
 | **anthropic** | **Anthropic公式スキル（全ロール共通）** | |

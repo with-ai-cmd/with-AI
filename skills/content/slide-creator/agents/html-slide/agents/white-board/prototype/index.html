@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-1. プロンプトとは — White-Board Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WHITE-BOARD SLIDE — Design System
+   Concept: "A brilliant teacher's whiteboard session"
+   Real marker strokes, tactile sticky notes, chalk-dust warmth
+   ============================================================ */
+:root {
+  /* Board & Surface */
+  --board: #F7F6F3;
+  --board-edge: #E8E6E1;
+  --surface: #FFFFFF;
+  --tray: #D4CDC2;
+  --tray-dark: #B8B0A3;
+
+  /* Marker Palette — saturated, confident */
+  --ink-black: #1A1A1A;
+  --ink-blue: #1565C0;
+  --ink-blue-light: #42A5F5;
+  --ink-red: #C62828;
+  --ink-red-light: #EF5350;
+  --ink-green: #2E7D32;
+  --ink-green-light: #66BB6A;
+  --ink-orange: #E65100;
+
+  /* Sticky Note colors — muted, paper-like */
+  --sticky-y: #FFF8DC;
+  --sticky-y-edge: #F0E6B8;
+  --sticky-b: #E8F0FE;
+  --sticky-b-edge: #C4D8F2;
+  --sticky-g: #E6F4EA;
+  --sticky-g-edge: #B7DFC3;
+  --sticky-p: #FCE4EC;
+  --sticky-p-edge: #F0B8C8;
+
+  /* UI */
+  --nav-bg: rgba(255,255,255,0.92);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sticky: 2px 4px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06);
+
+  /* Type scale */
+  --fs-hero: clamp(2.2rem, 5vw, 3.2rem);
+  --fs-title: clamp(1.4rem, 3vw, 1.9rem);
+  --fs-sub: clamp(1rem, 2vw, 1.2rem);
+  --fs-body: clamp(0.88rem, 1.5vw, 1rem);
+  --fs-sm: clamp(0.78rem, 1.2vw, 0.88rem);
+  --fs-xs: clamp(0.68rem, 1vw, 0.78rem);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--board);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
+  color: var(--ink-black);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   WHITEBOARD FRAME — The physical board illusion
+   ============================================================ */
+.board-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 8px;
+  position: relative;
+  /* Subtle grid pattern like real whiteboard */
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+    linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.015) 100%),
+    var(--board);
+  background-size: 100%, 40px 40px, 40px 40px, 100%;
+}
+
+/* Light reflection on board */
+.board-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Marker tray at bottom */
+.marker-tray {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80%);
+  height: 6px;
+  background: linear-gradient(to bottom, var(--tray), var(--tray-dark));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.08);
+  z-index: 1;
+}
+
+/* Progress bar — integrated into tray */
+.progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.05);
+  z-index: 2;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink-blue);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   SLIDE — Each "page" on the whiteboard
+   ============================================================ */
+.slide {
+  position: absolute;
+  width: min(940px, 92vw);
+  height: min(540px, 78vh);
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.01);
+  padding: 30px 40px;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+  /* Whiteboard surface micro-texture */
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.008) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.005) 0%, transparent 50%);
+}
+
+.slide.active {
+  display: flex;
+  animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---- Header chip (chapter label) ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-blue);
+  background: var(--sticky-b);
+  padding: 3px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--sticky-b-edge);
+  width: fit-content;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Page number ---- */
+.pg {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tray-dark);
+}
+
+/* ---- Slide title ---- */
+.slide-title {
+  font-size: var(--fs-title);
+  font-weight: 900;
+  line-height: 1.35;
+  color: var(--ink-black);
+  margin-bottom: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Marker underline stroke — animated */
+.marker-line {
+  display: block;
+  height: 5px;
+  width: 0;
+  border-radius: 3px;
+  margin-bottom: 14px;
+  transform: rotate(-0.3deg);
+  /* Rough marker edge */
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,4 Q10,1 20,3 T40,4 T60,3 T80,5 T100,3 T120,4 T140,3 T160,5 T180,4 T200,3' stroke='black' stroke-width='8' fill='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+.marker-line.red { background: var(--ink-red); }
+.marker-line.blue { background: var(--ink-blue); }
+.marker-line.green { background: var(--ink-green); }
+.slide.active .marker-line {
+  animation: drawLine 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { width: 80px; } }
+
+/* ---- Content area ---- */
+.content { flex:1; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.row { display:flex; gap:20px; flex:1; }
+.col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.col.w60 { flex:1.5; }
+.col.w40 { flex:0.8; }
+
+/* ============================================================
+   TYPOGRAPHY — Hand-written warmth
+   ============================================================ */
+.body { font-size:var(--fs-body); line-height:1.75; font-weight:400; }
+.sub { font-size:var(--fs-sub); font-weight:700; color:var(--ink-blue); }
+.sm { font-size:var(--fs-sm); color:#666; line-height:1.6; }
+.xs { font-size:var(--fs-xs); color:#999; }
+.kw { color:var(--ink-red); font-weight:700; }
+.kw-blue { color:var(--ink-blue); font-weight:700; }
+.accent { font-family:'Caveat',cursive; font-weight:700; }
+
+/* ============================================================
+   BULLET LIST — Marker dots
+   ============================================================ */
+.bl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.bl li { font-size:var(--fs-body); line-height:1.65; padding-left:24px; position:relative; }
+.bl li::before {
+  content:''; position:absolute; left:2px; top:8px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--ink-blue);
+  opacity: 0.7;
+}
+.bl.green li::before { background:var(--ink-green); }
+.bl.red li::before { background:var(--ink-red); }
+.bl.check li::before {
+  content:'✓'; background:none; opacity:1;
+  color:var(--ink-green); font-size:1rem; font-weight:900;
+  top:3px; left:0; width:auto; height:auto;
+}
+.bl.num { counter-reset:n; }
+.bl.num li { padding-left:30px; counter-increment:n; }
+.bl.num li::before {
+  content:counter(n); background:var(--ink-blue); color:#fff;
+  font-size:0.65rem; font-weight:700; text-align:center;
+  width:18px; height:18px; line-height:18px; top:5px; left:0;
+  border-radius: 50%; opacity:1;
+}
+
+/* ============================================================
+   STICKY NOTE — Realistic paper
+   ============================================================ */
+.sticky {
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 1px;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  box-shadow: var(--shadow-sticky);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sticky:hover { transform: scale(1.02) !important; z-index: 3; }
+
+/* Paper texture overlay */
+.sticky::after {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+  pointer-events:none;
+  border-radius: inherit;
+}
+
+/* Tape strip at top */
+.sticky::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* Color variants */
+.sticky.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.sticky.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.sticky.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.sticky.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
+/* Rotation variants */
+.sticky.t1 { transform:rotate(-1.5deg); }
+.sticky.t2 { transform:rotate(1deg); }
+.sticky.t3 { transform:rotate(-0.8deg); }
+.sticky.t4 { transform:rotate(1.3deg); }
+
+/* Sticky entrance animation */
+.slide.active .sticky {
+  animation: stickyPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slide.active .sticky:nth-child(1) { animation-delay: 0.15s; }
+.slide.active .sticky:nth-child(2) { animation-delay: 0.25s; }
+.slide.active .sticky:nth-child(3) { animation-delay: 0.35s; }
+.slide.active .sticky:nth-child(4) { animation-delay: 0.45s; }
+@keyframes stickyPop {
+  from { opacity:0; transform:rotate(0deg) scale(0.9) translateY(10px); }
+}
+
+.sticky-label {
+  font-size:0.65rem; font-weight:700; color:var(--ink-blue);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;
+}
+
+/* ============================================================
+   PROMPT BLOCK — Code on sticky note
+   ============================================================ */
+.prompt {
+  position:relative;
+  padding: 28px 16px 14px;
+  border-radius: 1px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: var(--shadow-sticky);
+}
+.prompt.y { background:var(--sticky-y); border-bottom:1px solid var(--sticky-y-edge); }
+.prompt.b { background:var(--sticky-b); border-bottom:1px solid var(--sticky-b-edge); }
+.prompt.g { background:var(--sticky-g); border-bottom:1px solid var(--sticky-g-edge); }
+.prompt.p { background:var(--sticky-p); border-bottom:1px solid var(--sticky-p-edge); }
+
+.prompt::before {
+  content:''; position:absolute;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:50px; height:14px;
+  background: rgba(200,200,180,0.35);
+  border-radius: 1px;
+}
+
+.prompt-tag {
+  position:absolute; top:6px; left:10px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.58rem; font-weight:700;
+  color:var(--ink-blue); letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+
+.copy-btn {
+  position:absolute; top:5px; right:8px;
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(4px);
+  border:1px solid rgba(0,0,0,0.08); border-radius:4px;
+  padding:2px 10px; font-size:0.6rem;
+  font-family:'Zen Maru Gothic',sans-serif;
+  cursor:pointer; color:#888; transition:all 0.2s;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.95); color:var(--ink-black); }
+.copy-btn.ok { color:var(--ink-green); border-color:var(--ink-green-light); }
+
+/* ============================================================
+   COMPARISON LAYOUT
+   ============================================================ */
+.vs { display:flex; gap:16px; flex:1; }
+.vs-side { flex:1; display:flex; flex-direction:column; gap:8px; padding:14px; border-radius:8px; }
+.vs-side.bad {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(198,40,40,0.015) 10px, rgba(198,40,40,0.015) 20px);
+  border:1.5px dashed rgba(198,40,40,0.2);
+}
+.vs-side.good {
+  background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(46,125,50,0.015) 10px, rgba(46,125,50,0.015) 20px);
+  border:1.5px solid rgba(46,125,50,0.2);
+}
+.vs-label { font-size:var(--fs-sub); font-weight:900; }
+.vs-side.bad .vs-label { color:var(--ink-red); }
+.vs-side.good .vs-label { color:var(--ink-green); }
+.vs-mid {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat',cursive; font-size:1.6rem;
+  color:var(--tray-dark); font-weight:700;
+}
+
+/* ============================================================
+   TABLE — Whiteboard-style
+   ============================================================ */
+.wb-tbl { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+.wb-tbl th {
+  text-align:left; padding:8px 12px;
+  font-weight:700; color:var(--ink-blue);
+  border-bottom:2.5px solid var(--ink-blue);
+  font-size:var(--fs-sm);
+}
+.wb-tbl td {
+  padding:7px 12px;
+  border-bottom:1px solid var(--board-edge);
+}
+.wb-tbl tr:last-child td { border-bottom:none; }
+.wb-tbl tr:hover td { background:rgba(21,101,192,0.02); }
+
+/* ============================================================
+   CARD GRID
+   ============================================================ */
+.cards { display:grid; gap:10px; flex:1; }
+.cards.c2 { grid-template-columns:repeat(2,1fr); }
+.cards.c3 { grid-template-columns:repeat(3,1fr); }
+.card {
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:8px; padding:12px 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card-title { font-weight:700; color:var(--ink-blue); font-size:var(--fs-body); margin-bottom:3px; }
+.card-body { font-size:var(--fs-sm); color:#555; line-height:1.55; }
+
+/* ============================================================
+   FLOW STEPS
+   ============================================================ */
+.flow { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.flow-step {
+  padding:10px 18px; border-radius:10px; text-align:center;
+  font-size:var(--fs-sm); font-weight:700;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.flow-step:hover { transform:scale(1.05); }
+.flow-step.fb { background:var(--sticky-b); border:1px solid var(--sticky-b-edge); }
+.flow-step.fg { background:var(--sticky-g); border:1px solid var(--sticky-g-edge); }
+.flow-step.fy { background:var(--sticky-y); border:1px solid var(--sticky-y-edge); }
+.flow-step.fp { background:var(--sticky-p); border:1px solid var(--sticky-p-edge); }
+.flow-arr {
+  font-family:'Caveat',cursive; font-size:1.4rem;
+  color:var(--ink-blue); font-weight:700; padding:0 6px;
+}
+
+/* ============================================================
+   CONCLUSION BAR — Bottom insight
+   ============================================================ */
+.conclusion {
+  margin-top:auto;
+  padding:9px 16px;
+  font-size:var(--fs-sm); font-weight:700;
+  color:var(--ink-blue);
+  border-left:3px solid var(--ink-blue);
+  background: linear-gradient(90deg, rgba(21,101,192,0.04), transparent);
+  border-radius:0 6px 6px 0;
+}
+.conclusion.green { color:var(--ink-green); border-color:var(--ink-green); background:linear-gradient(90deg,rgba(46,125,50,0.04),transparent); }
+
+/* ============================================================
+   ILLUSTRATION (SVG)
+   ============================================================ */
+.illust { display:flex; align-items:center; justify-content:center; }
+.illust svg { max-width:100%; max-height:100%; }
+
+/* ============================================================
+   COVER SLIDE — Special
+   ============================================================ */
+.slide.cover {
+  align-items:center; justify-content:center; text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.02) 0%, transparent 70%),
+    var(--surface);
+}
+.cover .chip { position:absolute; top:18px; left:24px; }
+.cover-title {
+  font-size: var(--fs-hero);
+  font-weight: 900;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+.cover-title .hl { color:var(--ink-blue); }
+.cover-sub {
+  font-size:var(--fs-sub); color:var(--tray-dark);
+  margin-top:8px; z-index:2; position:relative;
+}
+.cover-doodles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.cover-doodles svg { width:100%; height:100%; }
+
+/* ============================================================
+   NAVIGATION — Tactile, minimal
+   ============================================================ */
+.nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:10px 16px;
+  background:var(--nav-bg); backdrop-filter:blur(10px);
+  border-top:1px solid var(--board-edge);
+}
+.nav-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface); border:1.5px solid var(--board-edge);
+  border-radius:100px; padding:7px 20px;
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:0.82rem; font-weight:700;
+  color:var(--ink-black); cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { background:var(--ink-blue); color:#fff; border-color:var(--ink-blue); transform:scale(1.05); }
+.nav-btn:active { transform:scale(0.97); }
+.nav-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
+.nav-btn:disabled:hover { background:var(--surface); color:var(--ink-black); border-color:var(--board-edge); }
+
+.nav-dots { display:flex; gap:5px; align-items:center; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--board-edge); border:none;
+  cursor:pointer; transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot.on { background:var(--ink-blue); width:20px; border-radius:3px; }
+.dot:hover { background:var(--ink-blue-light); }
+
+.nav-count {
+  font-family:'Caveat',cursive; font-weight:700;
+  font-size:1.05rem; color:var(--tray-dark);
+  min-width:55px; text-align:center;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:768px){
+  .slide{padding:20px 24px}
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+  .vs,.row{flex-direction:column}
+  .nav{gap:8px;padding:8px 10px}
+  .nav-btn{padding:6px 14px;font-size:.78rem}
+}
+@media(max-width:480px){
+  .slide{padding:14px 16px;border-radius:0}
+  .cards.c2,.cards.c3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Board Frame -->
+<div class="board-frame">
+  <div class="marker-tray"></div>
+  <div class="progress-track"><div class="progress-fill" id="pf" style="width:5%"></div></div>
+
+<!-- ===== 1: COVER ===== -->
+<div class="slide cover active" data-s="1">
+  <div class="chip">3章 プロンプト</div>
+  <div class="cover-doodles">
+    <svg viewBox="0 0 940 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity=".12"><rect x="60" y="55" width="75" height="50" rx="12" stroke="#1565C0" stroke-width="2.5"/><circle cx="78" cy="80" r="4" fill="#1565C0"/><circle cx="98" cy="80" r="4" fill="#1565C0"/><circle cx="118" cy="80" r="4" fill="#1565C0"/><path d="M72 105l-12 16" stroke="#1565C0" stroke-width="2.5" stroke-linecap="round"/></g>
+      <g opacity=".09" transform="translate(790,40)"><ellipse cx="35" cy="32" rx="25" ry="30" stroke="#C62828" stroke-width="2.5"/><line x1="25" y1="62" x2="45" y2="62" stroke="#C62828" stroke-width="2.5"/><line x1="28" y1="68" x2="42" y2="68" stroke="#C62828" stroke-width="2.5"/><line x1="35" y1="8" x2="35" y2="-2" stroke="#C62828" stroke-width="2"/><line x1="12" y1="14" x2="6" y2="6" stroke="#C62828" stroke-width="2"/><line x1="58" y1="14" x2="64" y2="6" stroke="#C62828" stroke-width="2"/></g>
+      <g opacity=".08" transform="translate(50,400)"><rect width="100" height="60" rx="6" stroke="#2E7D32" stroke-width="2.5"/><rect x="8" y="8" width="14" height="10" rx="2" stroke="#2E7D32" stroke-width="1.5"/><rect x="26" y="8" width="14" height="10" rx="2" stroke="#2E7D32" stroke-width="1.5"/><rect x="44" y="8" width="14" height="10" rx="2" stroke="#2E7D32" stroke-width="1.5"/><rect x="20" y="40" width="60" height="10" rx="2" stroke="#2E7D32" stroke-width="1.5"/></g>
+      <g opacity=".08" transform="translate(810,390)"><rect x="8" y="0" width="44" height="36" rx="7" stroke="#1565C0" stroke-width="2.5"/><circle cx="22" cy="14" r="4" stroke="#1565C0" stroke-width="2"/><circle cx="40" cy="14" r="4" stroke="#1565C0" stroke-width="2"/><path d="M22 26 Q31 32 40 26" stroke="#1565C0" stroke-width="2" fill="none"/></g>
+      <g opacity=".07"><path d="M190 130 Q200 118 215 125" stroke="#1A1A1A" stroke-width="1.8" fill="none"/><polygon points="213,121 218,127 211,128" fill="#1A1A1A"/><path d="M720 410 Q730 398 745 405" stroke="#1A1A1A" stroke-width="1.8" fill="none"/><polygon points="743,401 748,407 741,408" fill="#1A1A1A"/></g>
+      <text x="170" y="160" font-size="18" fill="#C62828" opacity=".08">★</text>
+      <text x="760" y="170" font-size="14" fill="#2E7D32" opacity=".08">★</text>
+      <text x="130" y="370" font-size="16" fill="#1565C0" opacity=".08">★</text>
+    </svg>
+  </div>
+  <div class="cover-title">1-1. <span class="hl">プロンプト</span>とは</div>
+  <div class="cover-sub">第3章 プロンプト ― 1. プロンプトの基礎</div>
+  <div class="pg">1 / 20</div>
+</div>
+
+<!-- ===== 2: GOAL ===== -->
+<div class="slide" data-s="2">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">このチャプターのゴール</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <ul class="bl">
+      <li><strong>プロンプトの定義</strong>と役割がわかるようになる</li>
+      <li><strong>プロンプトの構成要素</strong>（指示・文脈・入力・出力形式）が理解できる</li>
+      <li><strong>良いプロンプトと悪いプロンプトの違い</strong>を見分けられる</li>
+      <li><strong>プロンプトエンジニアリング</strong>の基本概念が説明できる</li>
+      <li><strong>実践的なプロンプト作成のコツ</strong>を自分で使えるようになる</li>
+    </ul>
+    <div class="conclusion">プロンプトは「AIへの指示書」。正しく書けば、AIはもっと賢く応えてくれる。</div>
+  </div>
+  <div class="pg">2 / 20</div>
+</div>
+
+<!-- ===== 3: DEFINITION ===== -->
+<div class="slide" data-s="3">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプトとは？</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col w60">
+        <div class="body">プロンプトとは、<span class="kw">生成AIに入力する指示文</span>のことです。</div>
+        <div class="body">レストランの注文に例えると、メニューを見て「カルボナーラをください」と伝えるのがプロンプト。AIはシェフとして、その注文どおりの料理を作ります。</div>
+        <div class="sticky y t1" style="margin-top:8px">
+          <div class="sticky-label">ひとことで言うと</div>
+          プロンプト = <strong>AIへの「お願い」や「質問」</strong>をテキストで書いたもの
+        </div>
+      </div>
+      <div class="col w40 illust">
+        <svg viewBox="0 0 180 200" fill="none">
+          <circle cx="50" cy="35" r="16" stroke="#1A1A1A" stroke-width="2.5"/><line x1="50" y1="51" x2="50" y2="100" stroke="#1A1A1A" stroke-width="2.5"/><line x1="50" y1="68" x2="30" y2="88" stroke="#1A1A1A" stroke-width="2.5"/><line x1="50" y1="68" x2="78" y2="62" stroke="#1A1A1A" stroke-width="2.5"/>
+          <rect x="82" y="28" width="85" height="42" rx="10" stroke="#1565C0" stroke-width="2"/><path d="M82 48 L72 52 L82 56" stroke="#1565C0" stroke-width="2" fill="none"/><text x="93" y="50" font-size="10" fill="#1565C0" font-family="sans-serif" font-weight="700">プロンプト</text><text x="93" y="63" font-size="8" fill="#999" font-family="sans-serif">（指示・質問）</text>
+          <line x1="125" y1="80" x2="125" y2="110" stroke="#C62828" stroke-width="2.5"/><polygon points="118,107 125,120 132,107" fill="#C62828"/>
+          <rect x="100" y="125" width="50" height="36" rx="8" stroke="#2E7D32" stroke-width="2.5"/><circle cx="115" cy="138" r="4" stroke="#2E7D32" stroke-width="2"/><circle cx="135" cy="138" r="4" stroke="#2E7D32" stroke-width="2"/><path d="M113 150 Q125 156 137 150" stroke="#2E7D32" stroke-width="2" fill="none"/><text x="107" y="178" font-size="9" fill="#2E7D32" font-family="sans-serif" font-weight="700">生成AI</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="pg">3 / 20</div>
+</div>
+
+<!-- ===== 4: ANALOGY ===== -->
+<div class="slide" data-s="4">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">身近なたとえで理解する</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="cards c3">
+      <div class="card"><div class="card-title">🍝 レストラン</div><div class="card-body">注文 = プロンプト<br>シェフ = AI<br>料理 = 出力</div></div>
+      <div class="card"><div class="card-title">🔍 検索エンジン</div><div class="card-body">検索キーワード = プロンプト<br>Google = AI<br>検索結果 = 出力</div></div>
+      <div class="card"><div class="card-title">📋 仕事の依頼</div><div class="card-body">依頼書 = プロンプト<br>部下 = AI<br>成果物 = 出力</div></div>
+    </div>
+    <div class="conclusion">共通点：<strong>指示が具体的であればあるほど、期待どおりの結果が返る</strong></div>
+  </div>
+  <div class="pg">4 / 20</div>
+</div>
+
+<!-- ===== 5: COMPONENTS ===== -->
+<div class="slide" data-s="5">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプトの4つの構成要素</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="sticky b t2"><div class="sticky-label">1. 指示（Instruction）</div>AIに何をしてほしいかを伝える部分<br>例：「要約してください」「翻訳して」</div>
+        <div class="sticky g t3"><div class="sticky-label">2. 文脈（Context）</div>背景情報や前提条件<br>例：「初心者向けに」「ビジネスメールとして」</div>
+      </div>
+      <div class="col">
+        <div class="sticky p t1"><div class="sticky-label">3. 入力データ（Input）</div>処理してほしい対象のテキストやデータ<br>例：「以下の文章を〜」</div>
+        <div class="sticky y t4"><div class="sticky-label">4. 出力形式（Output Format）</div>どんな形で答えてほしいか<br>例：「箇条書きで」「表形式で」「JSON形式で」</div>
+      </div>
+    </div>
+    <div class="conclusion">この4要素を意識するだけで、プロンプトの質が格段に上がる</div>
+  </div>
+  <div class="pg">5 / 20</div>
+</div>
+
+<!-- ===== 6: COMPONENT FLOW ===== -->
+<div class="slide" data-s="6">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">4要素を組み合わせると</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="flow" style="margin:10px 0">
+      <div class="flow-step fb">指示</div><div class="flow-arr">+</div>
+      <div class="flow-step fg">文脈</div><div class="flow-arr">+</div>
+      <div class="flow-step fy">入力</div><div class="flow-arr">+</div>
+      <div class="flow-step fp">出力形式</div><div class="flow-arr">→</div>
+      <div class="flow-step fg" style="font-size:var(--fs-body)">高品質な出力</div>
+    </div>
+    <div class="prompt b" style="transform:rotate(.3deg)">
+      <span class="prompt-tag">4要素を使った完成例</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+あなたはマーケティングの専門家です。        ← 文脈
+以下の商品説明を読んで、                     ← 入力
+20代女性向けのInstagram投稿文を             ← 指示
+3つ提案してください。                        ← 指示
+それぞれ100文字以内で、                      ← 出力形式
+ハッシュタグを5個つけてください。            ← 出力形式</div>
+  </div>
+  <div class="pg">6 / 20</div>
+</div>
+
+<!-- ===== 7: GOOD vs BAD ===== -->
+<div class="slide" data-s="7">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">良いプロンプト vs 悪いプロンプト</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="vs">
+      <div class="vs-side bad">
+        <div class="vs-label">悪い例</div>
+        <div class="prompt p" style="transform:rotate(-.4deg)"><span class="prompt-tag">Prompt</span>
+AIについて教えて</div>
+        <div class="sm">曖昧で範囲が広すぎる。何を答えればいいかわからない。</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">良い例</div>
+        <div class="prompt g" style="transform:rotate(.4deg)"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+中学生にもわかるように、
+AIの定義を200文字以内で
+説明してください。
+具体例を1つ含めてください。</div>
+        <div class="sm">対象・形式・分量・条件が明確。</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">7 / 20</div>
+</div>
+
+<!-- ===== 8: MORE EXAMPLES ===== -->
+<div class="slide" data-s="8">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">改善例をもっと見てみよう</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <table class="wb-tbl">
+      <thead><tr><th style="width:38%">悪いプロンプト</th><th>良いプロンプト</th></tr></thead>
+      <tbody>
+        <tr><td>マーケティングの案を出して</td><td>20代女性向けカフェのInstagram投稿案を<span class="kw">5つ</span>提案して</td></tr>
+        <tr><td>メールを書いて</td><td>取引先への納期遅延のお詫びメールを<span class="kw">丁寧な敬語で300文字以内</span>で作成</td></tr>
+        <tr><td>プレゼン作って</td><td>新入社員10名向けに情報セキュリティの基本を<span class="kw">15分で説明するスライド構成案</span></td></tr>
+        <tr><td>Python教えて</td><td>Python初心者がWebスクレイピングを始める手順を<span class="kw">5段階のステップ形式</span>で</td></tr>
+      </tbody>
+    </table>
+    <div class="sticky g t2" style="margin-top:auto"><div class="sticky-label">Rule</div>「誰に」「何を」「どのように」を入れるだけで回答の質が変わる</div>
+  </div>
+  <div class="pg">8 / 20</div>
+</div>
+
+<!-- ===== 9: 5W1H ===== -->
+<div class="slide" data-s="9">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">コツ① 具体的に書く ― 5W1H</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">プロンプトに <span class="kw">5W1H</span> を入れると精度が大幅にアップ。</div>
+    <div class="row" style="margin-top:6px">
+      <div class="col">
+        <div class="prompt y" style="transform:rotate(-.5deg)"><span class="prompt-tag">Before</span>
+メールを書いて</div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:1.5rem;color:var(--ink-blue);font-weight:900">→</div>
+      <div class="col">
+        <div class="prompt b" style="transform:rotate(.4deg)"><span class="prompt-tag">After</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+取引先（Who）への納期遅延のお詫び（What）を
+丁寧な敬語で（How）
+300文字以内（条件）で作成してください。
+相手は部長クラスの方です（Context）。</div>
+      </div>
+    </div>
+    <div class="conclusion" style="margin-top:auto">「誰に向けて」「何を」「どのように」の3つだけで効果絶大</div>
+  </div>
+  <div class="pg">9 / 20</div>
+</div>
+
+<!-- ===== 10: OUTPUT FORMAT ===== -->
+<div class="slide" data-s="10">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">コツ② 出力形式を指定する</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">「<span class="kw">どんな形で答えてほしいか</span>」を伝えるだけで使いやすい回答に。</div>
+    <div class="cards c3" style="margin-top:6px">
+      <div class="card"><div class="card-title">箇条書き</div><div class="card-body">「〜を箇条書きで5つ挙げて」</div></div>
+      <div class="card"><div class="card-title">表形式</div><div class="card-body">「メリット・デメリットの比較表にして」</div></div>
+      <div class="card"><div class="card-title">ステップ形式</div><div class="card-body">「手順をステップで説明して」</div></div>
+      <div class="card"><div class="card-title">要約</div><div class="card-body">「100文字以内で要約して」</div></div>
+      <div class="card"><div class="card-title">レポート形式</div><div class="card-body">「見出し付きのレポートで書いて」</div></div>
+      <div class="card"><div class="card-title">JSON / CSV</div><div class="card-body">「JSON形式で出力して」</div></div>
+    </div>
+  </div>
+  <div class="pg">10 / 20</div>
+</div>
+
+<!-- ===== 11: ROLE ===== -->
+<div class="slide" data-s="11">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">コツ③ 役割（ロール）を与える</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">「<span class="kw">〜の専門家として答えて</span>」と指定すると回答の深さが変わる。</div>
+    <table class="wb-tbl" style="margin-top:6px">
+      <thead><tr><th>役割の指定</th><th>効果</th></tr></thead>
+      <tbody>
+        <tr><td>小学校の先生として</td><td>やさしい言葉でかみ砕いた説明に</td></tr>
+        <tr><td>マーケティング専門家として</td><td>市場データや戦略的な視点が加わる</td></tr>
+        <tr><td>プログラマーとして</td><td>コードの品質やバグの観点で評価</td></tr>
+        <tr><td>栄養士として</td><td>栄養バランスや健康面を考慮した提案</td></tr>
+      </tbody>
+    </table>
+    <div class="sticky b t1" style="margin-top:auto"><div class="sticky-label">Point</div>同じ質問でも、役割を変えるだけでまったく違う切り口の回答が得られる</div>
+  </div>
+  <div class="pg">11 / 20</div>
+</div>
+
+<!-- ===== 12: CONTEXT ===== -->
+<div class="slide" data-s="12">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">コツ④ 背景情報を伝える</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">AIは「<span class="kw">察する</span>」のが苦手。「なぜこの質問をしているか」を伝えよう。</div>
+    <div class="vs" style="margin-top:6px">
+      <div class="vs-side bad">
+        <div class="vs-label">背景なし</div>
+        <div class="prompt p" style="transform:rotate(-.3deg)"><span class="prompt-tag">Prompt</span>
+プレゼン資料を作って</div>
+        <div class="sm">何のテーマ？誰向け？→ 一般的な内容に</div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side good">
+        <div class="vs-label">背景あり</div>
+        <div class="prompt g" style="transform:rotate(.3deg)"><span class="prompt-tag">Prompt</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+来週の社内会議で、
+新入社員10名に向けて
+情報セキュリティの基本を
+説明します。
+15分のプレゼン構成案を
+作ってください。</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">12 / 20</div>
+</div>
+
+<!-- ===== 13: CONSTRAINTS ===== -->
+<div class="slide" data-s="13">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">コツ⑤ 条件と制約を設定する</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">やってほしいことだけでなく、<span class="kw">やってほしくないこと</span>も明示する。</div>
+    <table class="wb-tbl" style="margin-top:6px">
+      <thead><tr><th>制約の種類</th><th>具体例</th></tr></thead>
+      <tbody>
+        <tr><td>文字数</td><td>「300文字以内で」「500文字程度で」</td></tr>
+        <tr><td>対象レベル</td><td>「専門用語を使わずに」「初心者向けに」</td></tr>
+        <tr><td>トーン</td><td>「カジュアルな口調で」「ビジネス文書として」</td></tr>
+        <tr><td>除外条件</td><td>「〜には触れないで」「英語は使わずに」</td></tr>
+        <tr><td>数量</td><td>「3つに絞って」「最大5項目で」</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion" style="margin-top:auto">条件をつける = 不要な情報を削り、必要な情報だけを残す</div>
+  </div>
+  <div class="pg">13 / 20</div>
+</div>
+
+<!-- ===== 14: STEP BY STEP ===== -->
+<div class="slide" data-s="14">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">コツ⑥ 一度に一つのタスクを指示</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">「<span class="kw">全部まとめて</span>」は失敗のもと。複雑なタスクは分割しよう。</div>
+    <div class="row" style="margin-top:6px">
+      <div class="col">
+        <div class="sub" style="color:var(--ink-red);font-size:var(--fs-sm)">悪い例</div>
+        <div class="prompt p" style="transform:rotate(-.3deg);font-size:.76rem"><span class="prompt-tag">Prompt</span>
+新商品の企画書を作って。
+市場調査も、競合分析も、
+価格設定も考えて。</div>
+      </div>
+      <div class="col">
+        <div class="sub" style="color:var(--ink-green);font-size:var(--fs-sm)">良い例（段階的）</div>
+        <div class="flow-step fb" style="text-align:left;font-weight:400;font-size:.78rem;width:100%"><strong>Step 1:</strong> 〇〇市場の最新トレンドを3つ教えて</div>
+        <div style="text-align:center;color:var(--ink-blue);font-weight:900">↓</div>
+        <div class="flow-step fg" style="text-align:left;font-weight:400;font-size:.78rem;width:100%"><strong>Step 2:</strong> 競合A・B・Cの特徴を表で比較して</div>
+        <div style="text-align:center;color:var(--ink-blue);font-weight:900">↓</div>
+        <div class="flow-step fy" style="text-align:left;font-weight:400;font-size:.78rem;width:100%"><strong>Step 3:</strong> これらを踏まえて新商品コンセプトを3案</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">14 / 20</div>
+</div>
+
+<!-- ===== 15: FEW-SHOT ===== -->
+<div class="slide" data-s="15">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">コツ⑦ 例文を示す（Few-Shot）</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="body">「<span class="kw">こんな感じで書いて</span>」とお手本を添えると形式を合わせてくれる。</div>
+    <div class="prompt b" style="transform:rotate(.3deg);margin-top:8px"><span class="prompt-tag">Few-Shot Example</span><button class="copy-btn" onclick="cp(this)">Copy</button>
+以下の形式で、他の商品の紹介文も書いてください。
+
+【例】
+商品名：有機グリーンティー
+特徴：京都産の茶葉を使用。渋みが少なく、まろやかな味わい。
+おすすめシーン：朝の目覚めの一杯に。
+
+では、「ダークチョコレート」の紹介文をお願いします。</div>
+    <div class="sticky g t2" style="margin-top:auto"><div class="sticky-label">Point</div>お手本は1〜3個が効果的。多すぎるとプロンプトが長くなりすぎて逆効果。</div>
+  </div>
+  <div class="pg">15 / 20</div>
+</div>
+
+<!-- ===== 16: 7 TIPS SUMMARY ===== -->
+<div class="slide" data-s="16">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">プロンプト作成 7つのコツ</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <ul class="bl num" style="counter-reset:n">
+          <li><span class="kw">具体的に書く</span> ― 5W1Hを意識</li>
+          <li><span class="kw">出力形式を指定</span> ― 箇条書き・表形式</li>
+          <li><span class="kw">役割を与える</span> ― 「〜の専門家として」</li>
+          <li><span class="kw">背景情報を伝える</span> ― 目的・対象者</li>
+        </ul>
+      </div>
+      <div class="col">
+        <ul class="bl num" style="counter-reset:n 4">
+          <li><span class="kw">条件を設定</span> ― 文字数・トーン</li>
+          <li><span class="kw">一つずつ指示</span> ― タスクを分割</li>
+          <li><span class="kw">例文を示す</span> ― Few-Shotの考え方</li>
+        </ul>
+        <div class="sticky y t1" style="margin-top:auto"><div class="sticky-label">覚えておこう</div>どれも「人に仕事を頼むときの伝え方」と同じ！</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">16 / 20</div>
+</div>
+
+<!-- ===== 17: MISCONCEPTIONS ===== -->
+<div class="slide" data-s="17">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">よくある誤解</div>
+  <span class="marker-line red"></span>
+  <div class="content">
+    <div class="col" style="gap:8px">
+      <div class="sticky p t2"><div class="sticky-label">誤解 1</div>「<strong>長く書けば良い回答が返る</strong>」→ ポイントを絞った短い指示のほうが効果的なことが多い</div>
+      <div class="sticky p t3"><div class="sticky-label">誤解 2</div>「<strong>1回で完璧な回答が出るはず</strong>」→ 対話を繰り返して改善するのが正しい使い方</div>
+      <div class="sticky p t4"><div class="sticky-label">誤解 3</div>「<strong>万能のプロンプトが作れる</strong>」→ タスクや目的で最適なプロンプトは変わる。カスタマイズが大切</div>
+    </div>
+  </div>
+  <div class="pg">17 / 20</div>
+</div>
+
+<!-- ===== 18: LATEST TRENDS ===== -->
+<div class="slide" data-s="18">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">最新動向：プロンプトを助けるツール</div>
+  <span class="marker-line blue"></span>
+  <div class="content">
+    <div class="body">2025〜2026年、プロンプト作成そのものを<span class="kw">AIが支援する</span>時代に。</div>
+    <div class="cards c3" style="margin-top:6px">
+      <div class="card"><div class="card-title">ChatGPT カスタムGPTs</div><div class="card-body">よく使うプロンプトの「型」を保存して繰り返し使える</div></div>
+      <div class="card"><div class="card-title">Google Gemini Gem</div><div class="card-body">目的別の指示セットをあらかじめ設定できる</div></div>
+      <div class="card"><div class="card-title">メタプロンプティング</div><div class="card-body">「良いプロンプトを作って」とAI自身に依頼する手法</div></div>
+    </div>
+    <div class="sticky b t1" style="margin-top:auto"><div class="sticky-label">Tip</div>プロンプトにも再利用できる「型」を持っておくと効率的。テーマを入れ替えるだけ！</div>
+  </div>
+  <div class="pg">18 / 20</div>
+</div>
+
+<!-- ===== 19: SUMMARY ===== -->
+<div class="slide" data-s="19">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">まとめ</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <ul class="bl check">
+      <li><strong>プロンプト</strong>は、生成AIに入力する指示文のこと</li>
+      <li>構成要素は <strong>指示・文脈・入力データ・出力形式</strong> の4つ</li>
+      <li>具体的に書き、<strong>5W1H</strong>を意識するだけで精度が大きく向上</li>
+      <li><strong>役割</strong>と<strong>背景情報</strong>を与えると回答の質がさらに上がる</li>
+      <li><strong>条件設定</strong>で不要な情報を削り、必要な情報だけを残す</li>
+      <li>複雑なタスクは<strong>分割して段階的に</strong>指示する</li>
+      <li><strong>例文（Few-Shot）</strong>で出力の形式を揃えられる</li>
+      <li>完璧を求めず、<strong>AIとの対話を繰り返して改善</strong>するのが上達の近道</li>
+    </ul>
+    <div class="conclusion green" style="margin-top:auto">次へ → 1-2. プロンプトエンジニアリングとは</div>
+  </div>
+  <div class="pg">19 / 20</div>
+</div>
+
+<!-- ===== 20: GLOSSARY ===== -->
+<div class="slide" data-s="20">
+  <div class="chip">3章 プロンプト</div>
+  <div class="slide-title">用語集</div>
+  <span class="marker-line green" style="width:0"></span>
+  <div class="content">
+    <div class="cards c2">
+      <div class="card"><div class="card-title">プロンプト (Prompt)</div><div class="card-body">生成AIに入力する指示や質問のテキスト</div></div>
+      <div class="card"><div class="card-title">プロンプトエンジニアリング</div><div class="card-body">プロンプトを最適化してAIから望む出力を引き出す技術</div></div>
+      <div class="card"><div class="card-title">コンテキスト (Context)</div><div class="card-body">AIへの指示における背景情報や前提条件</div></div>
+      <div class="card"><div class="card-title">Few-Shot プロンプティング</div><div class="card-body">1〜数個の例文を示して出力の形式を揃える手法</div></div>
+      <div class="card"><div class="card-title">5W1H</div><div class="card-body">Who/What/When/Where/Why/How の基本フレーム</div></div>
+      <div class="card"><div class="card-title">出力形式 (Output Format)</div><div class="card-body">箇条書き・表・JSON等、回答の形を指定すること</div></div>
+      <div class="card"><div class="card-title">メタプロンプティング</div><div class="card-body">AI自身にプロンプト作成を依頼する手法</div></div>
+      <div class="card"><div class="card-title">ロールプロンプティング</div><div class="card-body">AIに特定の役割を与えて回答の視点を変える手法</div></div>
+    </div>
+  </div>
+  <div class="pg">20 / 20</div>
+</div>
+
+</div><!-- /board-frame -->
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="pb" onclick="go(cur-1)" disabled>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1.5L3.5 6L8 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>前へ
+  </button>
+  <div class="nav-dots" id="nd"></div>
+  <span class="nav-count" id="nc">1 / 20</span>
+  <button class="nav-btn" id="nb" onclick="go(cur+1)">
+    次へ<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 1.5L8.5 6L4 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+const S=document.querySelectorAll('.slide'),T=S.length;
+let cur=0;
+// Build dots
+const nd=document.getElementById('nd');
+for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i?'':' on');d.onclick=()=>go(i);nd.appendChild(d)}
+
+function go(i){
+  if(i<0||i>=T||i===cur)return;
+  S[cur].classList.remove('active');S[cur].style.display='none';
+  cur=i;
+  S[cur].classList.add('active');
+  upd();
+}
+function upd(){
+  document.getElementById('nc').textContent=`${cur+1} / ${T}`;
+  document.getElementById('pf').style.width=`${((cur+1)/T)*100}%`;
+  document.getElementById('pb').disabled=cur===0;
+  document.getElementById('nb').disabled=cur===T-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+});
+// Touch
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+
+// Copy
+function cp(b){
+  const c=b.closest('.prompt').cloneNode(true);
+  c.querySelector('.copy-btn')?.remove();
+  c.querySelector('.prompt-tag')?.remove();
+  navigator.clipboard.writeText(c.textContent.trim()).then(()=>{
+    b.textContent='Copied!';b.classList.add('ok');
+    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1500);
+  });
+}
+upd();
+</script>
+</body>
+</html>
