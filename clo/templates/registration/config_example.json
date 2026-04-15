@@ -1,0 +1,49 @@
+{
+  "company_name_full": "ｗｉｔｈ－ＡＩ株式会社",
+  "company_furigana": "ウィズエーアイカブシキカイシャ",
+  "company_address": "東京都渋谷区千駄ケ谷五丁目１６番１０－１１０５号",
+  "corporate_number": "０３００－０１－０２２７３３",
+  "jurisdiction": "東京法務局渋谷出張所",
+  "contact_phone": "０９０１２９６４８１４",
+  "registration_tax": 10000,
+
+  "current_representative": {
+    "name": "小松悠",
+    "address": "東京都江戸川区中央一丁目１７番１－３０４号"
+  },
+
+  "decision_date": "2026-01-07",
+  "consent_deadline": "2026-01-15",
+  "certification_date": "2026-01-16",
+
+  "reappoint_representative": true,
+
+  "proposals": [
+    "取締役選任の件",
+    "代表取締役選定の件"
+  ],
+
+  "new_officers": [
+    {
+      "name": "勝又海斗",
+      "address": "東京都杉並区高円寺南１－１３－２ドゥーエ東高円寺６０１",
+      "role": "取締役及び代表取締役",
+      "appointment_date": "2026-01-15"
+    }
+  ],
+
+  "shareholders": [
+    {
+      "name": "勝又 海斗",
+      "address": "東京都杉並区高円寺南１-１３-２ドゥーエ東高円寺６０１",
+      "shares": 42
+    },
+    {
+      "name": "株式会社Bindworker",
+      "address": "埼玉県さいたま市南区大字太田窪２８２１番地６",
+      "shares": 12
+    }
+  ],
+
+  "output_dir": "/Users/kaito/Downloads/登記書類テスト出力"
+}

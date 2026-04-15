@@ -1,0 +1,26 @@
+[
+  {
+    "id": "eval_001",
+    "name": "weekly_revenue_report",
+    "prompt": "/revenue-engine weekly",
+    "expected_behavior": "週次収益レポートを生成し、新規キーワード発掘、記事構成案、楽天ROOM商品キュレーション、SNS投稿カレンダーを出力する",
+    "expected_agents_called": ["revenue-tracker", "keyword-researcher", "article-generator", "affiliate-linker", "rakuten-room-curator", "sns-promoter"],
+    "assertions": []
+  },
+  {
+    "id": "eval_002",
+    "name": "article_generation",
+    "prompt": "/revenue-engine article ワイヤレスイヤホン おすすめ",
+    "expected_behavior": "キーワードリサーチ→記事生成→アフィリエイトリンク挿入→公開→SNS投稿生成の一連のフローを実行する",
+    "expected_agents_called": ["keyword-researcher", "article-generator", "affiliate-linker", "publisher", "sns-promoter", "revenue-tracker"],
+    "assertions": []
+  },
+  {
+    "id": "eval_003",
+    "name": "rakuten_room_curation",
+    "prompt": "/revenue-engine room ガジェット",
+    "expected_behavior": "ガジェットジャンルのトレンド商品を5件選定し、説明文・ハッシュタグを生成、SNS拡散投稿も作成する",
+    "expected_agents_called": ["rakuten-room-curator", "affiliate-linker", "sns-promoter", "revenue-tracker"],
+    "assertions": []
+  }
+]
